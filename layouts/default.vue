@@ -1,21 +1,36 @@
 <template>
   <div class="slidev-layout default flex flex-col h-full">
     <ScholarlyHeader ref="headerRef" class="flex-shrink-0" />
-    <div class="flex-grow overflow-auto content-wrapper" :class="{ 'no-header': !hasHeaderContent }">
-      <slot />
+    <div
+      ref="contentWrapperRef"
+      class="flex-grow overflow-auto content-wrapper"
+      :class="{ 'no-header': !hasHeaderContent }"
+    >
+      <div
+        ref="contentInnerRef"
+        class="content-inner"
+        :style="{ fontSize: contentFontSize }"
+      >
+        <slot />
+      </div>
     </div>
     <ScholarlyFooter class="flex-shrink-0" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
 import ScholarlyHeader from '../components/ScholarlyHeader.vue'
 import ScholarlyFooter from '../components/ScholarlyFooter.vue'
+import { useAutoFontSize } from '../utils/useAutoFontSize'
 
 const { $slidev } = useSlideContext()
 const headerRef = ref()
+const contentWrapperRef = ref<HTMLElement>()
+const contentInnerRef = ref<HTMLElement>()
+
+const { fontSize: contentFontSize } = useAutoFontSize(contentWrapperRef, contentInnerRef)
 
 const hasHeaderContent = computed(() => {
   const frontmatter = ($slidev?.nav?.currentSlideRoute?.meta?.slide as any)?.frontmatter
@@ -50,5 +65,9 @@ const hasHeaderContent = computed(() => {
   width: 100%;
   margin-left: 0;
   margin-right: 0;
+}
+
+.content-inner {
+  width: 100%;
 }
 </style>

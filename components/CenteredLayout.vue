@@ -1,17 +1,27 @@
 <template>
   <div :class="['slidev-layout', layoutName, 'flex', 'flex-col', 'h-full']">
     <ScholarlyHeader v-if="showHeader" class="flex-shrink-0" />
-    <div :class="['flex-grow', 'flex', 'flex-col', 'items-center', 'justify-center', 'text-center', 'content-wrapper-centered', containerClass]">
-      <slot />
+    <div
+      ref="contentWrapperRef"
+      :class="['flex-grow', 'flex', 'flex-col', 'items-center', 'justify-center', 'text-center', 'content-wrapper-centered', containerClass]"
+    >
+      <div
+        ref="contentInnerRef"
+        class="content-inner"
+        :style="{ fontSize: contentFontSize }"
+      >
+        <slot />
+      </div>
     </div>
     <ScholarlyFooter class="flex-shrink-0" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import ScholarlyHeader from './ScholarlyHeader.vue'
 import ScholarlyFooter from './ScholarlyFooter.vue'
+import { useAutoFontSize } from '../utils/useAutoFontSize'
 
 interface Props {
   layoutName: string
@@ -52,6 +62,10 @@ const paddingTop = computed(() => {
 const itemSpacing = computed(() => {
   return props.customSpacing || '0.5rem'
 })
+
+const contentWrapperRef = ref<HTMLElement>()
+const contentInnerRef = ref<HTMLElement>()
+const { fontSize: contentFontSize } = useAutoFontSize(contentWrapperRef, contentInnerRef)
 </script>
 
 <style scoped>
@@ -68,5 +82,9 @@ const itemSpacing = computed(() => {
 
 .content-wrapper-centered :deep(> *:last-child) {
   margin-bottom: 0;
+}
+
+.content-inner {
+  width: 100%;
 }
 </style>

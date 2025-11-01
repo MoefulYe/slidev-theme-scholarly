@@ -1,14 +1,29 @@
 <template>
   <div class="slidev-layout intro h-full flex flex-col">
-    <div class="flex-grow flex flex-col justify-center intro-content">
-      <slot />
+    <div
+      ref="contentWrapperRef"
+      class="flex-grow flex flex-col justify-center intro-content"
+    >
+      <div
+        ref="contentInnerRef"
+        class="content-inner"
+        :style="{ fontSize: contentFontSize }"
+      >
+        <slot />
+      </div>
     </div>
     <ScholarlyFooter class="flex-shrink-0" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import ScholarlyFooter from '../components/ScholarlyFooter.vue'
+import { useAutoFontSize } from '../utils/useAutoFontSize'
+
+const contentWrapperRef = ref<HTMLElement>()
+const contentInnerRef = ref<HTMLElement>()
+const { fontSize: contentFontSize } = useAutoFontSize(contentWrapperRef, contentInnerRef)
 </script>
 
 <style scoped>
@@ -26,5 +41,9 @@ import ScholarlyFooter from '../components/ScholarlyFooter.vue'
 .intro-content :deep(ul),
 .intro-content :deep(ol) {
   text-align: left;
+}
+
+.content-inner {
+  width: 100%;
 }
 </style>
