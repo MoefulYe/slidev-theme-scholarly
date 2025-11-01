@@ -1,76 +1,23 @@
+/* @apply handled by UnoCSS */
+
+/* -------------------------------------------------------------------------- */
+/* Shared tokens                                                              */
+/* -------------------------------------------------------------------------- */
+
 :root {
   /* default theme color */
-  /* can be overrided by uses `themeConfig` option */
+  /* can be overrided by using `themeConfig` option */
   --slidev-theme-primary: #5d8392;
-}
-
-.slidev-layout.cover {
-  @apply h-full grid;
-
-  h1 {
-    @apply text-5xl leading-16 text-center;
-  }
-
-  h1 + p {
-    @apply -mt-1 opacity-50 mb-4 text-center;
-  }
-
-  h2 {
-    @apply text-center;
-  }
-
-  p + h2,
-  ul + h2,
-  table + h2 {
-    @apply mt-8;
-  }
-
-  .author-section {
-    @apply text-center;
-  }
-
-  .author-item {
-    @apply text-center px-4;
-    min-width: 200px;
-    max-width: 300px;
-  }
-
-  .author-name {
-    @apply font-semibold;
-  }
-
-  .author-institution {
-    @apply italic;
-  }
-
-  .author-email {
-    @apply text-sm font-mono;
-  }
-}
-
-.slidev-layout.intro {
-  @apply h-full grid;
-
-  h1 {
-    @apply text-6xl leading-20;
-  }
-
-  h1 + p {
-    @apply -mt-2 opacity-50 mb-4;
-  }
-
-  p + h2,
-  ul + h2,
-  table + h2 {
-    @apply mt-10;
-  }
 }
 
 footer {
   @apply text-sm text-black;
 }
 
-/* Beamer-style header */
+/* -------------------------------------------------------------------------- */
+/* Shared: header & footer                                                    */
+/* -------------------------------------------------------------------------- */
+
 .header-container {
   z-index: 50;
 }
@@ -103,7 +50,7 @@ footer {
 }
 
 .beamer-header-centered {
-  border-radius: 0.5rem; /* Rounded corners for centered header */
+  border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
   padding-left: 3rem;
@@ -112,30 +59,29 @@ footer {
 
 .header-title {
   @apply text-white font-semibold;
-  font-size: 1.5rem; /* 24px - increased from 20px */
+  font-size: 1.5rem;
   line-height: 1.75rem;
 }
 
 .header-subtitle {
   @apply text-white;
-  font-size: 1.125rem; /* 18px - increased from 16px */
+  font-size: 1.125rem;
   line-height: 1.5rem;
   opacity: 0.9;
   margin-top: 0.125rem;
 }
 
-/* Beamer-style footer */
 .beamer-footer {
   @apply w-full;
-  height: 28px; /* Fixed height to prevent layout shift */
+  height: 28px;
 }
 
 .beamer-footer span {
   @apply px-4 inline-block;
-  padding-top: 0.375rem; /* 6px */
-  padding-bottom: 0.375rem; /* 6px */
-  line-height: 1rem; /* Fixed line height */
-  font-size: 0.875rem; /* 14px */
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+  line-height: 1rem;
+  font-size: 0.875rem;
 }
 
 .beamer-footer-left {
@@ -153,7 +99,10 @@ footer {
   @apply text-white;
 }
 
-/* Additional layouts */
+/* -------------------------------------------------------------------------- */
+/* Shared: layout containers                                                  */
+/* -------------------------------------------------------------------------- */
+
 .slidev-layout.center,
 .slidev-layout.quote,
 .slidev-layout.fact,
@@ -162,49 +111,19 @@ footer {
   @apply h-full;
 }
 
-/* Centered layouts with constrained width */
 .slidev-layout.center > div {
   @apply w-full;
 }
 
 .slidev-layout.quote > div,
 .slidev-layout.fact > div {
-  max-width: 56rem; /* 4xl */
+  max-width: 56rem;
 }
 
 .slidev-layout.statement > div {
-  max-width: 64rem; /* 5xl */
+  max-width: 64rem;
 }
 
-/* Heading styles for centered layouts */
-.slidev-layout.center h1 {
-  @apply text-5xl;
-}
-
-.slidev-layout.quote h1,
-.slidev-layout.fact h1,
-.slidev-layout.statement h1 {
-  @apply text-5xl;
-}
-
-.slidev-layout.section h1 {
-  @apply text-6xl font-bold;
-}
-
-.slidev-layout.fact h1 {
-  @apply text-7xl font-bold;
-}
-
-.slidev-layout.statement h1 {
-  @apply text-4xl font-light;
-}
-
-.slidev-layout.quote blockquote {
-  @apply text-3xl italic border-l-4 pl-6;
-  border-color: var(--slidev-theme-primary);
-}
-
-/* Two-column and image layouts */
 .slidev-layout.image-left,
 .slidev-layout.image-right,
 .slidev-layout.two-cols {
@@ -214,4 +133,313 @@ footer {
 .slidev-layout.image-left img,
 .slidev-layout.image-right img {
   @apply rounded-lg shadow-lg;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: cover                                                              */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.cover {
+  @apply h-full grid;
+}
+
+.slidev-layout.cover h1 {
+  @apply text-5xl leading-16 text-center;
+}
+
+.slidev-layout.cover h1 + p {
+  @apply -mt-1 opacity-50 mb-4 text-center;
+}
+
+.slidev-layout.cover h2 {
+  @apply text-center;
+}
+
+.slidev-layout.cover p + h2,
+.slidev-layout.cover ul + h2,
+.slidev-layout.cover table + h2 {
+  @apply mt-8;
+}
+
+.slidev-layout.cover .author-section {
+  @apply text-center;
+}
+
+.slidev-layout.cover .author-item {
+  @apply text-center px-4;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.slidev-layout.cover .author-name {
+  @apply font-semibold;
+}
+
+.slidev-layout.cover .author-institution {
+  @apply italic;
+}
+
+.slidev-layout.cover .author-email {
+  @apply text-sm font-mono;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: intro                                                              */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.intro {
+  @apply h-full grid;
+}
+
+.slidev-layout.intro h1 {
+  @apply text-6xl leading-20;
+}
+
+.slidev-layout.intro h1 + p {
+  @apply -mt-2 opacity-50 mb-4;
+}
+
+.slidev-layout.intro p + h2,
+.slidev-layout.intro ul + h2,
+.slidev-layout.intro table + h2 {
+  @apply mt-10;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: default                                                            */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.default h1 {
+  font-size: 2.75rem;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.slidev-layout.default h2 {
+  font-size: 2rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.slidev-layout.default h3 {
+  font-size: 1.6rem;
+  line-height: 1.35;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.slidev-layout.default p,
+.slidev-layout.default li {
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: center                                                             */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.center h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.slidev-layout.center h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.875rem;
+}
+
+.slidev-layout.center p {
+  font-size: 1.125rem;
+  margin-bottom: 0.625rem;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: section                                                            */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.section h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.slidev-layout.section h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.slidev-layout.section p {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: fact                                                               */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.fact h1 {
+  @apply text-7xl font-bold;
+}
+
+.slidev-layout.fact p {
+  @apply text-2xl mt-6;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: statement                                                          */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.statement h1 {
+  @apply text-4xl font-light;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: quote                                                              */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.quote .quote-content {
+  padding-top: 60px;
+  padding-bottom: 35px;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+.slidev-layout.quote .quote-content > * {
+  margin-bottom: 1.5rem;
+}
+
+.slidev-layout.quote .quote-content blockquote,
+.slidev-layout.quote .quote-content > p:first-child {
+  font-size: 1.875rem;
+  font-style: italic;
+  line-height: 2.25rem;
+  border-left: 4px solid var(--slidev-theme-primary, #5d8392);
+  padding-left: 2rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.slidev-layout.quote .quote-content cite,
+.slidev-layout.quote .quote-content > p:last-child {
+  font-size: 1.25rem;
+  font-style: normal;
+  opacity: 0.8;
+  margin-top: 1rem;
+}
+
+.slidev-layout.quote h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.slidev-layout.quote h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.slidev-layout.quote blockquote {
+  @apply text-3xl italic border-l-4 pl-6;
+  border-color: var(--slidev-theme-primary);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: two columns                                                        */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.two-cols h1 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.slidev-layout.two-cols h2 {
+  font-size: 1.85rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.slidev-layout.two-cols h3 {
+  font-size: 1.5rem;
+  line-height: 1.35;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.slidev-layout.two-cols p,
+.slidev-layout.two-cols li {
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: image-left                                                         */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.image-left h1 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.slidev-layout.image-left h2 {
+  font-size: 1.85rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.slidev-layout.image-left h3 {
+  font-size: 1.5rem;
+  line-height: 1.35;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.slidev-layout.image-left p,
+.slidev-layout.image-left li {
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout: image-right                                                        */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout.image-right h1 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.slidev-layout.image-right h2 {
+  font-size: 1.85rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.slidev-layout.image-right h3 {
+  font-size: 1.5rem;
+  line-height: 1.35;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.slidev-layout.image-right p,
+.slidev-layout.image-right li {
+  font-size: 1.05rem;
+  line-height: 1.65;
 }

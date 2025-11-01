@@ -5,6 +5,7 @@ description: Presentation slides for scholars
 aspectRatio: 4/3
 lang: en
 theoremNumberFormat: '{number}'
+fontsize: 30
 authors:
   - name: First Author
     institution: Your University
@@ -65,8 +66,7 @@ Slidev is a slide maker and presentation tool designed for developers. It includ
 - 📤 **Portable** - export to PDF, PPTX, PNGs, or even a hostable SPA
 - 🛠 **Hackable** - virtually anything that's possible on a webpage is possible in Slidev
 
-<br>
-<br>
+<br/>
 
 Read more about [Why Slidev?](https://sli.dev/guide/why)
 
@@ -218,9 +218,9 @@ FEATURES:
 TIP: Use this to give your audience a mental "break" between topics
 -->
 
-## Section Title
+# Section Title
 
-### Subtitle
+## Subtitle
 
 Use this layout to mark the beginning of a new section or chapter in your presentation.
 
@@ -268,7 +268,7 @@ FEATURES:
 TIP: Use big numbers or very short phrases (e.g., "100%", "First Place")
 -->
 
-## 100%
+# 100%
 
 Academic Excellence
 
@@ -292,7 +292,7 @@ FEATURES:
 TIP: Best for 1-3 sentence statements that capture a main idea
 -->
 
-## Important Statement
+# Important Statement
 
 This layout is designed for impactful statements that need emphasis.
 

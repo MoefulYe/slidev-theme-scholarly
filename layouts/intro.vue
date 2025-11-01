@@ -27,6 +27,10 @@ const { fontSize: contentFontSize } = useAutoFontSize(contentWrapperRef, content
 </script>
 
 <style scoped>
+.slidev-layout.intro {
+  @apply h-full grid;
+}
+
 .intro-content {
   padding-top: 0;
   padding-bottom: 35px; /* Space for fixed footer */

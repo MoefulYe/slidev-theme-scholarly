@@ -70,4 +70,5 @@ const hasHeaderContent = computed(() => {
 .content-inner {
   width: 100%;
 }
+
 </style>
