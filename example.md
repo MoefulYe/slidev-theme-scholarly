@@ -5,7 +5,6 @@ description: Presentation slides for scholars
 aspectRatio: 4/3
 lang: en
 theoremNumberFormat: '{number}'
-fontsize: 30
 authors:
   - name: First Author
     institution: Your University
@@ -35,6 +34,13 @@ GLOBAL CONFIGURATION (applies to all slides):
 
 The footer automatically appears on all slides with page numbers on the right.
 -->
+
+<!-- <style>
+.slidev-layout.cover h1 {
+  font-size: 64px;
+  color: red;
+}
+</style> -->
 
 ---
 layout: intro
@@ -106,6 +112,12 @@ TIP: If you don't specify a layout, this is what you get!
 | <kbd>down</kbd> | next slide |
 
 ---
+fontsize:
+  body: 20px
+  h1: 48px
+  h2: 36px
+  h3: 28px
+---
 
 <!--
 LAYOUT: default (auto-applied when no layout is specified)
@@ -115,7 +127,11 @@ KEY POINT: You don't need to write `layout: default` explicitly.
 If you don't specify any layout, Slidev uses "default" automatically.
 -->
 
-## This Slide Uses Default Layout
+# This H1 Should Be 48px
+
+## This H2 Should Be 36px
+
+### This H3 Should Be 28px
 
 Notice that even without specifying `layout: default`, this slide:
 
@@ -123,8 +139,9 @@ Notice that even without specifying `layout: default`, this slide:
 - Shows the footer with author information from the frontmatter
 - Displays the conference name in the middle
 - Shows page numbers on the right
+- **Body text is 20px, H1 is 48px, H2 is 36px, H3 is 28px**
 
-This demonstrates that **all footer configuration is global** and works across all slides.
+This demonstrates that **all fontsize configuration works correctly** including h1, h2, and h3!
 
 ---
 layout: image-left

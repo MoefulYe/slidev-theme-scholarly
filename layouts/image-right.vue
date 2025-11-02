@@ -6,7 +6,7 @@
         <img v-if="image" :src="image" class="w-full h-full object-cover">
       </slot>
     </div>
-    <div class="content-wrapper-text px-8" style="grid-column: 1; grid-row: 2;">
+    <div class="content-wrapper-text px-8" style="grid-column: 1; grid-row: 2;" :style="computedStyles">
       <slot />
     </div>
     <ScholarlyFooter class="col-span-2" style="z-index: 10;" />
@@ -16,10 +16,13 @@
 <script setup lang="ts">
 import ScholarlyHeader from '../components/ScholarlyHeader.vue'
 import ScholarlyFooter from '../components/ScholarlyFooter.vue'
+import { useFontSizeStyles } from '../utils/useFontSizeStyles'
 
 const props = defineProps<{
   image?: string
 }>()
+
+const computedStyles = useFontSizeStyles()
 </script>
 
 <style>

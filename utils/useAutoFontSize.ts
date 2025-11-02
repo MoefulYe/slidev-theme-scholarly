@@ -38,6 +38,14 @@ const normalizeFontSize = (value: unknown): string | null => {
   return null
 }
 
+const resolveBodyFontSize = (value: unknown): string | null => {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const body = (value as any).body ?? (value as any).base ?? (value as any).default
+    return normalizeFontSize(body)
+  }
+  return normalizeFontSize(value)
+}
+
 export function useAutoFontSize(
   wrapperRef: Ref<HTMLElement | undefined>,
   contentRef: Ref<HTMLElement | undefined>,
@@ -52,8 +60,9 @@ export function useAutoFontSize(
   })
 
   const explicitFontSize = computed(() => {
-    const raw = currentFrontmatter.value?.fontsize ?? slidevConfigs.value?.fontsize
-    return normalizeFontSize(raw)
+    const local = resolveBodyFontSize(currentFrontmatter.value?.fontsize)
+    if (local) return local
+    return resolveBodyFontSize(slidevConfigs.value?.fontsize)
   })
   const isExplicit = computed(() => !!explicitFontSize.value)
 

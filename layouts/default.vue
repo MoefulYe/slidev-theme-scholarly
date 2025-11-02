@@ -9,7 +9,7 @@
       <div
         ref="contentInnerRef"
         class="content-inner"
-        :style="{ fontSize: contentFontSize }"
+        :style="computedStyles"
       >
         <slot />
       </div>
@@ -24,6 +24,7 @@ import { useSlideContext } from '@slidev/client'
 import ScholarlyHeader from '../components/ScholarlyHeader.vue'
 import ScholarlyFooter from '../components/ScholarlyFooter.vue'
 import { useAutoFontSize } from '../utils/useAutoFontSize'
+import { useFontSizeStyles } from '../utils/useFontSizeStyles'
 
 const { $slidev } = useSlideContext()
 const headerRef = ref()
@@ -36,6 +37,8 @@ const hasHeaderContent = computed(() => {
   const frontmatter = ($slidev?.nav?.currentSlideRoute?.meta?.slide as any)?.frontmatter
   return !!(frontmatter?.title || frontmatter?.subtitle)
 })
+
+const computedStyles = useFontSizeStyles(contentFontSize)
 </script>
 
 <style scoped>

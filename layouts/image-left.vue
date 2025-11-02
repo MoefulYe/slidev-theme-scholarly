@@ -1,7 +1,7 @@
 <template>
   <div class="slidev-layout image-left grid grid-cols-2 gap-0 h-full" style="grid-template-rows: auto 1fr auto;">
     <ScholarlyHeader class="col-span-2" style="z-index: 10;" />
-    <div class="content-wrapper-text px-8">
+    <div class="content-wrapper-text px-8" :style="computedStyles">
       <slot />
     </div>
     <div class="image-container-right">
@@ -16,10 +16,13 @@
 <script setup lang="ts">
 import ScholarlyHeader from '../components/ScholarlyHeader.vue'
 import ScholarlyFooter from '../components/ScholarlyFooter.vue'
+import { useFontSizeStyles } from '../utils/useFontSizeStyles'
 
 const props = defineProps<{
   image?: string
 }>()
+
+const computedStyles = useFontSizeStyles()
 </script>
 
 <style>

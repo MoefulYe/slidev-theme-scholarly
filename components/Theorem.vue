@@ -12,8 +12,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
+import { prepareTheoremCountersForRoute, ensureTheoremCounters } from '../utils/theorem'
+import type { TheoremType } from '../utils/theorem'
 
 interface Props {
   type?: 'theorem' | 'lemma' | 'proposition' | 'corollary' | 'definition' | 'example' | 'remark'
@@ -52,24 +54,6 @@ const typeLabels: Record<string, Record<string, string>> = {
   }
 }
 
-// Initialize auto-numbering system in global state
-if (typeof window !== 'undefined') {
-  if (!(window as any).__theoremCounters) {
-    (window as any).__theoremCounters = {
-      theorem: 0,
-      lemma: 0,
-      proposition: 0,
-      corollary: 0,
-      definition: 0,
-      example: 0,
-      remark: 0
-    }
-  }
-  if (!(window as any).__theoremCurrentNumbers) {
-    (window as any).__theoremCurrentNumbers = new WeakMap()
-  }
-}
-
 // Get current language from slidev config
 const currentLang = computed(() => {
   const slidevConfigs = $slidev?.configs as any
@@ -92,10 +76,13 @@ const typeLabel = computed(() => {
 // Assign a number to this theorem instance
 let assignedNumber = 0
 if (typeof window !== 'undefined' && props.autoNumber && props.number === undefined) {
-  const counters = (window as any).__theoremCounters
-  if (counters && counters[props.type] !== undefined) {
-    counters[props.type]++
-    assignedNumber = counters[props.type]
+  const routePath = $slidev?.nav?.currentSlideRoute?.path
+  prepareTheoremCountersForRoute(routePath ?? '')
+  const counters = ensureTheoremCounters()
+  const typeKey = props.type as TheoremType
+  if (counters && counters[typeKey] !== undefined) {
+    counters[typeKey]++
+    assignedNumber = counters[typeKey]
   }
 }
 

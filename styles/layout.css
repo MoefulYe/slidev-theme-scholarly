@@ -151,8 +151,8 @@ footer {
 
 .slidev-layout.cover h1 {
   @apply text-center;
-  font-size: 3em;
-  line-height: 4em;
+  font-size: var(--scholarly-h1-size, 3rem);
+  line-height: 1.333;
 }
 
 .slidev-layout.cover h1 + p {
@@ -161,6 +161,12 @@ footer {
 
 .slidev-layout.cover h2 {
   @apply text-center;
+  font-size: var(--scholarly-h2-size, 2rem);
+}
+
+.slidev-layout.cover h3 {
+  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-weight: 600;
 }
 
 .slidev-layout.cover p + h2,
@@ -203,12 +209,21 @@ footer {
 }
 
 .slidev-layout.intro h1 {
-  font-size: 3.75em;
-  line-height: 1.25em;
+  font-size: var(--scholarly-h1-size, 3.75rem);
+  line-height: 1.25;
 }
 
 .slidev-layout.intro h1 + p {
   @apply -mt-2 opacity-50 mb-4;
+}
+
+.slidev-layout.intro h2 {
+  font-size: var(--scholarly-h2-size, 2rem);
+}
+
+.slidev-layout.intro h3 {
+  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-weight: 600;
 }
 
 .slidev-layout.intro p + h2,
@@ -222,21 +237,21 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.default h1 {
-  font-size: 2.75em;
+  font-size: var(--scholarly-h1-size, 2.75rem);
   line-height: 1.2;
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .slidev-layout.default h2 {
-  font-size: 2em;
+  font-size: var(--scholarly-h2-size, 2rem);
   line-height: 1.3;
   font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
 .slidev-layout.default h3 {
-  font-size: 1.6em;
+  font-size: var(--scholarly-h3-size, 1.6rem);
   line-height: 1.35;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -253,15 +268,21 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.center h1 {
-  font-size: 2.5em;
+  font-size: var(--scholarly-h1-size, 2.5rem);
   font-weight: 700;
   margin-bottom: 1.25rem;
 }
 
 .slidev-layout.center h2 {
-  font-size: 2em;
+  font-size: var(--scholarly-h2-size, 2rem);
   font-weight: 600;
   margin-bottom: 0.875rem;
+}
+
+.slidev-layout.center h3 {
+  font-size: var(--scholarly-h3-size, 1.6rem);
+  font-weight: 600;
+  margin-bottom: 0.625rem;
 }
 
 .slidev-layout.center p {
@@ -274,15 +295,21 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.section h1 {
-  font-size: 3em;
+  font-size: var(--scholarly-h1-size, 3rem);
   font-weight: 700;
   margin-bottom: 1.5rem;
 }
 
 .slidev-layout.section h2 {
-  font-size: 1.75em;
+  font-size: var(--scholarly-h2-size, 1.75rem);
   font-weight: 600;
   margin-bottom: 1rem;
+}
+
+.slidev-layout.section h3 {
+  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
 }
 
 .slidev-layout.section p {
@@ -296,7 +323,17 @@ footer {
 
 .slidev-layout.fact h1 {
   @apply font-bold;
-  font-size: 4.5em;
+  font-size: var(--scholarly-h1-size, 4.5rem);
+}
+
+.slidev-layout.fact h2 {
+  font-size: var(--scholarly-h2-size, 3rem);
+  font-weight: 700;
+}
+
+.slidev-layout.fact h3 {
+  font-size: var(--scholarly-h3-size, 2.25rem);
+  font-weight: 600;
 }
 
 .slidev-layout.fact p {
@@ -311,7 +348,17 @@ footer {
 
 .slidev-layout.statement h1 {
   @apply font-light;
-  font-size: 2.25em;
+  font-size: var(--scholarly-h1-size, 2.25rem);
+}
+
+.slidev-layout.statement h2 {
+  font-size: var(--scholarly-h2-size, 1.75rem);
+  font-weight: 400;
+}
+
+.slidev-layout.statement h3 {
+  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-weight: 400;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -333,7 +380,7 @@ footer {
 
 .slidev-layout.quote .quote-content blockquote,
 .slidev-layout.quote .quote-content > p:first-child {
-  font-size: 1.875em;
+  font-size: 1.875rem;
   font-style: italic;
   line-height: 2.25em;
   border-left: 4px solid var(--slidev-theme-primary, #5d8392);
@@ -344,27 +391,33 @@ footer {
 
 .slidev-layout.quote .quote-content cite,
 .slidev-layout.quote .quote-content > p:last-child {
-  font-size: 1.25em;
+  font-size: 1.25rem;
   font-style: normal;
   opacity: 0.8;
   margin-top: 1em;
 }
 
 .slidev-layout.quote h1 {
-  font-size: 2.5em;
+  font-size: var(--scholarly-h1-size, 2.5rem);
   font-weight: 700;
   margin-bottom: 2em;
 }
 
 .slidev-layout.quote h2 {
-  font-size: 1.75em;
+  font-size: var(--scholarly-h2-size, 1.75rem);
   font-weight: 600;
   margin-bottom: 1.5em;
 }
 
+.slidev-layout.quote h3 {
+  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-weight: 600;
+  margin-bottom: 1em;
+}
+
 .slidev-layout.quote blockquote {
   @apply italic border-l-4 pl-6;
-  font-size: 1.875em;
+  font-size: 1.875rem;
   border-color: var(--slidev-theme-primary);
 }
 
@@ -373,21 +426,21 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.two-cols h1 {
-  font-size: 2.5em;
+  font-size: var(--scholarly-h1-size, 2.5rem);
   line-height: 1.2;
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .slidev-layout.two-cols h2 {
-  font-size: 1.85em;
+  font-size: var(--scholarly-h2-size, 1.85rem);
   line-height: 1.3;
   font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
 .slidev-layout.two-cols h3 {
-  font-size: 1.5em;
+  font-size: var(--scholarly-h3-size, 1.5rem);
   line-height: 1.35;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -404,21 +457,21 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.image-left h1 {
-  font-size: 2.5em;
+  font-size: var(--scholarly-h1-size, 2.5rem);
   line-height: 1.2;
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .slidev-layout.image-left h2 {
-  font-size: 1.85em;
+  font-size: var(--scholarly-h2-size, 1.85rem);
   line-height: 1.3;
   font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
 .slidev-layout.image-left h3 {
-  font-size: 1.5em;
+  font-size: var(--scholarly-h3-size, 1.5rem);
   line-height: 1.35;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -435,21 +488,21 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.image-right h1 {
-  font-size: 2.5em;
+  font-size: var(--scholarly-h1-size, 2.5rem);
   line-height: 1.2;
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .slidev-layout.image-right h2 {
-  font-size: 1.85em;
+  font-size: var(--scholarly-h2-size, 1.85rem);
   line-height: 1.3;
   font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
 .slidev-layout.image-right h3 {
-  font-size: 1.5em;
+  font-size: var(--scholarly-h3-size, 1.5rem);
   line-height: 1.35;
   font-weight: 600;
   margin-bottom: 0.5rem;

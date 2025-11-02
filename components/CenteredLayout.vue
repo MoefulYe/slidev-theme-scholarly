@@ -8,7 +8,7 @@
       <div
         ref="contentInnerRef"
         class="content-inner"
-        :style="{ fontSize: contentFontSize }"
+        :style="computedStyles"
       >
         <slot />
       </div>
@@ -22,6 +22,7 @@ import { computed, ref } from 'vue'
 import ScholarlyHeader from './ScholarlyHeader.vue'
 import ScholarlyFooter from './ScholarlyFooter.vue'
 import { useAutoFontSize } from '../utils/useAutoFontSize'
+import { useFontSizeStyles } from '../utils/useFontSizeStyles'
 
 interface Props {
   layoutName: string
@@ -66,6 +67,7 @@ const itemSpacing = computed(() => {
 const contentWrapperRef = ref<HTMLElement>()
 const contentInnerRef = ref<HTMLElement>()
 const { fontSize: contentFontSize } = useAutoFontSize(contentWrapperRef, contentInnerRef)
+const computedStyles = useFontSizeStyles(contentFontSize)
 </script>
 
 <style scoped>

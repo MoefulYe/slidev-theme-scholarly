@@ -1,6 +1,6 @@
 <template>
   <div class="slidev-layout cover">
-    <div class="my-auto w-full text-center">
+    <div class="my-auto w-full text-center" :style="computedStyles">
       <slot />
       
       <!-- Author information section -->
@@ -29,6 +29,7 @@
 import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
 import ScholarlyFooter from '../components/ScholarlyFooter.vue'
+import { useFontSizeStyles } from '../utils/useFontSizeStyles'
 
 interface Author {
   name?: string
@@ -45,6 +46,8 @@ const props = defineProps<{
 // Get configs from useSlideContext
 const { $slidev } = useSlideContext()
 const slidevConfigs = computed(() => ($slidev.configs as any) || {})
+
+const computedStyles = useFontSizeStyles()
 
 // Parse authors from authors array (frontmatter)
 const parsedAuthors = computed(() => {

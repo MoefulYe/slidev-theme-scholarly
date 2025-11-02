@@ -7,7 +7,7 @@
       <div
         ref="contentInnerRef"
         class="content-inner"
-        :style="{ fontSize: contentFontSize }"
+        :style="computedStyles"
       >
         <slot />
       </div>
@@ -20,10 +20,12 @@
 import { ref } from 'vue'
 import ScholarlyFooter from '../components/ScholarlyFooter.vue'
 import { useAutoFontSize } from '../utils/useAutoFontSize'
+import { useFontSizeStyles } from '../utils/useFontSizeStyles'
 
 const contentWrapperRef = ref<HTMLElement>()
 const contentInnerRef = ref<HTMLElement>()
 const { fontSize: contentFontSize } = useAutoFontSize(contentWrapperRef, contentInnerRef)
+const computedStyles = useFontSizeStyles(contentFontSize)
 </script>
 
 <style scoped>
