@@ -31,6 +31,7 @@ GLOBAL CONFIGURATION (applies to all slides):
 - footerLeft: Custom text for left footer (overrides author display)
 - theoremNumberFormat: Format for theorem numbers (e.g., '{number}', 'Theorem {number}')
 - lang: Language for theorem components (zh, en, fr, de, es, it, ja, pt, ru)
+- themeColors: Custom theme colors (primary, headerBg, footerLeftBg, etc.)
 
 The footer automatically appears on all slides with page numbers on the right.
 -->
@@ -52,12 +53,9 @@ LAYOUT: intro
 PURPOSE: Introduction or agenda slide
 WHEN TO USE: For outlining your presentation structure or introducing a topic
 
-FEATURES:
-- Vertically centered content
-- Left-aligned text for readability
-- Footer with conference/author info
-
-TIP: Great for "What we'll cover today" type slides
+NEW FEATURES:
+- align: 'left' (default) or 'center' for text alignment
+- density: 'auto', 'compact', 'normal', 'relaxed' for spacing control
 -->
 
 # What is Slidev?
@@ -85,21 +83,10 @@ subtitle: Reducing Code Duplication and Enhancing Maintainability
 <!--
 LAYOUT: default
 PURPOSE: Standard slide for regular content
-WHEN TO USE: Most of your presentation slides (it's the default!)
 
-FEATURES:
-- Optional title and subtitle shown in header (if provided in frontmatter)
-- Left-aligned content for easy reading
-- Adjustable padding based on header presence
-- Shows footer automatically
-
-FRONTMATTER OPTIONS:
-- title: Main heading shown in header
-- subtitle: Secondary text shown in header
-- header: Custom header text (overrides title/subtitle)
-- footerLeft: Override footer left section for this slide only
-
-TIP: If you don't specify a layout, this is what you get!
+NEW FEATURES:
+- Smart content density detection (auto-adjusts spacing based on content amount)
+- density prop: 'auto' (default), 'compact', 'normal', 'relaxed'
 -->
 
 ## Keyboard Shortcuts
@@ -110,6 +97,155 @@ TIP: If you don't specify a layout, this is what you get!
 | <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
 | <kbd>up</kbd> | previous slide |
 | <kbd>down</kbd> | next slide |
+
+---
+layout: default
+title: Block Component Demo
+subtitle: Beamer-style Blocks
+---
+
+<!--
+NEW COMPONENT: <Block>
+PURPOSE: Beamer-style colored blocks for highlighting content
+TYPES: default, info, success, warning, danger, example, alert
+-->
+
+## Block Component
+
+<Block type="default" title="Default Block">
+
+This is a default block with Beamer-style gradient header.
+
+</Block>
+
+<Block type="info" title="Information">
+
+Use info blocks for general information and explanations.
+
+</Block>
+
+<Block type="warning" title="Warning">
+
+Use warning blocks for important notes and cautions.
+
+</Block>
+
+---
+layout: default
+title: More Block Types
+---
+
+## More Block Styles
+
+<Block type="success" title="Success">
+
+Use success blocks for positive outcomes and confirmations.
+
+</Block>
+
+<Block type="danger" title="Danger">
+
+Use danger blocks for critical warnings and errors.
+
+</Block>
+
+<Block type="example" title="Example">
+
+Use example blocks for demonstrations and code samples.
+
+</Block>
+
+---
+layout: two-cols
+ratio: "2:3"
+title: Two Columns Layout
+subtitle: Now with Configurable Ratio!
+---
+
+<!--
+LAYOUT: two-cols
+NEW FEATURES:
+- ratio: Column width ratio, e.g., "1:1" (default), "1:2", "2:1", "1:3", "3:1", "2:3"
+- gap: Gap between columns (default: "1rem")
+-->
+
+## Left Column (2fr)
+
+This column takes 2 parts of the width.
+
+- Point 1
+- Point 2
+- Point 3
+
+::right::
+
+## Right Column (3fr)
+
+This column takes 3 parts of the width.
+
+```python
+def hello():
+    print("Hello World!")
+    
+# Code example
+for i in range(10):
+    hello()
+```
+
+---
+layout: image-left
+image: https://cover.sli.dev
+ratio: "1:2"
+title: Image Left Layout
+subtitle: Now with Configurable Ratio!
+---
+
+<!--
+LAYOUT: image-left
+NEW FEATURES:
+- ratio: Image:content ratio, e.g., "1:1" (default), "1:2", "2:3"
+- fit: Image fit mode - 'cover' (default), 'contain', 'fill'
+- position: Image position (e.g., "center", "top", "left top")
+-->
+
+## Content on Right (2fr)
+
+The image takes 1 part, content takes 2 parts.
+
+When you use `image-left` layout:
+
+- Image fills the left side
+- Content appears on the right
+- Ratio is configurable now!
+
+```ts
+const ratio = "1:2" // image:content
+```
+
+---
+layout: image-right
+image: https://cover.sli.dev
+ratio: "3:2"
+fit: contain
+title: Image Right Layout
+subtitle: With Configurable Options
+---
+
+<!--
+LAYOUT: image-right
+Same features as image-left but reversed
+-->
+
+## Content on Left (3fr)
+
+The content takes 3 parts, image takes 2 parts.
+
+Features:
+- `ratio` - control image:content ratio
+- `fit` - cover, contain, or fill
+- `position` - image position
+
+The image uses `fit: contain` to show the full image.
 
 ---
 fontsize:
@@ -142,49 +278,6 @@ Notice that even without specifying `layout: default`, this slide:
 - **Body text is 20px, H1 is 48px, H2 is 36px, H3 is 28px**
 
 This demonstrates that **all fontsize configuration works correctly** including h1, h2, and h3!
-
----
-layout: image-left
-image: https://cover.sli.dev
----
-
-<!--
-LAYOUT: image-left
-PURPOSE: Visual content on left, text content on right
-WHEN TO USE: When you want a strong visual element alongside explanatory text
-
-FEATURES:
-- Image fills entire left half (full height, no padding)
-- Text content in right half
-- 50/50 split layout
-- Footer shown at bottom
-
-FRONTMATTER OPTIONS:
-- image: URL or path to your image (REQUIRED)
-- title: Optional title for header
-- subtitle: Optional subtitle for header
-
-TIP: Great for showing screenshots, diagrams, or photos with explanations
--->
-
-## Code
-
-Use code snippets and get the highlighting directly!
-
-```ts
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
-
-function updateUser(id: number, update: Partial<User>) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
-}
-```
 
 ---
 layout: quote
@@ -314,130 +407,6 @@ TIP: Best for 1-3 sentence statements that capture a main idea
 This layout is designed for impactful statements that need emphasis.
 
 ---
-layout: two-cols
-title: Two Columns Layout
-subtitle: Side-by-side Content
----
-
-<!--
-LAYOUT: two-cols
-PURPOSE: Display two columns of content side by side
-WHEN TO USE: For comparisons, before/after, pros/cons, or parallel content
-
-FEATURES:
-- Equal width columns (50/50 split)
-- Top-aligned content (columns start at same height)
-- Use `::right::` marker to separate left and right content
-- Optional header with title/subtitle
-- Footer at bottom
-
-SYNTAX:
-Content before ::right:: goes in left column
-Content after ::right:: goes in right column
-
-TIP: Great for comparing concepts, showing code and output, or listing parallel ideas
--->
-
-## Left Column
-
-- Point 1
-- Point 2
-- Point 3
-
-You can put any content here:
-
-- Lists
-- Text
-- Images
-
-::right::
-
-## Right Column
-
-```python
-def hello():
-    print("Hello World!")
-    
-# Code example
-for i in range(10):
-    hello()
-```
-
----
-layout: image-left
-image: https://cover.sli.dev
-title: Image Left Layout
-subtitle: Image on the left, content on the right
----
-
-<!--
-LAYOUT: image-left
-PURPOSE: Combine visual and textual content (visual on left)
-WHEN TO USE: When the image is the primary focus and text provides context
-
-FEATURES:
-- Image fills entire left half (full height, edge to edge)
-- Text content in right half
-- 50/50 split
-- Optional header
-- Footer at bottom
-
-FRONTMATTER OPTIONS:
-- image: URL or path to image (REQUIRED)
-
-TIP: Use when the visual should be seen first (left-to-right reading)
--->
-
-## Content on Right
-
-When you use `image-left` layout:
-
-- Image fills the entire left side
-- Content appears on the right
-- Great for visual presentations
-
-You can use markdown, code, or any other content here.
-
----
-layout: image-right
-image: https://cover.sli.dev
-title: Image Right Layout
-subtitle: Content on the left, image on the right
----
-
-<!--
-LAYOUT: image-right
-PURPOSE: Combine textual and visual content (text first, visual second)
-WHEN TO USE: When the text is primary and the image provides support/context
-
-FEATURES:
-- Content appears in left half
-- Image fills entire right half (full height, edge to edge)
-- 50/50 split
-- Optional header
-- Footer at bottom
-
-FRONTMATTER OPTIONS:
-- image: URL or path to image (REQUIRED)
-
-TIP: Use when you want readers to process the text before seeing the visual
--->
-
-## Content on Left
-
-When you use `image-right` layout:
-
-- Content appears on the left
-- Image fills the entire right side
-- Perfect for balancing visuals and text
-
-```ts
-// You can even add code blocks
-const message = "Hello Slidev!"
-console.log(message)
-```
-
----
 layout: default
 title: Theorem Component Demo
 subtitle: Mathematical Statements with Auto-numbering
@@ -446,26 +415,11 @@ subtitle: Mathematical Statements with Auto-numbering
 <!--
 COMPONENT: <Theorem>
 PURPOSE: Display mathematical theorems, definitions, lemmas, etc. with automatic numbering
-WHEN TO USE: For academic presentations with formal mathematical statements
 
-FEATURES:
-- Automatic numbering (starts from 1, increments globally)
-- Multiple types: theorem, lemma, definition, proposition, corollary, example, remark
-- Multi-language support (auto-translates based on frontmatter lang setting)
-- Optional custom titles
-- Optional manual numbering
-
-COMPONENT PROPS:
-- type: "theorem" | "lemma" | "definition" | "proposition" | "corollary" | "example" | "remark"
-- title: Optional title for the theorem
-- number: Optional manual number (e.g., "3.1")
-- autoNumber: Set to false to hide number completely
-
-GLOBAL CONFIG (in frontmatter):
-- lang: Language code (zh, en, fr, de, es, it, ja, pt, ru)
-- theoremNumberFormat: Format string (e.g., '{number}', 'Theorem {number}')
-
-TIP: Numbering resets at start of presentation automatically
+NEW FEATURES:
+- New types: proof, note, claim
+- compact mode for tighter spacing
+- Language-aware title brackets: () for English, （）for Chinese
 -->
 
 ## Mathematical Theorems
@@ -498,6 +452,9 @@ THEOREM TYPES EXPLAINED:
 - corollary: Results that follow directly from theorems
 - example: Illustrative examples
 - remark: Additional notes or observations
+- proof: Proof blocks (no numbering by default)
+- note: Note blocks
+- claim: Claim statements
 
 All types auto-number separately in presentation order.
 -->
@@ -522,37 +479,77 @@ Consider the function $f(x) = x^2$:
 
 ---
 layout: default
-title: More Theorem Types
+title: New Theorem Types
+---
+
+## Proof and Note Types
+
+<Theorem type="claim" title="Bounded Sequence">
+
+Every bounded sequence in $\mathbb{R}^n$ has a convergent subsequence.
+
+</Theorem>
+
+<Theorem type="proof">
+
+We prove this by the Bolzano-Weierstrass theorem. Since the sequence is bounded, it lies within a compact set. By sequential compactness, there exists a convergent subsequence. $\square$
+
+</Theorem>
+
+<Theorem type="note">
+
+This is a fundamental result in real analysis and is essential for proving many convergence theorems.
+
+</Theorem>
+
+---
+layout: default
+title: Compact Theorem Mode
+---
+
+## Compact Mode for Dense Content
+
+<Theorem type="theorem" :compact="true">
+
+For $n \geq 1$, we have $\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$.
+
+</Theorem>
+
+<Theorem type="proof" :compact="true">
+
+By induction on $n$. Base case $n=1$ is trivial. Assume true for $n$, then $\sum_{k=1}^{n+1} k = \sum_{k=1}^{n} k + (n+1) = \frac{n(n+1)}{2} + (n+1) = \frac{(n+1)(n+2)}{2}$. $\square$
+
+</Theorem>
+
+<Theorem type="corollary" :compact="true">
+
+The sum of the first $n$ positive integers is always a triangular number.
+
+</Theorem>
+
+---
+layout: default
+title: Highlight Component Demo
 ---
 
 <!--
-MULTI-LANGUAGE SUPPORT:
-The component automatically translates labels based on your frontmatter:
-- lang: zh → "定理", "引理", "定义" etc.
-- lang: en → "Theorem", "Lemma", "Definition" etc.
-- lang: fr → "Théorème", "Lemme", "Définition" etc.
-And more languages supported!
+NEW COMPONENT: <Highlight>
+PURPOSE: Highlight important text inline
+TYPES: primary, success, warning, danger, info
 -->
 
-## Propositions and Remarks
+## Highlighting Important Content
 
-<Theorem type="proposition">
+The <Highlight>key concept</Highlight> here is that you can easily highlight text inline.
 
-If $f$ and $g$ are continuous at point $a$, then $f + g$ is also continuous at point $a$.
+Different highlight types:
+- <Highlight type="primary">Primary highlight</Highlight> for main concepts
+- <Highlight type="success">Success highlight</Highlight> for positive points
+- <Highlight type="warning">Warning highlight</Highlight> for cautions
+- <Highlight type="danger">Danger highlight</Highlight> for critical items
+- <Highlight type="info">Info highlight</Highlight> for general info
 
-</Theorem>
-
-<Theorem type="corollary">
-
-The sum of a finite number of continuous functions is still a continuous function.
-
-</Theorem>
-
-<Theorem type="remark">
-
-Note: This result also holds for the product of continuous functions.
-
-</Theorem>
+This makes your slides more <Highlight type="success">readable</Highlight> and <Highlight type="primary">engaging</Highlight>!
 
 ---
 layout: default
