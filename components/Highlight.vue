@@ -1,0 +1,75 @@
+<template>
+  <span :class="['scholarly-highlight', `highlight-${type}`]">
+    <slot />
+  </span>
+</template>
+
+<script setup lang="ts">
+interface Props {
+  /** Highlight type: primary (default), success, warning, danger, info */
+  type?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
+}
+
+withDefaults(defineProps<Props>(), {
+  type: 'primary'
+})
+</script>
+
+<style scoped>
+.scholarly-highlight {
+  padding: 0.125em 0.375em;
+  border-radius: 0.25em;
+  font-weight: 500;
+}
+
+.highlight-primary {
+  background-color: rgba(93, 131, 146, 0.2);
+  color: #4a6b7a;
+}
+
+.highlight-success {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #059669;
+}
+
+.highlight-warning {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #d97706;
+}
+
+.highlight-danger {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #dc2626;
+}
+
+.highlight-info {
+  background-color: rgba(6, 182, 212, 0.2);
+  color: #0891b2;
+}
+
+/* Dark mode support */
+:root.dark .highlight-primary {
+  background-color: rgba(93, 131, 146, 0.3);
+  color: #8fb3c2;
+}
+
+:root.dark .highlight-success {
+  background-color: rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+:root.dark .highlight-warning {
+  background-color: rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+}
+
+:root.dark .highlight-danger {
+  background-color: rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+:root.dark .highlight-info {
+  background-color: rgba(6, 182, 212, 0.3);
+  color: #22d3ee;
+}
+</style>

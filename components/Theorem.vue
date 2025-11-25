@@ -1,9 +1,9 @@
 <template>
-  <div :class="['theorem-box', `theorem-${type}`]">
+  <div :class="['theorem-box', `theorem-${type}`, { 'theorem-compact': compact }]">
     <div class="theorem-header">
       <span class="theorem-type">{{ typeLabel }}</span>
       <span v-if="displayNumber" class="theorem-number">{{ displayNumber }}</span>
-      <span v-if="title" class="theorem-title">（{{ title }}）</span>
+      <span v-if="title" class="theorem-title">{{ titleWrapper.left }}{{ title }}{{ titleWrapper.right }}</span>
     </div>
     <div class="theorem-content">
       <slot />
@@ -18,15 +18,18 @@ import { prepareTheoremCountersForRoute, ensureTheoremCounters } from '../utils/
 import type { TheoremType } from '../utils/theorem'
 
 interface Props {
-  type?: 'theorem' | 'lemma' | 'proposition' | 'corollary' | 'definition' | 'example' | 'remark'
+  type?: 'theorem' | 'lemma' | 'proposition' | 'corollary' | 'definition' | 'example' | 'remark' | 'proof' | 'note' | 'claim'
   number?: string | number
   title?: string
   autoNumber?: boolean
+  /** Compact mode with less padding */
+  compact?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'theorem',
-  autoNumber: true
+  autoNumber: true,
+  compact: false
 })
 
 // Get slide context for language config
@@ -41,7 +44,10 @@ const typeLabels: Record<string, Record<string, string>> = {
     corollary: '推论',
     definition: '定义',
     example: '例',
-    remark: '注'
+    remark: '注',
+    proof: '证明',
+    note: '注意',
+    claim: '断言'
   },
   en: {
     theorem: 'Theorem',
@@ -50,8 +56,17 @@ const typeLabels: Record<string, Record<string, string>> = {
     corollary: 'Corollary',
     definition: 'Definition',
     example: 'Example',
-    remark: 'Remark'
+    remark: 'Remark',
+    proof: 'Proof',
+    note: 'Note',
+    claim: 'Claim'
   }
+}
+
+// Title wrapper based on language
+const titleWrappers: Record<string, { left: string; right: string }> = {
+  zh: { left: '（', right: '）' },
+  en: { left: ' (', right: ')' }
 }
 
 // Get current language from slidev config
@@ -66,6 +81,12 @@ const numberFormat = computed(() => {
   return slidevConfigs?.theoremNumberFormat || '{number}'
 })
 
+// Get title wrapper based on language
+const titleWrapper = computed(() => {
+  const lang = currentLang.value
+  return titleWrappers[lang] || titleWrappers['en']
+})
+
 // Get type label based on language
 const typeLabel = computed(() => {
   const lang = currentLang.value
@@ -76,13 +97,17 @@ const typeLabel = computed(() => {
 // Assign a number to this theorem instance
 let assignedNumber = 0
 if (typeof window !== 'undefined' && props.autoNumber && props.number === undefined) {
-  const routePath = $slidev?.nav?.currentSlideRoute?.path
-  prepareTheoremCountersForRoute(routePath ?? '')
-  const counters = ensureTheoremCounters()
-  const typeKey = props.type as TheoremType
-  if (counters && counters[typeKey] !== undefined) {
-    counters[typeKey]++
-    assignedNumber = counters[typeKey]
+  // proof, note types typically don't need numbering
+  const noNumberTypes = ['proof', 'note']
+  if (!noNumberTypes.includes(props.type)) {
+    const routePath = $slidev?.nav?.currentSlideRoute?.path
+    prepareTheoremCountersForRoute(routePath ?? '')
+    const counters = ensureTheoremCounters()
+    const typeKey = props.type as TheoremType
+    if (counters && counters[typeKey] !== undefined) {
+      counters[typeKey]++
+      assignedNumber = counters[typeKey]
+    }
   }
 }
 
@@ -117,10 +142,20 @@ function formatNumber(num: string): string {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
+.theorem-box.theorem-compact {
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+}
+
 .theorem-header {
   font-weight: 600;
   margin-bottom: 0.75rem;
   font-size: 1.1rem;
+}
+
+.theorem-compact .theorem-header {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 }
 
 .theorem-type {
@@ -202,6 +237,35 @@ function formatNumber(num: string): string {
 
 .theorem-remark .theorem-type {
   color: #6b7280;
+}
+
+/* New types */
+.theorem-proof {
+  border-left-color: #475569; /* slate */
+  background-color: rgba(71, 85, 105, 0.1);
+}
+
+.theorem-proof .theorem-type {
+  color: #475569;
+  font-style: italic;
+}
+
+.theorem-note {
+  border-left-color: #0ea5e9; /* sky */
+  background-color: rgba(14, 165, 233, 0.1);
+}
+
+.theorem-note .theorem-type {
+  color: #0ea5e9;
+}
+
+.theorem-claim {
+  border-left-color: #f97316; /* orange */
+  background-color: rgba(249, 115, 22, 0.1);
+}
+
+.theorem-claim .theorem-type {
+  color: #f97316;
 }
 
 /* Deep styles for content */
