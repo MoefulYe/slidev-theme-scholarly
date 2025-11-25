@@ -2,6 +2,10 @@ import { defineAppSetup } from '@slidev/types'
 import { watch } from 'vue'
 import type { RouteLocationNormalized } from 'vue-router'
 import Theorem from '../components/Theorem.vue'
+import Block from '../components/Block.vue'
+import Columns from '../components/Columns.vue'
+import Highlight from '../components/Highlight.vue'
+import Cite from '../components/Cite.vue'
 import { resetTheoremCounters, invalidateTheoremCounterBases } from '../utils/theorem'
 
 const DEFAULT_FONT_SIZE = '1rem'
@@ -14,6 +18,14 @@ type FontsizeConfig =
       h2?: string | number
       h3?: string | number
     }
+
+type ThemeColorConfig = {
+  primary?: string
+  headerBg?: string
+  footerLeftBg?: string
+  footerCenterBg?: string
+  footerRightBg?: string
+}
 
 const normalizeFontSize = (value: unknown): string | null => {
   if (value === null || value === undefined) return null
@@ -95,13 +107,43 @@ const applyFontSizes = (
   }
 }
 
+const applyThemeColors = (config: ThemeColorConfig | null | undefined) => {
+  if (typeof window === 'undefined' || !config) return
+  const root = document.documentElement
+  
+  if (config.primary) {
+    root.style.setProperty('--slidev-theme-primary', config.primary)
+  }
+  if (config.headerBg) {
+    root.style.setProperty('--scholarly-header-bg', config.headerBg)
+  }
+  if (config.footerLeftBg) {
+    root.style.setProperty('--scholarly-footer-left-bg', config.footerLeftBg)
+  }
+  if (config.footerCenterBg) {
+    root.style.setProperty('--scholarly-footer-center-bg', config.footerCenterBg)
+  }
+  if (config.footerRightBg) {
+    root.style.setProperty('--scholarly-footer-right-bg', config.footerRightBg)
+  }
+}
+
 export default defineAppSetup(({ app, router }) => {
-  // Register Theorem component globally
+  // Register components globally
   app.component('Theorem', Theorem)
+  app.component('Block', Block)
+  app.component('Columns', Columns)
+  app.component('Highlight', Highlight)
+  app.component('Cite', Cite)
 
   const getGlobalFontConfig = (): FontsizeConfig | undefined => {
     const slidevConfigs = (app.config.globalProperties?.$slidev?.configs ?? {}) as Record<string, unknown>
     return slidevConfigs?.fontsize as FontsizeConfig | undefined
+  }
+
+  const getThemeColorConfig = (): ThemeColorConfig | undefined => {
+    const slidevConfigs = (app.config.globalProperties?.$slidev?.configs ?? {}) as Record<string, unknown>
+    return slidevConfigs?.themeColors as ThemeColorConfig | undefined
   }
 
   const updateFontSize = (route: RouteLocationNormalized | undefined) => {
@@ -115,6 +157,9 @@ export default defineAppSetup(({ app, router }) => {
   // Apply font size for the initial route
   updateFontSize(router.currentRoute.value)
 
+  // Apply theme colors
+  applyThemeColors(getThemeColorConfig())
+
   watch(
     () => router.currentRoute.value?.meta?.slide?.frontmatter?.fontsize,
     () => updateFontSize(router.currentRoute.value),
@@ -124,6 +169,12 @@ export default defineAppSetup(({ app, router }) => {
   watch(
     () => app.config.globalProperties?.$slidev?.configs?.fontsize as FontsizeConfig | undefined,
     () => updateFontSize(router.currentRoute.value),
+    { deep: true }
+  )
+
+  watch(
+    () => app.config.globalProperties?.$slidev?.configs?.themeColors as ThemeColorConfig | undefined,
+    (newConfig) => applyThemeColors(newConfig),
     { deep: true }
   )
   

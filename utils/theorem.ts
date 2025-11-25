@@ -1,6 +1,6 @@
 // Utility functions for theorem numbering and state management
 
-export const THEOREM_TYPES = ['theorem', 'lemma', 'proposition', 'corollary', 'definition', 'example', 'remark'] as const
+export const THEOREM_TYPES = ['theorem', 'lemma', 'proposition', 'corollary', 'definition', 'example', 'remark', 'proof', 'note', 'claim'] as const
 
 export type TheoremType = typeof THEOREM_TYPES[number]
 export type TheoremCounters = Record<TheoremType, number>
@@ -13,6 +13,9 @@ const createEmptyCounters = (): TheoremCounters => ({
   definition: 0,
   example: 0,
   remark: 0,
+  proof: 0,
+  note: 0,
+  claim: 0,
 })
 
 const ensureCounterStore = (): TheoremCounters => {

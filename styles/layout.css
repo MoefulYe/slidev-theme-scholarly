@@ -9,10 +9,66 @@
   /* can be overrided by using `themeConfig` option */
   --slidev-theme-primary: #5d8392;
   --scholarly-font-size: 1rem;
+  
+  /* Smart spacing variables - auto-adjust based on content */
+  --scholarly-list-spacing: 0.5em;
+  --scholarly-paragraph-spacing: 0.75em;
+  --scholarly-block-spacing: 1rem;
+  
+  /* Content density: compact | normal | relaxed */
+  --scholarly-content-density: normal;
 }
 
 .slidev-layout {
   font-size: var(--scholarly-font-size, 1rem);
+}
+
+/* Global smart list styling */
+.slidev-layout ul,
+.slidev-layout ol {
+  margin: var(--scholarly-paragraph-spacing) 0;
+  padding-left: 1.5em;
+}
+
+.slidev-layout li {
+  margin-bottom: var(--scholarly-list-spacing);
+  line-height: 1.5;
+}
+
+.slidev-layout li:last-child {
+  margin-bottom: 0;
+}
+
+/* Nested lists - tighter spacing */
+.slidev-layout li ul,
+.slidev-layout li ol {
+  margin: 0.25em 0 0.5em;
+}
+
+.slidev-layout li li {
+  margin-bottom: 0.25em;
+}
+
+/* Paragraphs */
+.slidev-layout p {
+  margin-bottom: var(--scholarly-paragraph-spacing);
+}
+
+.slidev-layout p:last-child {
+  margin-bottom: 0;
+}
+
+/* Auto-detect content density and adjust spacing */
+.slidev-layout[data-density="compact"] {
+  --scholarly-list-spacing: 0.25em;
+  --scholarly-paragraph-spacing: 0.5em;
+  --scholarly-block-spacing: 0.5rem;
+}
+
+.slidev-layout[data-density="relaxed"] {
+  --scholarly-list-spacing: 0.75em;
+  --scholarly-paragraph-spacing: 1em;
+  --scholarly-block-spacing: 1.5rem;
 }
 
 footer {
@@ -46,7 +102,7 @@ footer {
 
 .beamer-header {
   @apply w-full px-6;
-  background: linear-gradient(to bottom, rgba(93, 131, 146, 0.85), rgba(93, 131, 146, 0.75));
+  background: var(--scholarly-header-bg, linear-gradient(to bottom, rgba(93, 131, 146, 0.85), rgba(93, 131, 146, 0.75)));
   min-height: 50px;
   display: flex;
   flex-direction: column;
@@ -91,17 +147,17 @@ footer {
 }
 
 .beamer-footer-left {
-  background: linear-gradient(to right, #4a6b7a, rgba(74, 107, 122, 0.75));
+  background: var(--scholarly-footer-left-bg, linear-gradient(to right, #4a6b7a, rgba(74, 107, 122, 0.75)));
   @apply text-white;
 }
 
 .beamer-footer-center {
-  background: linear-gradient(to bottom, rgba(93, 131, 146, 0.85), rgba(93, 131, 146, 0.75));
+  background: var(--scholarly-footer-center-bg, linear-gradient(to bottom, rgba(93, 131, 146, 0.85), rgba(93, 131, 146, 0.75)));
   @apply text-white flex-1 text-center;
 }
 
 .beamer-footer-right {
-  background: linear-gradient(to left, #6a97a8, rgba(106, 151, 168, 0.75));
+  background: var(--scholarly-footer-right-bg, linear-gradient(to left, #6a97a8, rgba(106, 151, 168, 0.75)));
   @apply text-white;
 }
 
