@@ -1,8 +1,8 @@
 <template>
-  <header v-if="headerTitle || headerSubtitle" :class="['header-container', { 'header-centered': centered, 'header-fixed': !centered }]">
+  <header v-if="displayTitle || displaySubtitle" :class="['header-container', { 'header-centered': centered, 'header-fixed': !centered }]">
     <div :class="['beamer-header', { 'beamer-header-centered': centered }]">
-      <div v-if="headerTitle" class="header-title">{{ headerTitle }}</div>
-      <div v-if="headerSubtitle" class="header-subtitle">{{ headerSubtitle }}</div>
+      <div v-if="displayTitle" class="header-title">{{ displayTitle }}</div>
+      <div v-if="displaySubtitle" class="header-subtitle">{{ displaySubtitle }}</div>
     </div>
   </header>
 </template>
@@ -18,42 +18,17 @@ const props = defineProps<{
 }>()
 
 // Get slide context
-const { $slidev } = useSlideContext()
+const { $frontmatter } = useSlideContext()
 
-// Extract title and subtitle from frontmatter only
-const getCurrentFrontmatter = () => {
-  const currentSlide = $slidev?.nav?.currentSlideRoute
-  if (currentSlide?.meta?.slide?.frontmatter) {
-    return currentSlide.meta.slide.frontmatter as any
-  }
-  return null
-}
-
-// Header title: use props or current page frontmatter only
-const headerTitle = computed(() => {
-  // Priority 1: Props override
+// Display title: props take priority, then frontmatter
+const displayTitle = computed(() => {
   if (props.title) return props.title
-  
-  // Priority 2: Current slide frontmatter only
-  const fm = getCurrentFrontmatter()
-  if (fm?.title) {
-    return fm.title
-  }
-  
-  return ''
+  return $frontmatter?.title || ''
 })
 
-// Header subtitle: use props or current page frontmatter only
-const headerSubtitle = computed(() => {
-  // Priority 1: Props override
+// Display subtitle: props take priority, then frontmatter
+const displaySubtitle = computed(() => {
   if (props.subtitle) return props.subtitle
-  
-  // Priority 2: Current slide frontmatter only
-  const fm = getCurrentFrontmatter()
-  if (fm?.subtitle) {
-    return fm.subtitle
-  }
-  
-  return ''
+  return $frontmatter?.subtitle || ''
 })
 </script>
