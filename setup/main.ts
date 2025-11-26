@@ -6,6 +6,8 @@ import Block from '../components/Block.vue'
 import Columns from '../components/Columns.vue'
 import Highlight from '../components/Highlight.vue'
 import Cite from '../components/Cite.vue'
+import Steps from '../components/Steps.vue'
+import Keywords from '../components/Keywords.vue'
 import { resetTheoremCounters, invalidateTheoremCounterBases } from '../utils/theorem'
 
 const DEFAULT_FONT_SIZE = '1rem'
@@ -135,6 +137,8 @@ export default defineAppSetup(({ app, router }) => {
   app.component('Columns', Columns)
   app.component('Highlight', Highlight)
   app.component('Cite', Cite)
+  app.component('Steps', Steps)
+  app.component('Keywords', Keywords)
 
   const getGlobalFontConfig = (): FontsizeConfig | undefined => {
     const slidevConfigs = (app.config.globalProperties?.$slidev?.configs ?? {}) as Record<string, unknown>
