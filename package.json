@@ -38,14 +38,19 @@
     "build": "slidev build example.md",
     "dev": "slidev example.md --open",
     "export": "slidev export example.md",
-    "screenshot": "slidev export example.md --format png"
+    "screenshot": "slidev export example.md --format png",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "dependencies": {
     "@slidev/client": "^52.6.0",
-    "@slidev/types": "^52.6.0"
+    "@slidev/types": "^52.6.0",
+    "markdown-it-citation": "0.1.1"
   },
   "devDependencies": {
-    "@slidev/cli": "^52.6.0"
+    "@slidev/cli": "^52.6.0",
+    "vitepress": "2.0.0-alpha.12"
   },
   "//": "Learn more: https://sli.dev/guide/write-theme.html",
   "slidev": {
