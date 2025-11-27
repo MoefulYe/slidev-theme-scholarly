@@ -41,6 +41,9 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "slidev example.md --open",
     "build": "slidev build example.md",
