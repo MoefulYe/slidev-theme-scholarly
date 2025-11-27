@@ -1,0 +1,122 @@
+{
+  "name": "slidev-scholarly-snippets",
+  "displayName": "Slidev Scholarly Snippets",
+  "description": "Quick snippets and templates for Slidev Theme Scholarly",
+  "version": "0.2.0",
+  "publisher": "jxpeng98",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Snippets",
+    "Other"
+  ],
+  "keywords": [
+    "slidev",
+    "slides",
+    "presentation",
+    "academic",
+    "scholarly",
+    "markdown"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "slidev-scholarly",
+          "title": "Slidev Scholarly",
+          "icon": "images/slidev-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "slidev-scholarly": [
+        {
+          "id": "scholarly-layouts",
+          "name": "Layouts",
+          "icon": "$(layout)"
+        },
+        {
+          "id": "scholarly-components",
+          "name": "Components",
+          "icon": "$(symbol-method)"
+        },
+        {
+          "id": "scholarly-templates",
+          "name": "Templates",
+          "icon": "$(file-code)"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "slidev-scholarly.insertLayout",
+        "title": "Insert Layout",
+        "icon": "$(add)"
+      },
+      {
+        "command": "slidev-scholarly.insertComponent",
+        "title": "Insert Component",
+        "icon": "$(add)"
+      },
+      {
+        "command": "slidev-scholarly.newPresentation",
+        "title": "New Scholarly Presentation",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "slidev-scholarly.insertCitation",
+        "title": "Insert Citation",
+        "icon": "$(quote)"
+      }
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "slidev-scholarly.insertLayout",
+          "when": "view == scholarly-layouts",
+          "group": "inline"
+        },
+        {
+          "command": "slidev-scholarly.insertComponent",
+          "when": "view == scholarly-components",
+          "group": "inline"
+        }
+      ]
+    },
+    "snippets": [
+      {
+        "language": "markdown",
+        "path": "./snippets/layouts.json"
+      },
+      {
+        "language": "markdown",
+        "path": "./snippets/components.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "npx @vscode/vsce package",
+    "publish": "npx @vscode/vsce publish"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.x",
+    "typescript": "^5.3.0",
+    "@typescript-eslint/eslint-plugin": "^6.x",
+    "@typescript-eslint/parser": "^6.x",
+    "eslint": "^8.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jxpeng98/slidev-theme-scholarly"
+  }
+}

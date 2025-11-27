@@ -1,0 +1,260 @@
+{
+  "Slidev Scholarly: Block (Vue)": {
+    "prefix": ["scholarly-block", "ss-block"],
+    "body": [
+      "<Block type=\"${1|info,default,success,warning,danger,example|}\" title=\"${2:Block Title}\">",
+      "",
+      "${3:Block content goes here.}",
+      "",
+      "</Block>",
+      "",
+      "$0"
+    ],
+    "description": "Insert Block component (Vue syntax)"
+  },
+  "Slidev Scholarly: Block (Syntax Sugar)": {
+    "prefix": ["scholarly-block-md", "ss-block-md"],
+    "body": [
+      ":::block{type=\"${1|info,default,success,warning,danger,example|}\" title=\"${2:Block Title}\"}",
+      "${3:Block content goes here.}",
+      ":::",
+      "",
+      "$0"
+    ],
+    "description": "Insert Block component (Markdown syntax sugar)"
+  },
+  "Slidev Scholarly: Theorem (Vue)": {
+    "prefix": ["scholarly-theorem", "ss-theorem"],
+    "body": [
+      "<Theorem type=\"${1|theorem,lemma,definition,corollary,claim,example,proof,note|}\" title=\"${2:Theorem Name}\">",
+      "",
+      "${3:Mathematical statement here.}",
+      "",
+      "</Theorem>",
+      "",
+      "$0"
+    ],
+    "description": "Insert Theorem component (Vue syntax)"
+  },
+  "Slidev Scholarly: Theorem (Syntax Sugar)": {
+    "prefix": ["scholarly-theorem-md", "ss-theorem-md"],
+    "body": [
+      ":::theorem{type=\"${1|theorem,lemma,definition,corollary,claim,example,proof,note|}\" title=\"${2:Theorem Name}\"}",
+      "${3:Mathematical statement here.}",
+      ":::",
+      "",
+      "$0"
+    ],
+    "description": "Insert Theorem component (Markdown syntax sugar)"
+  },
+  "Slidev Scholarly: Definition": {
+    "prefix": ["scholarly-definition", "ss-definition"],
+    "body": [
+      "<Theorem type=\"definition\" title=\"${1:Definition Name}\">",
+      "",
+      "${2:Definition content here.}",
+      "",
+      "</Theorem>",
+      "",
+      "$0"
+    ],
+    "description": "Insert Definition theorem"
+  },
+  "Slidev Scholarly: Lemma": {
+    "prefix": ["scholarly-lemma", "ss-lemma"],
+    "body": [
+      "<Theorem type=\"lemma\" title=\"${1:Lemma Name}\">",
+      "",
+      "${2:Lemma statement here.}",
+      "",
+      "</Theorem>",
+      "",
+      "$0"
+    ],
+    "description": "Insert Lemma theorem"
+  },
+  "Slidev Scholarly: Proof": {
+    "prefix": ["scholarly-proof", "ss-proof"],
+    "body": [
+      "<Theorem type=\"proof\">",
+      "",
+      "${1:Proof content here.} \\$\\square\\$",
+      "",
+      "</Theorem>",
+      "",
+      "$0"
+    ],
+    "description": "Insert Proof block"
+  },
+  "Slidev Scholarly: Corollary": {
+    "prefix": ["scholarly-corollary", "ss-corollary"],
+    "body": [
+      "<Theorem type=\"corollary\" title=\"${1:Corollary}\">",
+      "",
+      "${2:Corollary statement here.}",
+      "",
+      "</Theorem>",
+      "",
+      "$0"
+    ],
+    "description": "Insert Corollary theorem"
+  },
+  "Slidev Scholarly: Example Theorem": {
+    "prefix": ["scholarly-example-theorem", "ss-example-theorem"],
+    "body": [
+      "<Theorem type=\"example\">",
+      "",
+      "${1:Example content here.}",
+      "",
+      "</Theorem>",
+      "",
+      "$0"
+    ],
+    "description": "Insert Example theorem block"
+  },
+  "Slidev Scholarly: Note": {
+    "prefix": ["scholarly-note", "ss-note"],
+    "body": [
+      "<Theorem type=\"note\">",
+      "",
+      "${1:Note content here.}",
+      "",
+      "</Theorem>",
+      "",
+      "$0"
+    ],
+    "description": "Insert Note theorem block"
+  },
+  "Slidev Scholarly: Theorem Compact": {
+    "prefix": ["scholarly-theorem-compact", "ss-theorem-compact"],
+    "body": [
+      "<Theorem type=\"${1|theorem,lemma,definition|}\" :compact=\"true\">",
+      "",
+      "${2:Compact theorem content.}",
+      "",
+      "</Theorem>",
+      "",
+      "$0"
+    ],
+    "description": "Insert compact Theorem"
+  },
+  "Slidev Scholarly: Highlight (Vue)": {
+    "prefix": ["scholarly-highlight", "ss-highlight"],
+    "body": [
+      "<Highlight type=\"${1|primary,success,warning,danger,info|}\">${2:highlighted text}</Highlight>$0"
+    ],
+    "description": "Insert Highlight component"
+  },
+  "Slidev Scholarly: Steps": {
+    "prefix": ["scholarly-steps", "ss-steps"],
+    "body": [
+      "<Steps :steps=\"[",
+      "  { title: '${1:Step 1}', description: '${2:Description 1}' },",
+      "  { title: '${3:Step 2}', description: '${4:Description 2}' },",
+      "  { title: '${5:Step 3}', description: '${6:Description 3}' }",
+      "]\" :activeStep=\"${7:1}\" />",
+      "",
+      "$0"
+    ],
+    "description": "Insert Steps component"
+  },
+  "Slidev Scholarly: Columns": {
+    "prefix": ["scholarly-columns", "ss-columns"],
+    "body": [
+      "<Columns :columns=\"${1:3}\" :gap=\"${2:2}\">",
+      "",
+      "${3:Column 1 content}",
+      "",
+      "---",
+      "",
+      "${4:Column 2 content}",
+      "",
+      "---",
+      "",
+      "${5:Column 3 content}",
+      "",
+      "</Columns>",
+      "",
+      "$0"
+    ],
+    "description": "Insert Columns component"
+  },
+  "Slidev Scholarly: Keywords": {
+    "prefix": ["scholarly-keywords", "ss-keywords"],
+    "body": [
+      "<Keywords :keywords=\"['${1:Keyword 1}', '${2:Keyword 2}', '${3:Keyword 3}']\" />",
+      "",
+      "$0"
+    ],
+    "description": "Insert Keywords component"
+  },
+  "Slidev Scholarly: Citation Parenthetical": {
+    "prefix": ["scholarly-cite", "ss-cite", "@cite"],
+    "body": [
+      "@${1:citekey}$0"
+    ],
+    "description": "Insert parenthetical citation (Author, Year)"
+  },
+  "Slidev Scholarly: Citation Narrative": {
+    "prefix": ["scholarly-cite-narrative", "ss-cite-n", "!@cite"],
+    "body": [
+      "!@${1:citekey}$0"
+    ],
+    "description": "Insert narrative citation Author (Year)"
+  },
+  "Slidev Scholarly: Multiple Citations": {
+    "prefix": ["scholarly-cite-multi", "ss-cite-multi"],
+    "body": [
+      "@${1:citekey1} @${2:citekey2}$0"
+    ],
+    "description": "Insert multiple citations"
+  },
+  "Slidev Scholarly: Bibliography Marker": {
+    "prefix": ["scholarly-bibliography", "ss-bibliography"],
+    "body": [
+      "[[bibliography]]",
+      "",
+      "$0"
+    ],
+    "description": "Insert bibliography marker"
+  },
+  "Slidev Scholarly: Math Inline": {
+    "prefix": ["scholarly-math-inline", "ss-math-i"],
+    "body": [
+      "\\$${1:formula}\\$$0"
+    ],
+    "description": "Insert inline math"
+  },
+  "Slidev Scholarly: Math Block": {
+    "prefix": ["scholarly-math-block", "ss-math-b"],
+    "body": [
+      "",
+      "\\$\\$${1:formula}\\$\\$",
+      "",
+      "$0"
+    ],
+    "description": "Insert math block"
+  },
+  "Slidev Scholarly: Font Size Config": {
+    "prefix": ["scholarly-fontsize", "ss-fontsize"],
+    "body": [
+      "fontsize:",
+      "  body: ${1:18px}",
+      "  h1: ${2:42px}",
+      "  h2: ${3:32px}",
+      "  h3: ${4:24px}"
+    ],
+    "description": "Insert font size configuration"
+  },
+  "Slidev Scholarly: Slide Comment": {
+    "prefix": ["scholarly-comment", "ss-comment"],
+    "body": [
+      "<!--",
+      "SLIDE: ${1:Slide Name}",
+      "LAYOUT: ${2:layout}",
+      "PURPOSE: ${3:Description}",
+      "-->"
+    ],
+    "description": "Insert slide documentation comment"
+  }
+}

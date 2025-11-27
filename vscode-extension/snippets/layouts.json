@@ -1,0 +1,343 @@
+{
+  "Slidev Scholarly: Cover Layout": {
+    "prefix": ["scholarly-cover", "ss-cover"],
+    "body": [
+      "---",
+      "layout: cover",
+      "---",
+      "",
+      "# ${1:Presentation Title}",
+      "",
+      "${2:Subtitle}",
+      "",
+      "$0"
+    ],
+    "description": "Insert cover slide layout"
+  },
+  "Slidev Scholarly: Section Layout": {
+    "prefix": ["scholarly-section", "ss-section"],
+    "body": [
+      "---",
+      "layout: section",
+      "---",
+      "",
+      "# ${1:Section Title}",
+      "",
+      "${2:Section subtitle}",
+      "",
+      "$0"
+    ],
+    "description": "Insert section divider layout"
+  },
+  "Slidev Scholarly: Default Layout": {
+    "prefix": ["scholarly-default", "ss-default"],
+    "body": [
+      "---",
+      "layout: default",
+      "title: ${1:Slide Title}",
+      "subtitle: ${2:Optional subtitle}",
+      "---",
+      "",
+      "## ${3:Content Title}",
+      "",
+      "${4:Your content here.}",
+      "",
+      "$0"
+    ],
+    "description": "Insert default content layout"
+  },
+  "Slidev Scholarly: Center Layout": {
+    "prefix": ["scholarly-center", "ss-center"],
+    "body": [
+      "---",
+      "layout: center",
+      "---",
+      "",
+      "## ${1:Centered Title}",
+      "",
+      "${2:Centered content}",
+      "",
+      "$0"
+    ],
+    "description": "Insert centered layout"
+  },
+  "Slidev Scholarly: Auto Center Layout": {
+    "prefix": ["scholarly-auto-center", "ss-auto-center"],
+    "body": [
+      "---",
+      "layout: auto-center",
+      "title: ${1:Title}",
+      "subtitle: ${2:Subtitle}",
+      "---",
+      "",
+      "## ${3:Auto-Centered Content}",
+      "",
+      "${4:Content with auto-adjusting font size.}",
+      "",
+      "$0"
+    ],
+    "description": "Insert auto-center layout"
+  },
+  "Slidev Scholarly: Two Columns Layout": {
+    "prefix": ["scholarly-two-cols", "ss-two-cols"],
+    "body": [
+      "---",
+      "layout: two-cols",
+      "ratio: \"${1|1:1,2:3,3:2,1:2,2:1|}\"",
+      "title: ${2:Two Columns}",
+      "---",
+      "",
+      "## ${3:Left Column}",
+      "",
+      "${4:Left content}",
+      "",
+      "::right::",
+      "",
+      "## ${5:Right Column}",
+      "",
+      "${6:Right content}",
+      "",
+      "$0"
+    ],
+    "description": "Insert two columns layout"
+  },
+  "Slidev Scholarly: Image Left Layout": {
+    "prefix": ["scholarly-image-left", "ss-image-left"],
+    "body": [
+      "---",
+      "layout: image-left",
+      "image: ${1:https://example.com/image.jpg}",
+      "ratio: \"${2|1:2,1:1,1:3|}\"",
+      "title: ${3:Image Left}",
+      "---",
+      "",
+      "## ${4:Content Title}",
+      "",
+      "${5:Your content on the right side.}",
+      "",
+      "$0"
+    ],
+    "description": "Insert image-left layout"
+  },
+  "Slidev Scholarly: Image Right Layout": {
+    "prefix": ["scholarly-image-right", "ss-image-right"],
+    "body": [
+      "---",
+      "layout: image-right",
+      "image: ${1:https://example.com/image.jpg}",
+      "ratio: \"${2|2:1,1:1,3:1|}\"",
+      "title: ${3:Image Right}",
+      "---",
+      "",
+      "## ${4:Content Title}",
+      "",
+      "${5:Your content on the left side.}",
+      "",
+      "$0"
+    ],
+    "description": "Insert image-right layout"
+  },
+  "Slidev Scholarly: Bullets Layout": {
+    "prefix": ["scholarly-bullets", "ss-bullets"],
+    "body": [
+      "---",
+      "layout: bullets",
+      "title: ${1:Bullet Points}",
+      "subtitle: ${2:Key points}",
+      "---",
+      "",
+      "## ${3:Main Topic}",
+      "",
+      "- ${4:First point}",
+      "- ${5:Second point}",
+      "- ${6:Third point}",
+      "",
+      "$0"
+    ],
+    "description": "Insert bullets layout"
+  },
+  "Slidev Scholarly: Quote Layout": {
+    "prefix": ["scholarly-quote", "ss-quote"],
+    "body": [
+      "---",
+      "layout: quote",
+      "---",
+      "",
+      "${1:Your inspiring quote goes here.}",
+      "",
+      "— ${2:Attribution}",
+      "",
+      "$0"
+    ],
+    "description": "Insert quote layout"
+  },
+  "Slidev Scholarly: Fact Layout": {
+    "prefix": ["scholarly-fact", "ss-fact"],
+    "body": [
+      "---",
+      "layout: fact",
+      "color: ${1|green,blue,amber,red|}",
+      "---",
+      "",
+      "# ${2:99%}",
+      "",
+      "${3:Description of the statistic}",
+      "",
+      "$0"
+    ],
+    "description": "Insert fact layout"
+  },
+  "Slidev Scholarly: Focus Layout": {
+    "prefix": ["scholarly-focus", "ss-focus"],
+    "body": [
+      "---",
+      "layout: focus",
+      "color: ${1|blue,green,amber,red|}",
+      "icon: ${2:🎯}",
+      "---",
+      "",
+      "# ${3:Main Message}",
+      "",
+      "${4:Supporting text.}",
+      "",
+      "$0"
+    ],
+    "description": "Insert focus layout"
+  },
+  "Slidev Scholarly: Compare Layout": {
+    "prefix": ["scholarly-compare", "ss-compare"],
+    "body": [
+      "---",
+      "layout: compare",
+      "title: ${1:Comparison}",
+      "leftLabel: ${2:Option A}",
+      "rightLabel: ${3:Option B}",
+      "leftColor: ${4|red,blue,green,amber|}",
+      "rightColor: ${5|green,blue,red,amber|}",
+      "---",
+      "",
+      "### ${6:Option A Points}",
+      "",
+      "- ${7:Point 1}",
+      "- ${8:Point 2}",
+      "",
+      "::right::",
+      "",
+      "### ${9:Option B Points}",
+      "",
+      "- ${10:Point 1}",
+      "- ${11:Point 2}",
+      "",
+      "$0"
+    ],
+    "description": "Insert compare layout"
+  },
+  "Slidev Scholarly: Figure Layout": {
+    "prefix": ["scholarly-figure", "ss-figure"],
+    "body": [
+      "---",
+      "layout: figure",
+      "src: ${1:https://example.com/figure.jpg}",
+      "caption: ${2:Figure caption.}",
+      "label: \"${3:Figure 1:}\"",
+      "title: ${4:Figure Title}",
+      "---",
+      "",
+      "${5:Additional description.}",
+      "",
+      "$0"
+    ],
+    "description": "Insert figure layout"
+  },
+  "Slidev Scholarly: Statement Layout": {
+    "prefix": ["scholarly-statement", "ss-statement"],
+    "body": [
+      "---",
+      "layout: statement",
+      "---",
+      "",
+      "# ${1:Your Statement}",
+      "",
+      "${2:Supporting text.}",
+      "",
+      "$0"
+    ],
+    "description": "Insert statement layout"
+  },
+  "Slidev Scholarly: References Layout": {
+    "prefix": ["scholarly-references", "ss-references"],
+    "body": [
+      "---",
+      "layout: references",
+      "---",
+      "",
+      "[[bibliography]]",
+      "",
+      "$0"
+    ],
+    "description": "Insert references layout"
+  },
+  "Slidev Scholarly: End Layout": {
+    "prefix": ["scholarly-end", "ss-end"],
+    "body": [
+      "---",
+      "layout: end",
+      "email: ${1:your@email.com}",
+      "website: ${2:https://example.com}",
+      "subtitle: ${3:Questions?}",
+      "---",
+      "",
+      "${4:Thank you for your attention!}",
+      "",
+      "$0"
+    ],
+    "description": "Insert end layout"
+  },
+  "Slidev Scholarly: Intro Layout": {
+    "prefix": ["scholarly-intro", "ss-intro"],
+    "body": [
+      "---",
+      "layout: intro",
+      "---",
+      "",
+      "# ${1:Introduction Title}",
+      "",
+      "${2:Introduction content.}",
+      "",
+      "$0"
+    ],
+    "description": "Insert intro layout"
+  },
+  "Slidev Scholarly: Slide Divider": {
+    "prefix": ["scholarly-slide", "ss-slide", "---"],
+    "body": [
+      "---",
+      "",
+      "$0"
+    ],
+    "description": "Insert slide divider"
+  },
+  "Slidev Scholarly: Frontmatter": {
+    "prefix": ["scholarly-frontmatter", "ss-frontmatter"],
+    "body": [
+      "---",
+      "theme: scholarly",
+      "footerMiddle: ${1:Conference Name}",
+      "lang: ${2|en,zh|}",
+      "bibFile: ./references.bib",
+      "bibStyle: ${3|apa,harvard1,vancouver,ieee,mla,chicago-author-date|}",
+      "authors:",
+      "  - name: ${4:Author Name}",
+      "    institution: ${5:Institution}",
+      "    email: ${6:email@example.com}",
+      "---",
+      "",
+      "# ${7:Presentation Title}",
+      "",
+      "${8:Subtitle}",
+      "",
+      "$0"
+    ],
+    "description": "Insert full frontmatter configuration"
+  }
+}
