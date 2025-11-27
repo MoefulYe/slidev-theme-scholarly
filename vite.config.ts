@@ -1,7 +1,4 @@
 import { defineConfig } from 'vite'
-import fs from 'fs'
-// @ts-expect-error - js-yaml does not have type declarations in this project
-import yaml from 'js-yaml'
 import citationPluginMod from '@jxpeng98/markdown-it-citation'
 
 function resolvePlugin(mod: unknown): (md: unknown, options: unknown) => void {
@@ -13,25 +10,15 @@ function resolvePlugin(mod: unknown): (md: unknown, options: unknown) => void {
 // Regex to match the scholarly-citations comment injected by preparser
 const SCHOLARLY_CITATIONS_RE = /<!--\s*scholarly-citations:\s*(\[.*?\])\s*-->/
 
-// Parse headmatter from the example.md file to get global configuration
-function getHeadmatter(): Record<string, unknown> {
-    try {
-        // Try to read the entry file specified in package.json scripts or default to example.md
-        const entryFile = process.argv.find(arg => arg.endsWith('.md')) || 'example.md'
-        if (fs.existsSync(entryFile)) {
-            const content = fs.readFileSync(entryFile, 'utf-8')
-            const match = content.match(/^---\n([\s\S]*?)\n---/)
-            if (match) {
-                return yaml.load(match[1]) as Record<string, unknown> || {}
-            }
-        }
-    } catch {
-        // Ignore errors
-    }
-    return {}
+// Declare global config type
+declare global {
+    // eslint-disable-next-line no-var
+    var __scholarlyConfig: {
+        bibFile: string
+        bibStyle: string
+        showNum: boolean
+    } | undefined
 }
-
-const headmatter = getHeadmatter()
 
 export default defineConfig({
     slidev: {
@@ -44,18 +31,20 @@ export default defineConfig({
                     return
                 }
 
-                // Get configuration from headmatter (global frontmatter)
-                const bibFile = (headmatter.bibFile as string) || 'public/references.bib'
-                const bibStyle = (headmatter.bibStyle as string) || 'apa'
-                const showNum = (headmatter.bibShowNum as boolean) ?? false
-                const bibTitle = (headmatter.bibTitle as string) || 'References'
+                // Get configuration from global config (set by vite-plugins.ts) or use defaults
+                const config = globalThis.__scholarlyConfig || {
+                    bibFile: 'references.bib',
+                    bibStyle: 'apa',
+                    showNum: false,
+                }
 
                 // First, register the citation plugin
+                // bibTitle is empty because the references layout already shows the title in header
                 md.use(citationPlugin, {
-                    bibFile,
-                    style: bibStyle,
-                    showNum,
-                    bibTitle,
+                    bibFile: config.bibFile,
+                    style: config.bibStyle,
+                    showNum: config.showNum,
+                    bibTitle: '',
                     autoGenerate: false,
                 })
 
