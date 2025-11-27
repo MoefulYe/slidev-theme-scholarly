@@ -83,7 +83,7 @@ export default definePreparserSetup(() => {
                 if (content.includes('[[bibliography]]')) {
                     // Get citations from frontmatter if explicitly provided, otherwise use collected citekeys
                     let citations: string[] = []
-                    
+
                     if (Array.isArray((frontmatter as any).citations)) {
                         citations = (frontmatter as any).citations
                     } else if (Array.isArray((frontmatter as any).references)) {
@@ -92,6 +92,17 @@ export default definePreparserSetup(() => {
                         citations = (frontmatter as any).bib
                     } else if (citekeys.size > 0) {
                         citations = Array.from(citekeys)
+                    }
+
+                    // Support pagination: perPage and page parameters
+                    const perPage = (frontmatter as any).perPage as number | undefined
+                    const page = (frontmatter as any).page as number | undefined
+
+                    if (perPage && perPage > 0 && citations.length > 0) {
+                        const currentPage = page || 1
+                        const startIndex = (currentPage - 1) * perPage
+                        const endIndex = startIndex + perPage
+                        citations = citations.slice(startIndex, endIndex)
                     }
 
                     // Inject citations as a special HTML comment before [[bibliography]]
