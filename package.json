@@ -1,6 +1,6 @@
 {
   "name": "slidev-theme-scholarly",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "description": "A scholarly presentation theme for Slidev with LaTeX Beamer-style styling",
   "author": "Jiaxin Peng",
@@ -46,20 +46,16 @@
     "build": "slidev build example.md",
     "export": "slidev export example.md",
     "screenshot": "slidev export example.md --format png",
-    
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
-    
     "version:sync": "bun -e \"const fs=require('fs');const pkg=require('./package.json');const ext=require('./vscode-extension/package.json');ext.version=pkg.version;fs.writeFileSync('./vscode-extension/package.json',JSON.stringify(ext,null,2)+'\\n');\"",
     "bump:patch": "bun pm version patch && bun run version:sync",
     "bump:minor": "bun pm version minor && bun run version:sync",
     "bump:major": "bun pm version major && bun run version:sync",
-    
     "tag": "git tag v$(bun -e \"console.log(require('./package.json').version)\")",
     "tag:push": "git push && git push origin v$(bun -e \"console.log(require('./package.json').version)\")",
     "release": "bun run version:sync && git add -A && git commit -m \"chore: release v$(bun -e \"console.log(require('./package.json').version\")\" && bun run tag && bun run tag:push",
-    
     "vscode:package": "cd vscode-extension && bun run package",
     "vscode:release": "bun run version:sync && bun run vscode:package"
   },
