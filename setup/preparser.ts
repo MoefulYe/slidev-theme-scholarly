@@ -35,9 +35,76 @@ import { definePreparserSetup } from '@slidev/types'
  */
 
 export default definePreparserSetup(() => {
+    // Collect all citekeys across the whole markdown so bibliography can be generated on a dedicated slide.
+    const citekeys = new Set<string>()
+
+    function collectCitations(text: string) {
+        if (!text)
+            return
+
+        // Remove fenced code blocks to avoid false positives.
+        let stripped = text.replace(/```[\s\S]*?```/g, '')
+        // Remove inline code to avoid false positives.
+        stripped = stripped.replace(/`[^`]*`/g, '')
+        // Remove HTML comments to avoid processing injected citations or other comments
+        stripped = stripped.replace(/<!--[\s\S]*?-->/g, '')
+        // Remove URLs to avoid matching emails or package names
+        stripped = stripped.replace(/https?:\/\/[^\s)>\]]+/g, '')
+        // Remove email-like patterns (word@word.word)
+        stripped = stripped.replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, '')
+
+        // Match citation patterns: @citekey or !@citekey
+        // Citekey should be alphanumeric with underscores/hyphens, but NOT contain slashes (to exclude package names)
+        // and NOT be preceded by a letter/digit (to exclude partial matches)
+        for (const m of stripped.matchAll(/(?<![A-Za-z0-9])(!?)@([A-Za-z][A-Za-z0-9_-]*)/g)) {
+            // Clean the citekey: remove trailing punctuation
+            let key = m[2].replace(/[.,;:!?)]+$/, '')
+            if (key.length > 0) {
+                citekeys.add(`@${key}`)
+            }
+        }
+    }
+
     return [
         {
+            name: 'scholarly-citations-collector',
+
+            transformRawLines(lines) {
+                collectCitations(lines.join('\n'))
+            },
+
             async transformSlide(content, frontmatter) {
+                // Also collect citations per-slide (in case transformRawLines is not invoked in some contexts)
+                collectCitations(content)
+
+                // If this slide contains the bibliography marker, inject citations as an HTML comment
+                // that will be parsed by the markdown-it plugin. We use HTML comments because 
+                // Slidev strips YAML frontmatter blocks from slide content before passing to markdown-it.
+                if (content.includes('[[bibliography]]')) {
+                    // Get citations from frontmatter if explicitly provided, otherwise use collected citekeys
+                    let citations: string[] = []
+                    
+                    if (Array.isArray((frontmatter as any).citations)) {
+                        citations = (frontmatter as any).citations
+                    } else if (Array.isArray((frontmatter as any).references)) {
+                        citations = (frontmatter as any).references
+                    } else if (Array.isArray((frontmatter as any).bib)) {
+                        citations = (frontmatter as any).bib
+                    } else if (citekeys.size > 0) {
+                        citations = Array.from(citekeys)
+                    }
+
+                    // Inject citations as a special HTML comment before [[bibliography]]
+                    // Format: <!-- scholarly-citations: ["@key1", "@key2"] -->
+                    if (citations.length > 0) {
+                        const citationsJson = JSON.stringify(citations)
+                        content = content.replace(
+                            /\[\[bibliography\]\]/g,
+                            `<!-- scholarly-citations: ${citationsJson} -->\n[[bibliography]]`
+                        )
+                    }
+                }
+
                 // Transform :::block{type="info" title="Title"} ... :::
                 content = content.replace(
                     /:::block\{([^}]*)\}\s*\n([\s\S]*?):::/g,
