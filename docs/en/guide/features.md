@@ -1,0 +1,82 @@
+---
+title: Key Features
+---
+
+# Key Features
+
+## 🎨 Professional Design
+
+- Clean, academic aesthetic inspired by LaTeX Beamer
+- Automatic header and footer on all slides
+- Consistent styling throughout your presentation
+
+## 👥 Multi-Author Support
+
+Display one author, two authors, or entire research teams elegantly:
+
+- 1 author: "Jane Smith"
+- 2 authors: "Jane Smith & John Doe"  
+- 3 authors: "Jane Smith, John Doe, Alice Brown"
+- 4+ authors: "Jane Smith et al."
+
+## 🔢 Smart Theorem Numbering
+
+Insert theorems, lemmas, definitions with automatic numbering:
+
+- Each type (theorem, lemma, etc.) has its own counter
+- Supports both English and Chinese
+- Customizable number format
+
+## 📐 17 Layout Options
+
+Different layouts for different needs:
+
+- **Basic**: cover, default, intro, section, center
+- **Content**: quote, fact, statement, two-cols
+- **Image**: image-left, image-right
+- **New (v2.0)**: focus, compare, bullets, figure, references, end
+
+## 📚 Built-in Citation Support
+
+Automatic bibliography generation from BibTeX files:
+
+- Use `@citekey` for parenthetical citations
+- Use `!@citekey` for narrative citations
+- Supports APA, Harvard, Vancouver, IEEE, MLA, Chicago styles
+- Auto-generates bibliography from all cited references
+- No additional configuration required!
+
+## 🧩 Rich Components
+
+Built-in components for academic content:
+
+- **Theorem** - Theorems, lemmas, definitions with auto-numbering
+- **Block** - Beamer-style colored blocks
+- **Steps** - Workflow/process visualization
+- **Keywords** - Keyword tags
+- **Columns** - Flexible multi-column layouts
+- **Highlight** - Inline text highlighting
+
+## 📝 Markdown Syntax Sugar
+
+Use simple Markdown directives instead of HTML:
+
+```markdown
+:::block{type="info" title="Note"}
+Content here
+:::
+
+:::theorem{type="theorem" title="Result"}
+Mathematical content
+:::
+
+:::columns{cols="2"}
+Left column
++++
+Right column
+:::
+```
+
+## 🌍 Multi-Language
+
+Supports English and Chinese (中文) for mathematical content.

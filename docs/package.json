@@ -1,0 +1,24 @@
+{
+    "name": "slidev-theme-scholarly-docs",
+    "version": "0.2.0",
+    "description": "Documentation for Slidev Theme Scholarly",
+    "main": "index.js",
+    "scripts": {
+        "dev": "vitepress dev",
+        "build": "vitepress build",
+        "preview": "vitepress preview"
+    },
+    "keywords": [
+        "slidev-theme-scholarly",
+        "slidev",
+        "theme",
+        "documentation"
+    ],
+    "author": "Jiaxin Peng",
+    "license": "MIT",
+    "devDependencies": {
+        "vitepress": "^2.0.0-alpha.12",
+        "vitepress-sidebar": "^1.33.0",
+        "vue": "^3.5.22"
+    }
+}

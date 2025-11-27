@@ -1,0 +1,125 @@
+---
+title: Citations
+---
+
+# Citations
+
+The theme has built-in support for academic citations using BibTeX files. Citations are automatically collected and bibliography is generated.
+
+## Configuration
+
+Configure citation settings in your frontmatter:
+
+```yaml
+---
+theme: scholarly
+bibFile: references.bib  # Path to BibTeX file (default: references.bib)
+bibStyle: apa            # Citation style
+---
+```
+
+**Supported styles:**
+
+- `apa` (default)
+- `harvard1`
+- `vancouver`
+- `ieee`
+- `mla`
+- `chicago-author-date`
+
+## Basic Usage
+
+### Parenthetical Citations
+
+Use `@citekey` for parenthetical citations:
+
+```markdown
+Deep learning has revolutionized AI @lecun2015deep.
+```
+
+Renders as: Deep learning has revolutionized AI (LeCun et al., 2015).
+
+### Narrative Citations
+
+Use `!@citekey` for narrative (author-prominent) citations:
+
+```markdown
+!@vaswani2017attention introduced the Transformer architecture.
+```
+
+Renders as: Vaswani et al. (2017) introduced the Transformer architecture.
+
+### Multiple Citations
+
+```markdown
+Recent advances @smith2023deep @wang2022attention have shown...
+```
+
+## Bibliography
+
+Add a references slide with the `[[bibliography]]` marker:
+
+```markdown
+---
+layout: references
+---
+
+[[bibliography]]
+```
+
+The bibliography is automatically generated from all citations used in your slides.
+
+## Pagination
+
+For long reference lists, use pagination:
+
+```markdown
+---
+layout: references
+perPage: 5
+page: 1
+---
+
+[[bibliography]]
+
+---
+layout: references
+perPage: 5
+page: 2
+title: "References (continued)"
+---
+
+[[bibliography]]
+```
+
+## BibTeX File Example
+
+Create a `references.bib` file in your project root:
+
+```bibtex
+@article{lecun2015deep,
+  title={Deep learning},
+  author={LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
+  journal={Nature},
+  volume={521},
+  pages={436--444},
+  year={2015}
+}
+
+@inproceedings{vaswani2017attention,
+  title={Attention is all you need},
+  author={Vaswani, Ashish and others},
+  booktitle={NeurIPS},
+  year={2017}
+}
+```
+
+## Legacy Cite Component
+
+The `<Cite>` component is still available for manual citations:
+
+```markdown
+<Cite author="Smith et al." year="2024" />
+```
+
+Renders as: (Smith et al., 2024)
