@@ -28,9 +28,16 @@
     "styles",
     "setup",
     "utils",
+    "vite.config.ts",
     "README.md",
     "LICENSE"
   ],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    }
+  },
   "engines": {
     "node": ">=20.0.0"
   },
@@ -41,15 +48,20 @@
     "screenshot": "slidev export example.md --format png",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs"
+    "docs:serve": "vitepress serve docs",
+    "version": "npm run version:sync",
+    "version:sync": "node -e \"const fs=require('fs');const pkg=require('./package.json');const ext=require('./vscode-extension/package.json');ext.version=pkg.version;fs.writeFileSync('./vscode-extension/package.json',JSON.stringify(ext,null,2)+'\\n');\"",
+    "bump:patch": "npm version patch && npm run version:sync",
+    "bump:minor": "npm version minor && npm run version:sync",
+    "bump:major": "npm version major && npm run version:sync"
   },
   "dependencies": {
-    "@slidev/client": "^52.6.0",
-    "@slidev/types": "^52.6.0",
-    "markdown-it-citation": "0.1.1"
+    "@jxpeng98/markdown-it-citation": "1.2.1",
+    "@slidev/client": "^52.9.1",
+    "@slidev/types": "^52.9.1"
   },
   "devDependencies": {
-    "@slidev/cli": "^52.6.0",
+    "@slidev/cli": "^52.9.1",
     "vitepress": "2.0.0-alpha.12"
   },
   "//": "Learn more: https://sli.dev/guide/write-theme.html",
