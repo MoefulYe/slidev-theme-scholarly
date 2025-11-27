@@ -5,6 +5,8 @@ description: 面向学术工作者的演示幻灯片
 aspectRatio: 4/3
 lang: zh
 theoremNumberFormat: '{number}'
+bibFile: ./references.bib
+bibStyle: apa
 authors:
   - name: 张三
     institution: 某某大学
@@ -19,489 +21,337 @@ authors:
 
 # Slidev 学术主题
 
-面向学术工作者的演示幻灯片
+专为学术演示打造的幻灯片主题
 
 <!--
-本示例演示了 Scholarly 主题的所有功能。
+本示例展示 Scholarly 主题的完整功能。
 
-全局配置（应用于所有幻灯片）：
-- authors: 作者列表，包含姓名、单位、邮箱
-  （或使用单个作者：author: 你的名字）
-- footerMiddle: 会议名称或活动名称（页脚中间部分）
-- footerLeft: 自定义页脚左侧文本（会覆盖作者显示）
-- theoremNumberFormat: 定理编号格式（例如：'{number}'、'定理 {number}'）
-- lang: 定理组件的语言（zh、en、fr、de、es、it、ja、pt、ru）
-
-页脚会自动出现在所有幻灯片上，右侧显示页码。
+全局配置（对所有幻灯片生效）：
+- authors: 作者信息（姓名、单位、邮箱）
+- footerMiddle: 页脚中间文字（如会议名称）
+- theoremNumberFormat: 定理编号格式
+- lang: 界面语言
+- bibFile: BibTeX 文件路径
+- bibStyle: 引用样式 (apa, harvard1, vancouver, ieee, mla, chicago-author-date)
 -->
 
 ---
 layout: intro
-footerMiddle: Slidev 学术主题
 ---
 
 <!--
 布局：intro
-用途：介绍或议程幻灯片
-何时使用：用于概述演示文稿结构或介绍主题
-
-特性：
-- 内容垂直居中
-- 文本左对齐，易于阅读
-- 带有会议/作者信息的页脚
-
-提示：非常适合"今天要讲的内容"这类幻灯片
+用途：开场介绍或目录页
 -->
 
-## 什么是 Slidev？
+# Slidev 是什么？
 
-Slidev 是一个为开发者设计的幻灯片制作和演示工具。它包含以下特性：
+Slidev 是一款专为开发者打造的幻灯片工具，具备以下特性：
 
-- 📝 **基于文本** - 用 Markdown 专注于内容，稍后再设计样式
-- 🎨 **可主题化** - 主题可以作为 npm 包共享和重用
-- 🧑‍💻 **开发者友好** - 代码高亮、实时编码与自动补全
-- 🤹 **可交互** - 嵌入 Vue 组件来增强表达
-- 🎥 **可录制** - 内置录制和摄像头视图
-- 📤 **可移植** - 导出为 PDF、PPTX、PNG 或可托管的 SPA
-- 🛠 **可扩展** - 几乎任何在网页上可能的事情在 Slidev 中都可以实现
+- 📝 **Markdown 驱动** - 专注内容创作，样式随时调整
+- 🎨 **主题丰富** - 主题可通过 npm 分享和复用
+- 🧑‍💻 **开发者友好** - 代码高亮、实时编码、自动补全
+- 🤹 **交互增强** - 支持嵌入 Vue 组件
+- 🎥 **内置录制** - 自带录屏和摄像头功能
+- 📤 **多格式导出** - 支持 PDF、PPTX、PNG 及在线部署
+- 🛠 **高度可定制** - 网页能做的，Slidev 都能做
 
-<br>
-<br>
+<br/>
 
 了解更多：[为什么选择 Slidev?](https://sli.dev/guide/why)
 
 ---
-layout: default
-title: 布局优化
-subtitle: 减少代码重复，提高可维护性
----
-
-<!--
-布局：default
-用途：常规内容的标准幻灯片
-何时使用：大部分演示幻灯片（这是默认布局！）
-
-特性：
-- 可选的标题和副标题显示在标题栏（如果在 frontmatter 中提供）
-- 内容左对齐，易于阅读
-- 根据标题栏内容自动调整内边距
-- 自动显示页脚
-
-frontmatter 选项：
-- title: 标题栏中显示的主标题
-- subtitle: 标题栏中显示的副标题
-- header: 自定义标题栏文本（覆盖 title/subtitle）
-- footerLeft: 仅为此幻灯片覆盖页脚左侧部分
-
-提示：如果不指定布局，默认就是这个！
--->
-
-## 键盘快捷键
-
-|     |     |
-| --- | --- |
-| <kbd>空格</kbd> / <kbd>tab</kbd> / <kbd>右箭头</kbd> | 下一个动画或幻灯片 |
-| <kbd>左箭头</kbd>  / <kbd>shift</kbd><kbd>空格</kbd> | 上一个动画或幻灯片 |
-| <kbd>上箭头</kbd> | 上一张幻灯片 |
-| <kbd>下箭头</kbd> | 下一张幻灯片 |
-
----
-
-<!--
-布局：default（未指定布局时自动应用）
-用途：演示 default 布局是自动的
-
-重点：你不需要显式写 `layout: default`。
-如果不指定任何布局，Slidev 会自动使用 "default"。
--->
-
-## 这张幻灯片使用默认布局
-
-注意，即使没有指定 `layout: default`，这张幻灯片：
-
-- 自动使用默认布局
-- 显示带有 frontmatter 中作者信息的页脚
-- 在中间显示会议名称
-- 在右侧显示页码
-
-这说明**所有页脚配置都是全局的**，适用于所有幻灯片。
-
----
-layout: image-left
-image: https://cover.sli.dev
----
-
-<!--
-布局：image-left
-用途：左侧为视觉内容，右侧为文本内容
-何时使用：当您希望强大的视觉元素与解释性文本并列时
-
-特性：
-- 图片填充整个左半部分（全高度，无内边距）
-- 文本内容在右半部分
-- 50/50 分割布局
-- 底部显示页脚
-
-frontmatter 选项：
-- image: 图片的 URL 或路径（必需）
-- title: 标题栏的可选标题
-- subtitle: 标题栏的可选副标题
-
-提示：非常适合展示截图、图表或带有说明的照片
--->
-
-## 代码示例
-
-直接使用代码片段并获得高亮！
-
-```ts
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
-
-function updateUser(id: number, update: Partial<User>) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
-}
-```
-
----
-layout: quote
-title: 引用布局
-subtitle: 显示励志名言
----
-
-<!--
-布局：quote
-用途：显示令人难忘的引用或重要陈述
-何时使用：用于强调关键见解、名人名言或重要原则
-
-特性：
-- 居中、大字体文本以获得最大影响
-- 引用和归属的特殊样式
-- 无标题栏（即使提供了 title/subtitle 也会隐藏）
-- 底部显示页脚
-
-格式：
-第一段 = 引用内容
-第二段（以 — 开头）= 出处
-
-提示：保持引用简短有力以获得最佳效果
--->
-
-生活就像一盒巧克力，你永远不知道下一颗是什么味道。
-
-— 阿甘正传
-
----
 layout: section
-title: 章节布局
-subtitle: 章节分隔符
 ---
 
 <!--
 布局：section
-用途：标记新章节或段落的开始
-何时使用：将演示文稿划分为主要部分
-
-特性：
-- 大字号、居中的标题
-- 醒目的副标题
-- 不显示标题栏
-- 底部显示页脚
-- 比常规幻灯片有更多间距
-
-提示：使用此布局在主题之间给观众一个心理"休息"
+用途：章节分隔页
 -->
 
-## 章节标题
+# 第一部分：基础布局
 
-### 副标题
+## 常用的幻灯片布局
 
-使用此布局标记演示文稿中新章节或段落的开始。
+---
+layout: default
+title: 默认布局
+subtitle: 常规内容展示
+---
+
+<!--
+布局：default
+用途：最常用的内容布局
+-->
+
+## 快捷键一览
+
+|     |     |
+| --- | --- |
+| <kbd>空格</kbd> / <kbd>Tab</kbd> / <kbd>→</kbd> | 下一页/下一动画 |
+| <kbd>←</kbd> / <kbd>Shift</kbd>+<kbd>空格</kbd> | 上一页/上一动画 |
+| <kbd>↑</kbd> | 上一张幻灯片 |
+| <kbd>↓</kbd> | 下一张幻灯片 |
 
 ---
 layout: center
 title: 居中布局
-subtitle: 居中内容
+subtitle: 聚焦核心内容
 ---
 
 <!--
 布局：center
-用途：将重要内容居中显示在幻灯片上
-何时使用：用于关键信息、重要公告或单一焦点
-
-特性：
-- 所有内容垂直和水平居中
-- 可选标题栏（如果提供了 title/subtitle 则显示）
-- 底部显示页脚
-- 简洁、专注的设计
-
-提示：最适合内容最少但值得充分关注的幻灯片
+用途：突出展示重要内容
 -->
 
-## 居中的内容
+## 内容居中展示
 
-此布局非常适合重要陈述或关键信息。
+适合呈现重要观点或关键信息。
+
+内容自动水平垂直居中。
+
+---
+layout: quote
+---
+
+<!--
+布局：quote
+用途：展示名言警句
+-->
+
+生活就像一盒巧克力，你永远不知道下一颗是什么味道。
+
+— 《阿甘正传》
 
 ---
 layout: fact
-title: 事实布局
 ---
 
 <!--
 布局：fact
-用途：突出显示单个统计数据或事实
-何时使用：强调重要数字或简短陈述
-
-特性：
-- 超大、居中的内容
-- 最大宽度受限以提高可读性
-- 无标题栏（即使提供了 title）
-- 底部显示页脚
-- 专为最多 1-2 行文本设计
-
-提示：使用大数字或非常短的短语（例如："100%"、"第一名"）
+用途：突出展示关键数据
 -->
 
-## 100%
+# 100%
 
-学术卓越
+追求卓越
 
 ---
 layout: statement
-title: 陈述布局
 ---
 
 <!--
 布局：statement
-用途：做出大胆、有影响力的陈述
-何时使用：用于论文陈述、关键发现或重要结论
-
-特性：
-- 大字号、居中文本
-- 中等宽度约束以提高可读性
-- 不显示标题栏
-- 底部显示页脚
-- 比 'fact' 布局宽度更大
-
-提示：最适合 1-3 句话的陈述，捕捉主要思想
+用途：强调核心观点
 -->
 
-## 重要陈述
+# 核心观点
 
-此布局专为需要强调的有影响力的陈述而设计。
+用于展示需要重点强调的论述或结论。
+
+---
+layout: section
+---
+
+# 第二部分：分栏布局
+
+## 图文并排与多栏展示
 
 ---
 layout: two-cols
+ratio: "2:3"
 title: 双栏布局
-subtitle: 并排内容
+subtitle: 支持自定义比例
 ---
 
 <!--
 布局：two-cols
-用途：并排显示两栏内容
-何时使用：用于比较、前后对比、优缺点或并行内容
-
-特性：
-- 等宽列（50/50 分割）
-- 内容顶部对齐（列从相同高度开始）
-- 使用 `::right::` 标记分隔左右内容
-- 可选的带有 title/subtitle 的标题栏
-- 底部显示页脚
-
-语法：
-`::right::` 之前的内容进入左栏
-`::right::` 之后的内容进入右栏
-
-提示：非常适合比较概念、显示代码和输出，或列出并行想法
+- ratio: 左右栏宽度比，如 "1:1"、"2:3"
 -->
 
-## 左栏
+## 左栏（占 2 份）
 
-- 要点 1
-- 要点 2
-- 要点 3
+左侧内容区域。
 
-您可以在这里放置任何内容：
-
-- 列表
-- 文本
-- 图片
+- 要点一
+- 要点二
+- 要点三
 
 ::right::
 
-## 右栏
+## 右栏（占 3 份）
 
-```python
+右侧内容区域。
+
+\`\`\`python
 def hello():
     print("你好，世界！")
     
 # 代码示例
 for i in range(10):
     hello()
-```
+\`\`\`
 
 ---
 layout: image-left
 image: https://cover.sli.dev
-title: 左图布局
-subtitle: 图片在左侧，内容在右侧
+ratio: "1:2"
+title: 左图右文
+subtitle: 支持自定义比例
 ---
 
 <!--
 布局：image-left
-用途：结合视觉和文本内容（视觉在左侧）
-何时使用：当图片是主要焦点，文本提供上下文时
-
-特性：
-- 图片填充整个左半部分（全高度，边到边）
-- 文本内容在右半部分
-- 50/50 分割
-- 可选标题栏
-- 底部显示页脚
-
-frontmatter 选项：
-- image: 图片的 URL 或路径（必需）
-
-提示：当视觉内容应首先被看到时使用（从左到右阅读）
+- ratio: 图片:内容的宽度比
+- fit: 图片填充方式 (cover/contain/fill)
 -->
 
-## 右侧内容
+## 右侧内容（占 2 份）
 
-当您使用 `image-left` 布局时：
+图片占 1 份，文字占 2 份。
 
-- 图片填充整个左侧
-- 内容出现在右侧
-- 非常适合视觉演示
+使用 `image-left` 布局时：
 
-您可以在这里使用 markdown、代码或任何其他内容。
+- 图片在左侧全高展示
+- 文字内容在右侧
+- 比例可灵活调整
+
+\`\`\`ts
+const ratio = "1:2" // 图片:内容
+\`\`\`
 
 ---
 layout: image-right
 image: https://cover.sli.dev
-title: 右图布局
-subtitle: 内容在左侧，图片在右侧
+ratio: "3:2"
+fit: contain
+title: 左文右图
+subtitle: 多种配置选项
 ---
 
 <!--
 布局：image-right
-用途：结合文本和视觉内容（文本在前，视觉在后）
-何时使用：当文本是主要内容，图片提供支持/上下文时
-
-特性：
-- 内容出现在左半部分
-- 图片填充整个右半部分（全高度，边到边）
-- 50/50 分割
-- 可选标题栏
-- 底部显示页脚
-
-frontmatter 选项：
-- image: 图片的 URL 或路径（必需）
-
-提示：当您希望读者在看到视觉内容之前先处理文本时使用
+与 image-left 功能相同，方向相反
 -->
 
-## 左侧内容
+## 左侧内容（占 3 份）
 
-当您使用 `image-right` 布局时：
+文字占 3 份，图片占 2 份。
 
-- 内容出现在左侧
-- 图片填充整个右侧
-- 非常适合平衡视觉和文本
+可配置项：
+- `ratio` - 内容:图片比例
+- `fit` - 图片填充模式
+- `position` - 图片位置
 
-```ts
-// 您甚至可以添加代码块
-const message = "你好，Slidev！"
-console.log(message)
-```
+本页图片使用 `fit: contain` 完整展示。
+
+---
+layout: section
+---
+
+# 第三部分：内置组件
+
+## 为学术内容设计的组件
 
 ---
 layout: default
-title: 定理组件演示
-subtitle: 带自动编号的数学陈述
+title: Block 组件
+subtitle: Beamer 风格信息框
+---
+
+<!--
+组件：<Block>
+类型：default, info, success, warning, danger, example
+-->
+
+## 信息框组件
+
+<Block type="default" title="默认样式">
+
+标准的 Beamer 风格渐变标题栏。
+
+</Block>
+
+<Block type="info" title="提示信息">
+
+用于展示说明性内容。
+
+</Block>
+
+<Block type="warning" title="注意事项">
+
+用于强调需要特别关注的内容。
+
+</Block>
+
+---
+layout: default
+title: 更多信息框样式
+---
+
+## 其他样式
+
+<Block type="success" title="成功">
+
+用于展示积极结果或确认信息。
+
+</Block>
+
+<Block type="danger" title="警告">
+
+用于展示严重警告或错误信息。
+
+</Block>
+
+<Block type="example" title="示例">
+
+用于展示演示和代码示例。
+
+</Block>
+
+---
+layout: default
+title: 定理组件
+subtitle: 自动编号的数学环境
 ---
 
 <!--
 组件：<Theorem>
-用途：显示带有自动编号的数学定理、定义、引理等
-何时使用：用于带有形式化数学陈述的学术演示
-
-特性：
-- 自动编号（从 1 开始，全局递增）
-- 多种类型：theorem、lemma、definition、proposition、corollary、example、remark
-- 多语言支持（根据 frontmatter 的 lang 设置自动翻译）
-- 可选的自定义标题
-- 可选的手动编号
-
-组件属性：
-- type: "theorem" | "lemma" | "definition" | "proposition" | "corollary" | "example" | "remark"
-- title: 定理的可选标题
-- number: 可选的手动编号（例如："3.1"）
-- autoNumber: 设置为 false 可完全隐藏编号
-
-全局配置（在 frontmatter 中）：
-- lang: 语言代码（zh、en、fr、de、es、it、ja、pt、ru）
-- theoremNumberFormat: 格式字符串（例如：'{number}'、'定理 {number}'）
-
-提示：编号在演示开始时自动重置
+用途：展示带自动编号的定理、引理、定义等
 -->
 
 ## 数学定理
 
 <Theorem type="theorem" title="勾股定理">
 
-对于直角三角形，设两直角边为 $a$ 和 $b$，斜边为 $c$，则：
+在直角三角形中，设两直角边为 $a$、$b$，斜边为 $c$，则：
 
 $$a^2 + b^2 = c^2$$
 
 </Theorem>
 
-<Theorem type="theorem" title="费马大定理">
-
-当整数 $n > 2$ 时，关于 $x, y, z$ 的方程 $x^n + y^n = z^n$ 没有正整数解。
-
-</Theorem>
-
 <Theorem type="lemma">
 
-闭区间上的每个连续函数都是一致连续的。
+闭区间上的连续函数必为一致连续。
 
 </Theorem>
 
 ---
 layout: default
-title: 更多定理示例
+title: 定义与例子
 ---
 
-<!--
-定理类型说明：
-- theorem（定理）: 主要结果
-- lemma（引理）: 用于证明定理的辅助结果
-- definition（定义）: 概念的精确定义
-- proposition（命题）: 较小的结果
-- corollary（推论）: 直接从定理得出的结果
-- example（例子）: 说明性示例
-- remark（注记）: 附加说明或观察
+## 定义与例子
 
-所有类型按演示顺序分别自动编号。
--->
+<Theorem type="definition" title="函数极限">
 
-## 定义和例子
-
-<Theorem type="definition" title="极限">
-
-设函数 $f$ 在包含点 $a$ 的某个开区间上有定义。如果对于任意 $\epsilon > 0$，存在 $\delta > 0$ 使得当 $0 < |x - a| < \delta$ 时，有 $|f(x) - L| < \epsilon$，则称 $\lim_{x \to a} f(x) = L$。
+设函数 $f$ 在点 $a$ 的某去心邻域内有定义。若对任意 $\epsilon > 0$，存在 $\delta > 0$，使得当 $0 < |x - a| < \delta$ 时，有 $|f(x) - L| < \epsilon$，则称 $\lim_{x \to a} f(x) = L$。
 
 </Theorem>
 
 <Theorem type="example">
 
-考虑函数 $f(x) = x^2$：
+考察函数 $f(x) = x^2$：
 
 - $f(0) = 0$
 - $f(1) = 1$
@@ -511,177 +361,241 @@ title: 更多定理示例
 
 ---
 layout: default
-title: 更多定理类型
+title: 证明与注记
 ---
 
-<!--
-多语言支持：
-组件会根据您的 frontmatter 自动翻译标签：
-- lang: zh → "定理"、"引理"、"定义" 等
-- lang: en → "Theorem"、"Lemma"、"Definition" 等
-- lang: fr → "Théorème"、"Lemme"、"Définition" 等
-支持更多语言！
--->
+## 证明与注记
 
-## 命题和注记
+<Theorem type="claim" title="Bolzano-Weierstrass 定理">
 
-<Theorem type="proposition">
-
-如果 $f$ 和 $g$ 在点 $a$ 处连续，则 $f + g$ 在点 $a$ 处也连续。
+$\mathbb{R}^n$ 中的有界序列必有收敛子列。
 
 </Theorem>
 
-<Theorem type="corollary">
+<Theorem type="proof">
 
-有限个连续函数的和仍然是连续函数。
+由 Bolzano-Weierstrass 定理，有界序列必含于某紧集。由序列紧性，存在收敛子列。$\square$
 
 </Theorem>
 
-<Theorem type="remark">
+<Theorem type="note">
 
-注意：此结果对于连续函数的乘积同样成立。
+这是实分析的基本结果，是证明许多收敛性定理的基础。
 
 </Theorem>
 
 ---
 layout: default
-title: 手动编号示例
-subtitle: 需要时覆盖自动编号
+title: 紧凑定理模式
 ---
 
-<!--
-自定义编号：
-有时您需要特定的编号（如 "3.1" 表示第三章第一个定理）。
-使用 `number` 属性覆盖自动编号。
+## 紧凑模式
 
-要完全隐藏编号，使用 `:autoNumber="false"`（注意冒号表示布尔值）
--->
+当内容较密集时，可使用紧凑模式减小间距。
+
+<Theorem type="theorem" :compact="true">
+
+对于 $n \geq 1$，有 $\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$。
+
+</Theorem>
+
+<Theorem type="proof" :compact="true">
+
+对 $n$ 归纳。$n=1$ 显然成立。设对 $n$ 成立，则 $\sum_{k=1}^{n+1} k = \sum_{k=1}^{n} k + (n+1) = \frac{n(n+1)}{2} + (n+1) = \frac{(n+1)(n+2)}{2}$。$\square$
+
+</Theorem>
+
+<Theorem type="corollary" :compact="true">
+
+前 $n$ 个正整数之和总是三角形数。
+
+</Theorem>
+
+---
+layout: default
+title: 自定义编号
+subtitle: 覆盖默认的自动编号
+---
 
 ## 自定义编号
 
-<Theorem type="theorem" number="3.1" title="特殊情况">
+<Theorem type="theorem" number="3.1" title="定理 3.1">
 
-有时我们需要使用特定的编号，比如 3.1 表示第三章第一个定理。
+有时需要指定编号，比如“3.1”表示第三章第一个定理。
 
 </Theorem>
 
 <Theorem type="theorem" :autoNumber="false" title="无编号定理">
 
-这个定理没有编号，因为设置了 `autoNumber={false}`。
+设置 `autoNumber={false}` 可禁用自动编号。
 
 </Theorem>
 
 ---
 layout: default
-title: 全局配置示例
-subtitle: 自定义主题行为
+title: 高亮组件
 ---
 
 <!--
-全局配置深入讲解：
-
-1. 多作者支持：
-   - 使用 `authors` 数组列出多个作者
-   - 每个作者包含：name、institution、email
-   - 页脚会根据作者数量自动调整格式
-
-2. 单作者模式：
-   - 只需使用 `author: 你的名字`
-   - 更简单的配置
-
-3. 页脚自定义：
-   - footerLeft: 覆盖左侧内容（通常显示作者）
-   - footerMiddle: 中间内容（会议、活动名称）
-   - footerRight: 自动显示页码（无需配置）
-
-4. 定理配置：
-   - theoremNumberFormat: 控制编号显示方式
-   - lang: 控制定理类型的语言
-
-提示：所有这些配置都在第一页的 frontmatter 中设置一次，
-然后自动应用于整个演示文稿！
+组件：<Highlight>
+类型：primary, success, warning, danger, info
 -->
 
-## 配置说明
+## 突出重点内容
 
-本演示使用的全局配置：
+使用 <Highlight>高亮组件</Highlight> 可以轻松标记关键内容。
 
-```yaml
+不同样式的适用场景：
+- <Highlight type="primary">主要高亮</Highlight> - 核心概念
+- <Highlight type="success">成功高亮</Highlight> - 积极要点
+- <Highlight type="warning">警告高亮</Highlight> - 注意事项
+- <Highlight type="danger">危险高亮</Highlight> - 关键警告
+- <Highlight type="info">信息高亮</Highlight> - 一般信息
+
+让幻灯片更<Highlight type="success">清晰易读</Highlight>，<Highlight type="primary">重点突出</Highlight>！
+
 ---
-theme: ./
-footerMiddle: Slidev 学术主题演示
-lang: zh
-theoremNumberFormat: '{number}'
-authors:
-  - name: 张三
-    institution: 某某大学
-    email: zhangsan@example.edu
-  - name: 李四
-    institution: 另一所大学
-    email: lisi@example.edu
+layout: section
 ---
-```
 
-这些设置会自动应用到所有幻灯片！
+# 第四部分：高级功能
+
+## 字体大小自定义与自动居中布局
+
+---
+fontsize:
+  body: 20px
+  h1: 48px
+  h2: 36px
+  h3: 28px
+---
+
+<!--
+功能：按页自定义字体大小
+-->
+
+# 这是 48px 的 H1
+
+## 这是 36px 的 H2
+
+### 这是 28px 的 H3
+
+本页没有指定 `layout`，但依然：
+
+- 自动使用默认布局
+- 显示带作者信息的页脚
+- **正文 20px，H1 48px，H2 36px，H3 28px**
+
+这证明了**字体大小配置完全生效**！
+
+---
+layout: auto-center
+title: 自动居中布局
+subtitle: 自动调整字体大小
+---
+
+<!--
+布局：auto-center
+用途：自动调整字体大小并垂直居中
+-->
+
+## 自动居中内容
+
+此布局自动：
+
+- 调整字体大小以适应内容
+- 垂直居中内容
+- 在居中块内保持文本左对齐
+
+### 使用场景示例
+
+1. 内容长度不同的幻灯片
+2. 需要"填充"空间的内容
+3. 来自数据源的动态内容
+
+---
+layout: auto-center
+---
+
+## 少量内容测试
+
+只有几行文字。
+
+内容较少时，字体会自动放大。
+
+---
+layout: auto-center
+title: 大量内容测试
+---
+
+## 本页内容较多
+
+- 要点 1：Lorem ipsum dolor sit amet
+- 要点 2：Consectetur adipiscing elit
+- 要点 3：Sed do eiusmod tempor incididunt
+- 要点 4：Ut labore et dolore magna aliqua
+- 要点 5：Ut enim ad minim veniam
+- 要点 6：Quis nostrud exercitation ullamco
+- 要点 7：Laboris nisi ut aliquip ex ea commodo consequat
+
+字体会自动缩小以容纳所有内容，同时保持居中展示。
 
 ---
 layout: default
-title: 更多功能
-subtitle: 探索其他可能性
+title: 学术引用
+subtitle: 学术文献引用支持
 ---
 
 <!--
-其他实用功能：
-
-1. 页面级覆盖：
-   - 任何幻灯片都可以覆盖 title、subtitle、header
-   - 使用 footerLeft 可以为特定幻灯片自定义页脚
-
-2. 代码高亮：
-   - 支持多种编程语言
-   - 自动语法高亮
-   - 可以使用行号和高亮特定行
-
-3. 数学公式：
-   - 内联公式：$a^2 + b^2 = c^2$
-   - 块级公式：$$\int_a^b f(x)dx$$
-   - 使用 KaTeX 渲染
-
-4. Vue 组件：
-   - 可以嵌入自定义 Vue 组件
-   - Theorem 组件就是一个例子
-   - 可以创建交互式内容
+功能：使用 BibTeX 的学术引用
+- 在 frontmatter 中配置：bibFile, bibStyle
+- @citekey 用于括号引用 (Author, Year)
+- !@citekey 用于叙述性引用：Author (Year)
+- [[bibliography]] 标记生成参考文献列表
 -->
 
-## 实用技巧
+## 引用示例
 
-### 代码高亮
-```python {2,4-6}
-def fibonacci(n):
-    if n <= 1:  # 这行会被高亮
-        return n
-    else:       # 这几行也会被高亮
-        return fibonacci(n-1) + fibonacci(n-2)
-```
+深度学习已经彻底改变了许多领域 @lecun2015deep。
 
-### 数学公式
-内联公式：$E = mc^2$
+!@vaswani2017attention 提出了 Transformer 架构，已成为自然语言处理的基础。
 
-块级公式：
-$$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$$
+多项研究对这一领域做出了贡献 @smith2023deep @wang2022attention。
+
+如需全面了解，请参阅 @bishop2006pattern。
+
+---
+layout: references
+---
+
+<!--
+布局：references
+用途：显示参考文献列表
+
+对于较长的参考文献列表，可以分页显示：
+- perPage: 每页显示的参考文献数量
+- page: 当前页码 (1, 2, 3, ...)
+
+第 1 页示例：
+layout: references
+perPage: 3
+page: 1
+
+第 2 页示例：
+layout: references
+perPage: 3
+page: 2
+title: "参考文献（续）"
+-->
+
+[[bibliography]]
 
 ---
 layout: center
 ---
 
-<!--
-结束幻灯片
-这是一个使用 center 布局的简单结束幻灯片。
-非常适合"谢谢"、问答或联系信息。
--->
-
-## 谢谢！
+## 谢谢观看！
 
 有问题吗？
 
-[Slidev 文档](https://sli.dev) / [GitHub 仓库](https://github.com/slidevjs/slidev)
+[Slidev 文档](https://sli.dev) / [GitHub 仓库](https://github.com/jxpeng98/slidev-theme-scholarly)

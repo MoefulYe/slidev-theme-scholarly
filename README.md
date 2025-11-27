@@ -14,8 +14,11 @@ A professional presentation theme for [Slidev](https://github.com/slidevjs/slide
 - [Quick Start](#quick-start)
 - [Key Features](#key-features)
 - [Understanding Layouts](#understanding-layouts)
-- [Theorem Components](#theorem-components)
+- [New Layouts (v2.0)](#new-layouts-v20)
+- [Components](#components)
+- [Markdown Syntax Sugar](#markdown-syntax-sugar)
 - [Configuration Guide](#configuration-guide)
+- [VS Code Extension](#vs-code-extension)
 - [Examples](#examples)
 - [Contributing](#contributing)
 
@@ -134,7 +137,53 @@ Different layouts for different needs:
 - Image + text combinations
 - And more!
 
-### 🌍 Multi-Language
+### � 6 New Layouts (v2.0)
+
+New specialized layouts for academic presentations:
+
+- **focus** - Highlight key statements with icons
+- **compare** - Side-by-side comparisons
+- **bullets** - Enhanced list styling
+- **figure** - Academic figures with captions
+- **references** - Bibliography format
+- **end** - Thank you slide with contact info
+
+### 📚 Built-in Citation Support
+
+Automatic bibliography generation from BibTeX files:
+
+- Use `@citekey` for parenthetical citations
+- Use `!@citekey` for narrative citations
+- Supports APA, Harvard, Vancouver, IEEE, MLA, Chicago styles
+- Auto-generates bibliography from all cited references
+- No additional configuration required!
+
+### 🧩 Rich Components
+
+Built-in components for academic content:
+
+- **Theorem** - Theorems, lemmas, definitions
+- **Block** - Beamer-style colored blocks
+- **Steps** - Workflow visualization
+- **Keywords** - Keyword tags
+- **Columns** - Multi-column layouts
+- **Highlight** - Text highlighting
+
+### 📝 Markdown Syntax Sugar
+
+Use simple Markdown directives instead of HTML:
+
+```markdown
+:::block{type="info" title="Note"}
+Your content here
+:::
+
+:::theorem{type="theorem" title="Main Result"}
+Mathematical content
+:::
+```
+
+### �🌍 Multi-Language
 
 Supports English and Chinese (中文) for mathematical content.
 
@@ -421,9 +470,124 @@ layout: two-cols
 
 ---
 
-## Theorem Components
+## New Layouts (v2.0)
 
-### What are Theorem Components?
+### 1️⃣2️⃣ **focus** - Focused Statement
+
+**Use for:** Highlighting a key question or statement with visual emphasis
+
+```markdown
+---
+layout: focus
+color: blue
+icon: 🎯
+---
+
+# Research Question
+
+How can we improve accuracy while reducing cost?
+```
+
+**Props:** `color` (blue/green/amber/red/purple), `icon` (emoji)
+
+---
+
+### 1️⃣3️⃣ **compare** - Side-by-Side Comparison
+
+**Use for:** Comparing two methods, approaches, or concepts
+
+```markdown
+---
+layout: compare
+title: Traditional vs. Our Approach
+leftLabel: Traditional
+rightLabel: Ours
+leftColor: red
+rightColor: green
+---
+
+- High cost
+- Slow
+
+::right::
+
+- Low cost
+- Fast
+```
+
+---
+
+### 1️⃣4️⃣ **bullets** - Enhanced List
+
+**Use for:** Professional bullet point presentations
+
+```markdown
+---
+layout: bullets
+title: Key Points
+---
+
+## Main Findings
+
+- **Point 1** - Description
+- **Point 2** - Description
+```
+
+---
+
+### 1️⃣5️⃣ **figure** - Academic Figure
+
+**Use for:** Displaying figures with proper captions
+
+```markdown
+---
+layout: figure
+src: ./images/architecture.png
+caption: System architecture overview.
+label: "Figure 1:"
+title: Architecture
+---
+```
+
+---
+
+### 1️⃣6️⃣ **references** - Bibliography
+
+**Use for:** Reference/bibliography slides
+
+```markdown
+---
+layout: references
+---
+
+1. **Smith et al.** (2024). *Paper Title*. Journal.
+2. **Jones** (2023). *Another Paper*. Conference.
+```
+
+---
+
+### 1️⃣7️⃣ **end** - Thank You Slide
+
+**Use for:** Closing slide with contact information
+
+```markdown
+---
+layout: end
+email: you@university.edu
+website: https://example.com
+subtitle: Questions?
+---
+
+Thank you for your attention!
+```
+
+---
+
+## Components
+
+This theme provides several components for academic presentations.
+
+### Theorem Component
 
 In academic presentations, you often need to present formal statements like theorems, lemmas, or definitions. This theme provides a special component that:
 
@@ -503,6 +667,126 @@ This remark has no number.
 
 ---
 
+### Block Component
+
+Beamer-style colored blocks for highlighting content.
+
+```markdown
+<Block type="info" title="Important Note">
+Your content here...
+</Block>
+```
+
+**Types:** `default`, `info`, `success`, `warning`, `danger`, `example`, `alert`
+
+---
+
+### Steps Component
+
+Display workflow or process steps.
+
+```markdown
+<Steps :steps="[
+  { title: 'Step 1', description: 'Description' },
+  { title: 'Step 2', description: 'Description' }
+]" :activeStep="1" />
+```
+
+---
+
+### Keywords Component
+
+Display keyword tags.
+
+```markdown
+<Keywords :items="['ML', 'AI', 'Deep Learning']" color="blue" />
+```
+
+---
+
+### Columns Component
+
+Multi-column layouts.
+
+```markdown
+<Columns :cols="2" gap="2rem">
+Column 1 content
+<template #col2>
+Column 2 content
+</template>
+</Columns>
+```
+
+---
+
+### Highlight Component
+
+Inline text highlighting.
+
+```markdown
+This is <Highlight color="yellow">important</Highlight> text.
+```
+
+---
+
+### Cite Component
+
+Academic citations.
+
+```markdown
+<Cite author="Smith et al." year="2024" />
+```
+
+---
+
+## Markdown Syntax Sugar
+
+Use simple Markdown directives instead of HTML component syntax:
+
+### Block
+
+```markdown
+:::block{type="info" title="Note"}
+Content here
+:::
+```
+
+### Theorem
+
+```markdown
+:::theorem{type="theorem" title="Main Result"}
+For any $\epsilon > 0$...
+:::
+```
+
+### Columns (use +++ as separator)
+
+```markdown
+:::columns{cols="2"}
+Left column
++++
+Right column
+:::
+```
+
+### Other Directives
+
+```markdown
+:::highlight{color="yellow"}
+Highlighted text
+:::
+
+:::cite{author="Smith" year="2024"}
+showed that...
+:::
+
+:::steps{:steps='[{"title":"Step 1"}]'}:::
+
+:::keywords{:items='["AI", "ML"]' color="blue"}:::
+```
+
+---
+
 ## Configuration Guide
 
 ### Setting Up Your Presentation
@@ -576,6 +860,63 @@ theoremNumberFormat: '{number}'      # 1, 2, 3 (default)
 theoremNumberFormat: '({number})'    # (1), (2), (3)
 theoremNumberFormat: '[{number}]'    # [1], [2], [3]
 theoremNumberFormat: '{number}.'     # 1., 2., 3.
+```
+
+#### Citation Configuration
+
+Configure bibliography and citation style:
+
+```yaml
+---
+theme: scholarly
+bibFile: references.bib  # Path to your BibTeX file (default: references.bib)
+bibStyle: apa            # Citation style
+---
+```
+
+**Supported citation styles:**
+- `apa` (default)
+- `harvard1`
+- `vancouver`
+- `ieee`
+- `mla`
+- `chicago-author-date`
+
+**Using citations in your slides:**
+
+```markdown
+# Introduction
+
+Deep learning has revolutionized AI @lecun2015deep.
+
+!@vaswani2017attention introduced the Transformer architecture.
+
+---
+layout: references
+---
+
+[[bibliography]]
+```
+
+**Pagination for long reference lists:**
+
+```markdown
+---
+layout: references
+perPage: 5
+page: 1
+---
+
+[[bibliography]]
+
+---
+layout: references
+perPage: 5
+page: 2
+title: "References (continued)"
+---
+
+[[bibliography]]
 ```
 
 #### Font Size Configuration
@@ -730,6 +1071,50 @@ subtitle: With custom header
 
 # Content here
 ```
+
+---
+
+## VS Code Extension
+
+We provide a VS Code extension to boost your productivity when creating Slidev presentations with this theme.
+
+### Features
+
+- 🎯 **Activity Bar Panel** - Quick access to all layouts, components, and templates
+- ✨ **Code Snippets** - Type `ss-` or `scholarly-` to trigger snippets for layouts and components
+- 📝 **One-Click Insert** - Click any item in the panel to insert code at cursor position
+- 🚀 **New Presentation** - Create a new presentation with pre-configured template
+
+### Installation
+
+1. Download the `.vsix` file from the [vscode-extension](./vscode-extension/) folder
+2. In VS Code, press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
+3. Type "Install from VSIX" and select the downloaded file
+
+### Usage
+
+**Using Snippets:**
+
+Type the prefix in any Markdown file:
+
+```markdown
+ss-cover      # Insert cover layout
+ss-theorem    # Insert theorem component
+ss-block      # Insert block component
+scholarly-cite # Insert citation
+```
+
+**Using Activity Bar:**
+
+1. Click the Slidev Scholarly icon in the Activity Bar (left sidebar)
+2. Browse Layouts, Components, or Templates sections
+3. Click the `+` button next to any item to insert it
+
+### Available Snippets
+
+**Layouts:** `ss-cover`, `ss-default`, `ss-intro`, `ss-section`, `ss-center`, `ss-quote`, `ss-fact`, `ss-statement`, `ss-image-left`, `ss-image-right`, `ss-two-cols`, `ss-focus`, `ss-compare`, `ss-bullets`, `ss-figure`, `ss-references`, `ss-end`
+
+**Components:** `ss-theorem`, `ss-block`, `ss-steps`, `ss-keywords`, `ss-columns`, `ss-highlight`, `ss-cite`, `scholarly-bibliography`
 
 ---
 

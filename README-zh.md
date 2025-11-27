@@ -14,8 +14,11 @@
 - [快速开始](#快速开始)
 - [核心特性](#核心特性)
 - [理解布局系统](#理解布局系统)
-- [定理组件](#定理组件)
+- [新增布局 (v2.0)](#新增布局-v20)
+- [组件](#组件)
+- [Markdown 语法糖](#markdown-语法糖)
 - [配置指南](#配置指南)
+- [VS Code 插件](#vs-code-插件)
 - [示例](#示例)
 - [贡献指南](#贡献指南)
 
@@ -134,7 +137,53 @@ slidev slides.md
 - 图片 + 文字组合
 - 还有更多！
 
-### 🌍 多语言支持
+### � 6 个新增布局 (v2.0)
+
+专为学术演示设计的新布局：
+
+- **focus** - 用图标突出关键陈述
+- **compare** - 并排对比
+- **bullets** - 增强列表样式
+- **figure** - 带标题的学术图片
+- **references** - 参考文献格式
+- **end** - 带联系方式的致谢页
+
+### 📚 内置引用支持
+
+从 BibTeX 文件自动生成参考文献：
+
+- 使用 `@citekey` 进行括号引用
+- 使用 `!@citekey` 进行叙述性引用
+- 支持 APA、Harvard、Vancouver、IEEE、MLA、Chicago 样式
+- 自动从所有引用生成参考文献列表
+- 无需额外配置！
+
+### 🧩 丰富的组件
+
+内置学术内容组件：
+
+- **Theorem** - 定理、引理、定义
+- **Block** - Beamer 风格彩色块
+- **Steps** - 工作流程可视化
+- **Keywords** - 关键词标签
+- **Columns** - 多列布局
+- **Highlight** - 文本高亮
+
+### 📝 Markdown 语法糖
+
+使用简单的 Markdown 指令代替 HTML：
+
+```markdown
+:::block{type="info" title="提示"}
+这里是内容
+:::
+
+:::theorem{type="theorem" title="主要结果"}
+数学内容
+:::
+```
+
+### �🌍 多语言支持
 
 支持中文和英文的数学内容。
 
@@ -421,9 +470,124 @@ layout: two-cols
 
 ---
 
-## 定理组件
+## 新增布局 (v2.0)
 
-### 什么是定理组件？
+### 1️⃣2️⃣ **focus** - 聚焦陈述
+
+**用于：** 用视觉强调突出关键问题或陈述
+
+```markdown
+---
+layout: focus
+color: blue
+icon: 🎯
+---
+
+# 研究问题
+
+如何在降低成本的同时提高准确率？
+```
+
+**属性：** `color`（blue/green/amber/red/purple）, `icon`（表情符号）
+
+---
+
+### 1️⃣3️⃣ **compare** - 并排对比
+
+**用于：** 比较两种方法、方案或概念
+
+```markdown
+---
+layout: compare
+title: 传统 vs. 我们的方法
+leftLabel: 传统方法
+rightLabel: 我们的方法
+leftColor: red
+rightColor: green
+---
+
+- 成本高
+- 速度慢
+
+::right::
+
+- 成本低
+- 速度快
+```
+
+---
+
+### 1️⃣4️⃣ **bullets** - 增强列表
+
+**用于：** 专业的项目符号展示
+
+```markdown
+---
+layout: bullets
+title: 要点
+---
+
+## 主要发现
+
+- **要点 1** - 描述
+- **要点 2** - 描述
+```
+
+---
+
+### 1️⃣5️⃣ **figure** - 学术图片
+
+**用于：** 显示带有适当标题的图片
+
+```markdown
+---
+layout: figure
+src: ./images/architecture.png
+caption: 系统架构概览。
+label: "图 1："
+title: 架构
+---
+```
+
+---
+
+### 1️⃣6️⃣ **references** - 参考文献
+
+**用于：** 参考文献/书目幻灯片
+
+```markdown
+---
+layout: references
+---
+
+1. **张三等** (2024). *论文标题*. 期刊.
+2. **李四** (2023). *另一篇论文*. 会议.
+```
+
+---
+
+### 1️⃣7️⃣ **end** - 致谢页
+
+**用于：** 带有联系信息的结束幻灯片
+
+```markdown
+---
+layout: end
+email: you@university.edu
+website: https://example.com
+subtitle: 问题？
+---
+
+感谢您的聆听！
+```
+
+---
+
+## 组件
+
+本主题为学术演示提供多种组件。
+
+### 定理组件
 
 在学术演示中，你经常需要展示正式的陈述，如定理、引理或定义。这个主题提供了一个特殊的组件，可以：
 
@@ -503,6 +667,126 @@ $$a^2 + b^2 = c^2$$
 
 ---
 
+### Block 组件
+
+Beamer 风格的彩色内容块。
+
+```markdown
+<Block type="info" title="重要提示">
+这里是内容...
+</Block>
+```
+
+**类型：** `default`、`info`、`success`、`warning`、`danger`、`example`、`alert`
+
+---
+
+### Steps 组件
+
+显示工作流程或步骤。
+
+```markdown
+<Steps :steps="[
+  { title: '步骤 1', description: '说明' },
+  { title: '步骤 2', description: '说明' }
+]" :activeStep="1" />
+```
+
+---
+
+### Keywords 组件
+
+显示关键词标签。
+
+```markdown
+<Keywords :items="['机器学习', 'AI', '深度学习']" color="blue" />
+```
+
+---
+
+### Columns 组件
+
+多列布局。
+
+```markdown
+<Columns :cols="2" gap="2rem">
+第一列内容
+<template #col2>
+第二列内容
+</template>
+</Columns>
+```
+
+---
+
+### Highlight 组件
+
+内联文本高亮。
+
+```markdown
+这是 <Highlight color="yellow">重要的</Highlight> 文本。
+```
+
+---
+
+### Cite 组件
+
+学术引用。
+
+```markdown
+<Cite author="张三等" year="2024" />
+```
+
+---
+
+## Markdown 语法糖
+
+使用简单的 Markdown 指令代替 HTML 组件语法：
+
+### Block（信息块）
+
+```markdown
+:::block{type="info" title="提示"}
+这里是内容
+:::
+```
+
+### Theorem（定理）
+
+```markdown
+:::theorem{type="theorem" title="主要结果"}
+对于任意 $\epsilon > 0$...
+:::
+```
+
+### Columns（多列，使用 +++ 分隔）
+
+```markdown
+:::columns{cols="2"}
+左列
++++
+右列
+:::
+```
+
+### 其他指令
+
+```markdown
+:::highlight{color="yellow"}
+高亮文本
+:::
+
+:::cite{author="张三" year="2024"}
+显示...
+:::
+
+:::steps{:steps='[{"title":"步骤 1"}]'}:::
+
+:::keywords{:items='["AI", "ML"]' color="blue"}:::
+```
+
+---
+
 ## 配置指南
 
 ### 设置你的演示文稿
@@ -576,6 +860,64 @@ theoremNumberFormat: '{number}'      # 1, 2, 3（默认）
 theoremNumberFormat: '({number})'    # (1), (2), (3)
 theoremNumberFormat: '[{number}]'    # [1], [2], [3]
 theoremNumberFormat: '{number}.'     # 1., 2., 3.
+```
+
+#### 引用配置
+
+配置参考文献和引用样式：
+
+```yaml
+---
+theme: scholarly
+bibFile: references.bib  # BibTeX 文件路径（默认：references.bib）
+bibStyle: apa            # 引用样式
+---
+```
+
+**支持的引用样式：**
+
+- `apa`（默认）
+- `harvard1`
+- `vancouver`
+- `ieee`
+- `mla`
+- `chicago-author-date`
+
+**在幻灯片中使用引用：**
+
+```markdown
+# 引言
+
+深度学习已经革新了人工智能 @lecun2015deep。
+
+!@vaswani2017attention 提出了 Transformer 架构。
+
+---
+layout: references
+---
+
+[[bibliography]]
+```
+
+**长参考文献列表的分页：**
+
+```markdown
+---
+layout: references
+perPage: 5
+page: 1
+---
+
+[[bibliography]]
+
+---
+layout: references
+perPage: 5
+page: 2
+title: "参考文献（续）"
+---
+
+[[bibliography]]
 ```
 
 #### 字体大小配置
@@ -730,6 +1072,50 @@ subtitle: 带有自定义页眉
 
 # 这里是内容
 ```
+
+---
+
+## VS Code 插件
+
+我们提供了 VS Code 插件，以提高使用此主题创建 Slidev 演示文稿的效率。
+
+### 功能特点
+
+- 🎯 **侧边栏面板** - 快速访问所有布局、组件和模板
+- ✨ **代码片段** - 输入 `ss-` 或 `scholarly-` 触发布局和组件的代码片段
+- 📝 **一键插入** - 点击面板中的任何项目即可在光标位置插入代码
+- 🚀 **新建演示** - 创建带有预配置模板的新演示文稿
+
+### 安装方法
+
+1. 从 [vscode-extension](./vscode-extension/) 文件夹下载 `.vsix` 文件
+2. 在 VS Code 中，按 `Cmd+Shift+P`（Mac）或 `Ctrl+Shift+P`（Windows/Linux）
+3. 输入 "Install from VSIX" 并选择下载的文件
+
+### 使用方法
+
+**使用代码片段：**
+
+在任何 Markdown 文件中输入前缀：
+
+```markdown
+ss-cover      # 插入封面布局
+ss-theorem    # 插入定理组件
+ss-block      # 插入信息块组件
+scholarly-cite # 插入引用
+```
+
+**使用侧边栏：**
+
+1. 点击侧边栏（左侧）中的 Slidev Scholarly 图标
+2. 浏览布局、组件或模板部分
+3. 点击任何项目旁边的 `+` 按钮即可插入
+
+### 可用的代码片段
+
+**布局：** `ss-cover`、`ss-default`、`ss-intro`、`ss-section`、`ss-center`、`ss-quote`、`ss-fact`、`ss-statement`、`ss-image-left`、`ss-image-right`、`ss-two-cols`、`ss-focus`、`ss-compare`、`ss-bullets`、`ss-figure`、`ss-references`、`ss-end`
+
+**组件：** `ss-theorem`、`ss-block`、`ss-steps`、`ss-keywords`、`ss-columns`、`ss-highlight`、`ss-cite`、`scholarly-bibliography`
 
 ---
 
