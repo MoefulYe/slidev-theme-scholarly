@@ -2,7 +2,7 @@
   "name": "slidev-scholarly-snippets",
   "displayName": "Slidev Scholarly Snippets",
   "description": "Quick snippets and templates for Slidev Theme Scholarly",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "publisher": "jxpeng98",
   "engines": {
     "vscode": "^1.85.0"
