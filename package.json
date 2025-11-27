@@ -52,9 +52,9 @@
     "docs:serve": "vitepress serve docs",
     
     "version:sync": "bun -e \"const fs=require('fs');const pkg=require('./package.json');const ext=require('./vscode-extension/package.json');ext.version=pkg.version;fs.writeFileSync('./vscode-extension/package.json',JSON.stringify(ext,null,2)+'\\n');\"",
-    "bump:patch": "bun version patch && bun run version:sync",
-    "bump:minor": "bun version minor && bun run version:sync",
-    "bump:major": "bun version major && bun run version:sync",
+    "bump:patch": "bun pm version patch && bun run version:sync",
+    "bump:minor": "bun pm version minor && bun run version:sync",
+    "bump:major": "bun pm version major && bun run version:sync",
     
     "tag": "git tag v$(bun -e \"console.log(require('./package.json').version)\")",
     "tag:push": "git push && git push origin v$(bun -e \"console.log(require('./package.json').version)\")",
