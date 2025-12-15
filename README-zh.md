@@ -1088,8 +1088,8 @@ subtitle: 带有自定义页眉
 
 ### 安装方法
 
-1. 从 [vscode-extension](./vscode-extension/) 文件夹下载 `.vsix` 文件
-2. 在 VS Code 中，按 `Cmd+Shift+P`（Mac）或 `Ctrl+Shift+P`（Windows/Linux）
+1. 从 [GitHub发布页面](https://github.com/jxpeng98/slidev-theme-scholarly/releases) 下载 `.vsix` 文件
+2. 在 VS Code 中，按 `Cmd+Shift+P`（Mac）或 `Ctrl+Shift+P`（Windows/Linux）打开命令面板
 3. 输入 "Install from VSIX" 并选择下载的文件
 
 ### 使用方法

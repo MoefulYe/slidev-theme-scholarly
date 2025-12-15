@@ -17,7 +17,7 @@ We provide a VS Code extension to boost your productivity when creating Slidev p
 
 ### From VSIX File
 
-1. Download the `.vsix` file from the [vscode-extension](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/vscode-extension) folder
+1. Download the `.vsix` file from the [release page](https://github.com/jxpeng98/slidev-theme-scholarly/releases)
 2. In VS Code, press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
 3. Type "Extensions: Install from VSIX" and select the downloaded file
 4. Reload VS Code

@@ -17,8 +17,8 @@ title: VS Code 插件
 
 ### 从 VSIX 文件安装
 
-1. 从 [vscode-extension](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/vscode-extension) 文件夹下载 `.vsix` 文件
-2. 在 VS Code 中，按 `Cmd+Shift+P`（Mac）或 `Ctrl+Shift+P`（Windows/Linux）
+1. 从 [GitHub 发布页面](https://github.com/jxpeng98/slidev-theme-scholarly/releases) 下载 `.vsix` 文件
+2. 在 VS Code 中，按 `Cmd+Shift+P`（Mac）或 `Ctrl+Shift+P`（Windows/Linux）打开命令面板
 3. 输入 "Extensions: Install from VSIX" 并选择下载的文件
 4. 重新加载 VS Code
 
