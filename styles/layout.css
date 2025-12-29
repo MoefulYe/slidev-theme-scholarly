@@ -213,7 +213,7 @@ footer {
 
 .beamer-header {
   @apply w-full px-6;
-  background: var(--scholarly-header-bg, linear-gradient(to bottom, var(--slidev-theme-primary-light, var(--slidev-theme-primary, #1e3a5f)), var(--slidev-theme-primary, #1e3a5f)));
+  background: var(--scholarly-header-bg, var(--scholarly-chrome-bg));
   border-bottom: 2px solid var(--scholarly-accent);
   min-height: 50px;
   display: flex;
@@ -232,7 +232,8 @@ footer {
 }
 
 .header-title {
-  @apply text-white font-semibold;
+  @apply font-semibold;
+  color: var(--scholarly-chrome-fg);
   font-family: var(--scholarly-font-sans);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   font-size: 1.5rem;
@@ -240,11 +241,10 @@ footer {
 }
 
 .header-subtitle {
-  @apply text-white;
+  color: var(--scholarly-chrome-fg-muted);
   font-family: var(--scholarly-font-sans);
   font-size: 1.125rem;
   line-height: 1.5rem;
-  opacity: 0.9;
   margin-top: 0.125rem;
 }
 
@@ -263,17 +263,18 @@ footer {
 
 .beamer-footer-left {
   background: var(--scholarly-footer-left-bg, var(--slidev-theme-primary, #1e3a5f));
-  @apply text-white;
+  color: var(--scholarly-chrome-fg);
 }
 
 .beamer-footer-center {
   background: var(--scholarly-footer-center-bg, var(--slidev-theme-primary, #1e3a5f));
-  @apply text-white flex-1 text-center;
+  color: var(--scholarly-chrome-fg);
+  @apply flex-1 text-center;
 }
 
 .beamer-footer-right {
   background: var(--scholarly-footer-right-bg, var(--slidev-theme-primary, #1e3a5f));
-  @apply text-white;
+  color: var(--scholarly-chrome-fg);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -479,8 +480,8 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.section {
-  background: linear-gradient(135deg, var(--slidev-theme-primary, #1e3a5f) 0%, var(--slidev-theme-primary-light, var(--slidev-theme-primary, #1e3a5f)) 100%);
-  color: white;
+  background: var(--scholarly-section-bg);
+  color: var(--scholarly-section-fg);
 }
 
 .slidev-layout.section h1 {
@@ -488,8 +489,8 @@ footer {
   font-family: var(--scholarly-font-sans);
   font-weight: 700;
   margin-bottom: 1.5rem;
-  color: white;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--scholarly-section-fg);
+  border-bottom: 1px solid var(--scholarly-section-border);
   padding-bottom: 1rem;
 }
 
@@ -497,20 +498,20 @@ footer {
   font-size: var(--scholarly-h2-size, 1.75rem);
   font-weight: 600;
   margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--scholarly-section-fg-muted);
 }
 
 .slidev-layout.section h3 {
   font-size: var(--scholarly-h3-size, 1.5rem);
   font-weight: 600;
   margin-bottom: 0.75rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--scholarly-section-fg-muted);
 }
 
 .slidev-layout.section p {
   font-size: 1.25em;
   margin-bottom: 0.75rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--scholarly-section-fg-muted);
 }
 
 /* -------------------------------------------------------------------------- */

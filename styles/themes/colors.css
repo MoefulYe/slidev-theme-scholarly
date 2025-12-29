@@ -5,7 +5,7 @@
 /* -------------------------------------------------------------------------- */
 /* Classic Academic Blue (Default)                                           */
 /* -------------------------------------------------------------------------- */
-[data-color-theme="classic-blue"] {
+:root[data-color-theme="classic-blue"] {
   --slidev-theme-primary: #1e3a5f;
   --slidev-theme-primary-light: #2c5282;
   --scholarly-accent: #b8860b;
@@ -16,7 +16,7 @@
 /* -------------------------------------------------------------------------- */
 /* Oxford Burgundy                                                            */
 /* -------------------------------------------------------------------------- */
-[data-color-theme="oxford-burgundy"] {
+:root[data-color-theme="oxford-burgundy"] {
   --slidev-theme-primary: #862633;
   --slidev-theme-primary-light: #a23648;
   --scholarly-accent: #c5a572;
@@ -27,7 +27,7 @@
 /* -------------------------------------------------------------------------- */
 /* Cambridge Green                                                            */
 /* -------------------------------------------------------------------------- */
-[data-color-theme="cambridge-green"] {
+:root[data-color-theme="cambridge-green"] {
   --slidev-theme-primary: #00543c;
   --slidev-theme-primary-light: #006b4a;
   --scholarly-accent: #d4af37;
@@ -38,7 +38,7 @@
 /* -------------------------------------------------------------------------- */
 /* Princeton Orange                                                           */
 /* -------------------------------------------------------------------------- */
-[data-color-theme="princeton-orange"] {
+:root[data-color-theme="princeton-orange"] {
   --slidev-theme-primary: #e87722;
   --slidev-theme-primary-light: #f08f42;
   --scholarly-accent: #1c1c1c;
@@ -49,7 +49,7 @@
 /* -------------------------------------------------------------------------- */
 /* Yale Blue                                                                  */
 /* -------------------------------------------------------------------------- */
-[data-color-theme="yale-blue"] {
+:root[data-color-theme="yale-blue"] {
   --slidev-theme-primary: #0f4d92;
   --slidev-theme-primary-light: #286fb4;
   --scholarly-accent: #d4af37;
@@ -60,7 +60,7 @@
 /* -------------------------------------------------------------------------- */
 /* Monochrome Professional                                                    */
 /* -------------------------------------------------------------------------- */
-[data-color-theme="monochrome"] {
+:root[data-color-theme="monochrome"] {
   --slidev-theme-primary: #2d3748;
   --slidev-theme-primary-light: #4a5568;
   --scholarly-accent: #718096;
@@ -71,7 +71,7 @@
 /* -------------------------------------------------------------------------- */
 /* Warm Sepia                                                                 */
 /* -------------------------------------------------------------------------- */
-[data-color-theme="warm-sepia"] {
+:root[data-color-theme="warm-sepia"] {
   --slidev-theme-primary: #5d4037;
   --slidev-theme-primary-light: #795548;
   --scholarly-accent: #d4a574;
@@ -82,7 +82,7 @@
 /* -------------------------------------------------------------------------- */
 /* Nordic Blue                                                                */
 /* -------------------------------------------------------------------------- */
-[data-color-theme="nordic-blue"] {
+:root[data-color-theme="nordic-blue"] {
   --slidev-theme-primary: #2e5266;
   --slidev-theme-primary-light: #4a7c9c;
   --scholarly-accent: #d4a762;
@@ -93,7 +93,7 @@
 /* -------------------------------------------------------------------------- */
 /* High Contrast (Accessibility)                                              */
 /* -------------------------------------------------------------------------- */
-[data-color-theme="high-contrast"] {
+:root[data-color-theme="high-contrast"] {
   --slidev-theme-primary: #000000;
   --slidev-theme-primary-light: #333333;
   --scholarly-accent: #0066cc;

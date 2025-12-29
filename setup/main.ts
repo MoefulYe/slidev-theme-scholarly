@@ -38,6 +38,7 @@ type ThemeColorConfig = {
 type ThemeConfig = {
   colorTheme?: string
   fontTheme?: string
+  colorMode?: 'light' | 'dark'
 }
 
 const normalizeFontSize = (value: unknown): string | null => {
@@ -153,6 +154,7 @@ const applyThemePresets = (config: ThemeConfig | null | undefined) => {
 
   setAttr('data-color-theme', config?.colorTheme)
   setAttr('data-font-theme', config?.fontTheme)
+  setAttr('data-color-mode', config?.colorMode)
 }
 
 export default defineAppSetup(({ app, router }) => {
