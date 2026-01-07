@@ -7,49 +7,143 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release (e.g., 0.3.0)'
+        description: 'Version to release (e.g., 1.0.0 or 1.0.0-beta.1)'
         required: false
 
 jobs:
-  build:
+  check:
+    name: Detect release type
     runs-on: ubuntu-latest
-    
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      is_stable: ${{ steps.meta.outputs.is_stable }}
+      is_prerelease: ${{ steps.meta.outputs.is_prerelease }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: latest
+          node-version: '24'
+
+      - name: Parse tag and detect type
+        id: meta
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.version }}" ]; then
+            TAG_VERSION="${{ github.event.inputs.version }}"
+          else
+            TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          fi
+
+          PKG_VERSION="$(node -p "require('./vscode-extension/package.json').version")"
+
+          echo "Tag version:     $TAG_VERSION"
+          echo "Package version: $PKG_VERSION"
+
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::Tag version ($TAG_VERSION) does not match vscode-extension/package.json version ($PKG_VERSION)."
+            exit 1
+          fi
+
+          echo "version=$TAG_VERSION" >> "$GITHUB_OUTPUT"
+
+          # Stable: X.Y.Z (no prerelease segment)
+          # Prerelease: X.Y.Z-<pre> (has hyphen after patch)
+          if [[ "$TAG_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "is_stable=true" >> "$GITHUB_OUTPUT"
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+            echo "Detected: STABLE release"
+          elif [[ "$TAG_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$ ]]; then
+            echo "is_stable=false" >> "$GITHUB_OUTPUT"
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+            echo "Detected: PRE-RELEASE"
+          else
+            echo "::error::Tag version ($TAG_VERSION) is not valid semver."
+            exit 1
+          fi
+
+  build:
+    name: Build Extension
+    needs: check
+    runs-on: ubuntu-latest
+    outputs:
+      vsix_name: ${{ steps.package.outputs.vsix_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
 
       - name: Install dependencies
-        run: |
-          cd vscode-extension
-          bun install
+        working-directory: vscode-extension
+        run: npm install
 
       - name: Package Extension
+        id: package
+        working-directory: vscode-extension
         run: |
-          cd vscode-extension
-          bun run package
-
-      - name: Get version
-        id: version
-        run: |
-          VERSION=$(bun -e "console.log(require('./vscode-extension/package.json').version)")
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          npm run package
+          VSIX_FILE=$(ls *.vsix)
+          echo "vsix_name=$VSIX_FILE" >> "$GITHUB_OUTPUT"
 
       - name: Upload VSIX artifact
         uses: actions/upload-artifact@v4
         with:
-          name: slidev-scholarly-snippets-${{ steps.version.outputs.version }}
+          name: slidev-scholarly-snippets-${{ needs.check.outputs.version }}
           path: vscode-extension/*.vsix
 
-      - name: Create Release
-        if: startsWith(github.ref, 'refs/tags/')
+  release:
+    name: Release (stable)
+    needs: [check, build]
+    if: needs.check.outputs.is_stable == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download VSIX artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: slidev-scholarly-snippets-${{ needs.check.outputs.version }}
+          path: ./vsix
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: vscode-extension/*.vsix
+          files: ./vsix/*.vsix
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  prerelease:
+    name: Pre-release
+    needs: [check, build]
+    if: needs.check.outputs.is_prerelease == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download VSIX artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: slidev-scholarly-snippets-${{ needs.check.outputs.version }}
+          path: ./vsix
+
+      - name: Create GitHub Pre-release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./vsix/*.vsix
+          draft: false
+          prerelease: true
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
