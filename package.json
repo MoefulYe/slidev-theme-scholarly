@@ -52,6 +52,8 @@
     "screenshot": "node scripts/slidev.mjs export --format png",
     "export:theme-images": "node scripts/export-theme-images.mjs",
     "export:layout-screenshots": "node scripts/export-layout-screenshots.mjs",
+    "export:component-screenshots": "node scripts/export-component-screenshots.mjs",
+    "export:all-screenshots": "node scripts/export-all-screenshots.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
