@@ -5,6 +5,15 @@
 
 A professional presentation theme for [Slidev](https://github.com/slidevjs/slidev), designed specifically for academic presentations with LaTeX Beamer-inspired styling.
 
+> **⚠️ Major Upgrade in Progress**
+>
+> Upcoming versions may include breaking changes (dependencies, theme config, layouts/components). Please check the [Upgrade Notes](https://github.com/jxpeng98/slidev-theme-scholarly/blob/main/docs/en/guide/upgrade.md) before updating.
+>
+> **Try the pre-release:**
+> ```bash
+> npm i -D slidev-theme-scholarly@next
+> ```
+
 ---
 
 ## 📖 Table of Contents
@@ -106,16 +115,17 @@ Your browser will open automatically showing your presentation! Press the right 
 
 ### 🎨 Professional Design
 
-- Clean, academic aesthetic inspired by LaTeX Beamer
+- LaTeX Beamer-inspired design with Classic Academic Blue color scheme
 - Automatic header and footer on all slides
 - Consistent styling throughout your presentation
+- Enhanced typography with Palatino serif and Helvetica sans-serif pairing
 
 ### 👥 Multi-Author Support
 
 Display one author, two authors, or entire research teams elegantly:
 
 - 1 author: "Jane Smith"
-- 2 authors: "Jane Smith & John Doe"  
+- 2 authors: "Jane Smith & John Doe"
 - 3 authors: "Jane Smith, John Doe, Alice Brown"
 - 4+ authors: "Jane Smith et al."
 
@@ -127,26 +137,144 @@ Insert theorems, lemmas, definitions with automatic numbering:
 - Supports both English and Chinese
 - Customizable number format
 
-### 📐 11 Layout Options
+### 📐 18 Layout Options
 
-Different layouts for different needs:
+Layouts organized by function into four categories:
 
-- Title slides
-- Content slides
-- Section dividers
-- Image + text combinations
-- And more!
+**Structure Layouts** - Framework and organization:
 
-### � 6 New Layouts (v2.0)
+- cover, default, intro, section, center, auto-center, end
 
-New specialized layouts for academic presentations:
+**Content Layouts** - Information presentation:
 
-- **focus** - Highlight key statements with icons
-- **compare** - Side-by-side comparisons
-- **bullets** - Enhanced list styling
-- **figure** - Academic figures with captions
-- **references** - Bibliography format
-- **end** - Thank you slide with contact info
+- two-cols, image-left, image-right, bullets, figure, split-image
+
+**Emphasis Layouts** - Highlight and focus:
+
+- quote, fact, statement, focus
+
+**Academic Layouts** - Research-specific:
+
+- compare, methodology, results, timeline, agenda, acknowledgments, references
+
+### 🎨 Theme System
+
+Multiple color and typography themes for customization:
+
+- **9 Color Themes** - Classic Blue, Oxford Burgundy, Cambridge Green, Yale Blue, Princeton Orange, Nordic Blue, Monochrome, Warm Sepia, High Contrast
+- **8 Font Themes** - Classic (Palatino/Helvetica), Modern (Georgia/Source Sans), Traditional, Contemporary, Humanist, Technical, Elegant, Sans Default
+
+#### Theme Gallery
+
+Each theme includes cover, section, content, and quote layouts with distinct color palettes:
+
+<details open>
+<summary><b>Classic Blue (Default)</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/classic-blue/1.png" width="220" alt="Cover"/></td>
+    <td><img src="./images/themes/classic-blue/2.png" width="220" alt="Section"/></td>
+    <td><img src="./images/themes/classic-blue/3.png" width="220" alt="Content"/></td>
+    <td><img src="./images/themes/classic-blue/4.png" width="220" alt="Quote"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>Oxford Burgundy</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/oxford/1.png" width="220" alt="Cover"/></td>
+    <td><img src="./images/themes/oxford/2.png" width="220" alt="Section"/></td>
+    <td><img src="./images/themes/oxford/3.png" width="220" alt="Content"/></td>
+    <td><img src="./images/themes/oxford/4.png" width="220" alt="Quote"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>Cambridge Green</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/cambridge/1.png" width="220" alt="Cover"/></td>
+    <td><img src="./images/themes/cambridge/2.png" width="220" alt="Section"/></td>
+    <td><img src="./images/themes/cambridge/3.png" width="220" alt="Content"/></td>
+    <td><img src="./images/themes/cambridge/4.png" width="220" alt="Quote"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>Yale Blue</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/yale/1.png" width="220" alt="Cover"/></td>
+    <td><img src="./images/themes/yale/2.png" width="220" alt="Section"/></td>
+    <td><img src="./images/themes/yale/3.png" width="220" alt="Content"/></td>
+    <td><img src="./images/themes/yale/4.png" width="220" alt="Quote"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>Princeton Orange</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/princeton/1.png" width="220" alt="Cover"/></td>
+    <td><img src="./images/themes/princeton/2.png" width="220" alt="Section"/></td>
+    <td><img src="./images/themes/princeton/3.png" width="220" alt="Content"/></td>
+    <td><img src="./images/themes/princeton/4.png" width="220" alt="Quote"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>Nordic Blue</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/nordic/1.png" width="220" alt="Cover"/></td>
+    <td><img src="./images/themes/nordic/2.png" width="220" alt="Section"/></td>
+    <td><img src="./images/themes/nordic/3.png" width="220" alt="Content"/></td>
+    <td><img src="./images/themes/nordic/4.png" width="220" alt="Quote"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>Monochrome</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/monochrome/1.png" width="220" alt="Cover"/></td>
+    <td><img src="./images/themes/monochrome/2.png" width="220" alt="Section"/></td>
+    <td><img src="./images/themes/monochrome/3.png" width="220" alt="Content"/></td>
+    <td><img src="./images/themes/monochrome/4.png" width="220" alt="Quote"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>Warm Sepia</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/sepia/1.png" width="220" alt="Cover"/></td>
+    <td><img src="./images/themes/sepia/2.png" width="220" alt="Section"/></td>
+    <td><img src="./images/themes/sepia/3.png" width="220" alt="Content"/></td>
+    <td><img src="./images/themes/sepia/4.png" width="220" alt="Quote"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>High Contrast</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/high-contrast/1.png" width="220" alt="Cover"/></td>
+    <td><img src="./images/themes/high-contrast/2.png" width="220" alt="Section"/></td>
+    <td><img src="./images/themes/high-contrast/3.png" width="220" alt="Content"/></td>
+    <td><img src="./images/themes/high-contrast/4.png" width="220" alt="Quote"/></td>
+  </tr>
+</table>
+</details>
 
 ### 📚 Built-in Citation Support
 
@@ -192,7 +320,17 @@ Supports English and Chinese (中文) for mathematical content.
 ## Understanding Layouts
 
 **What is a layout?**
+
 A layout is like a slide template in PowerPoint. It determines how content is arranged on the slide.
+
+Layouts in this theme are organized into **four functional categories**:
+
+- **Structure** - Framework layouts (cover, default, intro, section, center, auto-center, end)
+- **Content** - Information presentation (two-cols, image-left/right, bullets, figure, split-image)
+- **Emphasis** - Highlighting and focus (quote, fact, statement, focus)
+- **Academic** - Research-specific (compare, methodology, results, timeline, agenda, acknowledgments, references)
+
+For detailed documentation of each layout, see the [online documentation](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs).
 
 ### How to Choose a Layout
 
@@ -208,7 +346,13 @@ If you don't specify a layout, Slidev uses the `default` layout automatically.
 
 ### Available Layouts
 
-#### 1️⃣ **cover** - Title Slide
+Layouts are organized into four functional categories:
+
+#### Structure Layouts
+
+These layouts provide the framework and organization for your presentation.
+
+##### 1️⃣ **cover** - Title Slide
 
 **Use for:** The first slide of your presentation
 
@@ -234,7 +378,7 @@ Subtitle or description
 
 ---
 
-#### 2️⃣ **default** - Standard Content
+##### 2️⃣ **default** - Standard Content
 
 **Use for:** Most of your slides (this is automatic!)
 
@@ -260,7 +404,7 @@ You can add text, images, code, math formulas, etc.
 
 ---
 
-#### 3️⃣ **intro** - Section Introduction
+##### 3️⃣ **intro** - Section Introduction
 
 **Use for:** Starting a new section of your talk
 
@@ -282,7 +426,7 @@ Let's discuss our approach
 
 ---
 
-#### 4️⃣ **section** - Chapter Divider
+##### 4️⃣ **section** - Chapter Divider
 
 **Use for:** Major transitions in your presentation
 
@@ -303,7 +447,7 @@ layout: section
 
 ---
 
-#### 5️⃣ **center** - Centered Content
+##### 5️⃣ **center** - Centered Content
 
 **Use for:** Short messages or key points
 
@@ -324,7 +468,11 @@ This is the most important point
 
 ---
 
-#### 6️⃣ **quote** - Quotations
+#### Content Layouts
+
+These layouts help you present information in various visual formats.
+
+##### 6️⃣ **two-cols** - Two Columns
 
 **Use for:** Highlighting quotes
 
@@ -1080,10 +1228,12 @@ We provide a VS Code extension to boost your productivity when creating Slidev p
 
 ### Features
 
-- 🎯 **Activity Bar Panel** - Quick access to all layouts, components, and templates
+- 🎯 **Activity Bar Panel** - Quick access to layouts, components, templates, themes, and references
 - ✨ **Code Snippets** - Type `ss-` or `scholarly-` to trigger snippets for layouts and components
-- 📝 **One-Click Insert** - Click any item in the panel to insert code at cursor position
+- 📝 **One-Click Insert/Apply** - Click items to insert content or update frontmatter
 - 🚀 **New Presentation** - Create a new presentation with pre-configured template
+- 🎨 **Theme Presets** - Apply `themeConfig.colorTheme` / `themeConfig.fontTheme`
+- 📚 **BibTeX References** - Completion, hover, and a References view for your `.bib` file
 
 ### Installation
 
@@ -1107,14 +1257,22 @@ scholarly-cite # Insert citation
 **Using Activity Bar:**
 
 1. Click the Slidev Scholarly icon in the Activity Bar (left sidebar)
-2. Browse Layouts, Components, or Templates sections
-3. Click the `+` button next to any item to insert it
+2. Browse Layouts, Components, Templates, Themes, or References sections
+3. Click an item (or the `+` button where available) to insert/apply
 
 ### Available Snippets
 
-**Layouts:** `ss-cover`, `ss-default`, `ss-intro`, `ss-section`, `ss-center`, `ss-quote`, `ss-fact`, `ss-statement`, `ss-image-left`, `ss-image-right`, `ss-two-cols`, `ss-focus`, `ss-compare`, `ss-bullets`, `ss-figure`, `ss-references`, `ss-end`
+Layouts are organized into four categories. Use category-specific prefixes or the shorter `ss-*` prefix:
 
-**Components:** `ss-theorem`, `ss-block`, `ss-steps`, `ss-keywords`, `ss-columns`, `ss-highlight`, `ss-cite`, `scholarly-bibliography`
+**Structure:** `ss-cover`, `ss-default`, `ss-intro`, `ss-section`, `ss-center`, `ss-auto-center`, `ss-end`
+
+**Content:** `ss-two-cols`, `ss-image-left`, `ss-image-right`, `ss-bullets`, `ss-figure`, `ss-split-image`
+
+**Emphasis:** `ss-quote`, `ss-fact`, `ss-statement`, `ss-focus`
+
+**Academic:** `ss-compare`, `ss-methodology`, `ss-results`, `ss-timeline`, `ss-agenda`, `ss-acknowledgments`, `ss-references`
+
+**Components:** `ss-theorem`, `ss-block`, `ss-steps`, `ss-steps-md`, `ss-keywords`, `ss-keywords-md`, `ss-columns`, `ss-columns-md`, `ss-highlight`, `ss-highlight-md`, `ss-cite` (`@citekey`), `ss-cite-comp`, `ss-cite-md`, `ss-theme-preview`, `scholarly-bibliography`
 
 ---
 
@@ -1167,11 +1325,11 @@ Questions?
 
 ### Example with All Features
 
-See [`example.md`](./example.md) for a complete demonstration of all layouts and features.
+See [`examples/example.md`](./examples/example.md) for a complete demonstration of all layouts and features.
 
 ### Chinese Example
 
-See [`example-zh.md`](./example-zh.md) for a complete example in Chinese (中文示例).
+See [`examples/example-zh.md`](./examples/example-zh.md) for a complete example in Chinese (中文示例).
 
 ---
 
@@ -1193,7 +1351,7 @@ npm run export
 npm run screenshot
 ```
 
-Edit `example.md` to test your changes.
+Edit `examples/example.md` to test your changes.
 
 ---
 
@@ -1579,7 +1737,7 @@ Each type has a distinct color scheme to help differentiate them visually in you
 ## Contributing
 
 - `npm install`
-- `npm run dev` to start theme preview of `example.md`
-- Edit the `example.md` and style to see the changes
+- `npm run dev` to start theme preview of `examples/example.md`
+- Edit the `examples/example.md` and style to see the changes
 - `npm run export` to generate the preview PDF
 - `npm run screenshot` to generate the preview PNG

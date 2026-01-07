@@ -5,6 +5,15 @@
 
 一个专为学术演示设计的 [Slidev](https://github.com/slidevjs/slidev) 专业主题，采用 LaTeX Beamer 风格的设计。
 
+> **⚠️ 即将发布重大升级**
+>
+> 接下来的版本可能包含不兼容变更（依赖版本、主题配置、布局/组件等），可能影响已有演示文稿。升级前请先阅读[重大升级说明](https://github.com/jxpeng98/slidev-theme-scholarly/blob/main/docs/zh/guide/upgrade.md)。
+>
+> **抢先体验预发布版本：**
+> ```bash
+> npm i -D slidev-theme-scholarly@next
+> ```
+
 ---
 
 ## 📖 目录
@@ -106,16 +115,17 @@ slidev slides.md
 
 ### 🎨 专业设计
 
-- 简洁的学术美学，灵感来自 LaTeX Beamer
+- LaTeX Beamer 风格设计,经典学术蓝配色
 - 所有幻灯片自动添加页眉和页脚
 - 整个演示文稿样式一致
+- 卓越排版：Palatino 衬线体与 Helvetica 无衬线体搭配
 
 ### 👥 多作者支持
 
 优雅地显示一位、两位或整个研究团队：
 
 - 1 位作者："张三"
-- 2 位作者："张三 & 李四"  
+- 2 位作者："张三 & 李四"
 - 3 位作者："张三，李四，王五"
 - 4+ 位作者："张三等"
 
@@ -127,17 +137,146 @@ slidev slides.md
 - 支持中文和英文
 - 可自定义编号格式
 
-### 📐 11 种布局选项
+### 📐 18 种布局选项
 
-针对不同需求的不同布局：
+布局按功能分为四个类别：
 
-- 标题幻灯片
-- 内容幻灯片
-- 章节分隔符
-- 图片 + 文字组合
-- 还有更多！
+**结构布局** - 框架和组织：
 
-### � 6 个新增布局 (v2.0)
+- cover、default、intro、section、center、auto-center、end
+
+**内容布局** - 信息呈现：
+
+- two-cols、image-left、image-right、bullets、figure、split-image
+
+**强调布局** - 突出和聚焦：
+
+- quote、fact、statement、focus
+
+**学术布局** - 研究专用：
+
+- compare、methodology、results、timeline、agenda、acknowledgments、references
+
+### 🎨 主题系统
+
+多种配色和字体主题供自定义：
+
+- **9 种配色主题** - 经典蓝、牛津酒红、剑桥绿、耶鲁蓝、普林斯顿橙、北欧蓝、单色、暖棕褐、高对比度
+- **8 种字体主题** - 经典（Palatino/Helvetica）、现代（Georgia/Source Sans）、传统、当代、人文主义、技术、优雅、无衬线默认
+
+#### 主题预览
+
+每个主题包含封面、章节、内容和引用布局，各有独特的配色方案：
+
+<details open>
+<summary><b>经典蓝（默认）</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/classic-blue/1.png" width="220" alt="封面"/></td>
+    <td><img src="./images/themes/classic-blue/2.png" width="220" alt="章节"/></td>
+    <td><img src="./images/themes/classic-blue/3.png" width="220" alt="内容"/></td>
+    <td><img src="./images/themes/classic-blue/4.png" width="220" alt="引用"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>牛津酒红</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/oxford/1.png" width="220" alt="封面"/></td>
+    <td><img src="./images/themes/oxford/2.png" width="220" alt="章节"/></td>
+    <td><img src="./images/themes/oxford/3.png" width="220" alt="内容"/></td>
+    <td><img src="./images/themes/oxford/4.png" width="220" alt="引用"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>剑桥绿</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/cambridge/1.png" width="220" alt="封面"/></td>
+    <td><img src="./images/themes/cambridge/2.png" width="220" alt="章节"/></td>
+    <td><img src="./images/themes/cambridge/3.png" width="220" alt="内容"/></td>
+    <td><img src="./images/themes/cambridge/4.png" width="220" alt="引用"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>耶鲁蓝</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/yale/1.png" width="220" alt="封面"/></td>
+    <td><img src="./images/themes/yale/2.png" width="220" alt="章节"/></td>
+    <td><img src="./images/themes/yale/3.png" width="220" alt="内容"/></td>
+    <td><img src="./images/themes/yale/4.png" width="220" alt="引用"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>普林斯顿橙</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/princeton/1.png" width="220" alt="封面"/></td>
+    <td><img src="./images/themes/princeton/2.png" width="220" alt="章节"/></td>
+    <td><img src="./images/themes/princeton/3.png" width="220" alt="内容"/></td>
+    <td><img src="./images/themes/princeton/4.png" width="220" alt="引用"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>北欧蓝</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/nordic/1.png" width="220" alt="封面"/></td>
+    <td><img src="./images/themes/nordic/2.png" width="220" alt="章节"/></td>
+    <td><img src="./images/themes/nordic/3.png" width="220" alt="内容"/></td>
+    <td><img src="./images/themes/nordic/4.png" width="220" alt="引用"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>单色</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/monochrome/1.png" width="220" alt="封面"/></td>
+    <td><img src="./images/themes/monochrome/2.png" width="220" alt="章节"/></td>
+    <td><img src="./images/themes/monochrome/3.png" width="220" alt="内容"/></td>
+    <td><img src="./images/themes/monochrome/4.png" width="220" alt="引用"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>暖棕褐</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/sepia/1.png" width="220" alt="封面"/></td>
+    <td><img src="./images/themes/sepia/2.png" width="220" alt="章节"/></td>
+    <td><img src="./images/themes/sepia/3.png" width="220" alt="内容"/></td>
+    <td><img src="./images/themes/sepia/4.png" width="220" alt="引用"/></td>
+  </tr>
+</table>
+</details>
+
+<details>
+<summary><b>高对比度</b></summary>
+<table>
+  <tr>
+    <td><img src="./images/themes/high-contrast/1.png" width="220" alt="封面"/></td>
+    <td><img src="./images/themes/high-contrast/2.png" width="220" alt="章节"/></td>
+    <td><img src="./images/themes/high-contrast/3.png" width="220" alt="内容"/></td>
+    <td><img src="./images/themes/high-contrast/4.png" width="220" alt="引用"/></td>
+  </tr>
+</table>
+</details>
+
+### 🆕 6 个新增布局 (v2.0)
 
 专为学术演示设计的新布局：
 
@@ -192,7 +331,17 @@ slidev slides.md
 ## 理解布局系统
 
 **什么是布局？**
+
 布局就像 PowerPoint 中的幻灯片模板。它决定了内容在幻灯片上的排列方式。
+
+本主题中的布局分为**四个功能类别**：
+
+- **结构布局** - 框架布局（cover、default、intro、section、center、auto-center、end）
+- **内容布局** - 信息呈现（two-cols、image-left/right、bullets、figure、split-image）
+- **强调布局** - 突出和聚焦（quote、fact、statement、focus）
+- **学术布局** - 研究专用（compare、methodology、results、timeline、agenda、acknowledgments、references）
+
+有关每个布局的详细文档，请参阅[在线文档](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs)。
 
 ### 如何选择布局
 
@@ -1113,7 +1262,15 @@ scholarly-cite # 插入引用
 
 ### 可用的代码片段
 
-**布局：** `ss-cover`、`ss-default`、`ss-intro`、`ss-section`、`ss-center`、`ss-quote`、`ss-fact`、`ss-statement`、`ss-image-left`、`ss-image-right`、`ss-two-cols`、`ss-focus`、`ss-compare`、`ss-bullets`、`ss-figure`、`ss-references`、`ss-end`
+布局分为四个类别。使用类别专用前缀或较短的 `ss-*` 前缀：
+
+**结构布局：** `ss-cover`、`ss-default`、`ss-intro`、`ss-section`、`ss-center`、`ss-auto-center`、`ss-end`
+
+**内容布局：** `ss-two-cols`、`ss-image-left`、`ss-image-right`、`ss-bullets`、`ss-figure`、`ss-split-image`
+
+**强调布局：** `ss-quote`、`ss-fact`、`ss-statement`、`ss-focus`
+
+**学术布局：** `ss-compare`、`ss-methodology`、`ss-results`、`ss-timeline`、`ss-agenda`、`ss-acknowledgments`、`ss-references`
 
 **组件：** `ss-theorem`、`ss-block`、`ss-steps`、`ss-keywords`、`ss-columns`、`ss-highlight`、`ss-cite`、`scholarly-bibliography`
 
@@ -1168,11 +1325,11 @@ layout: section
 
 ### 所有功能的示例
 
-查看 [`example-zh.md`](./example-zh.md) 了解所有布局和功能的完整演示。
+查看 [`examples/example-zh.md`](./examples/example-zh.md) 了解所有布局和功能的完整演示。
 
 ### 英文示例
 
-查看 [`example.md`](./example.md) 了解完整的英文示例。
+查看 [`examples/example.md`](./examples/example.md) 了解完整的英文示例。
 
 ---
 
@@ -1194,7 +1351,7 @@ npm run export
 npm run screenshot
 ```
 
-编辑 `example.md` 或 `example-zh.md` 来测试你的更改。
+编辑 `examples/example.md` 或 `examples/example-zh.md` 来测试你的更改。
 
 ---
 
