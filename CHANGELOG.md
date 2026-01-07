@@ -5,11 +5,57 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-beta.1] - 2026-01-07
+
+### ⚠️ Breaking Changes
+
+This is a major upgrade with breaking changes. Please read the [Upgrade Notes](https://github.com/jxpeng98/slidev-theme-scholarly/blob/main/docs/en/guide/upgrade.md) before updating.
+
+### Changed
+
+- **Node.js**: Now requires Node.js 20+
+- **Slidev**: Updated to Slidev v52+
+- **Release workflow**: Added prerelease support (`@next` dist-tag for beta versions)
+
+### Added
+
+- **Documentation**: Added upgrade notes for major version migration
+- **CI/CD**: Prerelease workflow for `vX.Y.Z-*` tags (published to `@next`)
+
+---
+
+## [0.1.2] - 2025-12-18
+
+### Added
+
+- **Quote Layout**: New `author` and `source` props for better attribution display
+- **Bullets Layout**: New `icon` prop for customizable bullet characters (default: ▸)
+- **Fact Layout**: Added `purple` color variant for consistency with Focus layout
+- **CSS Variables**: Added semantic tokens (`--scholarly-header-height`, `--scholarly-footer-height`, `--scholarly-accent-color`, `--scholarly-border-radius`)
+- **Booktabs Table**: Academic three-line table styling (三线表) - removes vertical lines, keeps horizontal rules
+- **Code Block Styling**: Improved with light gray background and monospace fonts
+- **Citation/Footnote Styling**: Visual hierarchy with smaller font size and gray color
+
+### Fixed
+
+- **VSCode Extension**: Corrected color options in snippets
+  - `fact`: Added `primary` as default color option
+  - `focus`: Added `primary` and `purple` color options
+  - `compare`: Fixed `amber` to `gray` to match actual layout implementation
+- **VSCode Extension**: Updated snippets with new layout props (quote, bullets, fact)
+- **VSCode Extension**: BibTeX Integration (v0.3.6)
+  - New **References** panel showing all citations from `.bib` file
+  - Auto-complete for `@citekey` from BibTeX file
+  - Hover preview showing citation details (author, title, year)
+  - Refresh button to reload references
+
+---
+
 ## [0.1.1] - 2025-10-30
 
 ### Fixed
 
-- Update `.npmrc` configuration for Bun package manager (removed pnpm-specific settings)
+- Update `.npmrc` configuration for pnpm package manager
 - Remove Slidev configuration settings from VSCode settings
 - Update language to English and translate example content
 
