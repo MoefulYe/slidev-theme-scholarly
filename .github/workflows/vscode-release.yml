@@ -115,6 +115,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: v${{ needs.check.outputs.version }}
           files: ./vsix/*.vsix
           draft: false
           prerelease: false
@@ -141,6 +142,7 @@ jobs:
       - name: Create GitHub Pre-release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: v${{ needs.check.outputs.version }}
           files: ./vsix/*.vsix
           draft: false
           prerelease: true
