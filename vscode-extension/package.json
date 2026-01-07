@@ -17,10 +17,23 @@
     "presentation",
     "academic",
     "scholarly",
-    "markdown"
+    "markdown",
+    "bibtex"
   ],
   "activationEvents": [
-    "onLanguage:markdown"
+    "onLanguage:markdown",
+    "onView:scholarly-layouts",
+    "onView:scholarly-components",
+    "onView:scholarly-templates",
+    "onView:scholarly-themes",
+    "onView:scholarly-references",
+    "onCommand:slidev-scholarly.newPresentation",
+    "onCommand:slidev-scholarly.applyThemePreset",
+    "onCommand:slidev-scholarly.setColorTheme",
+    "onCommand:slidev-scholarly.setFontTheme",
+    "onCommand:slidev-scholarly.setColorMode",
+    "onCommand:slidev-scholarly.refreshReferences",
+    "onCommand:slidev-scholarly.preview"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -49,6 +62,22 @@
           "id": "scholarly-templates",
           "name": "Templates",
           "icon": "$(file-code)"
+        },
+        {
+          "id": "scholarly-themes",
+          "name": "Themes",
+          "icon": "$(paintcan)"
+        },
+        {
+          "id": "scholarly-references",
+          "name": "References",
+          "icon": "$(book)"
+        },
+        {
+          "type": "webview",
+          "id": "scholarly-preview",
+          "name": "Preview",
+          "icon": "$(eye)"
         }
       ]
     },
@@ -72,18 +101,100 @@
         "command": "slidev-scholarly.insertCitation",
         "title": "Insert Citation",
         "icon": "$(quote)"
+      },
+      {
+        "command": "slidev-scholarly.insertBibKey",
+        "title": "Insert BibTeX Key",
+        "icon": "$(add)"
+      },
+      {
+        "command": "slidev-scholarly.applyThemePreset",
+        "title": "Apply Theme Preset",
+        "icon": "$(paintcan)"
+      },
+      {
+        "command": "slidev-scholarly.setColorTheme",
+        "title": "Set Color Theme",
+        "icon": "$(symbol-color)"
+      },
+      {
+        "command": "slidev-scholarly.setFontTheme",
+        "title": "Set Font Theme",
+        "icon": "$(symbol-font)"
+      },
+      {
+        "command": "slidev-scholarly.setColorMode",
+        "title": "Set Color Mode",
+        "icon": "$(color-mode)"
+      },
+      {
+        "command": "slidev-scholarly.refreshReferences",
+        "title": "Refresh References",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "slidev-scholarly.preview",
+        "title": "Preview",
+        "icon": "$(eye)"
       }
     ],
     "menus": {
+      "view/title": [
+        {
+          "command": "slidev-scholarly.refreshReferences",
+          "when": "view == scholarly-references",
+          "group": "navigation"
+        },
+        {
+          "command": "slidev-scholarly.applyThemePreset",
+          "when": "view == scholarly-themes",
+          "group": "navigation"
+        },
+        {
+          "command": "slidev-scholarly.setColorTheme",
+          "when": "view == scholarly-themes",
+          "group": "navigation"
+        },
+        {
+          "command": "slidev-scholarly.setFontTheme",
+          "when": "view == scholarly-themes",
+          "group": "navigation"
+        },
+        {
+          "command": "slidev-scholarly.setColorMode",
+          "when": "view == scholarly-themes",
+          "group": "navigation"
+        }
+      ],
       "view/item/context": [
         {
           "command": "slidev-scholarly.insertLayout",
-          "when": "view == scholarly-layouts",
-          "group": "inline"
+          "when": "view == scholarly-layouts && viewItem == layoutSnippet",
+          "group": "inline@1"
+        },
+        {
+          "command": "slidev-scholarly.preview",
+          "when": "view == scholarly-layouts && viewItem == layoutSnippet",
+          "group": "inline@2"
         },
         {
           "command": "slidev-scholarly.insertComponent",
-          "when": "view == scholarly-components",
+          "when": "view == scholarly-components && viewItem == componentSnippet",
+          "group": "inline@1"
+        },
+        {
+          "command": "slidev-scholarly.preview",
+          "when": "view == scholarly-components && viewItem == componentSnippet",
+          "group": "inline@2"
+        },
+        {
+          "command": "slidev-scholarly.preview",
+          "when": "view == scholarly-themes && viewItem =~ /^theme/",
+          "group": "inline"
+        },
+        {
+          "command": "slidev-scholarly.insertBibKey",
+          "when": "view == scholarly-references",
           "group": "inline"
         }
       ]
@@ -100,12 +211,13 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "bun run compile",
+    "sync-previews": "node ./scripts/sync-previews.mjs",
+    "vscode:prepublish": "pnpm run sync-previews && pnpm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext ts",
-    "package": "bunx @vscode/vsce package",
-    "publish": "bunx @vscode/vsce publish"
+    "package": "pnpm dlx @vscode/vsce package",
+    "publish": "pnpm dlx @vscode/vsce publish"
   },
   "devDependencies": {
     "@types/vscode": "^1.85.0",
