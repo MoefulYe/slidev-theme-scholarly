@@ -22,10 +22,6 @@ yarn global add @slidev/cli
 pnpm add -g @slidev/cli
 ```
 
-```bash [bun]
-bun install -g @slidev/cli
-```
-
 :::
 
 > **What does this do?** It installs Slidev on your computer so you can use it anywhere.
