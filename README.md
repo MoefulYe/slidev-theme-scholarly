@@ -5,6 +5,17 @@
 
 A professional presentation theme for [Slidev](https://github.com/slidevjs/slidev), designed specifically for academic presentations with LaTeX Beamer-inspired styling.
 
+
+> **⚠️ Major Upgrade in Progress**
+>
+> Upcoming versions may include breaking changes. Please check the [NPM Readme file](https://www.npmjs.com/package/slidev-theme-scholarly/v/1.0.0-beta.1) before updating.
+>
+> **Try the pre-release:**
+> ```bash
+> npm i -D slidev-theme-scholarly@next
+> ```
+
+
 ---
 
 ## 📖 Table of Contents
