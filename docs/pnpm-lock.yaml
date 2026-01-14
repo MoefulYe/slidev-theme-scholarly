@@ -9,13 +9,13 @@ importers:
   .:
     devDependencies:
       vitepress:
-        specifier: ^2.0.0-alpha.12
+        specifier: ^2.0.0-alpha.15
         version: 2.0.0-alpha.15(@algolia/client-search@5.46.2)(postcss@8.5.6)(react@19.2.3)(search-insights@2.17.3)
       vitepress-sidebar:
-        specifier: ^1.33.0
+        specifier: ^1.33.1
         version: 1.33.1
       vue:
-        specifier: ^3.5.22
+        specifier: ^3.5.26
         version: 3.5.26
 
 packages:
