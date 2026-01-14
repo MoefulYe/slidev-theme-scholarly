@@ -40,6 +40,7 @@ const vitePressOptions = {
           {
             text: 'Layouts',
             items: [
+              { text: 'Overview', link: '/en/layouts/' },
               { text: 'Structure', link: '/en/layouts/structure' },
               { text: 'Content', link: '/en/layouts/content' },
               { text: 'Emphasis', link: '/en/layouts/emphasis' },
@@ -84,6 +85,7 @@ const vitePressOptions = {
           {
             text: '布局',
             items: [
+              { text: '概览', link: '/zh/layouts/' },
               { text: '结构布局', link: '/zh/layouts/structure' },
               { text: '内容布局', link: '/zh/layouts/content' },
               { text: '强调布局', link: '/zh/layouts/emphasis' },
