@@ -8,10 +8,12 @@ title: VS Code 插件
 
 ## 功能特点
 
-- 🎯 **侧边栏面板** - 快速访问所有布局、组件和模板
+- 🎯 **侧边栏面板** - 快速访问布局、组件、模板、主题和参考文献
 - ✨ **代码片段** - 输入 `ss-` 或 `scholarly-` 触发布局和组件的代码片段
-- 📝 **一键插入** - 点击面板中的任何项目即可在光标位置插入代码
+- 📝 **一键插入/应用** - 点击面板中的项目即可插入内容或更新 frontmatter
 - 🚀 **新建演示** - 创建带有预配置模板的新演示文稿
+- 🎨 **主题预设** - 在 Themes 面板中一键应用 `themeConfig.colorTheme` / `themeConfig.fontTheme`
+- 📚 **BibTeX 参考文献** - 引用补全、悬浮预览，以及 References 面板浏览/插入 cite key
 
 ## 安装方法
 
@@ -40,11 +42,17 @@ scholarly-cite # 插入引用
 ### 使用侧边栏
 
 1. 点击侧边栏（左侧）中的 **Slidev Scholarly** 图标
-2. 浏览三个部分：
-   - **Layouts（布局）** - 所有可用的幻灯片布局
+2. 浏览五个部分：
+   - **Layouts（布局）** - 按类别组织的幻灯片布局：
+     - *结构布局* - cover、default、intro、section、center、auto-center、end
+     - *内容布局* - two-cols、image-left/right、bullets、figure、split-image
+     - *强调布局* - quote、fact、statement、focus
+     - *学术布局* - compare、methodology、results、timeline、agenda、acknowledgments、references
    - **Components（组件）** - 内置 Vue 组件
    - **Templates（模板）** - 预制的演示文稿模板
-3. 点击任何项目旁边的 `+` 按钮即可在光标位置插入
+   - **Themes（主题）** - 应用主题预设（会更新 frontmatter）
+   - **References（参考文献）** - 浏览 BibTeX 条目并插入 cite key
+3. 点击任意项目（或有 `+` 的地方点击 `+`）即可插入/应用
 
 ### 创建新演示文稿
 
@@ -57,25 +65,51 @@ scholarly-cite # 插入引用
 
 ### 布局片段
 
+布局按四个类别组织。你可以使用类别前缀（`ss-structure-*`、`ss-content-*`、`ss-emphasis-*`、`ss-academic-*`）或简短的 `ss-*` 前缀。
+
+#### 结构布局
+
 | 前缀 | 描述 |
 |------|------|
 | `ss-cover` | 封面/标题幻灯片 |
 | `ss-default` | 默认内容幻灯片 |
 | `ss-intro` | 章节介绍 |
-| `ss-section` | 章节分隔符 |
+| `ss-section` | 章节分隔符（支持 `sectionMode: dark/light`） |
 | `ss-center` | 居中内容 |
-| `ss-quote` | 引用布局 |
-| `ss-fact` | 单个事实/统计数据 |
-| `ss-statement` | 重要陈述 |
+| `ss-auto-center` | 自动调整的居中内容 |
+| `ss-end` | 致谢/结束幻灯片 |
+
+#### 内容布局
+
+| 前缀 | 描述 |
+|------|------|
+| `ss-two-cols` | 双栏布局 |
 | `ss-image-left` | 左图右文 |
 | `ss-image-right` | 左文右图 |
-| `ss-two-cols` | 双栏布局 |
-| `ss-focus` | 带图标的聚焦陈述 |
-| `ss-compare` | 并排对比 |
 | `ss-bullets` | 增强列表 |
 | `ss-figure` | 带标题的学术图片 |
+| `ss-split-image` | 并排图片对比 |
+
+#### 强调布局
+
+| 前缀 | 描述 |
+|------|------|
+| `ss-quote` | 带出处的引用 |
+| `ss-fact` | 单个事实/统计数据 |
+| `ss-statement` | 重要陈述 |
+| `ss-focus` | 带图标的聚焦陈述 |
+
+#### 学术布局
+
+| 前缀 | 描述 |
+|------|------|
+| `ss-compare` | 并排对比 |
+| `ss-methodology` | 研究方法 |
+| `ss-results` | 结果仪表板 |
+| `ss-timeline` | 研究时间线 |
+| `ss-agenda` | 议程概览 |
+| `ss-acknowledgments` | 致谢幻灯片 |
 | `ss-references` | 参考文献幻灯片 |
-| `ss-end` | 致谢/结束幻灯片 |
 
 ### 组件片段
 
@@ -84,11 +118,35 @@ scholarly-cite # 插入引用
 | `ss-theorem` | 定理/引理/定义 |
 | `ss-block` | Beamer 风格彩色块 |
 | `ss-steps` | 工作流程/步骤 |
+| `ss-steps-md` | 工作流程/步骤（Markdown 语法糖） |
 | `ss-keywords` | 关键词标签 |
+| `ss-keywords-md` | 关键词标签（Markdown 语法糖） |
 | `ss-columns` | 多列布局 |
+| `ss-columns-md` | 多列布局（Markdown 语法糖） |
 | `ss-highlight` | 文本高亮 |
-| `ss-cite` | 内联引用 |
+| `ss-highlight-md` | 文本高亮（Markdown 语法糖） |
+| `ss-cite` | BibTeX 引用 `@citekey` |
+| `ss-cite-comp` | Cite 组件（非 BibTeX） |
+| `ss-cite-md` | Cite 组件（Markdown 语法糖） |
+| `ss-theme-preview` | ThemePreview 组件 |
 | `scholarly-bibliography` | 参考文献占位符 |
+
+### 主题预设片段
+
+| 前缀 | 描述 |
+|------|------|
+| `ss-theme-oxford` | Oxford 酒红 + Traditional 字体 |
+| `ss-theme-cambridge` | Cambridge 绿 + Elegant 字体 |
+| `ss-theme-yale` | Yale 蓝 + Classic 字体 |
+| `ss-theme-princeton` | Princeton 橙 + Modern 字体 |
+| `ss-theme-modern` | 单色 + Sans-default 字体 |
+
+### 实用片段
+
+| 前缀 | 描述 |
+|------|------|
+| `ss-frontmatter` | 完整的 frontmatter 配置 |
+| `ss-slide` / `---` | 幻灯片分隔符 |
 
 ## 使用技巧
 

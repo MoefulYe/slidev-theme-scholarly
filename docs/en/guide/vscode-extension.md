@@ -8,10 +8,12 @@ We provide a VS Code extension to boost your productivity when creating Slidev p
 
 ## Features
 
-- 🎯 **Activity Bar Panel** - Quick access to all layouts, components, and templates
+- 🎯 **Activity Bar Panel** - Quick access to layouts, components, templates, themes, and references
 - ✨ **Code Snippets** - Type `ss-` or `scholarly-` to trigger snippets for layouts and components
 - 📝 **One-Click Insert** - Click any item in the panel to insert code at cursor position
 - 🚀 **New Presentation** - Create a new presentation with pre-configured template
+- 🎨 **Theme Presets** - Apply `themeConfig.colorTheme` / `themeConfig.fontTheme` from the Themes view
+- 📚 **BibTeX References** - Completion, hover, and a References view for your `.bib` file
 
 ## Installation
 
@@ -40,11 +42,17 @@ Press `Tab` to move between placeholders in the inserted snippet.
 ### Using Activity Bar
 
 1. Click the **Slidev Scholarly** icon in the Activity Bar (left sidebar)
-2. Browse through three sections:
-   - **Layouts** - All available slide layouts
+2. Browse through five sections:
+   - **Layouts** - Slide layouts organized by category:
+     - *Structure* - cover, default, intro, section, center, auto-center, end
+     - *Content* - two-cols, image-left/right, bullets, figure, split-image
+     - *Emphasis* - quote, fact, statement, focus
+     - *Academic* - compare, methodology, results, timeline, agenda, acknowledgments, references
    - **Components** - Built-in Vue components
    - **Templates** - Pre-made presentation templates
-3. Click the `+` button next to any item to insert it at cursor position
+   - **Themes** - Apply theme presets (updates frontmatter)
+   - **References** - Browse BibTeX entries and insert cite keys
+3. Click an item (or the `+` button where available) to insert/apply
 
 ### Creating New Presentation
 
@@ -57,25 +65,51 @@ Press `Tab` to move between placeholders in the inserted snippet.
 
 ### Layout Snippets
 
+Layouts are organized into four categories. You can use category-specific prefixes (`ss-structure-*`, `ss-content-*`, `ss-emphasis-*`, `ss-academic-*`) or the shorter `ss-*` prefix.
+
+#### Structure Layouts
+
 | Prefix | Description |
 |--------|-------------|
 | `ss-cover` | Cover/title slide |
 | `ss-default` | Default content slide |
 | `ss-intro` | Section introduction |
-| `ss-section` | Section divider |
+| `ss-section` | Section divider (supports `sectionMode: dark/light`) |
 | `ss-center` | Centered content |
-| `ss-quote` | Quote layout |
-| `ss-fact` | Single fact/statistic |
-| `ss-statement` | Important statement |
+| `ss-auto-center` | Auto-adjusting centered content |
+| `ss-end` | Thank you/closing slide |
+
+#### Content Layouts
+
+| Prefix | Description |
+|--------|-------------|
+| `ss-two-cols` | Two-column layout |
 | `ss-image-left` | Image on left, text on right |
 | `ss-image-right` | Image on right, text on left |
-| `ss-two-cols` | Two-column layout |
-| `ss-focus` | Focused statement with icon |
-| `ss-compare` | Side-by-side comparison |
 | `ss-bullets` | Enhanced bullet list |
 | `ss-figure` | Academic figure with caption |
+| `ss-split-image` | Side-by-side image comparison |
+
+#### Emphasis Layouts
+
+| Prefix | Description |
+|--------|-------------|
+| `ss-quote` | Quote with author attribution |
+| `ss-fact` | Single fact/statistic |
+| `ss-statement` | Important statement |
+| `ss-focus` | Focused statement with icon |
+
+#### Academic Layouts
+
+| Prefix | Description |
+|--------|-------------|
+| `ss-compare` | Side-by-side comparison |
+| `ss-methodology` | Research methodology |
+| `ss-results` | Results dashboard |
+| `ss-timeline` | Research timeline |
+| `ss-agenda` | Agenda/overview |
+| `ss-acknowledgments` | Acknowledgments slide |
 | `ss-references` | Bibliography slide |
-| `ss-end` | Thank you/closing slide |
 
 ### Component Snippets
 
@@ -84,11 +118,35 @@ Press `Tab` to move between placeholders in the inserted snippet.
 | `ss-theorem` | Theorem/lemma/definition |
 | `ss-block` | Beamer-style colored block |
 | `ss-steps` | Workflow/process steps |
+| `ss-steps-md` | Workflow/process steps (Markdown syntax sugar) |
 | `ss-keywords` | Keyword tags |
+| `ss-keywords-md` | Keyword tags (Markdown syntax sugar) |
 | `ss-columns` | Multi-column layout |
+| `ss-columns-md` | Multi-column layout (Markdown syntax sugar) |
 | `ss-highlight` | Text highlighting |
-| `ss-cite` | Inline citation |
+| `ss-highlight-md` | Text highlighting (Markdown syntax sugar) |
+| `ss-cite` | BibTeX citation `@citekey` |
+| `ss-cite-comp` | Cite component (non-BibTeX) |
+| `ss-cite-md` | Cite component (Markdown syntax sugar) |
+| `ss-theme-preview` | ThemePreview component |
 | `scholarly-bibliography` | Bibliography placeholder |
+
+### Theme Preset Snippets
+
+| Prefix | Description |
+|--------|-------------|
+| `ss-theme-oxford` | Oxford Burgundy + Traditional fonts |
+| `ss-theme-cambridge` | Cambridge Green + Elegant fonts |
+| `ss-theme-yale` | Yale Blue + Classic fonts |
+| `ss-theme-princeton` | Princeton Orange + Modern fonts |
+| `ss-theme-modern` | Monochrome + Sans-default fonts |
+
+### Utility Snippets
+
+| Prefix | Description |
+|--------|-------------|
+| `ss-frontmatter` | Full frontmatter configuration |
+| `ss-slide` / `---` | Slide divider |
 
 ## Tips
 

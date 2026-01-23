@@ -27,14 +27,23 @@ title: 核心特性
 - 支持中文和英文
 - 可自定义编号格式
 
-## 📐 17 种布局选项
+## 📐 18 种布局选项
 
 针对不同需求的不同布局：
 
 - **基础**: cover, default, intro, section, center
 - **内容**: quote, fact, statement, two-cols
 - **图片**: image-left, image-right
-- **新增 (v2.0)**: focus, compare, bullets, figure, references, end
+- **高级 (v2.0)**: focus, compare, bullets, figure, references, end, auto-center
+
+## 📊 学术样式 (v0.1.2)
+
+专业的学术演示 CSS 样式：
+
+- **三线表** - 去除垂直线，仅保留水平线
+- **代码块** - 浅灰背景配等宽字体
+- **引用样式** - 缩小字号和灰色字体形成层次感
+- **引用块** - 左边框配斜体样式
 
 ## 📚 内置引用支持
 
@@ -80,3 +89,13 @@ title: 核心特性
 ## 🌍 多语言支持
 
 支持中文和英文的数学内容。
+
+## 🆕 v0.1.2 新功能
+
+| 功能 | 描述 |
+|------|------|
+| `quote` 布局 | 新增 `author` 和 `source` 属性 |
+| `bullets` 布局 | 新增 `icon` 属性自定义项目符号 |
+| `fact` 布局 | 新增 `purple` 紫色变体 |
+| 三线表 | 学术风格表格样式 |
+| 代码块 | 增强样式 |

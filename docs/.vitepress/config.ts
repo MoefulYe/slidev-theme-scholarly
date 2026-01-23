@@ -31,15 +31,20 @@ const vitePressOptions = {
             text: 'Guide',
             items: [
               { text: 'Quick Start', link: '/en/guide/quick-start' },
+              { text: 'Upgrade Notes', link: '/en/guide/upgrade' },
               { text: 'Features', link: '/en/guide/features' },
-              { text: 'Configurations', link: '/en/guide/configurations' }
+              { text: 'Configurations', link: '/en/guide/configurations' },
+              { text: 'Color & Typography Themes', link: '/en/guide/themes' }
             ]
           },
           {
             text: 'Layouts',
             items: [
-              { text: 'Basic Layouts', link: '/en/layouts/basic' },
-              { text: 'Advanced Layouts (v2.0)', link: '/en/layouts/advanced' }
+              { text: 'Overview', link: '/en/layouts/' },
+              { text: 'Structure', link: '/en/layouts/structure' },
+              { text: 'Content', link: '/en/layouts/content' },
+              { text: 'Emphasis', link: '/en/layouts/emphasis' },
+              { text: 'Academic', link: '/en/layouts/academic' }
             ]
           },
           {
@@ -71,15 +76,20 @@ const vitePressOptions = {
             text: '指南',
             items: [
               { text: '快速开始', link: '/zh/guide/quick-start' },
+              { text: '重大升级说明', link: '/zh/guide/upgrade' },
               { text: '主要功能', link: '/zh/guide/features' },
-              { text: '配置', link: '/zh/guide/configurations' }
+              { text: '配置', link: '/zh/guide/configurations' },
+              { text: '色彩与字体主题', link: '/zh/guide/themes' }
             ]
           },
           {
             text: '布局',
             items: [
-              { text: '基础布局', link: '/zh/layouts/basic' },
-              { text: '高级布局 (v2.0)', link: '/zh/layouts/advanced' }
+              { text: '概览', link: '/zh/layouts/' },
+              { text: '结构布局', link: '/zh/layouts/structure' },
+              { text: '内容布局', link: '/zh/layouts/content' },
+              { text: '强调布局', link: '/zh/layouts/emphasis' },
+              { text: '学术布局', link: '/zh/layouts/academic' }
             ]
           },
           {

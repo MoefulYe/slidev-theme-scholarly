@@ -5,22 +5,39 @@
 /* -------------------------------------------------------------------------- */
 
 :root {
-  /* default theme color */
-  /* can be overrided by using `themeConfig` option */
-  --slidev-theme-primary: #5d8392;
+  /* default theme color - Classic Academic Blue */
+  /* override via `themeConfig.colorTheme` presets or `themeColors` */
+  --slidev-theme-primary: #1e3a5f;
+  --slidev-theme-primary-light: #2c5282;
+  --scholarly-accent: #b8860b;
   --scholarly-font-size: 1rem;
-  
+
+  /* Typography - Academic font stacks */
+  --scholarly-font-serif: "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
+  --scholarly-font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --scholarly-bg-warm: #fdfbf7;
+  --scholarly-text-primary: #2d3748;
+
+  /* Semantic layout tokens */
+  --scholarly-header-height: 50px;
+  --scholarly-footer-height: 28px;
+  --scholarly-accent-color: var(--slidev-theme-primary);
+  --scholarly-border-radius: 0.5rem;
+
   /* Smart spacing variables - auto-adjust based on content */
   --scholarly-list-spacing: 0.5em;
   --scholarly-paragraph-spacing: 0.75em;
   --scholarly-block-spacing: 1rem;
-  
+
   /* Content density: compact | normal | relaxed */
   --scholarly-content-density: normal;
 }
 
 .slidev-layout {
   font-size: var(--scholarly-font-size, 1rem);
+  font-family: var(--scholarly-font-serif);
+  color: var(--scholarly-text-primary);
+  background-color: var(--scholarly-bg-warm);
 }
 
 /* Global smart list styling */
@@ -71,6 +88,100 @@
   --scholarly-block-spacing: 1.5rem;
 }
 
+/* -------------------------------------------------------------------------- */
+/* Academic Table Styling (Booktabs / 三线表)                                  */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: var(--scholarly-block-spacing) 0;
+  font-size: 0.95em;
+}
+
+.slidev-layout table thead th {
+  border-top: 2px solid #374151;
+  border-bottom: 1px solid #4b5563;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  background: transparent;
+}
+
+.slidev-layout table tbody td {
+  padding: 0.5rem 1rem;
+  border: none;
+  vertical-align: top;
+}
+
+.slidev-layout table tbody tr:last-child td {
+  border-bottom: 2px solid #374151;
+}
+
+/* Zebra striping for better readability (optional) */
+.slidev-layout table tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Code Block Styling                                                         */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout pre {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: var(--scholarly-block-spacing) 0;
+}
+
+.slidev-layout pre code {
+  font-family: 'Fira Code', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+  font-size: 0.875em;
+  line-height: 1.6;
+  background: transparent;
+  padding: 0;
+}
+
+/* Inline code */
+.slidev-layout :not(pre)>code {
+  font-family: 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.9em;
+  background: #f1f5f9;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  color: #1e293b;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Citations & Footnotes (Visual Hierarchy)                                   */
+/* -------------------------------------------------------------------------- */
+
+.slidev-layout .footnote,
+.slidev-layout .footnotes,
+.slidev-layout blockquote cite,
+.slidev-layout .citation,
+.slidev-layout sup {
+  font-size: 0.85em;
+  color: #6b7280;
+}
+
+.slidev-layout blockquote {
+  border-left: 3px solid var(--slidev-theme-primary, #1e3a5f);
+  padding-left: 1rem;
+  margin: var(--scholarly-block-spacing) 0;
+  font-style: italic;
+  color: #4b5563;
+}
+
+.slidev-layout blockquote cite {
+  display: block;
+  margin-top: 0.5rem;
+  font-style: normal;
+  font-size: 0.85em;
+}
+
 footer {
   @apply text-black;
   font-size: 0.875em;
@@ -102,7 +213,8 @@ footer {
 
 .beamer-header {
   @apply w-full px-6;
-  background: var(--scholarly-header-bg, linear-gradient(to bottom, rgba(93, 131, 146, 0.85), rgba(93, 131, 146, 0.75)));
+  background: var(--scholarly-header-bg, var(--scholarly-chrome-bg));
+  border-bottom: 2px solid var(--scholarly-accent);
   min-height: 50px;
   display: flex;
   flex-direction: column;
@@ -120,16 +232,19 @@ footer {
 }
 
 .header-title {
-  @apply text-white font-semibold;
+  @apply font-semibold;
+  color: var(--scholarly-chrome-fg);
+  font-family: var(--scholarly-font-sans);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   font-size: 1.5rem;
   line-height: 1.75rem;
 }
 
 .header-subtitle {
-  @apply text-white;
+  color: var(--scholarly-chrome-fg-muted);
+  font-family: var(--scholarly-font-sans);
   font-size: 1.125rem;
   line-height: 1.5rem;
-  opacity: 0.9;
   margin-top: 0.125rem;
 }
 
@@ -147,18 +262,19 @@ footer {
 }
 
 .beamer-footer-left {
-  background: var(--scholarly-footer-left-bg, linear-gradient(to right, #4a6b7a, rgba(74, 107, 122, 0.75)));
-  @apply text-white;
+  background: var(--scholarly-footer-left-bg, var(--slidev-theme-primary, #1e3a5f));
+  color: var(--scholarly-chrome-fg);
 }
 
 .beamer-footer-center {
-  background: var(--scholarly-footer-center-bg, linear-gradient(to bottom, rgba(93, 131, 146, 0.85), rgba(93, 131, 146, 0.75)));
-  @apply text-white flex-1 text-center;
+  background: var(--scholarly-footer-center-bg, var(--slidev-theme-primary, #1e3a5f));
+  color: var(--scholarly-chrome-fg);
+  @apply flex-1 text-center;
 }
 
 .beamer-footer-right {
-  background: var(--scholarly-footer-right-bg, linear-gradient(to left, #6a97a8, rgba(106, 151, 168, 0.75)));
-  @apply text-white;
+  background: var(--scholarly-footer-right-bg, var(--slidev-theme-primary, #1e3a5f));
+  color: var(--scholarly-chrome-fg);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -173,16 +289,16 @@ footer {
   @apply h-full;
 }
 
-.slidev-layout.center > div {
+.slidev-layout.center>div {
   @apply w-full;
 }
 
-.slidev-layout.quote > div,
-.slidev-layout.fact > div {
+.slidev-layout.quote>div,
+.slidev-layout.fact>div {
   max-width: 56rem;
 }
 
-.slidev-layout.statement > div {
+.slidev-layout.statement>div {
   max-width: 64rem;
 }
 
@@ -207,17 +323,23 @@ footer {
 
 .slidev-layout.cover h1 {
   @apply text-center;
+  font-family: var(--scholarly-font-sans);
   font-size: var(--scholarly-h1-size, 3rem);
   line-height: 1.333;
+  color: var(--slidev-theme-primary);
 }
 
-.slidev-layout.cover h1 + p {
+.slidev-layout.cover h1+p {
   @apply -mt-1 opacity-50 mb-4 text-center;
+  font-family: var(--scholarly-font-serif);
+  font-style: italic;
 }
 
 .slidev-layout.cover h2 {
   @apply text-center;
+  font-family: var(--scholarly-font-sans);
   font-size: var(--scholarly-h2-size, 2rem);
+  color: #4a5568;
 }
 
 .slidev-layout.cover h3 {
@@ -225,9 +347,9 @@ footer {
   font-weight: 600;
 }
 
-.slidev-layout.cover p + h2,
-.slidev-layout.cover ul + h2,
-.slidev-layout.cover table + h2 {
+.slidev-layout.cover p+h2,
+.slidev-layout.cover ul+h2,
+.slidev-layout.cover table+h2 {
   @apply mt-8;
 }
 
@@ -269,7 +391,7 @@ footer {
   line-height: 1.25;
 }
 
-.slidev-layout.intro h1 + p {
+.slidev-layout.intro h1+p {
   @apply -mt-2 opacity-50 mb-4;
 }
 
@@ -282,9 +404,9 @@ footer {
   font-weight: 600;
 }
 
-.slidev-layout.intro p + h2,
-.slidev-layout.intro ul + h2,
-.slidev-layout.intro table + h2 {
+.slidev-layout.intro p+h2,
+.slidev-layout.intro ul+h2,
+.slidev-layout.intro table+h2 {
   @apply mt-10;
 }
 
@@ -294,6 +416,10 @@ footer {
 
 .slidev-layout.default h1 {
   font-size: var(--scholarly-h1-size, 2.75rem);
+  font-family: var(--scholarly-font-sans);
+  color: var(--slidev-theme-primary);
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.5rem;
   line-height: 1.2;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -301,6 +427,8 @@ footer {
 
 .slidev-layout.default h2 {
   font-size: var(--scholarly-h2-size, 2rem);
+  font-family: var(--scholarly-font-sans);
+  color: var(--scholarly-text-primary);
   line-height: 1.3;
   font-weight: 600;
   margin-bottom: 0.75rem;
@@ -308,6 +436,7 @@ footer {
 
 .slidev-layout.default h3 {
   font-size: var(--scholarly-h3-size, 1.6rem);
+  font-family: var(--scholarly-font-sans);
   line-height: 1.35;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -350,27 +479,39 @@ footer {
 /* Layout: section                                                            */
 /* -------------------------------------------------------------------------- */
 
+.slidev-layout.section {
+  background: var(--scholarly-section-bg);
+  color: var(--scholarly-section-fg);
+}
+
 .slidev-layout.section h1 {
   font-size: var(--scholarly-h1-size, 3rem);
+  font-family: var(--scholarly-font-sans);
   font-weight: 700;
   margin-bottom: 1.5rem;
+  color: var(--scholarly-section-fg);
+  border-bottom: 1px solid var(--scholarly-section-border);
+  padding-bottom: 1rem;
 }
 
 .slidev-layout.section h2 {
   font-size: var(--scholarly-h2-size, 1.75rem);
   font-weight: 600;
   margin-bottom: 1rem;
+  color: var(--scholarly-section-fg-muted);
 }
 
 .slidev-layout.section h3 {
   font-size: var(--scholarly-h3-size, 1.5rem);
   font-weight: 600;
   margin-bottom: 0.75rem;
+  color: var(--scholarly-section-fg-muted);
 }
 
 .slidev-layout.section p {
   font-size: 1.25em;
   margin-bottom: 0.75rem;
+  color: var(--scholarly-section-fg-muted);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -430,12 +571,12 @@ footer {
   margin: 0 auto;
 }
 
-.slidev-layout.quote .quote-content > * {
+.slidev-layout.quote .quote-content>* {
   margin-bottom: 1.5rem;
 }
 
 .slidev-layout.quote .quote-content blockquote,
-.slidev-layout.quote .quote-content > p:first-child {
+.slidev-layout.quote .quote-content>p:first-child {
   font-size: 1.875rem;
   font-style: italic;
   line-height: 2.25em;
@@ -446,7 +587,7 @@ footer {
 }
 
 .slidev-layout.quote .quote-content cite,
-.slidev-layout.quote .quote-content > p:last-child {
+.slidev-layout.quote .quote-content>p:last-child {
   font-size: 1.25rem;
   font-style: normal;
   opacity: 0.8;
@@ -583,10 +724,10 @@ footer {
 .bibliography-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--slidev-theme-primary, #5d8392);
+  color: var(--slidev-theme-primary, #1e3a5f);
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--slidev-theme-primary, #5d8392);
+  border-bottom: 2px solid var(--slidev-theme-primary, #1e3a5f);
 }
 
 .csl-bib-body {
@@ -597,15 +738,15 @@ footer {
 
 .csl-entry {
   padding: 0.5rem 0.75rem;
-  background: linear-gradient(135deg, rgba(93, 131, 146, 0.05) 0%, rgba(93, 131, 146, 0.02) 100%);
-  border-left: 3px solid var(--slidev-theme-primary, #5d8392);
+  background: linear-gradient(135deg, rgba(30, 58, 95, 0.05) 0%, rgba(30, 58, 95, 0.02) 100%);
+  border-left: 3px solid var(--slidev-theme-primary, #1e3a5f);
   border-radius: 0 0.25rem 0.25rem 0;
   font-size: 0.9rem;
   line-height: 1.5;
 }
 
 .csl-entry i {
-  color: var(--slidev-theme-primary, #5d8392);
+  color: var(--slidev-theme-primary, #1e3a5f);
 }
 
 /* Numbered bibliography style */
@@ -624,7 +765,7 @@ footer {
   position: absolute;
   left: 0.75rem;
   font-weight: 600;
-  color: var(--slidev-theme-primary, #5d8392);
+  color: var(--slidev-theme-primary, #1e3a5f);
   font-size: 0.85em;
 }
 
@@ -646,7 +787,7 @@ footer {
 }
 
 .citation {
-  color: var(--slidev-theme-primary, #5d8392);
+  color: var(--slidev-theme-primary, #1e3a5f);
   font-weight: 500;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="slidev-layout bullets flex flex-col h-full">
+  <div class="slidev-layout bullets flex flex-col h-full" :style="bulletIconStyle">
     <ScholarlyHeader v-if="hasHeader" class="flex-shrink-0" />
     <div class="flex-grow bullets-container" :class="{ 'has-header': hasHeader }">
       <div class="bullets-content" :style="computedStyles">
@@ -17,11 +17,20 @@ import ScholarlyHeader from '../components/ScholarlyHeader.vue'
 import ScholarlyFooter from '../components/ScholarlyFooter.vue'
 import { useFontSizeStyles } from '../utils/useFontSizeStyles'
 
+const props = defineProps<{
+  /** Custom bullet icon character (default: ▸) */
+  icon?: string
+}>()
+
 const { $frontmatter } = useSlideContext()
 
 const hasHeader = computed(() => {
   return !!($frontmatter?.title || $frontmatter?.subtitle)
 })
+
+const bulletIconStyle = computed(() => ({
+  '--bullet-icon': `"${props.icon || '▸'}"`
+}))
 
 const computedStyles = useFontSizeStyles()
 </script>
@@ -46,7 +55,8 @@ const computedStyles = useFontSizeStyles()
 .bullets-content :deep(h1),
 .bullets-content :deep(h2) {
   margin-bottom: 1.5rem;
-  color: var(--slidev-theme-primary, #5d8392);
+  color: var(--slidev-theme-primary, #1e3a5f);
+  font-family: var(--scholarly-font-sans, sans-serif);
 }
 
 .bullets-content :deep(ul) {
@@ -64,10 +74,10 @@ const computedStyles = useFontSizeStyles()
 }
 
 .bullets-content :deep(ul > li::before) {
-  content: "▸";
+  content: var(--bullet-icon, "▸");
   position: absolute;
   left: 0;
-  color: var(--slidev-theme-primary, #5d8392);
+  color: var(--slidev-theme-primary, #1e3a5f);
   font-weight: bold;
 }
 
@@ -85,7 +95,7 @@ const computedStyles = useFontSizeStyles()
 
 .bullets-content :deep(ul ul > li::before) {
   content: "–";
-  color: #9ca3af;
+  color: #6b7280;
 }
 
 /* Ordered list styling */
@@ -111,7 +121,7 @@ const computedStyles = useFontSizeStyles()
   left: 0;
   width: 1.75rem;
   height: 1.75rem;
-  background: var(--slidev-theme-primary, #5d8392);
+  background: var(--slidev-theme-primary, #1e3a5f);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -123,6 +133,6 @@ const computedStyles = useFontSizeStyles()
 
 /* Strong text emphasis */
 .bullets-content :deep(strong) {
-  color: var(--slidev-theme-primary, #5d8392);
+  color: var(--slidev-theme-primary, #1e3a5f);
 }
 </style>

@@ -27,14 +27,23 @@ Insert theorems, lemmas, definitions with automatic numbering:
 - Supports both English and Chinese
 - Customizable number format
 
-## 📐 17 Layout Options
+## 📐 18 Layout Options
 
 Different layouts for different needs:
 
 - **Basic**: cover, default, intro, section, center
 - **Content**: quote, fact, statement, two-cols
 - **Image**: image-left, image-right
-- **New (v2.0)**: focus, compare, bullets, figure, references, end
+- **Advanced (v2.0)**: focus, compare, bullets, figure, references, end, auto-center
+
+## 📊 Academic Styling (v0.1.2)
+
+Professional CSS styling for academic presentations:
+
+- **Booktabs Tables** - Three-line table style (no vertical lines)
+- **Code Blocks** - Light gray background with monospace fonts
+- **Citation Styling** - Smaller font size with gray color for hierarchy
+- **Blockquotes** - Left border with italic styling
 
 ## 📚 Built-in Citation Support
 
@@ -80,3 +89,14 @@ Right column
 ## 🌍 Multi-Language
 
 Supports English and Chinese (中文) for mathematical content.
+
+## 🆕 New in v0.1.2
+
+| Feature | Description |
+|---------|-------------|
+| `quote` layout | New `author` and `source` props |
+| `bullets` layout | New `icon` prop for custom bullets |
+| `fact` layout | New `purple` color variant |
+| Booktabs tables | Academic three-line tables |
+| Code blocks | Enhanced styling |
+

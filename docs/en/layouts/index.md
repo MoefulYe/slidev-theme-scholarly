@@ -4,51 +4,76 @@ title: Layouts
 
 # Layouts
 
-Layouts define how content is arranged on each slide. Choose the right layout to present your content effectively.
+This theme provides 20+ professional layouts designed for academic presentations.
 
-## Available Layouts
+## Layout Categories
 
-### [Basic Layouts](./basic.md)
+| Category | Purpose | Layouts |
+|----------|---------|---------|
+| [Structure](./structure) | Organize presentation flow | cover, section, agenda, end |
+| [Content](./content) | Display information | default, two-cols, figure, split-image |
+| [Emphasis](./emphasis) | Highlight key points | center, focus, quote, statement, fact |
+| [Academic](./academic) | Research-specific content | intro, methodology, results, references |
 
-The essential layouts for most presentations:
+## Quick Reference
 
-| Layout | Use Case |
-|--------|----------|
-| `cover` | Title slide |
-| `default` | Standard content |
-| `intro` | Section introduction |
-| `section` | Chapter divider |
-| `center` | Centered content |
-| `quote` | Quotations |
-| `fact` | Key statistics |
-| `statement` | Important statements |
-| `two-cols` | Two-column content |
-| `image-left` | Image on left |
-| `image-right` | Image on right |
+### Structure Layouts
 
-### [Advanced Layouts (v2.0)](./advanced.md)
+- **cover** - Title slide with authors and affiliations
+- **section** - Section divider
+- **agenda** - Presentation outline
+- **end** - Closing slide
 
-New specialized layouts for academic presentations:
+### Content Layouts
 
-| Layout | Use Case |
-|--------|----------|
-| `focus` | Highlight key questions |
-| `compare` | Side-by-side comparison |
-| `bullets` | Enhanced bullet lists |
-| `figure` | Academic figures with captions |
-| `references` | Bibliography |
-| `end` | Thank you slide |
+- **default** - Standard content slide (automatic)
+- **two-cols** - Two-column layout
+- **figure** - Centered figure with caption
+- **split-image** - Content with side image
 
-## How to Use
+### Emphasis Layouts
 
-Specify a layout in the slide's frontmatter:
+- **center** - Centered content
+- **focus** - Single focused message
+- **quote** - Quotation display
+- **statement** - Key statement
+- **fact** - Fact/statistic highlight
+
+### Academic Layouts
+
+- **intro** - Introduction slide
+- **methodology** - Research methods
+- **results** - Research findings
+- **references** - Bibliography display
+- **acknowledgments** - Credits and thanks
+
+## Usage Example
 
 ```markdown
+---
+layout: cover
+---
+
+# My Presentation
+Your subtitle here
+
 ---
 layout: section
 ---
 
-# My Section Title
+# Section 1: Introduction
+
+---
+layout: two-cols
+---
+
+# Two Column Content
+
+::left::
+Content on the left
+
+::right::
+Content on the right
 ```
 
-If no layout is specified, `default` is used automatically.
+See individual layout category pages for detailed documentation.

@@ -6,13 +6,19 @@ VS Code extension for quickly inserting Slidev Theme Scholarly layouts and compo
 
 ### 🎯 Activity Bar Panel
 
-The extension adds a dedicated panel in the VS Code Activity Bar with three sections:
+The extension adds a dedicated panel in the VS Code Activity Bar with five sections:
 
-- **Layouts** - All available slide layouts
+- **Layouts** - Slide layouts organized by category:
+  - *Structure* - cover, default, intro, section, center, auto-center, end
+  - *Content* - two-cols, image-left/right, bullets, figure, split-image
+  - *Emphasis* - quote, fact, statement, focus
+  - *Academic* - compare, methodology, results, timeline, agenda, acknowledgments, references
 - **Components** - Vue components and syntax sugar
 - **Templates** - Quick-start presentation templates
+- **Themes** - Apply `themeConfig` presets (colorTheme / fontTheme)
+- **References** - Browse BibTeX entries and insert cite keys
 
-Click any item to insert it at the cursor position.
+Click any item to insert content at the cursor or update frontmatter.
 
 ### ⌨️ Snippets
 
@@ -20,26 +26,58 @@ Type the prefix and press `Tab` to expand snippets:
 
 #### Layout Snippets
 
+Layouts are organized into four categories. Use category-specific prefixes (`ss-structure-*`, `ss-content-*`, `ss-emphasis-*`, `ss-academic-*`) or the shorter `ss-*` prefix.
+
+**Structure Layouts**
+
 | Prefix | Description |
 |--------|-------------|
 | `ss-cover` | Cover slide |
-| `ss-section` | Section divider |
 | `ss-default` | Default content slide |
+| `ss-intro` | Introduction slide |
+| `ss-section` | Section divider |
 | `ss-center` | Centered content |
 | `ss-auto-center` | Auto-adjusting centered content |
+| `ss-end` | Closing slide |
+
+**Content Layouts**
+
+| Prefix | Description |
+|--------|-------------|
 | `ss-two-cols` | Two column layout |
 | `ss-image-left` | Image on left |
 | `ss-image-right` | Image on right |
 | `ss-bullets` | Bullet point list |
+| `ss-figure` | Image with caption |
+| `ss-split-image` | Side-by-side images |
+
+**Emphasis Layouts**
+
+| Prefix | Description |
+|--------|-------------|
 | `ss-quote` | Quote display |
 | `ss-fact` | Single statistic |
-| `ss-focus` | Focused message |
-| `ss-compare` | Side-by-side comparison |
-| `ss-figure` | Image with caption |
 | `ss-statement` | Bold statement |
+| `ss-focus` | Focused message |
+
+**Academic Layouts**
+
+| Prefix | Description |
+|--------|-------------|
+| `ss-compare` | Side-by-side comparison |
+| `ss-methodology` | Research methodology |
+| `ss-results` | Results dashboard |
+| `ss-timeline` | Research timeline |
+| `ss-agenda` | Agenda overview |
+| `ss-acknowledgments` | Acknowledgments slide |
 | `ss-references` | Bibliography |
-| `ss-end` | Closing slide |
+
+**Utility**
+
+| Prefix | Description |
+|--------|-------------|
 | `ss-frontmatter` | Full frontmatter config |
+| `ss-slide` | Slide divider |
 
 #### Component Snippets
 
@@ -54,9 +92,15 @@ Type the prefix and press `Tab` to expand snippets:
 | `ss-proof` | Proof block |
 | `ss-corollary` | Corollary block |
 | `ss-highlight` | Inline highlight |
+| `ss-highlight-md` | Inline highlight (Markdown syntax sugar) |
+| `ss-cite-comp` | Cite component (non-BibTeX) |
+| `ss-cite-md` | Cite component (Markdown syntax sugar) |
 | `ss-steps` | Steps component |
+| `ss-steps-md` | Steps component (Markdown syntax sugar) |
 | `ss-columns` | Columns component |
+| `ss-columns-md` | Columns component (Markdown syntax sugar) |
 | `ss-keywords` | Keywords component |
+| `ss-keywords-md` | Keywords component (Markdown syntax sugar) |
 | `ss-cite` | Parenthetical citation `@citekey` |
 | `ss-cite-n` | Narrative citation `!@citekey` |
 | `ss-bibliography` | Bibliography marker |
@@ -64,6 +108,7 @@ Type the prefix and press `Tab` to expand snippets:
 | `ss-math-b` | Math block |
 | `ss-fontsize` | Font size config |
 | `ss-comment` | Slide documentation comment |
+| `ss-theme-preview` | ThemePreview component |
 
 ## Installation
 
@@ -104,6 +149,9 @@ Start a new presentation by typing `ss-frontmatter`:
 theme: scholarly
 footerMiddle: Conference Name
 lang: en
+themeConfig:
+  colorTheme: classic-blue
+  fontTheme: classic
 bibFile: ./references.bib
 bibStyle: apa
 authors:

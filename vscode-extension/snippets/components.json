@@ -145,6 +145,41 @@
     ],
     "description": "Insert Highlight component"
   },
+  "Slidev Scholarly: Highlight (Syntax Sugar)": {
+    "prefix": ["scholarly-highlight-md", "ss-highlight-md"],
+    "body": [
+      ":::highlight{type=\"${1|primary,success,warning,danger,info|}\"}",
+      "${2:highlighted text}",
+      ":::",
+      "",
+      "$0"
+    ],
+    "description": "Insert Highlight component (Markdown syntax sugar)"
+  },
+  "Slidev Scholarly: Cite (Vue)": {
+    "prefix": ["scholarly-cite-comp", "ss-cite-comp"],
+    "body": [
+      "<Cite :inline=\"${1|true,false|}\">",
+      "",
+      "${2:Citation text here.}",
+      "",
+      "</Cite>",
+      "",
+      "$0"
+    ],
+    "description": "Insert Cite component"
+  },
+  "Slidev Scholarly: Cite (Syntax Sugar)": {
+    "prefix": ["scholarly-cite-md", "ss-cite-md"],
+    "body": [
+      ":::cite{:inline=\"${1|true,false|}\"}",
+      "${2:Citation text here.}",
+      ":::",
+      "",
+      "$0"
+    ],
+    "description": "Insert Cite component (Markdown syntax sugar)"
+  },
   "Slidev Scholarly: Steps": {
     "prefix": ["scholarly-steps", "ss-steps"],
     "body": [
@@ -157,6 +192,20 @@
       "$0"
     ],
     "description": "Insert Steps component"
+  },
+  "Slidev Scholarly: Steps (Syntax Sugar)": {
+    "prefix": ["scholarly-steps-md", "ss-steps-md"],
+    "body": [
+      ":::steps{:steps='[",
+      "  { title: \"${1:Step 1}\", description: \"${2:Description 1}\" },",
+      "  { title: \"${3:Step 2}\", description: \"${4:Description 2}\" },",
+      "  { title: \"${5:Step 3}\", description: \"${6:Description 3}\" }",
+      "]' :activeStep=\"${7:1}\"}",
+      ":::",
+      "",
+      "$0"
+    ],
+    "description": "Insert Steps component (Markdown syntax sugar)"
   },
   "Slidev Scholarly: Columns": {
     "prefix": ["scholarly-columns", "ss-columns"],
@@ -179,6 +228,21 @@
     ],
     "description": "Insert Columns component"
   },
+  "Slidev Scholarly: Columns (Syntax Sugar)": {
+    "prefix": ["scholarly-columns-md", "ss-columns-md"],
+    "body": [
+      ":::columns{columns=\"${1|2,3,4|}\" gap=\"${2:2rem}\" ratio=\"${3:1:1}\"}",
+      "${4:Column 1 content}",
+      "",
+      "+++",
+      "",
+      "${5:Column 2 content}",
+      ":::",
+      "",
+      "$0"
+    ],
+    "description": "Insert Columns component (Markdown syntax sugar)"
+  },
   "Slidev Scholarly: Keywords": {
     "prefix": ["scholarly-keywords", "ss-keywords"],
     "body": [
@@ -187,6 +251,16 @@
       "$0"
     ],
     "description": "Insert Keywords component"
+  },
+  "Slidev Scholarly: Keywords (Syntax Sugar)": {
+    "prefix": ["scholarly-keywords-md", "ss-keywords-md"],
+    "body": [
+      ":::keywords{:keywords='[\"${1:Keyword 1}\", \"${2:Keyword 2}\", \"${3:Keyword 3}\"]' color=\"${4|primary,blue,green,purple,gray|}\"}",
+      ":::",
+      "",
+      "$0"
+    ],
+    "description": "Insert Keywords component (Markdown syntax sugar)"
   },
   "Slidev Scholarly: Citation Parenthetical": {
     "prefix": ["scholarly-cite", "ss-cite", "@cite"],
@@ -256,5 +330,18 @@
       "-->"
     ],
     "description": "Insert slide documentation comment"
+  },
+  "Slidev Scholarly: Theme Preview": {
+    "prefix": ["scholarly-theme-preview", "ss-theme-preview"],
+    "body": [
+      "<ThemePreview colorTheme=\"${1|classic-blue,oxford-burgundy,cambridge-green,princeton-orange,yale-blue,nordic-blue,monochrome,warm-sepia,high-contrast|}\">",
+      "",
+      "${2:Content with theme colors applied.}",
+      "",
+      "</ThemePreview>",
+      "",
+      "$0"
+    ],
+    "description": "Insert ThemePreview component to preview a color theme"
   }
 }

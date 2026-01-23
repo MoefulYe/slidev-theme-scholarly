@@ -18,7 +18,7 @@ import { useFontSizeStyles } from '../utils/useFontSizeStyles'
 
 defineProps<{
   /** Accent color */
-  color?: 'primary' | 'blue' | 'green' | 'amber' | 'red'
+  color?: 'primary' | 'blue' | 'green' | 'amber' | 'red' | 'purple'
 }>()
 
 const computedStyles = useFontSizeStyles()
@@ -30,11 +30,18 @@ const computedStyles = useFontSizeStyles()
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  background-image: radial-gradient(circle at center, rgba(30, 58, 95, 0.03) 0%, transparent 70%);
 }
 
 .fact-content {
   text-align: center;
   position: relative;
+  padding: 3rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
 }
 
 .fact-number :deep(h1) {
@@ -46,6 +53,7 @@ const computedStyles = useFontSizeStyles()
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .fact-number :deep(p) {
@@ -63,38 +71,43 @@ const computedStyles = useFontSizeStyles()
 
 .fact-decoration {
   position: absolute;
-  bottom: -1rem;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
+  width: 80px;
   height: 4px;
   border-radius: 2px;
   background: linear-gradient(90deg, var(--fact-color-start), var(--fact-color-end));
 }
 
-/* Color variants */
+/* Color variants - Academic tones */
 .fact-primary {
-  --fact-color-start: #5d8392;
-  --fact-color-end: #4a6b7a;
+  --fact-color-start: #1e3a5f;
+  --fact-color-end: #2c5282;
 }
 
 .fact-blue {
-  --fact-color-start: #3b82f6;
-  --fact-color-end: #1d4ed8;
+  --fact-color-start: #2c5282;
+  --fact-color-end: #1a365d;
 }
 
 .fact-green {
-  --fact-color-start: #10b981;
-  --fact-color-end: #059669;
+  --fact-color-start: #276749;
+  --fact-color-end: #2f855a;
 }
 
 .fact-amber {
-  --fact-color-start: #f59e0b;
-  --fact-color-end: #d97706;
+  --fact-color-start: #975a16;
+  --fact-color-end: #744210;
 }
 
 .fact-red {
-  --fact-color-start: #ef4444;
-  --fact-color-end: #dc2626;
+  --fact-color-start: #9b2c2c;
+  --fact-color-end: #822727;
+}
+
+.fact-purple {
+  --fact-color-start: #553c9a;
+  --fact-color-end: #44337a;
 }
 </style>

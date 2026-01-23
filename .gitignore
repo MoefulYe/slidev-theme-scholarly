@@ -10,3 +10,4 @@ components.d.ts
 # vitepress
 docs/.vitepress/dist
 docs/.vitepress/cache
+docs/node_modules

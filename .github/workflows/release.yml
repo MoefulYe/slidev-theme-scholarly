@@ -6,7 +6,53 @@ on:
       - 'v*'
 
 jobs:
+  check:
+    name: Detect release type
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      is_stable: ${{ steps.meta.outputs.is_stable }}
+      is_prerelease: ${{ steps.meta.outputs.is_prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse tag and detect type
+        id: meta
+        run: |
+          set -euo pipefail
+
+          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+
+          echo "Tag version:     $TAG_VERSION"
+          echo "Package version: $PKG_VERSION"
+
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::Tag version ($TAG_VERSION) does not match package.json version ($PKG_VERSION)."
+            exit 1
+          fi
+
+          echo "version=$TAG_VERSION" >> "$GITHUB_OUTPUT"
+
+          # Stable: vX.Y.Z (no prerelease segment)
+          # Prerelease: vX.Y.Z-<pre> (has hyphen after patch)
+          if [[ "$TAG_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "is_stable=true" >> "$GITHUB_OUTPUT"
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+            echo "Detected: STABLE release"
+          elif [[ "$TAG_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$ ]]; then
+            echo "is_stable=false" >> "$GITHUB_OUTPUT"
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+            echo "Detected: PRE-RELEASE"
+          else
+            echo "::error::Tag version ($TAG_VERSION) is not valid semver."
+            exit 1
+          fi
+
   release:
+    name: Release (stable)
+    needs: check
+    if: needs.check.outputs.is_stable == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -29,18 +75,18 @@ jobs:
         run: npm run build
 
       - name: Extract release notes
-        id: extract_notes
         run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          
-          # Extract changelog for this version
+          VERSION="${{ needs.check.outputs.version }}"
+
           if [ -f CHANGELOG.md ]; then
-            sed -n "/## \[$VERSION\]/,/## \[/p" CHANGELOG.md | sed '1!d' > release_notes.md
-            if [ ! -s release_notes.md ]; then
-              echo "Release $VERSION" > release_notes.md
-            fi
-          else
+            awk -v ver="$VERSION" '
+              $0 ~ "^## \\[" ver "\\]" { found=1 }
+              found && printed && $0 ~ "^## \\[" && $0 !~ "^## \\[" ver "\\]" { exit }
+              found { print; printed=1 }
+            ' CHANGELOG.md > release_notes.md
+          fi
+
+          if [ ! -s release_notes.md ]; then
             echo "Release $VERSION" > release_notes.md
           fi
 
@@ -56,5 +102,61 @@ jobs:
 
       - name: Publish to NPM
         run: npm publish --access public
+        env:
+          NPM_CONFIG_PROVENANCE: true
+
+  prerelease:
+    name: Pre-release
+    needs: check
+    if: needs.check.outputs.is_prerelease == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Extract release notes
+        run: |
+          VERSION="${{ needs.check.outputs.version }}"
+
+          if [ -f CHANGELOG.md ]; then
+            awk -v ver="$VERSION" '
+              $0 ~ "^## \\[" ver "\\]" { found=1 }
+              found && printed && $0 ~ "^## \\[" && $0 !~ "^## \\[" ver "\\]" { exit }
+              found { print; printed=1 }
+            ' CHANGELOG.md > release_notes.md
+          fi
+
+          if [ ! -s release_notes.md ]; then
+            echo "Pre-release $VERSION" > release_notes.md
+          fi
+
+      - name: Create GitHub Pre-release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: release_notes.md
+          draft: false
+          prerelease: true
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Publish to NPM (dist-tag next)
+        run: npm publish --access public --tag next
         env:
           NPM_CONFIG_PROVENANCE: true

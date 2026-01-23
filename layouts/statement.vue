@@ -44,7 +44,7 @@ const computedStyles = useFontSizeStyles()
 .statement-quote-mark {
   font-size: 8rem;
   font-family: Georgia, serif;
-  color: var(--slidev-theme-primary, #5d8392);
+  color: var(--slidev-theme-primary, #1e3a5f);
   opacity: 0.15;
   position: absolute;
   top: -3rem;
@@ -73,7 +73,7 @@ const computedStyles = useFontSizeStyles()
 .statement-author {
   margin-top: 2rem;
   font-size: 1.25rem;
-  color: var(--slidev-theme-primary, #5d8392);
+  color: var(--slidev-theme-primary, #1e3a5f);
   font-weight: 500;
 }
 </style>

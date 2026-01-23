@@ -1,6 +1,11 @@
 {
+  "_comment_structure": "=== STRUCTURE LAYOUTS ===",
   "Slidev Scholarly: Cover Layout": {
-    "prefix": ["scholarly-cover", "ss-cover"],
+    "prefix": [
+      "scholarly-cover",
+      "ss-cover",
+      "ss-structure-cover"
+    ],
     "body": [
       "---",
       "layout: cover",
@@ -12,25 +17,14 @@
       "",
       "$0"
     ],
-    "description": "Insert cover slide layout"
-  },
-  "Slidev Scholarly: Section Layout": {
-    "prefix": ["scholarly-section", "ss-section"],
-    "body": [
-      "---",
-      "layout: section",
-      "---",
-      "",
-      "# ${1:Section Title}",
-      "",
-      "${2:Section subtitle}",
-      "",
-      "$0"
-    ],
-    "description": "Insert section divider layout"
+    "description": "[Structure] Title slide for your presentation"
   },
   "Slidev Scholarly: Default Layout": {
-    "prefix": ["scholarly-default", "ss-default"],
+    "prefix": [
+      "scholarly-default",
+      "ss-default",
+      "ss-structure-default"
+    ],
     "body": [
       "---",
       "layout: default",
@@ -44,10 +38,53 @@
       "",
       "$0"
     ],
-    "description": "Insert default content layout"
+    "description": "[Structure] Standard content slide"
+  },
+  "Slidev Scholarly: Intro Layout": {
+    "prefix": [
+      "scholarly-intro",
+      "ss-intro",
+      "ss-structure-intro"
+    ],
+    "body": [
+      "---",
+      "layout: intro",
+      "---",
+      "",
+      "# ${1:Introduction Title}",
+      "",
+      "${2:Introduction content.}",
+      "",
+      "$0"
+    ],
+    "description": "[Structure] Introduction slide"
+  },
+  "Slidev Scholarly: Section Layout": {
+    "prefix": [
+      "scholarly-section",
+      "ss-section",
+      "ss-structure-section"
+    ],
+    "body": [
+      "---",
+      "layout: section",
+      "sectionMode: ${1|dark,light|}",
+      "---",
+      "",
+      "# ${2:Section Title}",
+      "",
+      "${3:Section subtitle}",
+      "",
+      "$0"
+    ],
+    "description": "[Structure] Section divider (sectionMode: dark/light)"
   },
   "Slidev Scholarly: Center Layout": {
-    "prefix": ["scholarly-center", "ss-center"],
+    "prefix": [
+      "scholarly-center",
+      "ss-center",
+      "ss-structure-center"
+    ],
     "body": [
       "---",
       "layout: center",
@@ -59,10 +96,14 @@
       "",
       "$0"
     ],
-    "description": "Insert centered layout"
+    "description": "[Structure] Centered content"
   },
   "Slidev Scholarly: Auto Center Layout": {
-    "prefix": ["scholarly-auto-center", "ss-auto-center"],
+    "prefix": [
+      "scholarly-auto-center",
+      "ss-auto-center",
+      "ss-structure-auto-center"
+    ],
     "body": [
       "---",
       "layout: auto-center",
@@ -76,10 +117,36 @@
       "",
       "$0"
     ],
-    "description": "Insert auto-center layout"
+    "description": "[Structure] Auto-adjusting centered content"
   },
+  "Slidev Scholarly: End Layout": {
+    "prefix": [
+      "scholarly-end",
+      "ss-end",
+      "ss-structure-end"
+    ],
+    "body": [
+      "---",
+      "layout: end",
+      "email: ${1:your@email.com}",
+      "website: ${2:https://example.com}",
+      "subtitle: ${3:Questions?}",
+      "---",
+      "",
+      "${4:Thank you for your attention!}",
+      "",
+      "$0"
+    ],
+    "description": "[Structure] Closing slide with contact info"
+  },
+
+  "_comment_content": "=== CONTENT LAYOUTS ===",
   "Slidev Scholarly: Two Columns Layout": {
-    "prefix": ["scholarly-two-cols", "ss-two-cols"],
+    "prefix": [
+      "scholarly-two-cols",
+      "ss-two-cols",
+      "ss-content-two-cols"
+    ],
     "body": [
       "---",
       "layout: two-cols",
@@ -99,10 +166,14 @@
       "",
       "$0"
     ],
-    "description": "Insert two columns layout"
+    "description": "[Content] Two column layout"
   },
   "Slidev Scholarly: Image Left Layout": {
-    "prefix": ["scholarly-image-left", "ss-image-left"],
+    "prefix": [
+      "scholarly-image-left",
+      "ss-image-left",
+      "ss-content-image-left"
+    ],
     "body": [
       "---",
       "layout: image-left",
@@ -117,10 +188,14 @@
       "",
       "$0"
     ],
-    "description": "Insert image-left layout"
+    "description": "[Content] Image on left, content on right"
   },
   "Slidev Scholarly: Image Right Layout": {
-    "prefix": ["scholarly-image-right", "ss-image-right"],
+    "prefix": [
+      "scholarly-image-right",
+      "ss-image-right",
+      "ss-content-image-right"
+    ],
     "body": [
       "---",
       "layout: image-right",
@@ -135,48 +210,106 @@
       "",
       "$0"
     ],
-    "description": "Insert image-right layout"
+    "description": "[Content] Content on left, image on right"
   },
   "Slidev Scholarly: Bullets Layout": {
-    "prefix": ["scholarly-bullets", "ss-bullets"],
+    "prefix": [
+      "scholarly-bullets",
+      "ss-bullets",
+      "ss-content-bullets"
+    ],
     "body": [
       "---",
       "layout: bullets",
       "title: ${1:Bullet Points}",
       "subtitle: ${2:Key points}",
+      "icon: \"${3:\u25b8}\"",
       "---",
       "",
-      "## ${3:Main Topic}",
+      "## ${4:Main Topic}",
       "",
-      "- ${4:First point}",
-      "- ${5:Second point}",
-      "- ${6:Third point}",
+      "- ${5:First point}",
+      "- ${6:Second point}",
+      "- ${7:Third point}",
       "",
       "$0"
     ],
-    "description": "Insert bullets layout"
+    "description": "[Content] Bullet point list with customizable icon"
   },
+  "Slidev Scholarly: Figure Layout": {
+    "prefix": [
+      "scholarly-figure",
+      "ss-figure",
+      "ss-content-figure"
+    ],
+    "body": [
+      "---",
+      "layout: figure",
+      "src: ${1:https://example.com/figure.jpg}",
+      "caption: ${2:Figure caption.}",
+      "label: \"${3:Figure 1:}\"",
+      "title: ${4:Figure Title}",
+      "---",
+      "",
+      "${5:Additional description.}",
+      "",
+      "$0"
+    ],
+    "description": "[Content] Image with academic caption"
+  },
+  "Slidev Scholarly: Split Image Layout": {
+    "prefix": [
+      "scholarly-split-image",
+      "ss-split-image",
+      "ss-content-split-image"
+    ],
+    "body": [
+      "---",
+      "layout: split-image",
+      "images:",
+      "  - ${1:./image1.png}",
+      "  - ${2:./image2.png}",
+      "captions:",
+      "  - ${3:Caption 1}",
+      "  - ${4:Caption 2}",
+      "title: ${5:Comparison}",
+      "---",
+      "",
+      "$0"
+    ],
+    "description": "[Content] Side-by-side image comparison"
+  },
+
+  "_comment_emphasis": "=== EMPHASIS LAYOUTS ===",
   "Slidev Scholarly: Quote Layout": {
-    "prefix": ["scholarly-quote", "ss-quote"],
+    "prefix": [
+      "scholarly-quote",
+      "ss-quote",
+      "ss-emphasis-quote"
+    ],
     "body": [
       "---",
       "layout: quote",
+      "author: ${1:Author Name}",
+      "source: ${2:Source, Year}",
       "---",
       "",
-      "${1:Your inspiring quote goes here.}",
-      "",
-      "— ${2:Attribution}",
+      "${3:Your inspiring quote goes here.}",
       "",
       "$0"
     ],
-    "description": "Insert quote layout"
+    "description": "[Emphasis] Quote with author attribution"
   },
   "Slidev Scholarly: Fact Layout": {
-    "prefix": ["scholarly-fact", "ss-fact"],
+    "prefix": [
+      "scholarly-fact",
+      "ss-fact",
+      "ss-emphasis-fact"
+    ],
     "body": [
       "---",
       "layout: fact",
-      "color: ${1|green,blue,amber,red|}",
+      "color: ${1|primary,blue,green,amber,red,purple|}",
       "---",
       "",
       "# ${2:99%}",
@@ -185,15 +318,38 @@
       "",
       "$0"
     ],
-    "description": "Insert fact layout"
+    "description": "[Emphasis] Single statistic or fact"
+  },
+  "Slidev Scholarly: Statement Layout": {
+    "prefix": [
+      "scholarly-statement",
+      "ss-statement",
+      "ss-emphasis-statement"
+    ],
+    "body": [
+      "---",
+      "layout: statement",
+      "---",
+      "",
+      "# ${1:Your Statement}",
+      "",
+      "${2:Supporting text.}",
+      "",
+      "$0"
+    ],
+    "description": "[Emphasis] Bold statement"
   },
   "Slidev Scholarly: Focus Layout": {
-    "prefix": ["scholarly-focus", "ss-focus"],
+    "prefix": [
+      "scholarly-focus",
+      "ss-focus",
+      "ss-emphasis-focus"
+    ],
     "body": [
       "---",
       "layout: focus",
-      "color: ${1|blue,green,amber,red|}",
-      "icon: ${2:🎯}",
+      "color: ${1|primary,blue,green,amber,red,purple|}",
+      "icon: ${2:\ud83c\udfaf}",
       "---",
       "",
       "# ${3:Main Message}",
@@ -202,18 +358,24 @@
       "",
       "$0"
     ],
-    "description": "Insert focus layout"
+    "description": "[Emphasis] Focused message with icon"
   },
+
+  "_comment_academic": "=== ACADEMIC LAYOUTS ===",
   "Slidev Scholarly: Compare Layout": {
-    "prefix": ["scholarly-compare", "ss-compare"],
+    "prefix": [
+      "scholarly-compare",
+      "ss-compare",
+      "ss-academic-compare"
+    ],
     "body": [
       "---",
       "layout: compare",
       "title: ${1:Comparison}",
       "leftLabel: ${2:Option A}",
       "rightLabel: ${3:Option B}",
-      "leftColor: ${4|red,blue,green,amber|}",
-      "rightColor: ${5|green,blue,red,amber|}",
+      "leftColor: ${4|red,blue,green,gray|}",
+      "rightColor: ${5|green,blue,red,gray|}",
       "---",
       "",
       "### ${6:Option A Points}",
@@ -230,42 +392,132 @@
       "",
       "$0"
     ],
-    "description": "Insert compare layout"
+    "description": "[Academic] Side-by-side comparison"
   },
-  "Slidev Scholarly: Figure Layout": {
-    "prefix": ["scholarly-figure", "ss-figure"],
+  "Slidev Scholarly: Methodology Layout": {
+    "prefix": [
+      "scholarly-methodology",
+      "ss-methodology",
+      "ss-academic-methodology"
+    ],
     "body": [
       "---",
-      "layout: figure",
-      "src: ${1:https://example.com/figure.jpg}",
-      "caption: ${2:Figure caption.}",
-      "label: \"${3:Figure 1:}\"",
-      "title: ${4:Figure Title}",
+      "layout: methodology",
+      "ratio: \"${1|1:1,2:1,1:2|}\"",
+      "title: ${2:Methodology}",
       "---",
       "",
-      "${5:Additional description.}",
+      "## ${3:Our Approach}",
+      "",
+      "${4:Method description}",
+      "",
+      "::right::",
+      "",
+      "${5:Diagram or visual}",
       "",
       "$0"
     ],
-    "description": "Insert figure layout"
+    "description": "[Academic] Research methodology"
   },
-  "Slidev Scholarly: Statement Layout": {
-    "prefix": ["scholarly-statement", "ss-statement"],
+  "Slidev Scholarly: Results Layout": {
+    "prefix": [
+      "scholarly-results",
+      "ss-results",
+      "ss-academic-results"
+    ],
     "body": [
       "---",
-      "layout: statement",
+      "layout: results",
+      "cols: ${1|2,3,4|}",
+      "title: ${2:Key Results}",
       "---",
       "",
-      "# ${1:Your Statement}",
+      "<div class=\"p-4 bg-white rounded shadow\">",
+      "  <h3>${3:Metric 1}</h3>",
+      "  <h1>${4:Value}</h1>",
+      "</div>",
       "",
-      "${2:Supporting text.}",
+      "<div class=\"p-4 bg-white rounded shadow\">",
+      "  <h3>${5:Metric 2}</h3>",
+      "  <h1>${6:Value}</h1>",
+      "</div>",
       "",
       "$0"
     ],
-    "description": "Insert statement layout"
+    "description": "[Academic] Results dashboard"
+  },
+  "Slidev Scholarly: Timeline Layout": {
+    "prefix": [
+      "scholarly-timeline",
+      "ss-timeline",
+      "ss-academic-timeline"
+    ],
+    "body": [
+      "---",
+      "layout: timeline",
+      "title: ${1:Timeline Title}",
+      "items:",
+      "  - year: \"${2:2020}\"",
+      "    title: ${3:First Event}",
+      "    description: ${4:Description}",
+      "  - year: \"${5:2021}\"",
+      "    title: ${6:Second Event}",
+      "    description: ${7:Description}",
+      "---",
+      "",
+      "$0"
+    ],
+    "description": "[Academic] Research timeline"
+  },
+  "Slidev Scholarly: Agenda Layout": {
+    "prefix": [
+      "scholarly-agenda",
+      "ss-agenda",
+      "ss-academic-agenda"
+    ],
+    "body": [
+      "---",
+      "layout: agenda",
+      "title: ${1:Today's Agenda}",
+      "items:",
+      "  - ${2:Introduction}",
+      "  - ${3:Main Topic}",
+      "  - ${4:Discussion}",
+      "  - ${5:Q&A}",
+      "---",
+      "",
+      "$0"
+    ],
+    "description": "[Academic] Agenda/overview"
+  },
+  "Slidev Scholarly: Acknowledgments Layout": {
+    "prefix": [
+      "scholarly-acknowledgments",
+      "ss-acknowledgments",
+      "ss-academic-acknowledgments"
+    ],
+    "body": [
+      "---",
+      "layout: acknowledgments",
+      "title: ${1:Acknowledgments}",
+      "funders:",
+      "  - ${2:Funding Organization}",
+      "collaborators:",
+      "  - ${3:Collaborator Name}",
+      "---",
+      "",
+      "${4:Additional thanks}",
+      "",
+      "$0"
+    ],
+    "description": "[Academic] Acknowledgments slide"
   },
   "Slidev Scholarly: References Layout": {
-    "prefix": ["scholarly-references", "ss-references"],
+    "prefix": [
+      "scholarly-references",
+      "ss-references",
+      "ss-academic-references"
+    ],
     "body": [
       "---",
       "layout: references",
@@ -275,41 +527,16 @@
       "",
       "$0"
     ],
-    "description": "Insert references layout"
+    "description": "[Academic] Bibliography/References"
   },
-  "Slidev Scholarly: End Layout": {
-    "prefix": ["scholarly-end", "ss-end"],
-    "body": [
-      "---",
-      "layout: end",
-      "email: ${1:your@email.com}",
-      "website: ${2:https://example.com}",
-      "subtitle: ${3:Questions?}",
-      "---",
-      "",
-      "${4:Thank you for your attention!}",
-      "",
-      "$0"
-    ],
-    "description": "Insert end layout"
-  },
-  "Slidev Scholarly: Intro Layout": {
-    "prefix": ["scholarly-intro", "ss-intro"],
-    "body": [
-      "---",
-      "layout: intro",
-      "---",
-      "",
-      "# ${1:Introduction Title}",
-      "",
-      "${2:Introduction content.}",
-      "",
-      "$0"
-    ],
-    "description": "Insert intro layout"
-  },
+
+  "_comment_utility": "=== UTILITY ===",
   "Slidev Scholarly: Slide Divider": {
-    "prefix": ["scholarly-slide", "ss-slide", "---"],
+    "prefix": [
+      "scholarly-slide",
+      "ss-slide",
+      "---"
+    ],
     "body": [
       "---",
       "",
@@ -318,26 +545,90 @@
     "description": "Insert slide divider"
   },
   "Slidev Scholarly: Frontmatter": {
-    "prefix": ["scholarly-frontmatter", "ss-frontmatter"],
+    "prefix": [
+      "scholarly-frontmatter",
+      "ss-frontmatter"
+    ],
     "body": [
       "---",
       "theme: scholarly",
       "footerMiddle: ${1:Conference Name}",
       "lang: ${2|en,zh|}",
+      "themeConfig:",
+      "  colorTheme: ${3|classic-blue,oxford-burgundy,cambridge-green,yale-blue,princeton-orange,monochrome,warm-sepia,nordic-blue,high-contrast|}",
+      "  fontTheme: ${4|classic,modern,traditional,contemporary,humanist,technical,elegant,sans-default|}",
+      "  sectionMode: ${5|dark,light|}",
       "bibFile: ./references.bib",
-      "bibStyle: ${3|apa,harvard1,vancouver,ieee,mla,chicago-author-date|}",
+      "bibStyle: ${6|apa,harvard1,vancouver,ieee,mla,chicago-author-date|}",
       "authors:",
-      "  - name: ${4:Author Name}",
-      "    institution: ${5:Institution}",
-      "    email: ${6:email@example.com}",
+      "  - name: ${7:Author Name}",
+      "    institution: ${8:Institution}",
+      "    email: ${9:email@example.com}",
       "---",
       "",
-      "# ${7:Presentation Title}",
+      "# ${10:Presentation Title}",
       "",
-      "${8:Subtitle}",
+      "${11:Subtitle}",
       "",
       "$0"
     ],
-    "description": "Insert full frontmatter configuration"
+    "description": "Full frontmatter with theme configuration"
+  },
+
+  "_comment_presets": "=== THEME PRESETS ===",
+  "Slidev Scholarly: Oxford Theme": {
+    "prefix": [
+      "ss-theme-oxford"
+    ],
+    "body": [
+      "themeConfig:",
+      "  colorTheme: oxford-burgundy",
+      "  fontTheme: traditional"
+    ],
+    "description": "Oxford Burgundy theme preset"
+  },
+  "Slidev Scholarly: Cambridge Theme": {
+    "prefix": [
+      "ss-theme-cambridge"
+    ],
+    "body": [
+      "themeConfig:",
+      "  colorTheme: cambridge-green",
+      "  fontTheme: elegant"
+    ],
+    "description": "Cambridge Green theme preset"
+  },
+  "Slidev Scholarly: Modern Theme": {
+    "prefix": [
+      "ss-theme-modern"
+    ],
+    "body": [
+      "themeConfig:",
+      "  colorTheme: monochrome",
+      "  fontTheme: sans-default"
+    ],
+    "description": "Modern minimal theme preset"
+  },
+  "Slidev Scholarly: Yale Theme": {
+    "prefix": [
+      "ss-theme-yale"
+    ],
+    "body": [
+      "themeConfig:",
+      "  colorTheme: yale-blue",
+      "  fontTheme: classic"
+    ],
+    "description": "Yale Blue theme preset"
+  },
+  "Slidev Scholarly: Princeton Theme": {
+    "prefix": [
+      "ss-theme-princeton"
+    ],
+    "body": [
+      "themeConfig:",
+      "  colorTheme: princeton-orange",
+      "  fontTheme: modern"
+    ],
+    "description": "Princeton Orange theme preset"
   }
 }
