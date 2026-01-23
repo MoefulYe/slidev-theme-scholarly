@@ -1,6 +1,6 @@
 {
   "name": "slidev-theme-scholarly",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0",
   "type": "module",
   "description": "A scholarly presentation theme for Slidev with LaTeX Beamer-style styling",
   "author": "Jiaxin Peng",
@@ -70,12 +70,12 @@
   },
   "dependencies": {
     "@jxpeng98/markdown-it-citation": "1.2.1",
-    "@slidev/client": "^52.11.1",
-    "@slidev/types": "^52.11.1"
+    "@slidev/client": "^52.11.3",
+    "@slidev/types": "^52.11.3"
   },
   "devDependencies": {
-    "@slidev/cli": "^52.11.1",
-    "playwright-chromium": "^1.57.0",
+    "@slidev/cli": "^52.11.3",
+    "playwright-chromium": "^1.58.0",
     "vite": "^7.3.0",
     "vitepress": "2.0.0-alpha.15"
   },
