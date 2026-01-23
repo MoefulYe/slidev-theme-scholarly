@@ -11,3 +11,6 @@ components.d.ts
 docs/.vitepress/dist
 docs/.vitepress/cache
 docs/node_modules
+
+# claude
+.claude

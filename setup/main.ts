@@ -17,11 +17,11 @@ type FontsizeConfig =
   | string
   | number
   | {
-      body?: string | number
-      h1?: string | number
-      h2?: string | number
-      h3?: string | number
-    }
+    body?: string | number
+    h1?: string | number
+    h2?: string | number
+    h3?: string | number
+  }
 
 type ThemeColorConfig = {
   primary?: string
@@ -154,7 +154,56 @@ const applyThemePresets = (config: ThemeConfig | null | undefined) => {
 
   setAttr('data-color-theme', config?.colorTheme)
   setAttr('data-font-theme', config?.fontTheme)
-  setAttr('data-color-mode', config?.colorMode)
+
+  // Only force color mode if explicitly configured
+  // Otherwise, sync with Slidev's built-in dark mode toggle (html.dark class)
+  if (config?.colorMode) {
+    setAttr('data-color-mode', config.colorMode)
+  } else {
+    // Sync with Slidev's dark class
+    syncColorModeWithDark()
+  }
+}
+
+// Sync data-color-mode with html.dark class (Slidev's built-in toggle)
+const syncColorModeWithDark = () => {
+  if (typeof window === 'undefined') return
+  const root = document.documentElement
+  const isDark = root.classList.contains('dark')
+  root.setAttribute('data-color-mode', isDark ? 'dark' : 'light')
+}
+
+// Watch for Slidev's dark mode toggle (class changes on html element)
+let darkModeObserver: MutationObserver | null = null
+
+const setupDarkModeSync = (config: ThemeConfig | null | undefined) => {
+  if (typeof window === 'undefined') return
+
+  // If colorMode is explicitly set, don't sync with Slidev's toggle
+  if (config?.colorMode) return
+
+  // Clean up existing observer
+  if (darkModeObserver) {
+    darkModeObserver.disconnect()
+    darkModeObserver = null
+  }
+
+  // Initial sync
+  syncColorModeWithDark()
+
+  // Watch for class changes on html element
+  darkModeObserver = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        syncColorModeWithDark()
+      }
+    }
+  })
+
+  darkModeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class']
+  })
 }
 
 export default defineAppSetup(({ app, router }) => {
@@ -194,6 +243,7 @@ export default defineAppSetup(({ app, router }) => {
   // Apply theme colors and theme presets
   applyThemeColors(getThemeColorConfig())
   applyThemePresets(getThemeConfig())
+  setupDarkModeSync(getThemeConfig())
 
   watch(
     () => router.currentRoute.value?.meta?.slide?.frontmatter?.fontsize,
@@ -215,7 +265,10 @@ export default defineAppSetup(({ app, router }) => {
 
   watch(
     () => (configs as any)?.themeConfig as ThemeConfig | undefined,
-    (newConfig) => applyThemePresets(newConfig),
+    (newConfig) => {
+      applyThemePresets(newConfig)
+      setupDarkModeSync(newConfig)
+    },
     { deep: true, immediate: true }
   )
 

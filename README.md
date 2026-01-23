@@ -1,9 +1,21 @@
 # Slidev Theme Scholarly
 
 [![NPM version](https://img.shields.io/npm/v/slidev-theme-scholarly?color=3AB9D4&label=)](https://www.npmjs.com/package/slidev-theme-scholarly)
-[中文版](./README-zh.md)
+[![GitHub stars](https://img.shields.io/github/stars/jxpeng98/slidev-theme-scholarly?style=social)](https://github.com/jxpeng98/slidev-theme-scholarly)
+[![License](https://img.shields.io/github/license/jxpeng98/slidev-theme-scholarly)](./LICENSE)
 
-A professional presentation theme for [Slidev](https://github.com/slidevjs/slidev), designed specifically for academic presentations with LaTeX Beamer-inspired styling.
+[中文版](./README-zh.md) · [Live Demo](https://scholarly.penghu.pro/) · [Documentation](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs/en)
+
+A professional presentation theme for [Slidev](https://sli.dev), designed specifically for academic presentations with LaTeX Beamer-inspired styling.
+
+> **⚠️ Major Upgrade in Progress**
+>
+> Upcoming versions may include breaking changes. Please check the [Upgrade Notes](./docs/en/guide/upgrade.md) before updating.
+>
+> **Try the pre-release:**
+> ```bash
+> npm i -D slidev-theme-scholarly@next
+> ```
 
 > **⚠️ Major Upgrade in Progress**
 >
@@ -16,78 +28,42 @@ A professional presentation theme for [Slidev](https://github.com/slidevjs/slide
 
 ---
 
-## 📖 Table of Contents
+## ✨ Key Features
 
-- [What is this?](#what-is-this)
-- [Who should use this?](#who-should-use-this)
-- [Quick Start](#quick-start)
-- [Key Features](#key-features)
-- [Understanding Layouts](#understanding-layouts)
-- [New Layouts (v2.0)](#new-layouts-v20)
-- [Components](#components)
-- [Markdown Syntax Sugar](#markdown-syntax-sugar)
-- [Configuration Guide](#configuration-guide)
-- [VS Code Extension](#vs-code-extension)
-- [Examples](#examples)
-- [Contributing](#contributing)
+| Feature | Description |
+|---------|-------------|
+| 🎓 **Professional Design** | LaTeX Beamer-inspired with academic styling |
+| 📐 **24 Layouts** | Structure, Content, Emphasis, and Academic categories |
+| 🧩 **Rich Components** | Theorem, Block, Citations, Steps, Keywords, Columns, Highlight |
+| 🎨 **9 Color Themes** | Classic Blue, Oxford, Cambridge, Yale, Princeton, Nordic, Monochrome, Sepia, High Contrast |
+| 📚 **BibTeX Citations** | Automatic bibliography with APA, Harvard, IEEE, MLA styles |
+| 📝 **Syntax Sugar** | Simplified Markdown directives for components |
+| 🔧 **VS Code Extension** | Snippets, previews, and BibTeX integration |
 
 ---
 
-## What is this?
+## 🚀 Quick Start
 
-This is a **theme** (a design template) for [Slidev](https://sli.dev), which is a tool for creating presentation slides using simple text files. Think of it like PowerPoint, but instead of clicking and dragging, you write your content in a simple format called Markdown.
-
-**Why use this theme?**
-
-- � It looks professional and academic (inspired by LaTeX Beamer)
-- 🎯 Perfect for research presentations, lectures, and conference talks
-- ✨ Handles complex content like mathematical formulas and theorems
-- 🚀 Much faster than PowerPoint once you learn the basics
-
-**No coding experience required!** If you can write an email, you can create presentations with this theme.
-
----
-
-## Who should use this?
-
-This theme is designed for:
-
-- 👨‍🎓 **PhD students** presenting their research
-- 👩‍🏫 **Professors** creating lecture slides
-- 🔬 **Researchers** preparing conference talks
-- 📊 **Anyone** who needs professional-looking academic presentations
-
-**You don't need to be a programmer!** The learning curve is gentle, and you'll be creating beautiful slides in minutes.
-
----
-
-## Quick Start
-
-### Step 1: Install Slidev
-
-First, make sure you have [Node.js](https://nodejs.org/) installed (download from nodejs.org). Then open your terminal (Command Prompt on Windows, Terminal on Mac/Linux) and run:
+### Installation
 
 ```bash
-npm install -g @slidev/cli
+npm i -D slidev-theme-scholarly
 ```
 
-> **What does this do?** It installs Slidev on your computer so you can use it anywhere.
+### Create Your Presentation
 
-### Step 2: Create Your First Presentation
-
-```bash
-# Create a new folder for your presentation
-mkdir my-talk
-cd my-talk
-
-# Create your slides file
-echo "---
+```markdown
+---
 theme: scholarly
+authors:
+  - name: Your Name
+    institution: Your University
+footerMiddle: Conference 2026
 ---
 
-# My First Academic Talk
+# Your Presentation Title
 
-Your name here
+Subtitle or description
 
 ---
 
@@ -96,77 +72,85 @@ Your name here
 - Point 1
 - Point 2
 - Point 3
-" > slides.md
 ```
 
-### Step 3: Preview Your Presentation
+### Preview
 
 ```bash
-slidev slides.md
+npx slidev
 ```
-
-Your browser will open automatically showing your presentation! Press the right arrow key to move between slides.
-
-> **Tip:** Keep the terminal running. Any changes you make to `slides.md` will show up immediately in your browser!
 
 ---
 
-## Key Features
+## 📐 Layouts
 
-### 🎨 Professional Design
+Layouts are organized into **four categories**:
 
-- LaTeX Beamer-inspired design with Classic Academic Blue color scheme
-- Automatic header and footer on all slides
-- Consistent styling throughout your presentation
-- Enhanced typography with Palatino serif and Helvetica sans-serif pairing
+### Structure Layouts
 
-### 👥 Multi-Author Support
+| Layout | Description |
+|--------|-------------|
+| `cover` | Title slide with authors |
+| `default` | Standard content slide |
+| `intro` | Section introduction |
+| `section` | Chapter divider |
+| `center` | Centered content |
+| `auto-center` | Auto-centered content |
+| `end` | Closing slide |
 
-Display one author, two authors, or entire research teams elegantly:
+### Content Layouts
 
-- 1 author: "Jane Smith"
-- 2 authors: "Jane Smith & John Doe"
-- 3 authors: "Jane Smith, John Doe, Alice Brown"
-- 4+ authors: "Jane Smith et al."
+| Layout | Description |
+|--------|-------------|
+| `two-cols` | Two-column layout |
+| `image-left` | Image on left, text on right |
+| `image-right` | Image on right, text on left |
+| `bullets` | Enhanced bullet list |
+| `figure` | Academic figure with caption |
+| `split-image` | Split image layout |
 
-### 🔢 Smart Theorem Numbering
+### Emphasis Layouts
 
-Insert theorems, lemmas, definitions with automatic numbering:
+| Layout | Description |
+|--------|-------------|
+| `quote` | Styled quotation |
+| `fact` | Single fact/statistic |
+| `statement` | Important statement |
+| `focus` | Focused statement with icon |
 
-- Each type (theorem, lemma, etc.) has its own counter
-- Supports both English and Chinese
-- Customizable number format
+### Academic Layouts
 
-### 📐 18 Layout Options
+| Layout | Description |
+|--------|-------------|
+| `compare` | Side-by-side comparison |
+| `methodology` | Research methodology |
+| `results` | Research results |
+| `timeline` | Timeline visualization |
+| `agenda` | Presentation agenda |
+| `acknowledgments` | Acknowledgments |
+| `references` | Bibliography |
 
-Layouts organized by function into four categories:
+[View Layout Documentation →](./docs/en/layouts/structure.md)
 
-**Structure Layouts** - Framework and organization:
+---
 
-- cover, default, intro, section, center, auto-center, end
+## 🧩 Components
 
-**Content Layouts** - Information presentation:
+| Component | Description | Example |
+|-----------|-------------|---------|
+| **Theorem** | Theorems, lemmas, definitions | `<Theorem type="theorem">...</Theorem>` |
+| **Block** | Beamer-style info blocks | `<Block type="info">...</Block>` |
+| **Citations** | BibTeX citations | `@citekey` or `!@citekey` |
+| **Steps** | Process visualization | `<Steps :steps="[...]" />` |
+| **Keywords** | Keyword tags | `<Keywords :items="[...]" />` |
+| **Columns** | Multi-column layout | `<Columns :cols="2">...</Columns>` |
+| **Highlight** | Text highlighting | `<Highlight>text</Highlight>` |
 
-- two-cols, image-left, image-right, bullets, figure, split-image
+[View Component Documentation →](./docs/en/components/index.md)
 
-**Emphasis Layouts** - Highlight and focus:
+---
 
-- quote, fact, statement, focus
-
-**Academic Layouts** - Research-specific:
-
-- compare, methodology, results, timeline, agenda, acknowledgments, references
-
-### 🎨 Theme System
-
-Multiple color and typography themes for customization:
-
-- **9 Color Themes** - Classic Blue, Oxford Burgundy, Cambridge Green, Yale Blue, Princeton Orange, Nordic Blue, Monochrome, Warm Sepia, High Contrast
-- **8 Font Themes** - Classic (Palatino/Helvetica), Modern (Georgia/Source Sans), Traditional, Contemporary, Humanist, Technical, Elegant, Sans Default
-
-#### Theme Gallery
-
-Each theme includes cover, section, content, and quote layouts with distinct color palettes:
+## 🎨 Theme Gallery
 
 <details open>
 <summary><b>Classic Blue (Default)</b></summary>
@@ -180,6 +164,7 @@ Each theme includes cover, section, content, and quote layouts with distinct col
 </table>
 </details>
 
+At the top of each slide, add:
 <details>
 <summary><b>Oxford Burgundy</b></summary>
 <table>
@@ -205,180 +190,17 @@ Each theme includes cover, section, content, and quote layouts with distinct col
 </details>
 
 <details>
-<summary><b>Yale Blue</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/yale/1.png" width="220" alt="Cover"/></td>
-    <td><img src="./images/themes/yale/2.png" width="220" alt="Section"/></td>
-    <td><img src="./images/themes/yale/3.png" width="220" alt="Content"/></td>
-    <td><img src="./images/themes/yale/4.png" width="220" alt="Quote"/></td>
-  </tr>
-</table>
+<summary><b>More Themes...</b></summary>
+
+- Yale Blue
+- Princeton Orange
+- Nordic Blue
+- Monochrome
+- Warm Sepia
+- High Contrast
+
+[View All Themes →](./docs/en/guide/themes.md)
 </details>
-
-<details>
-<summary><b>Princeton Orange</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/princeton/1.png" width="220" alt="Cover"/></td>
-    <td><img src="./images/themes/princeton/2.png" width="220" alt="Section"/></td>
-    <td><img src="./images/themes/princeton/3.png" width="220" alt="Content"/></td>
-    <td><img src="./images/themes/princeton/4.png" width="220" alt="Quote"/></td>
-  </tr>
-</table>
-</details>
-
-<details>
-<summary><b>Nordic Blue</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/nordic/1.png" width="220" alt="Cover"/></td>
-    <td><img src="./images/themes/nordic/2.png" width="220" alt="Section"/></td>
-    <td><img src="./images/themes/nordic/3.png" width="220" alt="Content"/></td>
-    <td><img src="./images/themes/nordic/4.png" width="220" alt="Quote"/></td>
-  </tr>
-</table>
-</details>
-
-<details>
-<summary><b>Monochrome</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/monochrome/1.png" width="220" alt="Cover"/></td>
-    <td><img src="./images/themes/monochrome/2.png" width="220" alt="Section"/></td>
-    <td><img src="./images/themes/monochrome/3.png" width="220" alt="Content"/></td>
-    <td><img src="./images/themes/monochrome/4.png" width="220" alt="Quote"/></td>
-  </tr>
-</table>
-</details>
-
-<details>
-<summary><b>Warm Sepia</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/sepia/1.png" width="220" alt="Cover"/></td>
-    <td><img src="./images/themes/sepia/2.png" width="220" alt="Section"/></td>
-    <td><img src="./images/themes/sepia/3.png" width="220" alt="Content"/></td>
-    <td><img src="./images/themes/sepia/4.png" width="220" alt="Quote"/></td>
-  </tr>
-</table>
-</details>
-
-<details>
-<summary><b>High Contrast</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/high-contrast/1.png" width="220" alt="Cover"/></td>
-    <td><img src="./images/themes/high-contrast/2.png" width="220" alt="Section"/></td>
-    <td><img src="./images/themes/high-contrast/3.png" width="220" alt="Content"/></td>
-    <td><img src="./images/themes/high-contrast/4.png" width="220" alt="Quote"/></td>
-  </tr>
-</table>
-</details>
-
-### 📚 Built-in Citation Support
-
-Automatic bibliography generation from BibTeX files:
-
-- Use `@citekey` for parenthetical citations
-- Use `!@citekey` for narrative citations
-- Supports APA, Harvard, Vancouver, IEEE, MLA, Chicago styles
-- Auto-generates bibliography from all cited references
-- No additional configuration required!
-
-### 🧩 Rich Components
-
-Built-in components for academic content:
-
-- **Theorem** - Theorems, lemmas, definitions
-- **Block** - Beamer-style colored blocks
-- **Steps** - Workflow visualization
-- **Keywords** - Keyword tags
-- **Columns** - Multi-column layouts
-- **Highlight** - Text highlighting
-
-### 📝 Markdown Syntax Sugar
-
-Use simple Markdown directives instead of HTML:
-
-```markdown
-:::block{type="info" title="Note"}
-Your content here
-:::
-
-:::theorem{type="theorem" title="Main Result"}
-Mathematical content
-:::
-```
-
-### �🌍 Multi-Language
-
-Supports English and Chinese (中文) for mathematical content.
-
----
-
-## Understanding Layouts
-
-**What is a layout?**
-
-A layout is like a slide template in PowerPoint. It determines how content is arranged on the slide.
-
-Layouts in this theme are organized into **four functional categories**:
-
-- **Structure** - Framework layouts (cover, default, intro, section, center, auto-center, end)
-- **Content** - Information presentation (two-cols, image-left/right, bullets, figure, split-image)
-- **Emphasis** - Highlighting and focus (quote, fact, statement, focus)
-- **Academic** - Research-specific (compare, methodology, results, timeline, agenda, acknowledgments, references)
-
-For detailed documentation of each layout, see the [online documentation](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs).
-
-### How to Choose a Layout
-
-At the top of each slide, add:
-
-```yaml
----
-layout: layout-name
----
-```
-
-If you don't specify a layout, Slidev uses the `default` layout automatically.
-
-### Available Layouts
-
-Layouts are organized into four functional categories:
-
-#### Structure Layouts
-
-These layouts provide the framework and organization for your presentation.
-
-##### 1️⃣ **cover** - Title Slide
-
-**Use for:** The first slide of your presentation
-
-```markdown
----
-layout: cover
-authors:
-  - name: Your Name
-    institution: Your University
-    email: you@example.edu
-footerMiddle: Conference Name 2025
----
-
-# Your Presentation Title
-Subtitle or description
-```
-
-**What it shows:**
-
-- Large title in the center
-- Author(s) with institution and email
-- Footer with author, conference, and page number
-
----
-
-##### 2️⃣ **default** - Standard Content
 
 **Use for:** Most of your slides (this is automatic!)
 
@@ -389,953 +211,70 @@ subtitle: Optional subtitle
 ---
 
 # Main Content
+## 📚 Documentation
 
-- Bullet point 1
-- Bullet point 2
+### Getting Started
 
-You can add text, images, code, math formulas, etc.
-```
+- [Quick Start](./docs/en/guide/quick-start.md) - Get started in 5 minutes
+- [Upgrade Notes](./docs/en/guide/upgrade.md) - Migration guide for major versions
+- [Features](./docs/en/guide/features.md) - Overview of all features
+- [Configuration](./docs/en/guide/configurations.md) - Theme configuration options
+- [Themes](./docs/en/guide/themes.md) - Color and font themes
 
-**What it shows:**
+### Layouts
 
-- Optional header with title and subtitle
-- Your content in the middle
-- Footer at the bottom
+- [Structure Layouts](./docs/en/layouts/structure.md) - Cover, sections, navigation
+- [Content Layouts](./docs/en/layouts/content.md) - Text, images, columns
+- [Emphasis Layouts](./docs/en/layouts/emphasis.md) - Quotes, facts, highlights
+- [Academic Layouts](./docs/en/layouts/academic.md) - Methodology, results, references
 
----
+### Components
 
-##### 3️⃣ **intro** - Section Introduction
+- [Theorem](./docs/en/components/theorem.md) - Mathematical theorems
+- [Block](./docs/en/components/block.md) - Information blocks
+- [Citations](./docs/en/components/cite.md) - BibTeX citations
+- [Steps](./docs/en/components/steps.md) - Process visualization
+- [Keywords](./docs/en/components/keywords.md) - Keyword tags
+- [Columns](./docs/en/components/columns.md) - Multi-column layouts
+- [Highlight](./docs/en/components/highlight.md) - Text highlighting
 
-**Use for:** Starting a new section of your talk
+### Advanced
 
-```markdown
----
-layout: intro
----
-
-# Part 2: Methodology
-
-Let's discuss our approach
-```
-
-**What it shows:**
-
-- Large, centered text
-- No header (more space for the title)
-- Footer at the bottom
+- [Syntax Sugar](./docs/en/syntax-sugar.md) - Markdown directives
+- [VS Code Extension](./docs/en/guide/vscode-extension.md) - Snippets and tools
+- [Examples](./docs/en/examples.md) - Complete examples
 
 ---
 
-##### 4️⃣ **section** - Chapter Divider
+## 👥 Who is this for?
 
 **Use for:** Major transitions in your presentation
+- 👨‍🎓 **PhD students** presenting dissertations and research
+- 👩‍🏫 **Professors** creating course lectures
+- 🔬 **Researchers** preparing conference talks
+- 📊 **Anyone** needing polished academic presentations
 
-```markdown
----
-layout: section
----
-
-# Results
-```
-
-**What it shows:**
-
-- Very large, centered title
-- No header
-- Footer at the bottom
-- Perfect for dramatic section breaks
-
----
-
-##### 5️⃣ **center** - Centered Content
-
-**Use for:** Short messages or key points
-
-```markdown
----
-layout: center
----
-
-# Key Takeaway
-
-This is the most important point
-```
-
-**What it shows:**
-
-- All content centered horizontally and vertically
-- Great for emphasis
-
----
-
-#### Content Layouts
-
-These layouts help you present information in various visual formats.
-
-##### 6️⃣ **two-cols** - Two Columns
-
-**Use for:** Highlighting quotes
-
-```markdown
----
-layout: quote
----
-
-> "The only way to do great work is to love what you do."
-> 
-> — Steve Jobs
-```
-
-**What it shows:**
-
-- Large, styled quote
-- Attribution below
-
----
-
-#### 7️⃣ **fact** - Single Fact/Statistic
-
-**Use for:** Highlighting important numbers or facts
-
-```markdown
----
-layout: fact
----
-
-# 95%
-
-Success rate of our method
-```
-
-**What it shows:**
-
-- Very large number or short text
-- Smaller description below
-
----
-
-#### 8️⃣ **statement** - Important Statement
-
-**Use for:** Highlighting key statements
-
-```markdown
----
-layout: statement
----
-
-# Our method achieves state-of-the-art results
-
-Outperforming all previous approaches
-```
-
-**What it shows:**
-
-- Large statement text, centered
-- Medium width for readability
-
----
-
-#### 9️⃣ **image-left** - Image on Left, Text on Right
-
-**Use for:** Explaining visuals with text
-
-```markdown
----
-layout: image-left
-image: ./path/to/image.png
----
-
-# Experimental Setup
-
-- Equipment A
-- Equipment B  
-- Equipment C
-
-Description of the setup...
-```
-
-**What it shows:**
-
-- Full-height image on the left half
-- Your content on the right half
-
----
-
-#### 🔟 **image-right** - Image on Right, Text on Left
-
-**Use for:** Text with supporting visual
-
-```markdown
----
-layout: image-right
-image: https://example.com/image.jpg
----
-
-# Results Analysis
-
-Our findings show...
-
-- Finding 1
-- Finding 2
-```
-
-**What it shows:**
-
-- Your content on the left half
-- Full-height image on the right half
-
----
-
-#### 1️⃣1️⃣ **two-cols** - Two Columns
-
-**Use for:** Comparing or showing parallel content
-
-```markdown
----
-layout: two-cols
----
-
-# Method A
-
-- Advantage 1
-- Advantage 2
-- Advantage 3
-
-::right::
-
-# Method B
-
-- Advantage 1
-- Advantage 2
-- Advantage 3
-```
-
-**What it shows:**
-
-- Left column content (before `::right::`)
-- Right column content (after `::right::`)
-- Equal width columns
-
----
-
-## New Layouts (v2.0)
-
-### 1️⃣2️⃣ **focus** - Focused Statement
-
-**Use for:** Highlighting a key question or statement with visual emphasis
-
-```markdown
----
-layout: focus
-color: blue
-icon: 🎯
----
-
-# Research Question
-
-How can we improve accuracy while reducing cost?
-```
-
-**Props:** `color` (blue/green/amber/red/purple), `icon` (emoji)
-
----
-
-### 1️⃣3️⃣ **compare** - Side-by-Side Comparison
-
-**Use for:** Comparing two methods, approaches, or concepts
-
-```markdown
----
-layout: compare
-title: Traditional vs. Our Approach
-leftLabel: Traditional
-rightLabel: Ours
-leftColor: red
-rightColor: green
----
-
-- High cost
-- Slow
-
-::right::
-
-- Low cost
-- Fast
-```
-
----
-
-### 1️⃣4️⃣ **bullets** - Enhanced List
-
-**Use for:** Professional bullet point presentations
-
-```markdown
----
-layout: bullets
-title: Key Points
----
-
-## Main Findings
-
-- **Point 1** - Description
-- **Point 2** - Description
-```
-
----
-
-### 1️⃣5️⃣ **figure** - Academic Figure
-
-**Use for:** Displaying figures with proper captions
-
-```markdown
----
-layout: figure
-src: ./images/architecture.png
-caption: System architecture overview.
-label: "Figure 1:"
-title: Architecture
----
-```
-
----
-
-### 1️⃣6️⃣ **references** - Bibliography
-
-**Use for:** Reference/bibliography slides
-
-```markdown
----
-layout: references
----
-
-1. **Smith et al.** (2024). *Paper Title*. Journal.
-2. **Jones** (2023). *Another Paper*. Conference.
-```
-
----
-
-### 1️⃣7️⃣ **end** - Thank You Slide
-
-**Use for:** Closing slide with contact information
-
-```markdown
----
-layout: end
-email: you@university.edu
-website: https://example.com
-subtitle: Questions?
----
-
-Thank you for your attention!
-```
-
----
-
-## Components
-
-This theme provides several components for academic presentations.
-
-### Theorem Component
-
-In academic presentations, you often need to present formal statements like theorems, lemmas, or definitions. This theme provides a special component that:
-
-- Automatically numbers your theorems
-- Styles them professionally
-- Supports multiple languages
-
-### Basic Usage
-
-```markdown
-<Theorem type="theorem" title="Pythagorean Theorem">
-
-For a right triangle with legs $a$ and $b$, and hypotenuse $c$:
-
-$$a^2 + b^2 = c^2$$
-
-</Theorem>
-```
-
-**Result:** A nicely formatted box with "Theorem 1 (Pythagorean Theorem)" as the header and your content inside.
-
-### Available Types
-
-Each type has a different color:
-
-| Type | English | Chinese | Color |
-|------|---------|---------|-------|
-| `theorem` | Theorem | 定理 | Blue |
-| `lemma` | Lemma | 引理 | Purple |
-| `proposition` | Proposition | 命题 | Cyan |
-| `corollary` | Corollary | 推论 | Green |
-| `definition` | Definition | 定义 | Amber |
-| `example` | Example | 例 | Pink |
-| `remark` | Remark | 注 | Gray |
-
-### Examples
-
-**Simple theorem:**
-
-```markdown
-<Theorem type="theorem">
-
-Every bounded sequence has a convergent subsequence.
-
-</Theorem>
-```
-
-**Theorem with title:**
-
-```markdown
-<Theorem type="definition" title="Continuity">
-
-A function $f$ is continuous at $x = a$ if...
-
-</Theorem>
-```
-
-**Manual numbering:**
-
-```markdown
-<Theorem type="lemma" number="3.2">
-
-This will be numbered as "Lemma 3.2" instead of auto-numbering.
-
-</Theorem>
-```
-
-**No numbering:**
-
-```markdown
-<Theorem type="remark" :autoNumber="false">
-
-This remark has no number.
-
-</Theorem>
-```
-
----
-
-### Block Component
-
-Beamer-style colored blocks for highlighting content.
-
-```markdown
-<Block type="info" title="Important Note">
-Your content here...
-</Block>
-```
-
-**Types:** `default`, `info`, `success`, `warning`, `danger`, `example`, `alert`
-
----
-
-### Steps Component
-
-Display workflow or process steps.
-
-```markdown
-<Steps :steps="[
-  { title: 'Step 1', description: 'Description' },
-  { title: 'Step 2', description: 'Description' }
-]" :activeStep="1" />
-```
+**No programming experience required!**
 
 ---
-
-### Keywords Component
-
-Display keyword tags.
-
-```markdown
-<Keywords :items="['ML', 'AI', 'Deep Learning']" color="blue" />
-```
-
----
-
-### Columns Component
-
-Multi-column layouts.
-
-```markdown
-<Columns :cols="2" gap="2rem">
-Column 1 content
-<template #col2>
-Column 2 content
-</template>
-</Columns>
-```
-
----
-
-### Highlight Component
-
-Inline text highlighting.
-
-```markdown
-This is <Highlight color="yellow">important</Highlight> text.
-```
-
----
-
-### Cite Component
-
-Academic citations.
-
-```markdown
-<Cite author="Smith et al." year="2024" />
-```
-
----
-
-## Markdown Syntax Sugar
-
-Use simple Markdown directives instead of HTML component syntax:
-
-### Block
-
-```markdown
-:::block{type="info" title="Note"}
-Content here
-:::
-```
-
-### Theorem
-
-```markdown
-:::theorem{type="theorem" title="Main Result"}
-For any $\epsilon > 0$...
-:::
-```
-
-### Columns (use +++ as separator)
-
-```markdown
-:::columns{cols="2"}
-Left column
-+++
-Right column
-:::
-```
-
-### Other Directives
-
-```markdown
-:::highlight{color="yellow"}
-Highlighted text
-:::
-
-:::cite{author="Smith" year="2024"}
-showed that...
-:::
-
-:::steps{:steps='[{"title":"Step 1"}]'}:::
-
-:::keywords{:items='["AI", "ML"]' color="blue"}:::
-```
-
----
-
-## Configuration Guide
-
-### Setting Up Your Presentation
-
-At the very top of your `slides.md` file, add a configuration section:
-
-```yaml
----
-theme: scholarly
-lang: en  # or 'zh' for Chinese
-footerMiddle: Conference Name 2025
-authors:
-  - name: Jane Smith
-    institution: MIT
-    email: jane@mit.edu
-  - name: John Doe
-    institution: Stanford
-    email: john@stanford.edu
----
-```
-
-### Configuration Options
-
-#### Basic Settings
-
-| Option | What it does | Example |
-|--------|-------------|---------|
-| `theme` | Tells Slidev to use this theme | `scholarly` |
-| `lang` | Language for theorems | `en` or `zh` |
-| `aspectRatio` | Slide dimensions | `16/9` or `4/3` |
-
-#### Author Information
-
-**Single author:**
-
-```yaml
-author: Jane Smith
-```
-
-**Multiple authors (recommended):**
-
-```yaml
-authors:
-  - name: Jane Smith
-    institution: MIT
-    email: jane@mit.edu
-  - name: John Doe
-    institution: Stanford
-```
-
-#### Footer Configuration
-
-| Option | What it controls | Example |
-|--------|-----------------|---------|
-| `footerLeft` | Left side of footer | `Custom text` |
-| `footerMiddle` | Middle of footer | `Conference 2025` |
-| `footerRight` | Right side (auto) | Page numbers |
-
-**Default behavior (if not specified):**
-
-- Left: Shows author name(s)
-- Middle: Empty (or your custom text)
-- Right: Page numbers (automatic)
-
-#### Theorem Number Format
-
-Customize how theorem numbers appear:
-
-```yaml
-theoremNumberFormat: '{number}'      # 1, 2, 3 (default)
-theoremNumberFormat: '({number})'    # (1), (2), (3)
-theoremNumberFormat: '[{number}]'    # [1], [2], [3]
-theoremNumberFormat: '{number}.'     # 1., 2., 3.
-```
-
-#### Citation Configuration
-
-Configure bibliography and citation style:
-
-```yaml
----
-theme: scholarly
-bibFile: references.bib  # Path to your BibTeX file (default: references.bib)
-bibStyle: apa            # Citation style
----
-```
-
-**Supported citation styles:**
-- `apa` (default)
-- `harvard1`
-- `vancouver`
-- `ieee`
-- `mla`
-- `chicago-author-date`
-
-**Using citations in your slides:**
-
-```markdown
-# Introduction
-
-Deep learning has revolutionized AI @lecun2015deep.
-
-!@vaswani2017attention introduced the Transformer architecture.
-
----
-layout: references
----
-
-[[bibliography]]
-```
-
-**Pagination for long reference lists:**
-
-```markdown
----
-layout: references
-perPage: 5
-page: 1
----
-
-[[bibliography]]
-
----
-layout: references
-perPage: 5
-page: 2
-title: "References (continued)"
----
-
-[[bibliography]]
-```
-
-#### Font Size Configuration
-
-You can customize font sizes globally or per-slide for the body text and headings (h1, h2, h3).
-
-**Global font size (applies to all slides):**
-
-```yaml
----
-theme: scholarly
-fontsize:
-  body: 18px    # Base font size for body text
-  h1: 48px      # Font size for h1 headings
-  h2: 36px      # Font size for h2 headings
-  h3: 28px      # Font size for h3 headings
----
-```
-
-**Per-slide font size override:**
-
-You can override font sizes for individual slides by adding the `fontsize` configuration to that slide's frontmatter:
-
-```markdown
----
-fontsize:
-  body: 20px
-  h1: 50px
-  h2: 40px
-  h3: 30px
----
-
-# This slide has custom font sizes
-
-## Subtitle with custom h2 size
-
-### Sub-subtitle with custom h3 size
-
-Body text will be 20px on this slide.
-```
-
-**Changing font size for the cover slide only:**
-
-Since the first slide automatically uses the cover layout and settings in the global frontmatter apply to all slides, the best way to customize only the cover slide's font size is to use inline CSS styles.
-
-Add a `<style>` tag in the cover slide's comment section:
-
-```markdown
----
-theme: scholarly
-authors:
-  - name: Your Name
-    institution: Your University
----
-
-# Your Presentation Title
-Subtitle text
-
-<style>
-.slidev-layout.cover h1 {
-  font-size: 64px;
-}
-
-.slidev-layout.cover h2 {
-  font-size: 40px;
-}
-</style>
-
----
-
-# Introduction
-
-This slide uses default font sizes.
-```
-
-You can customize any CSS property for the cover slide this way:
-
-```markdown
-<style>
-.slidev-layout.cover h1 {
-  font-size: 72px;
-  color: #5d8392;
-  font-weight: bold;
-}
-
-.slidev-layout.cover .author-name {
-  font-size: 24px;
-}
-
-.slidev-layout.cover .author-institution {
-  font-size: 20px;
-}
-</style>
-```
-
-**Alternative: Use fontsize for content slides:**
-
-If you want most slides to have custom font sizes but keep the cover at default size, set `fontsize` on each content slide:
-
-```markdown
----
-theme: scholarly
----
-
-# Cover Slide (Default large fonts)
-
----
-fontsize:
-  body: 16px
-  h1: 36px
----
-
-# Slide 2 (Custom fonts)
-
----
-fontsize:
-  body: 16px
-  h1: 36px
----
-
-# Slide 3 (Custom fonts)
-```
-
-**Flexible format:**
-
-Font sizes accept multiple formats:
-
-```yaml
-fontsize:
-  body: 18px      # pixels
-  h1: 3rem        # rem units
-  h2: 2.5em       # em units
-  h3: 32          # number (treated as pixels)
-```
-
-**Notes:**
-
-- All font size options are optional - you can set any combination
-- Per-slide settings override global settings
-- If not specified, the theme uses default font sizes optimized for each layout
-- Font sizes are applied using CSS variables for maximum compatibility
-
-### Per-Slide Settings
-
-You can override settings for individual slides:
-
-```markdown
----
-title: Special Slide
-subtitle: With custom header
----
-
-# Content here
-```
-
----
-
-## VS Code Extension
-
-We provide a VS Code extension to boost your productivity when creating Slidev presentations with this theme.
-
-### Features
-
-- 🎯 **Activity Bar Panel** - Quick access to layouts, components, templates, themes, and references
-- ✨ **Code Snippets** - Type `ss-` or `scholarly-` to trigger snippets for layouts and components
-- 📝 **One-Click Insert/Apply** - Click items to insert content or update frontmatter
-- 🚀 **New Presentation** - Create a new presentation with pre-configured template
-- 🎨 **Theme Presets** - Apply `themeConfig.colorTheme` / `themeConfig.fontTheme`
-- 📚 **BibTeX References** - Completion, hover, and a References view for your `.bib` file
-
-### Installation
-
-1. Download the `.vsix` file from the [release page](https://github.com/jxpeng98/slidev-theme-scholarly/releases)
-2. In VS Code, press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
-3. Type "Install from VSIX" and select the downloaded file
-
-### Usage
-
-**Using Snippets:**
-
-Type the prefix in any Markdown file:
-
-```markdown
-ss-cover      # Insert cover layout
-ss-theorem    # Insert theorem component
-ss-block      # Insert block component
-scholarly-cite # Insert citation
-```
-
-**Using Activity Bar:**
-
-1. Click the Slidev Scholarly icon in the Activity Bar (left sidebar)
-2. Browse Layouts, Components, Templates, Themes, or References sections
-3. Click an item (or the `+` button where available) to insert/apply
-
-### Available Snippets
-
-Layouts are organized into four categories. Use category-specific prefixes or the shorter `ss-*` prefix:
-
-**Structure:** `ss-cover`, `ss-default`, `ss-intro`, `ss-section`, `ss-center`, `ss-auto-center`, `ss-end`
-
-**Content:** `ss-two-cols`, `ss-image-left`, `ss-image-right`, `ss-bullets`, `ss-figure`, `ss-split-image`
-
-**Emphasis:** `ss-quote`, `ss-fact`, `ss-statement`, `ss-focus`
-
-**Academic:** `ss-compare`, `ss-methodology`, `ss-results`, `ss-timeline`, `ss-agenda`, `ss-acknowledgments`, `ss-references`
-
-**Components:** `ss-theorem`, `ss-block`, `ss-steps`, `ss-steps-md`, `ss-keywords`, `ss-keywords-md`, `ss-columns`, `ss-columns-md`, `ss-highlight`, `ss-highlight-md`, `ss-cite` (`@citekey`), `ss-cite-comp`, `ss-cite-md`, `ss-theme-preview`, `scholarly-bibliography`
-
----
-
-## Examples
-
-### Complete Minimal Example
-
-```markdown
----
-theme: scholarly
-author: Your Name
-footerMiddle: My Talk 2025
----
-
-# My Research
-
-A brief overview
-
----
-
-# Introduction
-
-This is my research about...
-
-- Point 1
-- Point 2
-
----
-layout: section
----
-
-# Methods
-
----
-
-# Our Approach
-
-<Theorem type="theorem">
-
-We prove that our algorithm runs in $O(n \log n)$ time.
-
-</Theorem>
-
----
-
-# Thank You
-
-Questions?
-```
-
-### Example with All Features
 
-See [`examples/example.md`](./examples/example.md) for a complete demonstration of all layouts and features.
+## 🔧 VS Code Extension
 
 ### Chinese Example
+Boost your productivity with our VS Code extension:
 
-See [`examples/example-zh.md`](./examples/example-zh.md) for a complete example in Chinese (中文示例).
+- 🎯 Activity Bar panel for layouts/components
+- ✨ Snippets: type `ss-` to insert layouts/components
+- 📚 BibTeX integration with auto-complete
+- 👁️ Preview support
+
+[Download from Releases →](https://github.com/jxpeng98/slidev-theme-scholarly/releases)
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
-We welcome contributions! To develop this theme:
+We welcome contributions!
 
 ```bash
 # Install dependencies
@@ -1344,400 +283,28 @@ npm install
 # Start development server
 npm run dev
 
-# Export presentation as PDF
-npm run export
-
-# Generate preview screenshots
-npm run screenshot
+# Build
+npm run build
 ```
 
-Edit `examples/example.md` to test your changes.
+[View Contributing Guide →](./docs/en/contributing.md)
 
 ---
 
-## License
+## 📄 License
 
 MIT License - see [LICENSE](./LICENSE) for details.
 
 ---
 
-## Support
+## 🔗 Links
 
-- 📖 **Documentation**: [Slidev Documentation](https://sli.dev)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/jxpeng98/slidev-theme-scholarly/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/slidevjs/slidev/discussions)
+- [📖 Documentation](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs/en)
+- [🎬 Live Demo](https://scholarly.penghu.pro/)
+- [🐛 Issues](https://github.com/jxpeng98/slidev-theme-scholarly/issues)
+- [💬 Discussions](https://github.com/slidevjs/slidev/discussions)
+- [📦 NPM Package](https://www.npmjs.com/package/slidev-theme-scholarly)
 
 ---
 
 **Made with ❤️ for academics around the world**
-
-The cover layout is designed for the title slide of your presentation. It supports:
-
-- Centered title and subtitle
-- Multiple authors with name, institution, and email
-- Beamer-style footer with color gradients
-- Customizable footer sections
-
-**Usage with multiple authors (authors array):**
-
-```yaml
----
-theme: scholarly
-footerMiddle: Conference Name
-authors:
-  - name: First Author
-    institution: University One
-    email: first@example.edu
-  - name: Second Author
-    institution: University Two
-    email: second@example.edu
-  - name: Third Author
-    institution: University Three
-    email: third@example.edu
----
-
-# Your Presentation Title
-
-Your subtitle or description
-```
-
-**Usage with single author:**
-
-```yaml
----
-theme: scholarly
-author: Your Name
-footerMiddle: Conference or Event Name
----
-
-# Your Presentation Title
-
-Your subtitle or description
-```
-
-**Footer Configuration:**
-
-The footer is divided into three sections:
-
-- **Left**: Author information (automatically generated or customizable)
-- **Middle**: Custom text (e.g., conference name, event name)
-- **Right**: Page numbers (automatically generated)
-
-**Footer configuration options:**
-
-```yaml
----
-theme: scholarly
-footerLeft: Custom Author Text    # Optional: Override author display
-footerMiddle: Conference Name      # Optional: Middle section text
-authors:
-  - name: First Author
-    institution: University One
-  - name: Second Author
-    institution: University Two
----
-```
-
-**Important Notes:**
-
-- **Global Configuration**: All frontmatter fields (authors, footerLeft, footerMiddle, etc.) defined at the beginning of your slides.md file are available globally across all slides
-- **Default Layout**: If no layout is specified for a slide, it will use the `default` layout automatically
-- Use either `author` (for single author) or `authors` array (for multiple authors)
-- Do not use both `author` and `authors` at the same time
-- When using `authors` array, each author can have `name`, `institution`, and `email` fields
-- The author information will be displayed in the center of the cover slide
-- **Footer configuration is global**: Footer settings (footerLeft, footerMiddle, authors) defined in the frontmatter at the top of your presentation will be used on all slides
-- **Footer left section display rules:**
-  - 1 author: Shows the author's name
-  - 2 authors: Shows "Author1 & Author2"
-  - 3 authors: Shows "Author1, Author2, Author3"
-  - 4+ authors: Shows "First Author et al."
-- You can override the footer left section by setting `footerLeft` in frontmatter
-- `conference` field is deprecated, use `footerMiddle` instead (backward compatible)
-
-**Example of a complete presentation:**
-
-```markdown
----
-theme: academic
-footerMiddle: "My Conference 2025"
-authors:
-  - name: First Author
-    institution: University One
-    email: first@example.edu
-  - name: Second Author
-    institution: University Two
-    email: second@example.edu
----
-
-# My Presentation Title
-
-Subtitle text
-
----
-
-# Second Slide
-
-This slide will automatically use the default layout and show the footer with author information.
-
----
-layout: intro
----
-
-# Section Introduction
-
-All layouts (cover, default, intro) will show the same footer configured at the top.
-```
-
-### Other Layouts
-
-All layouts in this theme include the Beamer-style footer with author and conference information.
-
-- **`default`** - Default slide layout with content and footer
-- **`intro`** - Introduction slide layout with larger text
-- **`center`** - Centered content layout
-- **`section`** - Section divider with large title
-- **`quote`** - Quote layout with styled blockquote
-- **`fact`** - Single fact or number with large text
-- **`statement`** - Statement layout with medium-large text
-- **`image-left`** - Two-column layout with image on the left
-- **`image-right`** - Two-column layout with image on the right
-- **`two-cols`** - Two-column layout for general content
-
-**Usage example:**
-
-```markdown
----
-layout: section
----
-
-# Section Title
-
----
-layout: image-right
-image: https://example.com/image.jpg
----
-
-# Content Title
-
-Content goes here
-
----
-layout: quote
----
-
-> "This is a quote"
-
----
-layout: two-cols
----
-
-# Left Column
-
-Content for the left side
-
-::right::
-
-# Right Column
-
-Content for the right side
-```
-
-**Important**: All layouts automatically include the footer. You don't need to add it manually.
-
-### Creating Custom Layouts
-
-If you need to create a custom layout in your presentation, make sure to include the `<AcademicFooter />` component to maintain consistency:
-
-```vue
-<template>
-  <div class="slidev-layout my-custom-layout">
-    <!-- Your custom content -->
-    <slot />
-    
-    <!-- Import the footer component -->
-    <AcademicFooter />
-  </div>
-</template>
-
-<script setup lang="ts">
-import ScholarlyFooter from '@slidev-theme-scholarly/components/ScholarlyFooter.vue'
-</script>
-```
-
-This ensures that all slides, regardless of layout, display the unified footer with author and conference information.
-
-## Components
-
-This theme provides the following components:
-
-### Theorem Component
-
-The `Theorem` component allows you to insert mathematical theorems, lemmas, propositions, and other formal statements in your slides with automatic numbering and multi-language support.
-
-**Props:**
-
-- `type`: The type of statement - `'theorem'` | `'lemma'` | `'proposition'` | `'corollary'` | `'definition'` | `'example'` | `'remark'` (default: `'theorem'`)
-- `number`: Optional manual number (string or number). If provided, auto-numbering is disabled for this theorem.
-- `title`: Optional title for the theorem
-- `autoNumber`: Enable/disable auto-numbering (default: `true`)
-
-**Multi-language Support:**
-
-Set the `lang` field in your frontmatter to use different languages:
-
-```yaml
----
-theme: academic
-lang: zh  # Chinese (中文) - default
-# OR
-lang: en  # English
----
-```
-
-**Customize Numbering Format:**
-
-You can customize how theorem numbers are displayed using the `theoremNumberFormat` field:
-
-```yaml
----
-theme: academic
-lang: en
-theoremNumberFormat: '{number}'  # Default: just the number (e.g., "1", "2", "3")
-# OR
-theoremNumberFormat: '({number})'  # Parentheses (e.g., "(1)", "(2)", "(3)")
-# OR
-theoremNumberFormat: '[{number}]'  # Brackets (e.g., "[1]", "[2]", "[3]")
-# OR
-theoremNumberFormat: '{number}.'  # With period (e.g., "1.", "2.", "3.")
----
-```
-
-The `{number}` placeholder will be replaced with the actual theorem number.
-
-**Auto-numbering:**
-
-By default, theorems are automatically numbered. Each type (theorem, lemma, etc.) has its own counter:
-
-```markdown
----
-theme: academic
-lang: en
----
-
-# Mathematical Results
-
-<Theorem type="theorem" title="Pythagorean Theorem">
-
-For a right triangle with legs $a$ and $b$, and hypotenuse $c$:
-
-$$a^2 + b^2 = c^2$$
-
-</Theorem>
-<!-- Displays: "Theorem 1 (Pythagorean Theorem)" -->
-
-<Theorem type="theorem">
-
-Another theorem here.
-
-</Theorem>
-<!-- Displays: "Theorem 2" -->
-
-<Theorem type="lemma">
-
-A useful lemma.
-
-</Theorem>
-<!-- Displays: "Lemma 1" -->
-```
-
-**Manual numbering:**
-
-You can override auto-numbering by providing the `number` prop:
-
-```markdown
-<Theorem type="theorem" number="3.1" title="Special Case">
-
-Content here.
-
-</Theorem>
-<!-- Displays: "Theorem 3.1 (Special Case)" -->
-```
-
-**Disable numbering:**
-
-```markdown
-<Theorem type="remark" :autoNumber="false">
-
-This remark has no number.
-
-</Theorem>
-<!-- Displays: "Remark" (without number) -->
-```
-
-**Language Examples:**
-
-Chinese (zh):
-
-```markdown
-<Theorem type="theorem" title="勾股定理">
-内容...
-</Theorem>
-<!-- Displays: "定理 1（勾股定理）" -->
-```
-
-English (en):
-
-```markdown
-<Theorem type="theorem" title="Pythagorean Theorem">
-Content...
-</Theorem>
-<!-- Displays: "Theorem 1 (Pythagorean Theorem)" -->
-
-</Theorem>
-
-<Theorem type="lemma" number="2.1">
-
-Every continuous function on a closed interval is uniformly continuous.
-
-</Theorem>
-
-<Theorem type="definition" title="Limit">
-
-Let $f$ be a function defined on some open interval containing $a$. We say:
-
-$$\lim_{x \to a} f(x) = L$$
-
-if for every $\epsilon > 0$, there exists $\delta > 0$ such that...
-
-</Theorem>
-
-<Theorem type="example">
-
-Consider the function $f(x) = x^2$. Then:
-- $f(0) = 0$
-- $f(1) = 1$
-- $f(2) = 4$
-
-</Theorem>
-```
-
-**Available types and their colors:**
-
-- `theorem` - Blue (定理)
-- `lemma` - Purple (引理)
-- `proposition` - Cyan (命题)
-- `corollary` - Green (推论)
-- `definition` - Amber (定义)
-- `example` - Pink (例)
-- `remark` - Gray (注)
-
-Each type has a distinct color scheme to help differentiate them visually in your presentation.
-
-## Contributing
-
-- `npm install`
-- `npm run dev` to start theme preview of `examples/example.md`
-- Edit the `examples/example.md` and style to see the changes
-- `npm run export` to generate the preview PDF
-- `npm run screenshot` to generate the preview PNG

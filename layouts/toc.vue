@@ -1,0 +1,260 @@
+<template>
+  <!-- Updated: 2026-01-08 21:00 -->
+  <div class="slidev-layout toc flex flex-col h-full">
+    <div
+      ref="contentWrapperRef"
+      class="flex-grow toc-container"
+    >
+      <div
+        ref="contentInnerRef"
+        class="toc-content"
+        :style="computedStyles"
+      >
+        <!-- Title always shows -->
+        <h1 class="toc-title">
+          {{ tocTitle }}
+        </h1>
+        
+        <!-- TOC Items as ordered list style -->
+        <ol class="toc-list">
+          <li 
+            v-for="(section, idx) in tocSections" 
+            :key="idx"
+            class="toc-item"
+            :class="{
+              'is-active': highlightCurrent && section.isActive,
+              'is-inactive': highlightCurrent && !section.isActive
+            }"
+            @click="navigateToSection(section.slideNo)"
+          >
+            <!-- Circular number badge -->
+            <span class="toc-number">
+              {{ idx + 1 }}
+            </span>
+            
+            <!-- Content -->
+            <span class="toc-section-title">{{ section.title }}</span>
+            <span v-if="section.subtitle" class="toc-section-subtitle">
+              — {{ section.subtitle }}
+            </span>
+          </li>
+        </ol>
+        
+        <!-- Slot for additional content -->
+        <div v-if="$slots.default" class="mt-4">
+          <slot />
+        </div>
+      </div>
+    </div>
+    <ScholarlyFooter class="flex-shrink-0" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useSlideContext } from '@slidev/client'
+import ScholarlyHeader from '../components/ScholarlyHeader.vue'
+import ScholarlyFooter from '../components/ScholarlyFooter.vue'
+import { useAutoFontSize } from '../utils/useAutoFontSize'
+import { useFontSizeStyles } from '../utils/useFontSizeStyles'
+
+interface TocSection {
+  title: string
+  subtitle?: string
+  slideNo: number
+  isActive: boolean
+}
+
+const props = defineProps<{
+  /** Custom title for the TOC (default: 'Outline'), set to false to hide */
+  title?: string | false
+  /** Show section numbers (default: true) */
+  showNumbers?: boolean
+  /** Highlight the current active section (default: true) */
+  highlightCurrent?: boolean
+  /** Manually specify sections (overrides auto-extraction) */
+  sections?: string[]
+}>()
+
+const { $slidev, $frontmatter } = useSlideContext()
+
+// TOC title - from frontmatter or default
+const tocTitle = computed(() => $frontmatter.value?.title || 'Outline')
+
+// Refs for auto-font-size
+const contentWrapperRef = ref<HTMLElement>()
+const contentInnerRef = ref<HTMLElement>()
+
+// Auto-adjusting font size based on content
+const { fontSize: contentFontSize } = useAutoFontSize(contentWrapperRef, contentInnerRef)
+const computedStyles = useFontSizeStyles(contentFontSize)
+
+// Get all slides from Slidev
+const allSlides = computed(() => {
+  return ($slidev.nav as any).slides || []
+})
+
+// Current slide number
+const currentPage = computed(() => $slidev.nav.currentPage)
+
+// Extract sections from slides with layout: section
+const tocSections = computed<TocSection[]>(() => {
+  if (props.sections && props.sections.length > 0) {
+    return props.sections.map((title, idx) => ({
+      title,
+      slideNo: idx + 1,
+      isActive: false
+    }))
+  }
+
+  const sections: TocSection[] = []
+  const slides = allSlides.value
+
+  for (let i = 0; i < slides.length; i++) {
+    const slide = slides[i]
+    const frontmatter = slide?.meta?.slide?.frontmatter || slide?.frontmatter || {}
+    const layout = frontmatter.layout || (i === 0 ? 'cover' : 'default')
+
+    if (layout === 'section') {
+      const rawContent = slide?.meta?.slide?.content || slide?.content || ''
+      const h1Match = rawContent.match(/^#\s+(.+)$/m)
+      const title = h1Match ? h1Match[1].trim() : frontmatter.title || `Section ${sections.length + 1}`
+      const subtitleMatch = rawContent.match(/^#\s+.+\n+(?:##\s+)?(.+)$/m)
+      const subtitle = subtitleMatch ? subtitleMatch[1].trim() : frontmatter.subtitle
+
+      sections.push({
+        title,
+        subtitle,
+        slideNo: i + 1,
+        isActive: false
+      })
+    }
+  }
+
+  const current = currentPage.value
+  for (let i = sections.length - 1; i >= 0; i--) {
+    if (current >= sections[i].slideNo) {
+      sections[i].isActive = true
+      break
+    }
+  }
+
+  return sections
+})
+
+const navigateToSection = (slideNo: number) => {
+  if (slideNo > 0) {
+    $slidev.nav.go(slideNo)
+  }
+}
+
+const showNumbers = computed(() => props.showNumbers !== false)
+const highlightCurrent = computed(() => props.highlightCurrent !== false)
+</script>
+
+<style scoped>
+/* Container - matching bullets layout pattern */
+.toc-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 3rem 35px;
+}
+
+.toc-container.has-header {
+  padding-top: 60px;
+}
+
+.toc-content {
+  max-width: 90%;
+}
+
+/* Title - matching bullets h1/h2 style */
+.toc-title {
+  margin-bottom: 1.5rem;
+  color: var(--slidev-theme-primary, #1e3a5f);
+  font-family: var(--scholarly-font-sans, sans-serif);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* TOC List - matching bullets ol style */
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: item;
+}
+
+/* TOC Item - matching bullets ol > li style */
+.toc-item {
+  position: relative;
+  padding-left: 2.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.toc-item:hover {
+  opacity: 0.8;
+}
+
+.toc-item.is-active {
+  font-weight: 600;
+}
+
+.toc-item.is-inactive {
+  opacity: 0.6;
+}
+
+.toc-item.is-inactive:hover {
+  opacity: 0.85;
+}
+
+/* Circular number badge - matching bullets ol::before */
+.toc-number {
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: var(--slidev-theme-primary, #1e3a5f);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: var(--scholarly-font-sans, sans-serif);
+}
+
+.toc-item.is-active .toc-number {
+  box-shadow: 0 2px 4px rgba(30, 58, 95, 0.3);
+}
+
+/* Section title */
+.toc-section-title {
+  color: #1f2937 !important;
+  font-family: var(--scholarly-font-serif, serif);
+}
+
+.toc-item.is-active .toc-section-title {
+  color: var(--slidev-theme-primary, #1e3a5f) !important;
+}
+
+/* Section subtitle */
+.toc-section-subtitle {
+  color: #6b7280 !important;
+  font-size: 0.85em;
+  font-style: italic;
+  margin-left: 0.25em;
+}
+
+/* Strong text emphasis - matching bullets */
+.toc-content :deep(strong) {
+  color: var(--slidev-theme-primary, #1e3a5f);
+}
+</style>

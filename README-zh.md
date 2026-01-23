@@ -1,9 +1,21 @@
 # Slidev 学术主题 (Scholarly Theme)
 
 [![NPM version](https://img.shields.io/npm/v/slidev-theme-scholarly?color=3AB9D4&label=)](https://www.npmjs.com/package/slidev-theme-scholarly)
-[English Version](./README.md)
+[![GitHub stars](https://img.shields.io/github/stars/jxpeng98/slidev-theme-scholarly?style=social)](https://github.com/jxpeng98/slidev-theme-scholarly)
+[![License](https://img.shields.io/github/license/jxpeng98/slidev-theme-scholarly)](./LICENSE)
 
-一个专为学术演示设计的 [Slidev](https://github.com/slidevjs/slidev) 专业主题，采用 LaTeX Beamer 风格的设计。
+[English](./README.md) · [在线演示](https://scholarly.penghu.pro/) · [文档](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs/zh)
+
+一个专为学术演示设计的 [Slidev](https://sli.dev) 专业主题，采用 LaTeX Beamer 风格的设计。
+
+> **⚠️ 即将发布重大升级**
+>
+> 接下来的版本可能包含不兼容变更。升级前请先阅读[重大升级说明](./docs/zh/guide/upgrade.md)。
+>
+> **抢先体验预发布版本：**
+> ```bash
+> npm i -D slidev-theme-scholarly@next
+> ```
 
 > **⚠️ 即将发布重大升级**
 >
@@ -16,78 +28,42 @@
 
 ---
 
-## 📖 目录
+## ✨ 主要特性
 
-- [这是什么？](#这是什么)
-- [谁应该使用？](#谁应该使用)
-- [快速开始](#快速开始)
-- [核心特性](#核心特性)
-- [理解布局系统](#理解布局系统)
-- [新增布局 (v2.0)](#新增布局-v20)
-- [组件](#组件)
-- [Markdown 语法糖](#markdown-语法糖)
-- [配置指南](#配置指南)
-- [VS Code 插件](#vs-code-插件)
-- [示例](#示例)
-- [贡献指南](#贡献指南)
+| 特性 | 说明 |
+|------|------|
+| 🎓 **专业设计** | LaTeX Beamer 风格，学术感十足 |
+| 📐 **24 种布局** | 结构、内容、强调、学术四大类别 |
+| 🧩 **丰富组件** | 定理、信息块、引用、步骤、关键词、多栏、高亮 |
+| 🎨 **9 种配色主题** | 经典蓝、牛津、剑桥、耶鲁、普林斯顿、北欧、单色、棕褐、高对比度 |
+| 📚 **BibTeX 引用** | 自动生成参考文献，支持 APA、Harvard、IEEE、MLA 格式 |
+| 📝 **语法糖** | 简化的 Markdown 指令语法 |
+| 🔧 **VS Code 扩展** | 代码片段、预览、BibTeX 集成 |
 
 ---
 
-## 这是什么？
+## 🚀 快速开始
 
-这是一个用于 [Slidev](https://sli.dev) 的**主题**（设计模板）。Slidev 是一个使用简单文本文件创建演示幻灯片的工具。可以把它想象成 PowerPoint，但不是点击和拖拽，而是用一种叫做 Markdown 的简单格式编写内容。
-
-**为什么使用这个主题？**
-
-- 🎓 外观专业、学术化（灵感来自 LaTeX Beamer）
-- 🎯 完美适配研究报告、讲座和会议演讲
-- ✨ 处理复杂内容，如数学公式和定理
-- 🚀 一旦掌握基础，速度远超 PowerPoint
-
-**无需编程经验！** 如果你会写邮件，就能用这个主题创建演示文稿。
-
----
-
-## 谁应该使用？
-
-这个主题专为以下人群设计：
-
-- 👨‍🎓 **博士生** - 展示研究成果
-- 👩‍🏫 **教授** - 制作讲座幻灯片
-- 🔬 **研究人员** - 准备会议报告
-- 📊 **任何人** - 需要专业学术演示的人
-
-**你不需要是程序员！** 学习曲线平缓，几分钟内就能创建精美的幻灯片。
-
----
-
-## 快速开始
-
-### 第一步：安装 Slidev
-
-首先，确保已安装 [Node.js](https://nodejs.org/)（从 nodejs.org 下载）。然后打开终端（Windows 上是命令提示符，Mac/Linux 上是终端）并运行：
+### 安装
 
 ```bash
-npm install -g @slidev/cli
+npm i -D slidev-theme-scholarly
 ```
 
-> **这是做什么的？** 这会在你的电脑上安装 Slidev，使你可以在任何地方使用它。
+### 创建演示文稿
 
-### 第二步：创建你的第一个演示文稿
-
-```bash
-# 为演示文稿创建一个新文件夹
-mkdir my-talk
-cd my-talk
-
-# 创建幻灯片文件
-echo "---
+```markdown
+---
 theme: scholarly
+authors:
+  - name: 你的名字
+    institution: 你的大学
+footerMiddle: 2026 年会议
 ---
 
-# 我的第一个学术报告
+# 你的演示标题
 
-你的名字
+副标题或描述
 
 ---
 
@@ -96,77 +72,100 @@ theme: scholarly
 - 要点 1
 - 要点 2
 - 要点 3
-" > slides.md
 ```
 
-### 第三步：预览你的演示文稿
+### 预览
 
 ```bash
-slidev slides.md
+npx slidev
 ```
-
-浏览器会自动打开并显示你的演示文稿！按右箭头键在幻灯片之间切换。
-
-> **提示：** 保持终端运行。你对 `slides.md` 所做的任何更改都会立即显示在浏览器中！
 
 ---
 
-## 核心特性
+## 📐 布局
 
-### 🎨 专业设计
+布局分为**四个类别**：
 
-- LaTeX Beamer 风格设计,经典学术蓝配色
-- 所有幻灯片自动添加页眉和页脚
-- 整个演示文稿样式一致
-- 卓越排版：Palatino 衬线体与 Helvetica 无衬线体搭配
+### 结构布局
 
-### 👥 多作者支持
+| 布局 | 说明 |
+|------|------|
+| `cover` | 带作者的标题页 |
+| `default` | 标准内容页 |
+| `intro` | 章节介绍 |
+| `section` | 章节分隔符 |
+| `center` | 居中内容 |
+| `auto-center` | 自动居中内容 |
+| `end` | 结束页 |
 
-优雅地显示一位、两位或整个研究团队：
+### 内容布局
 
-- 1 位作者："张三"
-- 2 位作者："张三 & 李四"
-- 3 位作者："张三，李四，王五"
-- 4+ 位作者："张三等"
+| 布局 | 说明 |
+|------|------|
+| `two-cols` | 双栏布局 |
+| `image-left` | 左图右文 |
+| `image-right` | 左文右图 |
+| `bullets` | 增强列表 |
+| `figure` | 带标题的学术图片 |
+| `split-image` | 分割图片布局 |
 
-### 🔢 智能定理编号
+### 强调布局
 
-插入定理、引理、定义并自动编号：
+| 布局 | 说明 |
+|------|------|
+| `quote` | 样式化引用 |
+| `fact` | 单个事实/统计数据 |
+| `statement` | 重要陈述 |
+| `focus` | 带图标的聚焦陈述 |
 
-- 每种类型（定理、引理等）都有自己的计数器
-- 支持中文和英文
-- 可自定义编号格式
+### 学术布局
 
-### 📐 18 种布局选项
+| 布局 | 说明 |
+|------|------|
+| `compare` | 并排对比 |
+| `methodology` | 研究方法 |
+| `results` | 研究结果 |
+| `timeline` | 时间线可视化 |
+| `agenda` | 演示议程 |
+| `acknowledgments` | 致谢 |
+| `references` | 参考文献 |
 
-布局按功能分为四个类别：
+**用于：** 开始报告的新部分
+[查看布局文档 →](./docs/zh/layouts/structure.md)
 
-**结构布局** - 框架和组织：
+```markdown
+---
+layout: intro
+---
 
-- cover、default、intro、section、center、auto-center、end
+# 第二部分：研究方法
 
-**内容布局** - 信息呈现：
+让我们讨论我们的方法
+```
 
-- two-cols、image-left、image-right、bullets、figure、split-image
+**显示内容：**
 
-**强调布局** - 突出和聚焦：
+- 大字号、居中的文本
+- 无页眉（为标题留出更多空间）
+- 底部的页脚
+## 🧩 组件
 
-- quote、fact、statement、focus
+---
+| 组件 | 说明 | 示例 |
+|------|------|------|
+| **Theorem** | 定理、引理、定义 | `<Theorem type="theorem">...</Theorem>` |
+| **Block** | Beamer 风格信息块 | `<Block type="info">...</Block>` |
+| **Citations** | BibTeX 引用 | `@citekey` 或 `!@citekey` |
+| **Steps** | 流程可视化 | `<Steps :steps="[...]" />` |
+| **Keywords** | 关键词标签 | `<Keywords :items="[...]" />` |
+| **Columns** | 多栏布局 | `<Columns :cols="2">...</Columns>` |
+| **Highlight** | 文本高亮 | `<Highlight>文本</Highlight>` |
 
-**学术布局** - 研究专用：
+[查看组件文档 →](./docs/zh/components/index.md)
 
-- compare、methodology、results、timeline、agenda、acknowledgments、references
+---
 
-### 🎨 主题系统
-
-多种配色和字体主题供自定义：
-
-- **9 种配色主题** - 经典蓝、牛津酒红、剑桥绿、耶鲁蓝、普林斯顿橙、北欧蓝、单色、暖棕褐、高对比度
-- **8 种字体主题** - 经典（Palatino/Helvetica）、现代（Georgia/Source Sans）、传统、当代、人文主义、技术、优雅、无衬线默认
-
-#### 主题预览
-
-每个主题包含封面、章节、内容和引用布局，各有独特的配色方案：
+## 🎨 主题预览
 
 <details open>
 <summary><b>经典蓝（默认）</b></summary>
@@ -205,1137 +204,82 @@ slidev slides.md
 </details>
 
 <details>
-<summary><b>耶鲁蓝</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/yale/1.png" width="220" alt="封面"/></td>
-    <td><img src="./images/themes/yale/2.png" width="220" alt="章节"/></td>
-    <td><img src="./images/themes/yale/3.png" width="220" alt="内容"/></td>
-    <td><img src="./images/themes/yale/4.png" width="220" alt="引用"/></td>
-  </tr>
-</table>
+<summary><b>更多主题...</b></summary>
+
+- 耶鲁蓝
+- 普林斯顿橙
+- 北欧蓝
+- 单色
+- 暖棕褐
+- 高对比度
+
+[查看所有主题 →](./docs/zh/guide/themes.md)
 </details>
 
-<details>
-<summary><b>普林斯顿橙</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/princeton/1.png" width="220" alt="封面"/></td>
-    <td><img src="./images/themes/princeton/2.png" width="220" alt="章节"/></td>
-    <td><img src="./images/themes/princeton/3.png" width="220" alt="内容"/></td>
-    <td><img src="./images/themes/princeton/4.png" width="220" alt="引用"/></td>
-  </tr>
-</table>
-</details>
-
-<details>
-<summary><b>北欧蓝</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/nordic/1.png" width="220" alt="封面"/></td>
-    <td><img src="./images/themes/nordic/2.png" width="220" alt="章节"/></td>
-    <td><img src="./images/themes/nordic/3.png" width="220" alt="内容"/></td>
-    <td><img src="./images/themes/nordic/4.png" width="220" alt="引用"/></td>
-  </tr>
-</table>
-</details>
-
-<details>
-<summary><b>单色</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/monochrome/1.png" width="220" alt="封面"/></td>
-    <td><img src="./images/themes/monochrome/2.png" width="220" alt="章节"/></td>
-    <td><img src="./images/themes/monochrome/3.png" width="220" alt="内容"/></td>
-    <td><img src="./images/themes/monochrome/4.png" width="220" alt="引用"/></td>
-  </tr>
-</table>
-</details>
-
-<details>
-<summary><b>暖棕褐</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/sepia/1.png" width="220" alt="封面"/></td>
-    <td><img src="./images/themes/sepia/2.png" width="220" alt="章节"/></td>
-    <td><img src="./images/themes/sepia/3.png" width="220" alt="内容"/></td>
-    <td><img src="./images/themes/sepia/4.png" width="220" alt="引用"/></td>
-  </tr>
-</table>
-</details>
-
-<details>
-<summary><b>高对比度</b></summary>
-<table>
-  <tr>
-    <td><img src="./images/themes/high-contrast/1.png" width="220" alt="封面"/></td>
-    <td><img src="./images/themes/high-contrast/2.png" width="220" alt="章节"/></td>
-    <td><img src="./images/themes/high-contrast/3.png" width="220" alt="内容"/></td>
-    <td><img src="./images/themes/high-contrast/4.png" width="220" alt="引用"/></td>
-  </tr>
-</table>
-</details>
-
-### 🆕 6 个新增布局 (v2.0)
-
-专为学术演示设计的新布局：
-
-- **focus** - 用图标突出关键陈述
-- **compare** - 并排对比
-- **bullets** - 增强列表样式
-- **figure** - 带标题的学术图片
-- **references** - 参考文献格式
-- **end** - 带联系方式的致谢页
-
-### 📚 内置引用支持
-
-从 BibTeX 文件自动生成参考文献：
-
-- 使用 `@citekey` 进行括号引用
-- 使用 `!@citekey` 进行叙述性引用
-- 支持 APA、Harvard、Vancouver、IEEE、MLA、Chicago 样式
-- 自动从所有引用生成参考文献列表
-- 无需额外配置！
-
-### 🧩 丰富的组件
-
-内置学术内容组件：
-
-- **Theorem** - 定理、引理、定义
-- **Block** - Beamer 风格彩色块
-- **Steps** - 工作流程可视化
-- **Keywords** - 关键词标签
-- **Columns** - 多列布局
-- **Highlight** - 文本高亮
-
-### 📝 Markdown 语法糖
-
-使用简单的 Markdown 指令代替 HTML：
-
-```markdown
-:::block{type="info" title="提示"}
-这里是内容
-:::
-
-:::theorem{type="theorem" title="主要结果"}
-数学内容
-:::
-```
-
-### �🌍 多语言支持
-
-支持中文和英文的数学内容。
-
----
-
-## 理解布局系统
-
-**什么是布局？**
-
-布局就像 PowerPoint 中的幻灯片模板。它决定了内容在幻灯片上的排列方式。
-
-本主题中的布局分为**四个功能类别**：
-
-- **结构布局** - 框架布局（cover、default、intro、section、center、auto-center、end）
-- **内容布局** - 信息呈现（two-cols、image-left/right、bullets、figure、split-image）
-- **强调布局** - 突出和聚焦（quote、fact、statement、focus）
-- **学术布局** - 研究专用（compare、methodology、results、timeline、agenda、acknowledgments、references）
-
-有关每个布局的详细文档，请参阅[在线文档](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs)。
-
-### 如何选择布局
-
-在每张幻灯片的顶部，添加：
-
-```yaml
----
-layout: 布局名称
----
-```
-
-如果不指定布局，Slidev 会自动使用 `default` 布局。
-
-### 可用布局
-
-#### 1️⃣ **cover** - 标题幻灯片
-
-**用于：** 演示文稿的第一张幻灯片
-
-```markdown
----
-layout: cover
-authors:
-  - name: 你的名字
-    institution: 你的大学
-    email: you@example.edu
-footerMiddle: 2025 年会议名称
----
-
-# 你的演示标题
-副标题或描述
-```
-
-**显示内容：**
-
-- 居中的大标题
-- 带有单位和邮箱的作者信息
-- 带有作者、会议和页码的页脚
-
----
-
-#### 2️⃣ **default** - 标准内容
-
-**用于：** 大部分幻灯片（这是自动的！）
-
-```markdown
----
-title: 我的幻灯片标题
-subtitle: 可选的副标题
----
-
-# 主要内容
-
-- 要点 1
-- 要点 2
-
-你可以添加文本、图片、代码、数学公式等。
-```
-
-**显示内容：**
-
-- 可选的带有标题和副标题的页眉
-- 中间的内容
-- 底部的页脚
-
----
-
-#### 3️⃣ **intro** - 章节介绍
-
-**用于：** 开始报告的新部分
-
-```markdown
----
-layout: intro
----
-
-# 第二部分：研究方法
-
-让我们讨论我们的方法
-```
-
-**显示内容：**
-
-- 大字号、居中的文本
-- 无页眉（为标题留出更多空间）
-- 底部的页脚
-
----
-
-#### 4️⃣ **section** - 章节分隔符
-
-**用于：** 演示中的重大转换
-
-```markdown
----
-layout: section
----
-
-# 研究结果
-```
-
-**显示内容：**
-
-- 非常大的居中标题
-- 无页眉
-- 底部的页脚
-- 完美的戏剧性章节分隔
-
----
-
-#### 5️⃣ **center** - 居中内容
-
-**用于：** 简短信息或关键要点
-
-```markdown
----
-layout: center
----
-
-# 核心结论
-
-这是最重要的观点
-```
-
-**显示内容：**
-
-- 所有内容水平和垂直居中
-- 非常适合强调
-
----
-
-#### 6️⃣ **quote** - 引用
-
-**用于：** 突出显示引用
-
-```markdown
----
-layout: quote
----
-
-生活就像一盒巧克力，你永远不知道下一颗是什么味道。
-
-— 阿甘正传
-```
-
-**显示内容：**
-
-- 大字号、样式化的引用
-- 下方的出处
-
----
-
-#### 7️⃣ **fact** - 单个事实/统计数据
-
-**用于：** 突出重要数字或事实
-
-```markdown
----
-layout: fact
----
-
-# 95%
-
-我们方法的成功率
-```
-
-**显示内容：**
-
-- 非常大的数字或短文本
-- 下方较小的描述
-
----
-
-#### 8️⃣ **statement** - 重要陈述
-
-**用于：** 突出关键陈述
-
-```markdown
----
-layout: statement
----
-
-# 我们的方法达到了最先进的结果
-
-超越了所有以前的方法
-```
-
-**显示内容：**
-
-- 大字号陈述文本，居中
-- 中等宽度以提高可读性
-
----
-
-#### 9️⃣ **image-left** - 左图右文
-
-**用于：** 用文字解释视觉内容
-
-```markdown
----
-layout: image-left
-image: ./path/to/image.png
----
-
-# 实验设置
-
-- 设备 A
-- 设备 B  
-- 设备 C
-
-设置的描述...
-```
-
-**显示内容：**
-
-- 左半部分的全高度图片
-- 右半部分的内容
-
----
-
-#### 🔟 **image-right** - 左文右图
-
-**用于：** 文字配支持性视觉内容
-
-```markdown
----
-layout: image-right
-image: https://example.com/image.jpg
----
-
-# 结果分析
-
-我们的发现显示...
-
-- 发现 1
-- 发现 2
-```
-
-**显示内容：**
-
-- 左半部分的内容
-- 右半部分的全高度图片
-
----
-
-#### 1️⃣1️⃣ **two-cols** - 双栏
-
-**用于：** 比较或显示并行内容
-
-```markdown
----
-layout: two-cols
----
-
-# 方法 A
-
-- 优势 1
-- 优势 2
-- 优势 3
-
-::right::
-
-# 方法 B
-
-- 优势 1
-- 优势 2
-- 优势 3
-```
-
-**显示内容：**
-
-- 左栏内容（`::right::` 之前）
-- 右栏内容（`::right::` 之后）
-- 等宽列
-
----
-
-## 新增布局 (v2.0)
-
-### 1️⃣2️⃣ **focus** - 聚焦陈述
-
-**用于：** 用视觉强调突出关键问题或陈述
-
-```markdown
----
-layout: focus
-color: blue
-icon: 🎯
----
-
-# 研究问题
-
-如何在降低成本的同时提高准确率？
-```
-
-**属性：** `color`（blue/green/amber/red/purple）, `icon`（表情符号）
-
----
-
-### 1️⃣3️⃣ **compare** - 并排对比
-
-**用于：** 比较两种方法、方案或概念
-
-```markdown
----
-layout: compare
-title: 传统 vs. 我们的方法
-leftLabel: 传统方法
-rightLabel: 我们的方法
-leftColor: red
-rightColor: green
----
-
-- 成本高
-- 速度慢
-
-::right::
-
-- 成本低
-- 速度快
-```
-
----
-
-### 1️⃣4️⃣ **bullets** - 增强列表
-
-**用于：** 专业的项目符号展示
-
-```markdown
----
-layout: bullets
-title: 要点
----
-
-## 主要发现
-
-- **要点 1** - 描述
-- **要点 2** - 描述
-```
-
----
-
-### 1️⃣5️⃣ **figure** - 学术图片
-
-**用于：** 显示带有适当标题的图片
-
-```markdown
----
-layout: figure
-src: ./images/architecture.png
-caption: 系统架构概览。
-label: "图 1："
-title: 架构
----
-```
-
----
-
-### 1️⃣6️⃣ **references** - 参考文献
-
-**用于：** 参考文献/书目幻灯片
-
-```markdown
----
-layout: references
----
-
-1. **张三等** (2024). *论文标题*. 期刊.
-2. **李四** (2023). *另一篇论文*. 会议.
-```
-
----
-
-### 1️⃣7️⃣ **end** - 致谢页
-
-**用于：** 带有联系信息的结束幻灯片
-
-```markdown
----
-layout: end
-email: you@university.edu
-website: https://example.com
-subtitle: 问题？
----
-
-感谢您的聆听！
-```
-
----
-
-## 组件
-
-本主题为学术演示提供多种组件。
-
-### 定理组件
-
-在学术演示中，你经常需要展示正式的陈述，如定理、引理或定义。这个主题提供了一个特殊的组件，可以：
-
-- 自动为定理编号
-- 专业的样式设计
-- 支持多种语言
-
-### 基本用法
-
-```markdown
-<Theorem type="theorem" title="勾股定理">
-
-对于直角三角形，设两直角边为 $a$ 和 $b$，斜边为 $c$：
-
-$$a^2 + b^2 = c^2$$
-
-</Theorem>
-```
-
-**结果：** 一个格式精美的框，标题为"定理 1（勾股定理）"，内部是你的内容。
-
-### 可用类型
-
-每种类型都有不同的颜色：
-
-| 类型 | 中文 | 英文 | 颜色 |
-|------|------|------|------|
-| `theorem` | 定理 | Theorem | 蓝色 |
-| `lemma` | 引理 | Lemma | 紫色 |
-| `proposition` | 命题 | Proposition | 青色 |
-| `corollary` | 推论 | Corollary | 绿色 |
-| `definition` | 定义 | Definition | 琥珀色 |
-| `example` | 例 | Example | 粉色 |
-| `remark` | 注 | Remark | 灰色 |
-
-### 示例
-
-**简单定理：**
-
-```markdown
-<Theorem type="theorem">
-
-每个有界序列都有一个收敛的子序列。
-
-</Theorem>
-```
-
-**带标题的定理：**
-
-```markdown
-<Theorem type="definition" title="连续性">
-
-函数 $f$ 在 $x = a$ 处连续，如果...
-
-</Theorem>
-```
-
-**手动编号：**
-
-```markdown
-<Theorem type="lemma" number="3.2">
-
-这将被编号为"引理 3.2"，而不是自动编号。
-
-</Theorem>
-```
-
-**无编号：**
-
-```markdown
-<Theorem type="remark" :autoNumber="false">
-
-此注记没有编号。
-
-</Theorem>
-```
-
----
-
-### Block 组件
-
-Beamer 风格的彩色内容块。
-
-```markdown
-<Block type="info" title="重要提示">
-这里是内容...
-</Block>
-```
-
-**类型：** `default`、`info`、`success`、`warning`、`danger`、`example`、`alert`
-
----
-
-### Steps 组件
-
-显示工作流程或步骤。
-
-```markdown
-<Steps :steps="[
-  { title: '步骤 1', description: '说明' },
-  { title: '步骤 2', description: '说明' }
-]" :activeStep="1" />
-```
-
----
-
-### Keywords 组件
-
-显示关键词标签。
-
-```markdown
-<Keywords :items="['机器学习', 'AI', '深度学习']" color="blue" />
-```
-
----
-
-### Columns 组件
-
-多列布局。
-
-```markdown
-<Columns :cols="2" gap="2rem">
-第一列内容
-<template #col2>
-第二列内容
-</template>
-</Columns>
-```
-
----
-
-### Highlight 组件
-
-内联文本高亮。
-
-```markdown
-这是 <Highlight color="yellow">重要的</Highlight> 文本。
-```
-
----
-
-### Cite 组件
-
-学术引用。
-
-```markdown
-<Cite author="张三等" year="2024" />
-```
-
----
-
-## Markdown 语法糖
-
-使用简单的 Markdown 指令代替 HTML 组件语法：
-
-### Block（信息块）
-
-```markdown
-:::block{type="info" title="提示"}
-这里是内容
-:::
-```
-
-### Theorem（定理）
-
-```markdown
-:::theorem{type="theorem" title="主要结果"}
-对于任意 $\epsilon > 0$...
-:::
-```
-
-### Columns（多列，使用 +++ 分隔）
-
-```markdown
-:::columns{cols="2"}
-左列
-+++
-右列
-:::
-```
-
-### 其他指令
-
-```markdown
-:::highlight{color="yellow"}
-高亮文本
-:::
-
-:::cite{author="张三" year="2024"}
-显示...
-:::
-
-:::steps{:steps='[{"title":"步骤 1"}]'}:::
-
-:::keywords{:items='["AI", "ML"]' color="blue"}:::
-```
-
----
-
-## 配置指南
-
-### 设置你的演示文稿
-
-在 `slides.md` 文件的最顶部，添加一个配置部分：
-
-```yaml
----
-theme: scholarly
-lang: zh  # 或 'en' 表示英文
-footerMiddle: 2025 年会议名称
-authors:
-  - name: 张三
-    institution: 清华大学
-    email: zhangsan@tsinghua.edu.cn
-  - name: 李四
-    institution: 北京大学
-    email: lisi@pku.edu.cn
----
-```
-
-### 配置选项
-
-#### 基本设置
-
-| 选项 | 作用 | 示例 |
-|------|------|------|
-| `theme` | 告诉 Slidev 使用这个主题 | `scholarly` |
-| `lang` | 定理的语言 | `zh` 或 `en` |
-| `aspectRatio` | 幻灯片尺寸 | `16/9` 或 `4/3` |
-
-#### 作者信息
-
-**单个作者：**
-
-```yaml
-author: 张三
-```
-
-**多个作者（推荐）：**
-
-```yaml
-authors:
-  - name: 张三
-    institution: 清华大学
-    email: zhangsan@tsinghua.edu.cn
-  - name: 李四
-    institution: 北京大学
-```
-
-#### 页脚配置
-
-| 选项 | 控制内容 | 示例 |
-|------|---------|------|
-| `footerLeft` | 页脚左侧 | `自定义文本` |
-| `footerMiddle` | 页脚中间 | `2025 年会议` |
-| `footerRight` | 页脚右侧（自动） | 页码 |
-
-**默认行为（如果未指定）：**
-
-- 左侧：显示作者姓名
-- 中间：空（或你的自定义文本）
-- 右侧：页码（自动）
-
-#### 定理编号格式
-
-自定义定理编号的显示方式：
-
-```yaml
-theoremNumberFormat: '{number}'      # 1, 2, 3（默认）
-theoremNumberFormat: '({number})'    # (1), (2), (3)
-theoremNumberFormat: '[{number}]'    # [1], [2], [3]
-theoremNumberFormat: '{number}.'     # 1., 2., 3.
-```
-
-#### 引用配置
-
-配置参考文献和引用样式：
-
-```yaml
----
-theme: scholarly
-bibFile: references.bib  # BibTeX 文件路径（默认：references.bib）
-bibStyle: apa            # 引用样式
----
-```
-
-**支持的引用样式：**
-
-- `apa`（默认）
-- `harvard1`
-- `vancouver`
-- `ieee`
-- `mla`
-- `chicago-author-date`
-
-**在幻灯片中使用引用：**
-
-```markdown
-# 引言
-
-深度学习已经革新了人工智能 @lecun2015deep。
-
-!@vaswani2017attention 提出了 Transformer 架构。
-
----
-layout: references
----
-
-[[bibliography]]
-```
-
-**长参考文献列表的分页：**
-
-```markdown
----
-layout: references
-perPage: 5
-page: 1
----
-
-[[bibliography]]
-
----
-layout: references
-perPage: 5
-page: 2
-title: "参考文献（续）"
----
-
-[[bibliography]]
-```
-
-#### 字体大小配置
-
-你可以全局或按页面自定义正文和标题（h1、h2、h3）的字体大小。
-
-**全局字体大小（应用于所有幻灯片）：**
-
-```yaml
----
-theme: scholarly
-fontsize:
-  body: 18px    # 正文的基础字体大小
-  h1: 48px      # h1 标题的字体大小
-  h2: 36px      # h2 标题的字体大小
-  h3: 28px      # h3 标题的字体大小
----
-```
-
-**单页字体大小覆盖：**
-
-你可以通过在该幻灯片的 frontmatter 中添加 `fontsize` 配置来覆盖单个幻灯片的字体大小：
-
-```markdown
----
-fontsize:
-  body: 20px
-  h1: 50px
-  h2: 40px
-  h3: 30px
----
-
-# 此幻灯片具有自定义字体大小
-
-## 具有自定义 h2 大小的副标题
-
-### 具有自定义 h3 大小的次级副标题
-
-此幻灯片上的正文将为 20px。
-```
-
-**仅更改封面幻灯片的字体大小：**
-
-由于第一张幻灯片自动使用封面布局，而全局 frontmatter 中的设置会应用到所有幻灯片，自定义封面幻灯片字体大小的最佳方法是使用内联 CSS 样式。
-
-在封面幻灯片的注释部分添加 `<style>` 标签：
-
-```markdown
----
-theme: scholarly
-authors:
-  - name: 你的名字
-    institution: 你的大学
----
-
-# 你的演示标题
-副标题文本
-
-<style>
-.slidev-layout.cover h1 {
-  font-size: 64px;
-}
-
-.slidev-layout.cover h2 {
-  font-size: 40px;
-}
-</style>
-
----
-
-# 引言
-
-此幻灯片使用默认字体大小。
-```
-
-你可以用这种方式自定义封面幻灯片的任何 CSS 属性：
-
-```markdown
-<style>
-.slidev-layout.cover h1 {
-  font-size: 72px;
-  color: #5d8392;
-  font-weight: bold;
-}
-
-.slidev-layout.cover .author-name {
-  font-size: 24px;
-}
-
-.slidev-layout.cover .author-institution {
-  font-size: 20px;
-}
-</style>
-```
-
-**替代方案：对内容幻灯片使用 fontsize：**
-
-如果你希望大多数幻灯片使用自定义字体大小，但保持封面使用默认大小，可以在每张内容幻灯片上设置 `fontsize`：
-
-```markdown
 ---
-theme: scholarly
----
-
-# 封面幻灯片（默认大字体）
-
----
-fontsize:
-  body: 16px
-  h1: 36px
----
-
-# 幻灯片 2（自定义字体）
-
----
-fontsize:
-  body: 16px
-  h1: 36px
----
-
-# 幻灯片 3（自定义字体）
-```
-
-**灵活的格式：**
-
-字体大小接受多种格式：
-
-```yaml
-fontsize:
-  body: 18px      # 像素
-  h1: 3rem        # rem 单位
-  h2: 2.5em       # em 单位
-  h3: 32          # 数字（视为像素）
-```
-
-**注意事项：**
-
-- 所有字体大小选项都是可选的 - 你可以设置任意组合
-- 单页设置会覆盖全局设置
-- 如果未指定，主题使用为每种布局优化的默认字体大小
-- 字体大小使用 CSS 变量应用，以实现最大兼容性
-
-### 单页设置
-
-你可以为单独的幻灯片覆盖设置：
-
-```markdown
----
-title: 特殊幻灯片
-subtitle: 带有自定义页眉
----
-
-# 这里是内容
-```
-
----
-
-## VS Code 插件
-
-我们提供了 VS Code 插件，以提高使用此主题创建 Slidev 演示文稿的效率。
-
-### 功能特点
-
-- 🎯 **侧边栏面板** - 快速访问所有布局、组件和模板
-- ✨ **代码片段** - 输入 `ss-` 或 `scholarly-` 触发布局和组件的代码片段
-- 📝 **一键插入** - 点击面板中的任何项目即可在光标位置插入代码
-- 🚀 **新建演示** - 创建带有预配置模板的新演示文稿
 
-### 安装方法
+## 📚 文档
 
-1. 从 [GitHub发布页面](https://github.com/jxpeng98/slidev-theme-scholarly/releases) 下载 `.vsix` 文件
-2. 在 VS Code 中，按 `Cmd+Shift+P`（Mac）或 `Ctrl+Shift+P`（Windows/Linux）打开命令面板
-3. 输入 "Install from VSIX" 并选择下载的文件
+### 入门指南
 
-### 使用方法
+- [快速开始](./docs/zh/guide/quick-start.md) - 5 分钟上手
+- [重大升级说明](./docs/zh/guide/upgrade.md) - 版本迁移指南
+- [主要功能](./docs/zh/guide/features.md) - 功能概览
+- [配置](./docs/zh/guide/configurations.md) - 主题配置选项
+- [主题](./docs/zh/guide/themes.md) - 配色和字体主题
 
-**使用代码片段：**
+### 布局
 
-在任何 Markdown 文件中输入前缀：
+- [结构布局](./docs/zh/layouts/structure.md) - 封面、章节、导航
+- [内容布局](./docs/zh/layouts/content.md) - 文字、图片、分栏
+- [强调布局](./docs/zh/layouts/emphasis.md) - 引用、事实、高亮
+- [学术布局](./docs/zh/layouts/academic.md) - 方法论、结果、参考文献
 
-```markdown
-ss-cover      # 插入封面布局
-ss-theorem    # 插入定理组件
-ss-block      # 插入信息块组件
-scholarly-cite # 插入引用
-```
+### 组件
 
-**使用侧边栏：**
+- [定理 (Theorem)](./docs/zh/components/theorem.md) - 数学定理
+- [信息块 (Block)](./docs/zh/components/block.md) - 信息块
+- [引用 (Citations)](./docs/zh/components/cite.md) - BibTeX 引用
+- [步骤 (Steps)](./docs/zh/components/steps.md) - 流程可视化
+- [关键词 (Keywords)](./docs/zh/components/keywords.md) - 关键词标签
+- [多栏 (Columns)](./docs/zh/components/columns.md) - 多栏布局
+- [高亮 (Highlight)](./docs/zh/components/highlight.md) - 文本高亮
 
-1. 点击侧边栏（左侧）中的 Slidev Scholarly 图标
-2. 浏览布局、组件或模板部分
-3. 点击任何项目旁边的 `+` 按钮即可插入
+### 进阶
 
-### 可用的代码片段
+- [语法糖](./docs/zh/syntax-sugar.md) - Markdown 指令
+- [VS Code 扩展](./docs/zh/guide/vscode-extension.md) - 代码片段和工具
+- [示例](./docs/zh/examples.md) - 完整示例
 
-布局分为四个类别。使用类别专用前缀或较短的 `ss-*` 前缀：
-
-**结构布局：** `ss-cover`、`ss-default`、`ss-intro`、`ss-section`、`ss-center`、`ss-auto-center`、`ss-end`
-
-**内容布局：** `ss-two-cols`、`ss-image-left`、`ss-image-right`、`ss-bullets`、`ss-figure`、`ss-split-image`
-
-**强调布局：** `ss-quote`、`ss-fact`、`ss-statement`、`ss-focus`
-
-**学术布局：** `ss-compare`、`ss-methodology`、`ss-results`、`ss-timeline`、`ss-agenda`、`ss-acknowledgments`、`ss-references`
-
-**组件：** `ss-theorem`、`ss-block`、`ss-steps`、`ss-keywords`、`ss-columns`、`ss-highlight`、`ss-cite`、`scholarly-bibliography`
-
----
-
-## 示例
-
-### 完整的最小示例
-
-```markdown
----
-theme: scholarly
-author: 你的名字
-footerMiddle: 我的报告 2025
----
-
-# 我的研究
-
-简要概述
-
----
-
-# 引言
-
-这是我关于...的研究
-
-- 要点 1
-- 要点 2
-
 ---
-layout: section
----
-
-# 研究方法
-
----
-
-# 我们的方法
 
-<Theorem type="theorem">
+## 👥 适用人群
 
-我们证明了我们的算法在 $O(n \log n)$ 时间内运行。
+- 👨‍🎓 **博士生** - 展示论文和研究成果
+- 👩‍🏫 **教授** - 制作课程讲座
+- 🔬 **研究人员** - 准备会议报告
+- 📊 **任何人** - 需要精美学术演示的人
 
-</Theorem>
+**无需编程经验！**
 
 ---
-
-# 谢谢
-
-有问题吗？
-```
 
-### 所有功能的示例
+## 🔧 VS Code 扩展
 
-查看 [`examples/example-zh.md`](./examples/example-zh.md) 了解所有布局和功能的完整演示。
+使用我们的 VS Code 扩展提高效率：
 
-### 英文示例
+- 🎯 侧边栏面板，快速访问布局/组件
+- ✨ 代码片段：输入 `ss-` 插入布局/组件
+- 📚 BibTeX 集成，自动补全
+- 👁️ 预览支持
 
-查看 [`examples/example.md`](./examples/example.md) 了解完整的英文示例。
+[从 Releases 下载 →](https://github.com/jxpeng98/slidev-theme-scholarly/releases)
 
 ---
 
-## 贡献指南
+## 🤝 贡献
 
-我们欢迎贡献！要开发这个主题：
+欢迎贡献！
 
 ```bash
 # 安装依赖
@@ -1344,401 +288,27 @@ npm install
 # 启动开发服务器
 npm run dev
 
-# 将演示导出为 PDF
-npm run export
-
-# 生成预览截图
-npm run screenshot
+# 构建
+npm run build
 ```
 
-编辑 `examples/example.md` 或 `examples/example-zh.md` 来测试你的更改。
+[查看贡献指南 →](./docs/zh/contributing.md)
 
 ---
 
-## 许可证
+## 📄 许可证
 
 MIT 许可证 - 详见 [LICENSE](./LICENSE)。
 
 ---
 
-## 支持
-
-- 📖 **文档**: [Slidev 文档](https://sli.dev)
-- 🐛 **问题反馈**: [GitHub Issues](https://github.com/jxpeng98/slidev-theme-scholarly/issues)
-- 💬 **讨论**: [GitHub Discussions](https://github.com/slidevjs/slidev/discussions)
-
----
-
-## 详细功能说明
-
-### Cover 布局（标题页）
-
-封面布局专为演示文稿的标题幻灯片设计。它支持：
-
-- 居中的标题和副标题
-- 多个作者，包含姓名、单位和邮箱
-- Beamer 风格的带有渐变色的页脚
-- 可自定义的页脚部分
-
-**使用多个作者（authors 数组）：**
-
-```yaml
----
-theme: scholarly
-footerMiddle: 会议名称
-authors:
-  - name: 第一作者
-    institution: 大学一
-    email: first@example.edu
-  - name: 第二作者
-    institution: 大学二
-    email: second@example.edu
-  - name: 第三作者
-    institution: 大学三
-    email: third@example.edu
----
-
-# 你的演示标题
-
-你的副标题或描述
-```
-
-**使用单个作者：**
-
-```yaml
----
-theme: scholarly
-author: 你的名字
-footerMiddle: 会议或活动名称
----
-
-# 你的演示标题
-
-你的副标题或描述
-```
-
-**页脚配置：**
-
-页脚分为三个部分：
-
-- **左侧**：作者信息（自动生成或可自定义）
-- **中间**：自定义文本（例如会议名称、活动名称）
-- **右侧**：页码（自动生成）
-
-**页脚配置选项：**
-
-```yaml
----
-theme: scholarly
-footerLeft: 自定义作者文本    # 可选：覆盖作者显示
-footerMiddle: 会议名称        # 可选：中间部分文本
-authors:
-  - name: 第一作者
-    institution: 大学一
-  - name: 第二作者
-    institution: 大学二
----
-```
-
-**重要提示：**
-
-- **全局配置**：在 slides.md 文件开头定义的所有 frontmatter 字段（authors、footerLeft、footerMiddle 等）在所有幻灯片中全局可用
-- **默认布局**：如果幻灯片未指定布局，将自动使用 `default` 布局
-- 使用 `author`（单个作者）或 `authors` 数组（多个作者）
-- 不要同时使用 `author` 和 `authors`
-- 使用 `authors` 数组时，每个作者可以有 `name`、`institution` 和 `email` 字段
-- 作者信息将显示在封面幻灯片的中心
-- **页脚配置是全局的**：在演示文稿顶部的 frontmatter 中定义的页脚设置（footerLeft、footerMiddle、authors）将在所有幻灯片上使用
-- **页脚左侧部分显示规则：**
-  - 1 位作者：显示作者姓名
-  - 2 位作者：显示"作者1 & 作者2"
-  - 3 位作者：显示"作者1，作者2，作者3"
-  - 4+ 位作者：显示"第一作者等"
-- 你可以通过在 frontmatter 中设置 `footerLeft` 来覆盖页脚左侧部分
-- `conference` 字段已弃用，请使用 `footerMiddle`（向后兼容）
-
-**完整演示示例：**
-
-```markdown
----
-theme: scholarly
-footerMiddle: "2025 年我的会议"
-authors:
-  - name: 第一作者
-    institution: 大学一
-    email: first@example.edu
-  - name: 第二作者
-    institution: 大学二
-    email: second@example.edu
----
-
-# 我的演示标题
-
-副标题文本
-
----
-
-# 第二张幻灯片
-
-此幻灯片将自动使用默认布局并显示带有作者信息的页脚。
-
----
-layout: intro
----
-
-# 章节介绍
-
-所有布局（cover、default、intro）都将显示在顶部配置的相同页脚。
-```
-
-### 其他布局
-
-此主题中的所有布局都包含带有作者和会议信息的 Beamer 风格页脚。
-
-- **`default`** - 带有内容和页脚的默认幻灯片布局
-- **`intro`** - 带有大字号文本的介绍幻灯片布局
-- **`center`** - 居中内容布局
-- **`section`** - 带有大标题的章节分隔符
-- **`quote`** - 带有样式化引用的引用布局
-- **`fact`** - 带有大字号文本的单个事实或数字
-- **`statement`** - 带有中大字号文本的陈述布局
-- **`image-left`** - 图片在左侧的双栏布局
-- **`image-right`** - 图片在右侧的双栏布局
-- **`two-cols`** - 用于一般内容的双栏布局
-
-**使用示例：**
-
-```markdown
----
-layout: section
----
-
-# 章节标题
-
----
-layout: image-right
-image: https://example.com/image.jpg
----
-
-# 内容标题
-
-内容在这里
-
----
-layout: quote
----
-
-这是一段引用
-
-— 出处
-
----
-layout: two-cols
----
-
-# 左栏
-
-左侧的内容
-
-::right::
-
-# 右栏
-
-右侧的内容
-```
-
-**重要提示**：所有布局都自动包含页脚。你不需要手动添加。
-
-### 创建自定义布局
-
-如果需要在演示文稿中创建自定义布局，请确保包含 `<ScholarlyFooter />` 组件以保持一致性：
-
-```vue
-<template>
-  <div class="slidev-layout my-custom-layout">
-    <!-- 你的自定义内容 -->
-    <slot />
-    
-    <!-- 导入页脚组件 -->
-    <ScholarlyFooter />
-  </div>
-</template>
-
-<script setup lang="ts">
-import ScholarlyFooter from '@slidev-theme-scholarly/components/ScholarlyFooter.vue'
-</script>
-```
-
-这确保了无论布局如何，所有幻灯片都显示统一的带有作者和会议信息的页脚。
-
-## 组件
-
-此主题提供以下组件：
-
-### Theorem 组件（定理组件）
-
-`Theorem` 组件允许你在幻灯片中插入数学定理、引理、命题和其他正式陈述，并具有自动编号和多语言支持。
-
-**属性：**
-
-- `type`：陈述类型 - `'theorem'` | `'lemma'` | `'proposition'` | `'corollary'` | `'definition'` | `'example'` | `'remark'`（默认：`'theorem'`）
-- `number`：可选的手动编号（字符串或数字）。如果提供，此定理的自动编号将被禁用。
-- `title`：定理的可选标题
-- `autoNumber`：启用/禁用自动编号（默认：`true`）
-
-**多语言支持：**
-
-在 frontmatter 中设置 `lang` 字段以使用不同的语言：
-
-```yaml
----
-theme: scholarly
-lang: zh  # 中文 - 默认
-# 或
-lang: en  # 英文
----
-```
-
-**自定义编号格式：**
-
-你可以使用 `theoremNumberFormat` 字段自定义定理编号的显示方式：
-
-```yaml
----
-theme: scholarly
-lang: zh
-theoremNumberFormat: '{number}'  # 默认：仅数字（例如 "1"、"2"、"3"）
-# 或
-theoremNumberFormat: '({number})'  # 括号（例如 "(1)"、"(2)"、"(3)"）
-# 或
-theoremNumberFormat: '[{number}]'  # 方括号（例如 "[1]"、"[2]"、"[3]"）
-# 或
-theoremNumberFormat: '{number}.'  # 带句点（例如 "1."、"2."、"3."）
----
-```
-
-`{number}` 占位符将被替换为实际的定理编号。
-
-**自动编号：**
-
-默认情况下，定理会自动编号。每种类型（定理、引理等）都有自己的计数器：
-
-```markdown
----
-theme: scholarly
-lang: zh
----
-
-# 数学结果
-
-<Theorem type="theorem" title="勾股定理">
-
-对于直角三角形，设两直角边为 $a$ 和 $b$，斜边为 $c$：
-
-$$a^2 + b^2 = c^2$$
-
-</Theorem>
-<!-- 显示："定理 1（勾股定理）" -->
-
-<Theorem type="theorem">
-
-另一个定理在这里。
-
-</Theorem>
-<!-- 显示："定理 2" -->
-
-<Theorem type="lemma">
-
-一个有用的引理。
-
-</Theorem>
-<!-- 显示："引理 1" -->
-```
-
-**手动编号：**
-
-你可以通过提供 `number` 属性来覆盖自动编号：
-
-```markdown
-<Theorem type="theorem" number="3.1" title="特殊情况">
-
-内容在这里。
-
-</Theorem>
-<!-- 显示："定理 3.1（特殊情况）" -->
-```
-
-**禁用编号：**
-
-```markdown
-<Theorem type="remark" :autoNumber="false">
-
-此注记没有编号。
-
-</Theorem>
-<!-- 显示："注"（无编号）" -->
-```
-
-**语言示例：**
-
-中文（zh）：
-
-```markdown
-<Theorem type="theorem" title="勾股定理">
-内容...
-</Theorem>
-<!-- 显示："定理 1（勾股定理）" -->
-```
-
-英文（en）：
-
-```markdown
-<Theorem type="theorem" title="Pythagorean Theorem">
-Content...
-</Theorem>
-<!-- 显示："Theorem 1 (Pythagorean Theorem)" -->
-```
-
-**更多示例：**
-
-```markdown
-<Theorem type="lemma" number="2.1">
-
-闭区间上的每个连续函数都是一致连续的。
-
-</Theorem>
-
-<Theorem type="definition" title="极限">
-
-设 $f$ 是在包含 $a$ 的某个开区间上定义的函数。我们说：
-
-$$\lim_{x \to a} f(x) = L$$
-
-如果对于每个 $\epsilon > 0$，存在 $\delta > 0$ 使得...
-
-</Theorem>
-
-<Theorem type="example">
-
-考虑函数 $f(x) = x^2$。那么：
-- $f(0) = 0$
-- $f(1) = 1$
-- $f(2) = 4$
-
-</Theorem>
-```
-
-**可用类型及其颜色：**
-
-- `theorem` - 蓝色（定理）
-- `lemma` - 紫色（引理）
-- `proposition` - 青色（命题）
-- `corollary` - 绿色（推论）
-- `definition` - 琥珀色（定义）
-- `example` - 粉色（例）
-- `remark` - 灰色（注）
-
-每种类型都有独特的配色方案，以帮助在演示中直观地区分它们。
+## 🔗 链接
+
+- [📖 文档](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs/zh)
+- [🎬 在线演示](https://scholarly.penghu.pro/)
+- [🐛 问题反馈](https://github.com/jxpeng98/slidev-theme-scholarly/issues)
+- [💬 讨论](https://github.com/slidevjs/slidev/discussions)
+- [📦 NPM 包](https://www.npmjs.com/package/slidev-theme-scholarly)
 
 ---
 

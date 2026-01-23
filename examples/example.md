@@ -69,8 +69,26 @@ Slidev Theme Scholarly brings LaTeX Beamer aesthetics to modern presentations:
 **Perfect for conferences, seminars, and research presentations**
 
 ---
+layout: toc
+title: Table of Contents
+---
+
+<!--
+LAYOUT: toc
+PURPOSE: Automatic table of contents with section navigation
+FEATURES:
+- Auto-extracts sections from slides with layout: section
+- Highlights current section
+- Click to navigate to section
+PROPS: title, showNumbers, highlightCurrent, sections
+-->
+
+Click on any section to navigate directly to it!
+
+---
 layout: section
 ---
+
 
 <!--
 LAYOUT: section
