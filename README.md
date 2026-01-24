@@ -4,22 +4,13 @@
 [![GitHub stars](https://img.shields.io/github/stars/jxpeng98/slidev-theme-scholarly?style=social)](https://github.com/jxpeng98/slidev-theme-scholarly)
 [![License](https://img.shields.io/github/license/jxpeng98/slidev-theme-scholarly)](./LICENSE)
 
-[中文版](./README-zh.md) · [Live Demo](https://scholarly.penghu.pro/) · [Documentation](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs/en)
+[中文版](./README-zh.md) · [Live Demo](https://scholarly.jxpeng.dev) · [Documentation](https://scholarly-docs.jxpeng.dev/)
 
 A professional presentation theme for [Slidev](https://sli.dev), designed specifically for academic presentations with LaTeX Beamer-inspired styling.
 
 > **⚠️ Major Upgrade in Progress**
 >
-> Upcoming versions may include breaking changes. Please check the [Upgrade Notes](./docs/en/guide/upgrade.md) before updating.
->
-> **Try the pre-release:**
-> ```bash
-> npm i -D slidev-theme-scholarly@next
-> ```
-
-> **⚠️ Major Upgrade in Progress**
->
-> Upcoming versions may include breaking changes (dependencies, theme config, layouts/components). Please check the [Upgrade Notes](https://github.com/jxpeng98/slidev-theme-scholarly/blob/main/docs/en/guide/upgrade.md) before updating.
+> Upcoming versions may include breaking changes. Please check the [Upgrade Notes](https://scholarly-docs.jxpeng.dev/en/guide/quick-start.html) before updating.
 >
 > **Try the pre-release:**
 > ```bash
@@ -146,7 +137,7 @@ Layouts are organized into **four categories**:
 | **Columns** | Multi-column layout | `<Columns :cols="2">...</Columns>` |
 | **Highlight** | Text highlighting | `<Highlight>text</Highlight>` |
 
-[View Component Documentation →](./docs/en/components/index.md)
+[View Component Documentation →](https://scholarly-docs.jxpeng.dev/en/components/)
 
 ---
 
@@ -204,63 +195,10 @@ At the top of each slide, add:
 
 **Use for:** Most of your slides (this is automatic!)
 
-```markdown
----
-title: My Slide Title
-subtitle: Optional subtitle
----
-
-# Main Content
-## 📚 Documentation
-
-### Getting Started
-
-- [Quick Start](./docs/en/guide/quick-start.md) - Get started in 5 minutes
-- [Upgrade Notes](./docs/en/guide/upgrade.md) - Migration guide for major versions
-- [Features](./docs/en/guide/features.md) - Overview of all features
-- [Configuration](./docs/en/guide/configurations.md) - Theme configuration options
-- [Themes](./docs/en/guide/themes.md) - Color and font themes
-
-### Layouts
-
-- [Structure Layouts](./docs/en/layouts/structure.md) - Cover, sections, navigation
-- [Content Layouts](./docs/en/layouts/content.md) - Text, images, columns
-- [Emphasis Layouts](./docs/en/layouts/emphasis.md) - Quotes, facts, highlights
-- [Academic Layouts](./docs/en/layouts/academic.md) - Methodology, results, references
-
-### Components
-
-- [Theorem](./docs/en/components/theorem.md) - Mathematical theorems
-- [Block](./docs/en/components/block.md) - Information blocks
-- [Citations](./docs/en/components/cite.md) - BibTeX citations
-- [Steps](./docs/en/components/steps.md) - Process visualization
-- [Keywords](./docs/en/components/keywords.md) - Keyword tags
-- [Columns](./docs/en/components/columns.md) - Multi-column layouts
-- [Highlight](./docs/en/components/highlight.md) - Text highlighting
-
-### Advanced
-
-- [Syntax Sugar](./docs/en/syntax-sugar.md) - Markdown directives
-- [VS Code Extension](./docs/en/guide/vscode-extension.md) - Snippets and tools
-- [Examples](./docs/en/examples.md) - Complete examples
-
----
-
-## 👥 Who is this for?
-
-**Use for:** Major transitions in your presentation
-- 👨‍🎓 **PhD students** presenting dissertations and research
-- 👩‍🏫 **Professors** creating course lectures
-- 🔬 **Researchers** preparing conference talks
-- 📊 **Anyone** needing polished academic presentations
-
-**No programming experience required!**
-
 ---
 
 ## 🔧 VS Code Extension
 
-### Chinese Example
 Boost your productivity with our VS Code extension:
 
 - 🎯 Activity Bar panel for layouts/components
@@ -278,13 +216,13 @@ We welcome contributions!
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Build
-npm run build
+pnpm run build
 ```
 
 [View Contributing Guide →](./docs/en/contributing.md)
@@ -299,8 +237,8 @@ MIT License - see [LICENSE](./LICENSE) for details.
 
 ## 🔗 Links
 
-- [📖 Documentation](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs/en)
-- [🎬 Live Demo](https://scholarly.penghu.pro/)
+- [📖 Documentation](https://scholarly-docs.jxpeng.dev/en/)
+- [🎬 Live Demo](https://scholarly.jxpeng.dev)
 - [🐛 Issues](https://github.com/jxpeng98/slidev-theme-scholarly/issues)
 - [💬 Discussions](https://github.com/slidevjs/slidev/discussions)
 - [📦 NPM Package](https://www.npmjs.com/package/slidev-theme-scholarly)
