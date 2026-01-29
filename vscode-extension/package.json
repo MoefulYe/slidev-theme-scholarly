@@ -110,7 +110,7 @@
       {
         "command": "slidev-scholarly.applyThemePreset",
         "title": "Apply Theme Preset",
-        "icon": "$(paintcan)"
+        "icon": "$(wand)"
       },
       {
         "command": "slidev-scholarly.setColorTheme",
@@ -120,7 +120,7 @@
       {
         "command": "slidev-scholarly.setFontTheme",
         "title": "Set Font Theme",
-        "icon": "$(symbol-font)"
+        "icon": "$(text-size)"
       },
       {
         "command": "slidev-scholarly.setColorMode",
