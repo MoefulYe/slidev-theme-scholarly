@@ -4,13 +4,13 @@
 [![GitHub stars](https://img.shields.io/github/stars/jxpeng98/slidev-theme-scholarly?style=social)](https://github.com/jxpeng98/slidev-theme-scholarly)
 [![License](https://img.shields.io/github/license/jxpeng98/slidev-theme-scholarly)](./LICENSE)
 
-[中文版](./README-zh.md) · [Live Demo](https://scholarly.jxpeng.dev) · [Documentation](https://scholarly-docs.jxpeng.dev/)
+[中文版](./README-zh.md) · [Live Demo](https://scholarly.penghu.pro/) · [Documentation](https://scholarly-docs.jxpeng.dev/en/)
 
 A professional presentation theme for [Slidev](https://sli.dev), designed specifically for academic presentations with LaTeX Beamer-inspired styling.
 
 > **⚠️ Major Upgrade in Progress**
 >
-> Upcoming versions may include breaking changes. Please check the [Upgrade Notes](https://scholarly-docs.jxpeng.dev/en/guide/quick-start.html) before updating.
+> Upcoming versions may include breaking changes. Please check the [Upgrade Notes](https://scholarly-docs.jxpeng.dev/en/guide/upgrade.html) before updating.
 >
 > **Try the pre-release:**
 > ```bash
@@ -121,7 +121,7 @@ Layouts are organized into **four categories**:
 | `acknowledgments` | Acknowledgments |
 | `references` | Bibliography |
 
-[View Layout Documentation →](./docs/en/layouts/structure.md)
+[View Layout Documentation →](https://scholarly-docs.jxpeng.dev/en/layouts/structure.html)
 
 ---
 
@@ -137,7 +137,7 @@ Layouts are organized into **four categories**:
 | **Columns** | Multi-column layout | `<Columns :cols="2">...</Columns>` |
 | **Highlight** | Text highlighting | `<Highlight>text</Highlight>` |
 
-[View Component Documentation →](https://scholarly-docs.jxpeng.dev/en/components/)
+[View Component Documentation →](https://scholarly-docs.jxpeng.dev/en/components/index.html)
 
 ---
 
@@ -190,7 +190,7 @@ At the top of each slide, add:
 - Warm Sepia
 - High Contrast
 
-[View All Themes →](./docs/en/guide/themes.md)
+[View All Themes →](https://scholarly-docs.jxpeng.dev/en/guide/themes.html)
 </details>
 
 **Use for:** Most of your slides (this is automatic!)
@@ -225,7 +225,7 @@ pnpm run dev
 pnpm run build
 ```
 
-[View Contributing Guide →](./docs/en/contributing.md)
+[View Contributing Guide →](https://scholarly-docs.jxpeng.dev/en/contributing.html)
 
 ---
 
@@ -238,11 +238,10 @@ MIT License - see [LICENSE](./LICENSE) for details.
 ## 🔗 Links
 
 - [📖 Documentation](https://scholarly-docs.jxpeng.dev/en/)
-- [🎬 Live Demo](https://scholarly.jxpeng.dev)
+- [🎬 Live Demo](https://scholarly.jxpeng.dev/)
 - [🐛 Issues](https://github.com/jxpeng98/slidev-theme-scholarly/issues)
 - [💬 Discussions](https://github.com/slidevjs/slidev/discussions)
 - [📦 NPM Package](https://www.npmjs.com/package/slidev-theme-scholarly)
 
 ---
 
-**Made with ❤️ for academics around the world**

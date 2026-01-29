@@ -4,22 +4,13 @@
 [![GitHub stars](https://img.shields.io/github/stars/jxpeng98/slidev-theme-scholarly?style=social)](https://github.com/jxpeng98/slidev-theme-scholarly)
 [![License](https://img.shields.io/github/license/jxpeng98/slidev-theme-scholarly)](./LICENSE)
 
-[English](./README.md) · [在线演示](https://scholarly.penghu.pro/) · [文档](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs/zh)
+[English](./README.md) · [在线演示](https://scholarly.penghu.pro/) · [文档](https://scholarly-docs.jxpeng.dev/zh/)
 
 一个专为学术演示设计的 [Slidev](https://sli.dev) 专业主题，采用 LaTeX Beamer 风格的设计。
 
-> **⚠️ 即将发布重大升级**
+> **⚠️ 注意事项**
 >
-> 接下来的版本可能包含不兼容变更。升级前请先阅读[重大升级说明](./docs/zh/guide/upgrade.md)。
->
-> **抢先体验预发布版本：**
-> ```bash
-> npm i -D slidev-theme-scholarly@next
-> ```
-
-> **⚠️ 即将发布重大升级**
->
-> 接下来的版本可能包含不兼容变更（依赖版本、主题配置、布局/组件等），可能影响已有演示文稿。升级前请先阅读[重大升级说明](https://github.com/jxpeng98/slidev-theme-scholarly/blob/main/docs/zh/guide/upgrade.md)。
+> 接下来的版本可能包含不兼容变更。升级前请先阅读[重大升级说明](https://scholarly-docs.jxpeng.dev/zh/guide/upgrade.html)。
 >
 > **抢先体验预发布版本：**
 > ```bash
@@ -131,7 +122,7 @@ npx slidev
 | `references` | 参考文献 |
 
 **用于：** 开始报告的新部分
-[查看布局文档 →](./docs/zh/layouts/structure.md)
+[查看布局文档 →](https://scholarly-docs.jxpeng.dev/zh/layouts/structure.html)
 
 ```markdown
 ---
@@ -161,7 +152,7 @@ layout: intro
 | **Columns** | 多栏布局 | `<Columns :cols="2">...</Columns>` |
 | **Highlight** | 文本高亮 | `<Highlight>文本</Highlight>` |
 
-[查看组件文档 →](./docs/zh/components/index.md)
+[查看组件文档 →](https://scholarly-docs.jxpeng.dev/zh/components/index.html)
 
 ---
 
@@ -213,7 +204,7 @@ layout: intro
 - 暖棕褐
 - 高对比度
 
-[查看所有主题 →](./docs/zh/guide/themes.md)
+[查看所有主题 →](https://scholarly-docs.jxpeng.dev/zh/guide/themes.html)
 </details>
 
 ---
@@ -222,34 +213,34 @@ layout: intro
 
 ### 入门指南
 
-- [快速开始](./docs/zh/guide/quick-start.md) - 5 分钟上手
-- [重大升级说明](./docs/zh/guide/upgrade.md) - 版本迁移指南
-- [主要功能](./docs/zh/guide/features.md) - 功能概览
-- [配置](./docs/zh/guide/configurations.md) - 主题配置选项
-- [主题](./docs/zh/guide/themes.md) - 配色和字体主题
+- [快速开始](https://scholarly-docs.jxpeng.dev/zh/guide/quick-start.html) - 5 分钟上手
+- [重大升级说明](https://scholarly-docs.jxpeng.dev/zh/guide/upgrade.html) - 版本迁移指南
+- [主要功能](https://scholarly-docs.jxpeng.dev/zh/guide/features.html) - 功能概览
+- [配置](https://scholarly-docs.jxpeng.dev/zh/guide/configurations.html) - 主题配置选项
+- [主题](https://scholarly-docs.jxpeng.dev/zh/guide/themes.html) - 配色和字体主题
 
 ### 布局
 
-- [结构布局](./docs/zh/layouts/structure.md) - 封面、章节、导航
-- [内容布局](./docs/zh/layouts/content.md) - 文字、图片、分栏
-- [强调布局](./docs/zh/layouts/emphasis.md) - 引用、事实、高亮
-- [学术布局](./docs/zh/layouts/academic.md) - 方法论、结果、参考文献
+- [结构布局](https://scholarly-docs.jxpeng.dev/zh/layouts/structure.html) - 封面、章节、导航
+- [内容布局](https://scholarly-docs.jxpeng.dev/zh/layouts/content.html) - 文字、图片、分栏
+- [强调布局](https://scholarly-docs.jxpeng.dev/zh/layouts/emphasis.html) - 引用、事实、高亮
+- [学术布局](https://scholarly-docs.jxpeng.dev/zh/layouts/academic.html) - 方法论、结果、参考文献
 
 ### 组件
 
-- [定理 (Theorem)](./docs/zh/components/theorem.md) - 数学定理
-- [信息块 (Block)](./docs/zh/components/block.md) - 信息块
-- [引用 (Citations)](./docs/zh/components/cite.md) - BibTeX 引用
-- [步骤 (Steps)](./docs/zh/components/steps.md) - 流程可视化
-- [关键词 (Keywords)](./docs/zh/components/keywords.md) - 关键词标签
-- [多栏 (Columns)](./docs/zh/components/columns.md) - 多栏布局
-- [高亮 (Highlight)](./docs/zh/components/highlight.md) - 文本高亮
+- [定理 (Theorem)](https://scholarly-docs.jxpeng.dev/zh/components/theorem.html) - 数学定理
+- [信息块 (Block)](https://scholarly-docs.jxpeng.dev/zh/components/block.html) - 信息块
+- [引用 (Citations)](https://scholarly-docs.jxpeng.dev/zh/components/cite.html) - BibTeX 引用
+- [步骤 (Steps)](https://scholarly-docs.jxpeng.dev/zh/components/steps.html) - 流程可视化
+- [关键词 (Keywords)](https://scholarly-docs.jxpeng.dev/zh/components/keywords.html) - 关键词标签
+- [多栏 (Columns)](https://scholarly-docs.jxpeng.dev/zh/components/columns.html) - 多栏布局
+- [高亮 (Highlight)](https://scholarly-docs.jxpeng.dev/zh/components/highlight.html) - 文本高亮
 
 ### 进阶
 
-- [语法糖](./docs/zh/syntax-sugar.md) - Markdown 指令
-- [VS Code 扩展](./docs/zh/guide/vscode-extension.md) - 代码片段和工具
-- [示例](./docs/zh/examples.md) - 完整示例
+- [语法糖](https://scholarly-docs.jxpeng.dev/zh/syntax-sugar.html) - Markdown 指令
+- [VS Code 扩展](https://scholarly-docs.jxpeng.dev/zh/guide/vscode-extension.html) - 代码片段和工具
+- [示例](https://scholarly-docs.jxpeng.dev/zh/examples.html) - 完整示例
 
 ---
 
@@ -292,7 +283,7 @@ npm run dev
 npm run build
 ```
 
-[查看贡献指南 →](./docs/zh/contributing.md)
+[查看贡献指南 →](https://scholarly-docs.jxpeng.dev/zh/contributing.html)
 
 ---
 
@@ -304,12 +295,11 @@ MIT 许可证 - 详见 [LICENSE](./LICENSE)。
 
 ## 🔗 链接
 
-- [📖 文档](https://github.com/jxpeng98/slidev-theme-scholarly/tree/main/docs/zh)
-- [🎬 在线演示](https://scholarly.penghu.pro/)
+- [📖 文档](https://scholarly-docs.jxpeng.dev/zh/)
+- [🎬 在线演示](https://scholarly.jxpeng.dev/)
 - [🐛 问题反馈](https://github.com/jxpeng98/slidev-theme-scholarly/issues)
 - [💬 讨论](https://github.com/slidevjs/slidev/discussions)
 - [📦 NPM 包](https://www.npmjs.com/package/slidev-theme-scholarly)
 
 ---
 
-**用 ❤️ 为全世界的学者制作**
