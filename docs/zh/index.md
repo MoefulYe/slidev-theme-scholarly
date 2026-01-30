@@ -24,7 +24,7 @@ title: 首页
 
 一个专为学术演示设计的 [Slidev](https://sli.dev) 专业主题，采用 LaTeX Beamer 风格的设计。
 
-[在线演示](https://scholarly.penghu.pro/) · [快速开始](./guide/quick-start) · [GitHub](https://github.com/jxpeng98/slidev-theme-scholarly)
+[在线演示](https://scholarly.jxpeng.dev/) · [快速开始](./guide/quick-start) · [GitHub](https://github.com/jxpeng98/slidev-theme-scholarly)
 
 > **注意：即将发布重大升级**
 >
@@ -169,4 +169,4 @@ MIT 许可证 - 查看 [LICENSE](https://github.com/jxpeng98/slidev-theme-schola
 
 **准备好创建精美的学术演示了吗？**
 
-[开始使用 →](./guide/quick-start) · [查看示例 →](https://scholarly.penghu.pro/)
+[开始使用 →](./guide/quick-start) · [查看示例 →](https://scholarly.jxpeng.dev/)

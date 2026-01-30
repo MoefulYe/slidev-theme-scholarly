@@ -553,4 +553,4 @@ layout: center
 
 ## Thank You
 
-Explore all themes at [scholarly.penghu.pro](https://scholarly.penghu.pro)
+Explore all themes at [scholarly.jxpeng.dev](https://scholarly.jxpeng.dev)

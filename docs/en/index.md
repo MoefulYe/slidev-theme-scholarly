@@ -24,7 +24,7 @@ title: Home
 
 A professional presentation theme for [Slidev](https://sli.dev), designed specifically for academic presentations with LaTeX Beamer-inspired styling.
 
-[Live Demo](https://scholarly.penghu.pro/) · [Quick Start](./guide/quick-start) · [GitHub](https://github.com/jxpeng98/slidev-theme-scholarly)
+[Live Demo](https://scholarly.jxpeng.dev/) · [Quick Start](./guide/quick-start) · [GitHub](https://github.com/jxpeng98/slidev-theme-scholarly)
 
 > **Heads up: major upgrade in progress**
 >
@@ -160,4 +160,4 @@ MIT License - see [LICENSE](https://github.com/jxpeng98/slidev-theme-scholarly/b
 
 **Ready to create beautiful academic presentations?**
 
-[Get Started →](./guide/quick-start) · [View Examples →](https://scholarly.penghu.pro/)
+[Get Started →](./guide/quick-start) · [View Examples →](https://scholarly.jxpeng.dev/)

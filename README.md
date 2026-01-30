@@ -4,7 +4,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/jxpeng98/slidev-theme-scholarly?style=social)](https://github.com/jxpeng98/slidev-theme-scholarly)
 [![License](https://img.shields.io/github/license/jxpeng98/slidev-theme-scholarly)](./LICENSE)
 
-[中文版](./README-zh.md) · [Live Demo](https://scholarly.penghu.pro/) · [Documentation](https://scholarly-docs.jxpeng.dev/en/)
+[中文版](./README-zh.md) · [Live Demo](https://scholarly.jxpeng.dev/) · [Documentation](https://scholarly-docs.jxpeng.dev/en/)
 
 A professional presentation theme for [Slidev](https://sli.dev), designed specifically for academic presentations with LaTeX Beamer-inspired styling.
 

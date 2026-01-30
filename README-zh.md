@@ -4,7 +4,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/jxpeng98/slidev-theme-scholarly?style=social)](https://github.com/jxpeng98/slidev-theme-scholarly)
 [![License](https://img.shields.io/github/license/jxpeng98/slidev-theme-scholarly)](./LICENSE)
 
-[English](./README.md) · [在线演示](https://scholarly.penghu.pro/) · [文档](https://scholarly-docs.jxpeng.dev/zh/)
+[English](./README.md) · [在线演示](https://scholarly.jxpeng.dev/) · [文档](https://scholarly-docs.jxpeng.dev/zh/)
 
 一个专为学术演示设计的 [Slidev](https://sli.dev) 专业主题，采用 LaTeX Beamer 风格的设计。
 
