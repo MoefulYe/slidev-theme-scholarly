@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { getColorThemePreviewDir, getComponentPreviewFile } from './preview';
+import type { CliActionId } from './commands';
 
 export interface SnippetItem {
   label: string;
@@ -505,6 +506,17 @@ layout: references
 ---
 
 [[bibliography]]
+
+`
+      },
+      {
+        label: 'toc',
+        description: 'Table of contents (auto-generated)',
+        icon: '📋',
+        snippet: `---
+layout: toc
+title: Outline
+---
 
 `
       }
@@ -1127,6 +1139,176 @@ export class ThemesProvider implements vscode.TreeDataProvider<vscode.TreeItem> 
           })
         );
       }
+    }
+
+    return Promise.resolve([]);
+  }
+}
+
+type CliGroupId = 'create' | 'theme' | 'snippets' | 'tools';
+
+type CliActionItem = {
+  label: string;
+  description: string;
+  icon: string;
+  action: CliActionId;
+};
+
+const CLI_GROUPS: Record<CliGroupId, { label: string; icon: string; items: CliActionItem[] }> = {
+  create: {
+    label: 'Create',
+    icon: 'new-file',
+    items: [
+      {
+        label: 'New Presentation...',
+        description: 'Run scholarly init with prompts',
+        icon: 'new-file',
+        action: 'initPresentation'
+      },
+      {
+        label: 'List Templates',
+        description: 'Run scholarly template list',
+        icon: 'list-flat',
+        action: 'templateList'
+      }
+    ]
+  },
+  theme: {
+    label: 'Theme',
+    icon: 'paintcan',
+    items: [
+      {
+        label: 'Apply Theme Preset...',
+        description: 'Apply color/font preset to frontmatter',
+        icon: 'wand',
+        action: 'themeApply'
+      },
+      {
+        label: 'Apply Theme Preset Combo...',
+        description: 'Run scholarly theme preset apply',
+        icon: 'paintcan',
+        action: 'themePresetApply'
+      },
+      {
+        label: 'List Themes',
+        description: 'Run scholarly theme list',
+        icon: 'symbol-color',
+        action: 'themeList'
+      },
+      {
+        label: 'List Theme Presets',
+        description: 'Run scholarly theme preset list',
+        icon: 'list-flat',
+        action: 'themePresetList'
+      },
+      {
+        label: 'List Layouts',
+        description: 'Run scholarly layout list',
+        icon: 'layout',
+        action: 'layoutList'
+      },
+      {
+        label: 'List Components',
+        description: 'Run scholarly component list',
+        icon: 'symbol-method',
+        action: 'componentList'
+      }
+    ]
+  },
+  snippets: {
+    label: 'Snippets',
+    icon: 'symbol-snippet',
+    items: [
+      {
+        label: 'Append Snippet...',
+        description: 'Append theorem/methodology/etc to slides',
+        icon: 'add',
+        action: 'snippetAppend'
+      },
+      {
+        label: 'Show Snippet...',
+        description: 'Print a snippet in terminal',
+        icon: 'eye',
+        action: 'snippetShow'
+      },
+      {
+        label: 'List Snippets',
+        description: 'Run scholarly snippet list',
+        icon: 'list-flat',
+        action: 'snippetList'
+      },
+      {
+        label: 'Append Workflow...',
+        description: 'Append paper/seminar/quick workflow',
+        icon: 'git-commit',
+        action: 'workflowApply'
+      },
+      {
+        label: 'List Workflows',
+        description: 'Run scholarly workflow list',
+        icon: 'list-tree',
+        action: 'workflowList'
+      }
+    ]
+  },
+  tools: {
+    label: 'Tools',
+    icon: 'tools',
+    items: [
+      {
+        label: 'Doctor',
+        description: 'Check CLI environment and project status',
+        icon: 'pulse',
+        action: 'doctor'
+      },
+      {
+        label: 'Help',
+        description: 'Run scholarly help',
+        icon: 'question',
+        action: 'help'
+      }
+    ]
+  }
+};
+
+class CliGroupTreeItem extends vscode.TreeItem {
+  constructor(public readonly groupId: CliGroupId, label: string, icon: string) {
+    super(label, vscode.TreeItemCollapsibleState.Expanded);
+    this.iconPath = new vscode.ThemeIcon(icon);
+  }
+}
+
+class CliActionTreeItem extends vscode.TreeItem {
+  constructor(public readonly actionItem: CliActionItem) {
+    super(actionItem.label, vscode.TreeItemCollapsibleState.None);
+    this.description = actionItem.description;
+    this.tooltip = `${actionItem.label} — ${actionItem.description}`;
+    this.iconPath = new vscode.ThemeIcon(actionItem.icon);
+    this.contextValue = 'cliAction';
+    this.command = {
+      command: 'slidev-scholarly.cliAction',
+      title: 'Run CLI Action',
+      arguments: [actionItem.action]
+    };
+  }
+}
+
+export class CliProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+  getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
+    return element;
+  }
+
+  getChildren(element?: vscode.TreeItem): Thenable<vscode.TreeItem[]> {
+    if (!element) {
+      const groups = (Object.keys(CLI_GROUPS) as CliGroupId[]).map(
+        key => new CliGroupTreeItem(key, CLI_GROUPS[key].label, CLI_GROUPS[key].icon)
+      );
+      return Promise.resolve(groups);
+    }
+
+    if (element instanceof CliGroupTreeItem) {
+      const group = CLI_GROUPS[element.groupId];
+      return Promise.resolve(group.items.map(item => new CliActionTreeItem(item)));
     }
 
     return Promise.resolve([]);

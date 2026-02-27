@@ -6,6 +6,23 @@ type ThemeConfigUpdate = {
   colorMode?: 'light' | 'dark'
 }
 
+export type CliActionId =
+  | 'initPresentation'
+  | 'templateList'
+  | 'themeApply'
+  | 'themeList'
+  | 'themePresetApply'
+  | 'themePresetList'
+  | 'layoutList'
+  | 'componentList'
+  | 'snippetAppend'
+  | 'snippetShow'
+  | 'snippetList'
+  | 'workflowApply'
+  | 'workflowList'
+  | 'doctor'
+  | 'help'
+
 type ThemePreset = {
   id: string
   label: string
@@ -13,6 +30,13 @@ type ThemePreset = {
   colorTheme: string
   fontTheme: string
 }
+
+const CLI_COMMAND_PREFIX = ['npx', '-y', '--package', 'slidev-theme-scholarly', 'sch'];
+const CLI_TEMPLATES = ['basic', 'academic', 'zh'] as const;
+const CLI_SNIPPETS = ['theorem', 'block', 'cite', 'cover', 'section', 'methodology', 'results', 'references'] as const;
+const CLI_THEME_PRESETS = ['classic', 'oxford', 'cambridge', 'modern'] as const;
+const CLI_WORKFLOWS = ['paper', 'seminar', 'quick'] as const;
+let scholarlyCliTerminal: vscode.Terminal | undefined;
 
 const COLOR_THEMES: Array<{ value: string; label: string; description: string }> = [
   { value: 'classic-blue', label: 'Classic Blue', description: 'Default scholarly palette' },
@@ -85,7 +109,7 @@ export function insertSnippet(snippet: string) {
 
 export async function createNewPresentation(template?: string) {
   const workspaceFolders = vscode.workspace.workspaceFolders;
-  
+
   const fileName = await vscode.window.showInputBox({
     prompt: 'Enter presentation file name',
     value: 'slides.md',
@@ -103,19 +127,24 @@ export async function createNewPresentation(template?: string) {
 
   const content = template === 'simple' ? getSimpleTemplate() : getAcademicTemplate();
 
-  if (workspaceFolders && workspaceFolders.length > 0) {
-    const uri = vscode.Uri.joinPath(workspaceFolders[0].uri, fileName);
-    const encoder = new TextEncoder();
-    await vscode.workspace.fs.writeFile(uri, encoder.encode(content));
-    const doc = await vscode.workspace.openTextDocument(uri);
-    await vscode.window.showTextDocument(doc);
-  } else {
-    // No workspace, create untitled document
-    const doc = await vscode.workspace.openTextDocument({
-      language: 'markdown',
-      content: content
-    });
-    await vscode.window.showTextDocument(doc);
+  try {
+    if (workspaceFolders && workspaceFolders.length > 0) {
+      const uri = vscode.Uri.joinPath(workspaceFolders[0].uri, fileName);
+      const encoder = new TextEncoder();
+      await vscode.workspace.fs.writeFile(uri, encoder.encode(content));
+      const doc = await vscode.workspace.openTextDocument(uri);
+      await vscode.window.showTextDocument(doc);
+    } else {
+      // No workspace, create untitled document
+      const doc = await vscode.workspace.openTextDocument({
+        language: 'markdown',
+        content: content
+      });
+      await vscode.window.showTextDocument(doc);
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    vscode.window.showErrorMessage(`Failed to create presentation: ${message}`);
   }
 }
 
@@ -333,6 +362,325 @@ Questions?
 `;
 }
 
+function isWindows(): boolean {
+  return process.platform === 'win32';
+}
+
+function shellQuote(value: string): string {
+  if (isWindows()) {
+    // Windows: use double quotes, escape internal double quotes
+    return `"${value.replace(/"/g, '\\"')}"`;
+  }
+  // POSIX: use single quotes, escape internal single quotes
+  return `'${value.replace(/'/g, `'\\''`)}'`;
+}
+
+function getPreferredWorkspaceCwd(): string | undefined {
+  const editor = vscode.window.activeTextEditor;
+  if (editor) {
+    const folder = vscode.workspace.getWorkspaceFolder(editor.document.uri);
+    if (folder) return folder.uri.fsPath;
+  }
+
+  const folders = vscode.workspace.workspaceFolders;
+  if (folders && folders.length > 0) {
+    return folders[0].uri.fsPath;
+  }
+
+  return undefined;
+}
+
+function getCliTerminal(): vscode.Terminal {
+  const existing = scholarlyCliTerminal && vscode.window.terminals.includes(scholarlyCliTerminal)
+    ? scholarlyCliTerminal
+    : undefined;
+
+  if (existing) return existing;
+
+  scholarlyCliTerminal = vscode.window.createTerminal('Scholarly CLI');
+  return scholarlyCliTerminal;
+}
+
+function buildCliCommand(args: string[]): string {
+  return [...CLI_COMMAND_PREFIX, ...args].map(shellQuote).join(' ');
+}
+
+async function runCliArgs(args: string[], message?: string): Promise<void> {
+  const cmd = buildCliCommand(args);
+  const cwd = getPreferredWorkspaceCwd();
+  let finalCommand: string;
+  if (cwd) {
+    const cdCmd = isWindows() ? `cd /d ${shellQuote(cwd)} &&` : `cd ${shellQuote(cwd)} &&`;
+    finalCommand = `${cdCmd} ${cmd}`;
+  } else {
+    finalCommand = cmd;
+  }
+  const terminal = getCliTerminal();
+  terminal.show(true);
+  terminal.sendText(finalCommand, true);
+
+  if (message) {
+    await vscode.window.showInformationMessage(`Slidev Scholarly CLI: ${message}`);
+  }
+}
+
+async function pickOptionalQuickValue(
+  placeHolder: string,
+  items: Array<{ label: string; description?: string; value: string }>
+): Promise<string | undefined> {
+  const selected = await vscode.window.showQuickPick(
+    [
+      { label: 'Skip', description: 'Do not set', value: '' },
+      ...items
+    ],
+    {
+      placeHolder,
+      matchOnDescription: true
+    }
+  );
+
+  if (!selected || !selected.value) return undefined;
+  return selected.value;
+}
+
+async function runInitPresentationAction(): Promise<void> {
+  const targetDir = await vscode.window.showInputBox({
+    prompt: 'Target directory for new presentation',
+    value: 'my-talk',
+    validateInput: (value) => {
+      const trimmed = value.trim();
+      if (!trimmed) return 'Directory cannot be empty';
+      return null;
+    }
+  });
+
+  if (!targetDir) return;
+
+  const template = await vscode.window.showQuickPick(
+    CLI_TEMPLATES.map(t => ({
+      label: t,
+      description: `scholarly template: ${t}`,
+      value: t
+    })),
+    {
+      placeHolder: 'Select a template'
+    }
+  );
+
+  if (!template) return;
+  await runCliArgs(['init', targetDir, '--template', template.value], `init ${targetDir}`);
+}
+
+async function runThemeApplyAction(): Promise<void> {
+  const colorTheme = await pickColorTheme();
+  if (!colorTheme) return;
+
+  const fontTheme = await pickOptionalQuickValue(
+    'Optional: choose a font theme',
+    FONT_THEMES.map(t => ({
+      label: t.label,
+      description: t.value,
+      value: t.value
+    }))
+  );
+
+  const colorMode = await pickOptionalQuickValue(
+    'Optional: choose color mode',
+    COLOR_MODES.map(t => ({
+      label: t.label,
+      description: t.value,
+      value: t.value
+    }))
+  );
+
+  const sectionMode = await pickOptionalQuickValue(
+    'Optional: choose section mode',
+    COLOR_MODES.map(t => ({
+      label: `${t.label} sections`,
+      description: t.value,
+      value: t.value
+    }))
+  );
+
+  const file = await vscode.window.showInputBox({
+    prompt: 'Target slide file',
+    value: 'slides.md'
+  });
+  if (!file) return;
+
+  const args = ['theme', 'apply', colorTheme, '--file', file];
+  if (fontTheme) args.push('--font', fontTheme);
+  if (colorMode) args.push('--mode', colorMode);
+  if (sectionMode) args.push('--section-mode', sectionMode);
+
+  await runCliArgs(args, `theme apply ${colorTheme}`);
+}
+
+async function runThemePresetApplyAction(): Promise<void> {
+  const preset = await vscode.window.showQuickPick(
+    CLI_THEME_PRESETS.map(name => ({
+      label: name,
+      description: `theme preset: ${name}`,
+      value: name
+    })),
+    {
+      placeHolder: 'Select a theme preset'
+    }
+  );
+
+  if (!preset) return;
+
+  const file = await vscode.window.showInputBox({
+    prompt: 'Target slide file',
+    value: 'slides.md'
+  });
+
+  if (!file) return;
+  await runCliArgs(['theme', 'preset', 'apply', preset.value, '--file', file], `theme preset apply ${preset.value}`);
+}
+
+async function runSnippetAppendAction(): Promise<void> {
+  const snippet = await vscode.window.showQuickPick(
+    CLI_SNIPPETS.map(name => ({
+      label: name,
+      description: `append snippet: ${name}`,
+      value: name
+    })),
+    {
+      placeHolder: 'Select snippet to append'
+    }
+  );
+
+  if (!snippet) return;
+
+  const file = await vscode.window.showInputBox({
+    prompt: 'Target slide file',
+    value: 'slides.md'
+  });
+
+  if (!file) return;
+  await runCliArgs(['snippet', 'append', snippet.value, '--file', file], `snippet append ${snippet.value}`);
+}
+
+async function runSnippetShowAction(): Promise<void> {
+  const snippet = await vscode.window.showQuickPick(
+    CLI_SNIPPETS.map(name => ({
+      label: name,
+      description: `show snippet: ${name}`,
+      value: name
+    })),
+    {
+      placeHolder: 'Select snippet to show'
+    }
+  );
+
+  if (!snippet) return;
+  await runCliArgs(['snippet', 'show', snippet.value], `snippet show ${snippet.value}`);
+}
+
+async function runWorkflowApplyAction(): Promise<void> {
+  const workflow = await vscode.window.showQuickPick(
+    CLI_WORKFLOWS.map(name => ({
+      label: name,
+      description: `workflow: ${name}`,
+      value: name
+    })),
+    {
+      placeHolder: 'Select workflow to append'
+    }
+  );
+
+  if (!workflow) return;
+
+  const file = await vscode.window.showInputBox({
+    prompt: 'Target slide file',
+    value: 'slides.md'
+  });
+
+  if (!file) return;
+  await runCliArgs(['workflow', 'apply', workflow.value, '--file', file], `workflow apply ${workflow.value}`);
+}
+
+export async function runCliAction(action: CliActionId): Promise<void> {
+  switch (action) {
+    case 'initPresentation':
+      await runInitPresentationAction();
+      return;
+    case 'templateList':
+      await runCliArgs(['template', 'list'], 'template list');
+      return;
+    case 'themeApply':
+      await runThemeApplyAction();
+      return;
+    case 'themeList':
+      await runCliArgs(['theme', 'list'], 'theme list');
+      return;
+    case 'themePresetApply':
+      await runThemePresetApplyAction();
+      return;
+    case 'themePresetList':
+      await runCliArgs(['theme', 'preset', 'list'], 'theme preset list');
+      return;
+    case 'layoutList':
+      await runCliArgs(['layout', 'list'], 'layout list');
+      return;
+    case 'componentList':
+      await runCliArgs(['component', 'list'], 'component list');
+      return;
+    case 'snippetAppend':
+      await runSnippetAppendAction();
+      return;
+    case 'snippetShow':
+      await runSnippetShowAction();
+      return;
+    case 'snippetList':
+      await runCliArgs(['snippet', 'list'], 'snippet list');
+      return;
+    case 'workflowApply':
+      await runWorkflowApplyAction();
+      return;
+    case 'workflowList':
+      await runCliArgs(['workflow', 'list'], 'workflow list');
+      return;
+    case 'doctor':
+      await runCliArgs(['doctor'], 'doctor');
+      return;
+    case 'help':
+      await runCliArgs(['help'], 'help');
+      return;
+    default:
+      return;
+  }
+}
+
+export async function openCliActionMenu(): Promise<void> {
+  const items: Array<vscode.QuickPickItem & { action: CliActionId }> = [
+    { label: 'New Presentation...', description: 'sch init with prompts', action: 'initPresentation' },
+    { label: 'Apply Theme Preset...', description: 'sch theme apply', action: 'themeApply' },
+    { label: 'Apply Theme Preset Combo...', description: 'sch theme preset apply', action: 'themePresetApply' },
+    { label: 'Append Snippet...', description: 'sch snippet append', action: 'snippetAppend' },
+    { label: 'Append Workflow...', description: 'sch workflow apply', action: 'workflowApply' },
+    { label: 'Show Snippet...', description: 'sch snippet show', action: 'snippetShow' },
+    { label: 'List Templates', description: 'sch template list', action: 'templateList' },
+    { label: 'List Themes', description: 'sch theme list', action: 'themeList' },
+    { label: 'List Theme Presets', description: 'sch theme preset list', action: 'themePresetList' },
+    { label: 'List Layouts', description: 'sch layout list', action: 'layoutList' },
+    { label: 'List Components', description: 'sch component list', action: 'componentList' },
+    { label: 'List Snippets', description: 'sch snippet list', action: 'snippetList' },
+    { label: 'List Workflows', description: 'sch workflow list', action: 'workflowList' },
+    { label: 'Doctor', description: 'sch doctor', action: 'doctor' },
+    { label: 'Help', description: 'sch help', action: 'help' }
+  ];
+
+  const selected = await vscode.window.showQuickPick(items, {
+    placeHolder: 'Select a Scholarly CLI action',
+    matchOnDescription: true
+  });
+
+  if (!selected) return;
+  await runCliAction(selected.action);
+}
+
 export async function setColorTheme(colorTheme?: string) {
   const value = colorTheme ?? await pickColorTheme();
   if (!value) return;
@@ -459,30 +807,41 @@ async function upsertThemeConfigInActiveDocument(update: ThemeConfigUpdate) {
 
   const frontmatterMatch = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
 
-  if (!frontmatterMatch) {
-    const yamlLines = buildNewFrontmatter(update);
-    const insertion = `---${eol}${yamlLines.join(eol)}${eol}---${eol}${eol}`;
-    await editor.edit((editBuilder) => {
-      editBuilder.insert(new vscode.Position(0, 0), insertion);
+  try {
+    if (!frontmatterMatch) {
+      const yamlLines = buildNewFrontmatter(update);
+      const insertion = `---${eol}${yamlLines.join(eol)}${eol}---${eol}${eol}`;
+      const success = await editor.edit((editBuilder) => {
+        editBuilder.insert(new vscode.Position(0, 0), insertion);
+      });
+      if (!success) {
+        vscode.window.showErrorMessage('Failed to insert frontmatter');
+      }
+      return;
+    }
+
+    const fullMatch = frontmatterMatch[0];
+    const yaml = (frontmatterMatch[1] ?? '').replace(/\r\n/g, '\n');
+    const updatedYaml = upsertThemeConfigYaml(yaml, update);
+    const updatedYamlWithEol = updatedYaml.split('\n').join(eol);
+    const replacement = `---${eol}${updatedYamlWithEol}${eol}---${eol}`;
+
+    const success = await editor.edit((editBuilder) => {
+      editBuilder.replace(
+        new vscode.Range(
+          document.positionAt(0),
+          document.positionAt(fullMatch.length)
+        ),
+        replacement
+      );
     });
-    return;
+    if (!success) {
+      vscode.window.showErrorMessage('Failed to update frontmatter');
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    vscode.window.showErrorMessage(`Failed to update theme config: ${message}`);
   }
-
-  const fullMatch = frontmatterMatch[0];
-  const yaml = (frontmatterMatch[1] ?? '').replace(/\r\n/g, '\n');
-  const updatedYaml = upsertThemeConfigYaml(yaml, update);
-  const updatedYamlWithEol = updatedYaml.split('\n').join(eol);
-  const replacement = `---${eol}${updatedYamlWithEol}${eol}---${eol}`;
-
-  await editor.edit((editBuilder) => {
-    editBuilder.replace(
-      new vscode.Range(
-        document.positionAt(0),
-        document.positionAt(fullMatch.length)
-      ),
-      replacement
-    );
-  });
 }
 
 function buildNewFrontmatter(update: ThemeConfigUpdate): string[] {

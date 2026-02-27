@@ -6,7 +6,7 @@ VS Code extension for quickly inserting Slidev Theme Scholarly layouts and compo
 
 ### 🎯 Activity Bar Panel
 
-The extension adds a dedicated panel in the VS Code Activity Bar with five sections:
+The extension adds a dedicated panel in the VS Code Activity Bar with six sections:
 
 - **Layouts** - Slide layouts organized by category:
   - *Structure* - cover, default, intro, section, center, auto-center, end
@@ -17,12 +17,46 @@ The extension adds a dedicated panel in the VS Code Activity Bar with five secti
 - **Templates** - Quick-start presentation templates
 - **Themes** - Apply `themeConfig` presets (colorTheme / fontTheme)
 - **References** - Browse BibTeX entries and insert cite keys
+- **CLI** - Run Scholarly CLI actions directly from sidebar:
+  - *Create* - `init` and template list
+  - *Theme* - apply/list themes, apply preset combos, list layouts/components
+  - *Snippets* - append/show/list Scholarly snippets and append workflows
+  - *Tools* - `doctor` and `help`
 
 Click any item to insert content at the cursor or update frontmatter.
 
 ### ⌨️ Snippets
 
 Type the prefix and press `Tab` to expand snippets:
+
+### ⚡ Smart Completion (New)
+
+In Markdown files, Scholarly-specific suggestions now appear while typing (without memorizing all prefixes):
+
+- `layout:` -> layout candidates such as `cover`, `default`, `methodology`
+- `colorTheme:` / `fontTheme:` / `colorMode:` -> themeConfig value candidates
+- `<` -> component candidates such as `Theorem`, `Block`, `Steps`
+- `:::` -> syntax sugar directive candidates such as `theorem`, `block`, `columns`
+- `ss-` / `scholarly-` -> snippet candidates from built-in snippet library
+
+If suggestions do not pop up automatically, press `Ctrl+Space` (`Cmd+Space` on macOS if available) to trigger completion.
+
+### 🧪 Dev Mode (Performance Testing)
+
+For extension performance diagnostics, enable dev mode:
+
+- Command Palette: `Slidev Scholarly: Toggle Dev Mode`
+- Settings:
+  - `slidevScholarly.devMode.enabled` (boolean)
+  - `slidevScholarly.devMode.slowThresholdMs` (number, default: `25`)
+
+When enabled:
+
+- A `Scholarly Dev` status-bar indicator appears
+- The `Slidev Scholarly` output channel prints timing logs
+- Slow operations are marked as `SLOW` when exceeding your threshold
+
+For local extension-host debugging, use `.vscode/launch.json` -> `Run Extension (Dev Mode)`.
 
 #### Layout Snippets
 

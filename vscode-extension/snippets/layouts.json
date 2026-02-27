@@ -529,6 +529,22 @@
     ],
     "description": "[Academic] Bibliography/References"
   },
+  "Slidev Scholarly: TOC Layout": {
+    "prefix": [
+      "scholarly-toc",
+      "ss-toc",
+      "ss-academic-toc"
+    ],
+    "body": [
+      "---",
+      "layout: toc",
+      "title: ${1:Outline}",
+      "---",
+      "",
+      "$0"
+    ],
+    "description": "[Academic] Table of contents (auto-generated from sections)"
+  },
 
   "_comment_utility": "=== UTILITY ===",
   "Slidev Scholarly: Slide Divider": {

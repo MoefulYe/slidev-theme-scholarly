@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "configurations": [
+    {
+      "name": "Run Scholarly Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-extension"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/vscode-extension/out/**/*.js"
+      ],
+      "preLaunchTask": "build:vscode-extension"
+    },
+    {
+      "name": "Run Scholarly Extension (Dev Mode)",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-extension",
+        "--disable-extensions"
+      ],
+      "env": {
+        "SCHOLARLY_DEV_MODE": "1"
+      },
+      "outFiles": [
+        "${workspaceFolder}/vscode-extension/out/**/*.js"
+      ],
+      "preLaunchTask": "build:vscode-extension"
+    }
+  ]
+}

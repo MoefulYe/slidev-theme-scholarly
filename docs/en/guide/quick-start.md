@@ -4,60 +4,93 @@ title: Quick Start
 
 # Quick Start
 
-## Step 1: Install Slidev
+## Prerequisites
 
-First, make sure you have [Node.js](https://nodejs.org/) installed (download from nodejs.org). Then open your terminal (Command Prompt on Windows, Terminal on Mac/Linux) and run:
+Make sure you have [Node.js](https://nodejs.org/) installed.
 
-::: code-group
-
-```bash [npm]
-npm install -g @slidev/cli
-```
-
-```bash [yarn]
-yarn global add @slidev/cli
-```
-
-```bash [pnpm]
-pnpm add -g @slidev/cli
-```
-
-:::
-
-> **What does this do?** It installs Slidev on your computer so you can use it anywhere.
-
-### Step 2: Create Your First Presentation
+## Step 1: Create a presentation with CLI (Recommended)
 
 ```bash
-# Create a new folder for your presentation
-mkdir my-talk
-cd my-talk
+# One-time usage (no global install needed)
+npx -y --package slidev-theme-scholarly sch init my-talk
 
-# Create your slides file
-echo "---
+# Alternative short alias
+npx -y --package slidev-theme-scholarly sts init my-talk
+```
+
+Available templates:
+
+```bash
+npx -y --package slidev-theme-scholarly sch template list
+```
+
+Use a specific template:
+
+```bash
+npx -y --package slidev-theme-scholarly sch init my-talk --template academic
+```
+
+Useful CLI commands:
+
+```bash
+# help
+npx sch help
+npx sch help theme
+
+# theme-specific discovery
+npx sch theme list
+npx sch layout list
+npx sch component list
+npx sch snippet list
+
+# apply a Scholarly preset to frontmatter
+npx sch theme apply cambridge-green --font elegant --file slides.md
+npx sch theme preset apply cambridge --file slides.md
+
+# insert Scholarly snippet blocks
+npx sch snippet append theorem --file slides.md
+npx sch snippet append methodology --file slides.md
+
+# append a full academic workflow skeleton
+npx sch workflow list
+npx sch workflow apply paper --file slides.md
+
+# environment checker (with Scholarly checks)
+npx sch doctor
+```
+
+## Step 2: Install dependencies and run
+
+```bash
+cd my-talk
+pnpm install
+pnpm run dev
+```
+
+Your browser will open automatically with live preview.
+
+## Step 3: Edit `slides.md`
+
+The generated project already includes a ready-to-use `slides.md`.
+
+## Manual setup (if you already have a Slidev project)
+
+Install theme dependency:
+
+```bash
+npm i -D slidev-theme-scholarly
+```
+
+Set your Slidev frontmatter:
+
+```markdown
+---
 theme: scholarly
 ---
-
-# My First Academic Talk
-
-Your name here
-
----
-
-# Introduction
-
-- Point 1
-- Point 2
-- Point 3
-" > slides.md
 ```
 
-### Step 3: Preview Your Presentation
+Then run:
 
 ```bash
-slidev slides.md
+npx slidev
 ```
-
-Your browser will open automatically showing your presentation! Press the right arrow key to move between slides.
-
-> **Tip:** Keep the terminal running. Any changes you make to `slides.md` will show up immediately in your browser!

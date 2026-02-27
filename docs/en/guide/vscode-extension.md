@@ -8,12 +8,14 @@ We provide a VS Code extension to boost your productivity when creating Slidev p
 
 ## Features
 
-- 🎯 **Activity Bar Panel** - Quick access to layouts, components, templates, themes, and references
+- 🎯 **Activity Bar Panel** - Quick access to layouts, components, templates, themes, references, and CLI actions
 - ✨ **Code Snippets** - Type `ss-` or `scholarly-` to trigger snippets for layouts and components
+- ⚡ **Smart Completion** - Context-aware candidates for `layout:`, `themeConfig`, components (`<...>`), and directives (`:::`)
 - 📝 **One-Click Insert** - Click any item in the panel to insert code at cursor position
 - 🚀 **New Presentation** - Create a new presentation with pre-configured template
 - 🎨 **Theme Presets** - Apply `themeConfig.colorTheme` / `themeConfig.fontTheme` from the Themes view
 - 📚 **BibTeX References** - Completion, hover, and a References view for your `.bib` file
+- 🧪 **Dev Mode** - Built-in performance diagnostics with timing logs and slow-operation markers
 
 ## Installation
 
@@ -39,10 +41,39 @@ scholarly-cite # Insert citation
 
 Press `Tab` to move between placeholders in the inserted snippet.
 
+### Smart Completion While Typing
+
+The extension also provides context-aware completion suggestions:
+
+- `layout:` -> layout names (`cover`, `section`, `results`, ...)
+- `colorTheme:` / `fontTheme:` / `colorMode:` -> theme values
+- `<` -> Scholarly components (`Theorem`, `Block`, `Columns`, ...)
+- `:::` -> Markdown syntax sugar directives (`theorem`, `block`, `keywords`, ...)
+- `ss-` / `scholarly-` -> built-in snippet candidates
+
+If suggestions are not shown automatically, use `Ctrl+Space` (or `Cmd+Space` on macOS if available).
+
+### Dev Mode For Performance Testing
+
+Enable dev mode when you need to profile extension behavior:
+
+- Command Palette: `Slidev Scholarly: Toggle Dev Mode`
+- Settings:
+  - `slidevScholarly.devMode.enabled`
+  - `slidevScholarly.devMode.slowThresholdMs` (default `25`)
+
+After enabling:
+
+- You will see a `Scholarly Dev` indicator in the status bar
+- Performance logs are printed to the `Slidev Scholarly` output channel
+- Operations slower than your threshold are tagged as `SLOW`
+
+If you develop the extension locally, use the debug target `Run Extension (Dev Mode)` in `vscode-extension/.vscode/launch.json`.
+
 ### Using Activity Bar
 
 1. Click the **Slidev Scholarly** icon in the Activity Bar (left sidebar)
-2. Browse through five sections:
+2. Browse through six sections:
    - **Layouts** - Slide layouts organized by category:
      - *Structure* - cover, default, intro, section, center, auto-center, end
      - *Content* - two-cols, image-left/right, bullets, figure, split-image
@@ -52,6 +83,11 @@ Press `Tab` to move between placeholders in the inserted snippet.
    - **Templates** - Pre-made presentation templates
    - **Themes** - Apply theme presets (updates frontmatter)
    - **References** - Browse BibTeX entries and insert cite keys
+   - **CLI** - Run Scholarly CLI actions from sidebar:
+     - *Create* - new presentation and template list
+     - *Theme* - apply/list themes, apply preset combos, list layouts/components
+     - *Snippets* - append/show/list snippets, append workflows
+     - *Tools* - doctor and help
 3. Click an item (or the `+` button where available) to insert/apply
 
 ### Creating New Presentation

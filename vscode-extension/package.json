@@ -26,12 +26,16 @@
     "onView:scholarly-components",
     "onView:scholarly-templates",
     "onView:scholarly-themes",
+    "onView:scholarly-cli",
     "onView:scholarly-references",
     "onCommand:slidev-scholarly.newPresentation",
     "onCommand:slidev-scholarly.applyThemePreset",
     "onCommand:slidev-scholarly.setColorTheme",
     "onCommand:slidev-scholarly.setFontTheme",
     "onCommand:slidev-scholarly.setColorMode",
+    "onCommand:slidev-scholarly.cliAction",
+    "onCommand:slidev-scholarly.cliMenu",
+    "onCommand:slidev-scholarly.toggleDevMode",
     "onCommand:slidev-scholarly.refreshReferences",
     "onCommand:slidev-scholarly.preview"
   ],
@@ -72,6 +76,11 @@
           "id": "scholarly-references",
           "name": "References",
           "icon": "$(book)"
+        },
+        {
+          "id": "scholarly-cli",
+          "name": "CLI",
+          "icon": "$(terminal)"
         },
         {
           "type": "webview",
@@ -133,6 +142,21 @@
         "icon": "$(refresh)"
       },
       {
+        "command": "slidev-scholarly.cliAction",
+        "title": "Run Scholarly CLI Action",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "slidev-scholarly.cliMenu",
+        "title": "Scholarly CLI Quick Actions",
+        "icon": "$(terminal-bash)"
+      },
+      {
+        "command": "slidev-scholarly.toggleDevMode",
+        "title": "Slidev Scholarly: Toggle Dev Mode",
+        "icon": "$(debug)"
+      },
+      {
         "command": "slidev-scholarly.preview",
         "title": "Preview",
         "icon": "$(eye)"
@@ -163,6 +187,16 @@
         {
           "command": "slidev-scholarly.setColorMode",
           "when": "view == scholarly-themes",
+          "group": "navigation"
+        },
+        {
+          "command": "slidev-scholarly.cliMenu",
+          "when": "view == scholarly-cli",
+          "group": "navigation"
+        },
+        {
+          "command": "slidev-scholarly.toggleDevMode",
+          "when": "view == scholarly-cli",
           "group": "navigation"
         }
       ],
@@ -208,7 +242,23 @@
         "language": "markdown",
         "path": "./snippets/components.json"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Slidev Scholarly",
+      "properties": {
+        "slidevScholarly.devMode.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable extension development mode with performance diagnostics and timing logs."
+        },
+        "slidevScholarly.devMode.slowThresholdMs": {
+          "type": "number",
+          "default": 25,
+          "minimum": 1,
+          "description": "Mark operations slower than this threshold (ms) as SLOW in dev mode."
+        }
+      }
+    }
   },
   "scripts": {
     "sync-previews": "node ./scripts/sync-previews.mjs",

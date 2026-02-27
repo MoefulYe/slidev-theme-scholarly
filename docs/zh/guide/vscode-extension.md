@@ -8,12 +8,14 @@ title: VS Code 插件
 
 ## 功能特点
 
-- 🎯 **侧边栏面板** - 快速访问布局、组件、模板、主题和参考文献
+- 🎯 **侧边栏面板** - 快速访问布局、组件、模板、主题、参考文献和 CLI 操作
 - ✨ **代码片段** - 输入 `ss-` 或 `scholarly-` 触发布局和组件的代码片段
+- ⚡ **智能补全** - 对 `layout:`、`themeConfig`、组件（`<...>`）和指令（`:::`）提供上下文候选
 - 📝 **一键插入/应用** - 点击面板中的项目即可插入内容或更新 frontmatter
 - 🚀 **新建演示** - 创建带有预配置模板的新演示文稿
 - 🎨 **主题预设** - 在 Themes 面板中一键应用 `themeConfig.colorTheme` / `themeConfig.fontTheme`
 - 📚 **BibTeX 参考文献** - 引用补全、悬浮预览，以及 References 面板浏览/插入 cite key
+- 🧪 **Dev Mode** - 内置性能诊断，提供耗时日志与慢操作标记
 
 ## 安装方法
 
@@ -39,10 +41,39 @@ scholarly-cite # 插入引用
 
 按 `Tab` 键在插入的代码片段中的占位符之间移动。
 
+### 输入时智能候选
+
+插件还提供了基于上下文的补全建议：
+
+- `layout:` -> 布局名称候选（`cover`、`section`、`results` 等）
+- `colorTheme:` / `fontTheme:` / `colorMode:` -> 主题配置值候选
+- `<` -> Scholarly 组件候选（`Theorem`、`Block`、`Columns` 等）
+- `:::` -> Markdown 语法糖指令候选（`theorem`、`block`、`keywords` 等）
+- `ss-` / `scholarly-` -> 内置 snippet 候选
+
+如果没有自动弹出建议，可按 `Ctrl+Space`（macOS 也可使用 `Cmd+Space`，若未被系统占用）手动触发。
+
+### 用于性能测试的 Dev Mode
+
+当你需要分析插件性能时，可开启 dev mode：
+
+- 命令面板：`Slidev Scholarly: Toggle Dev Mode`
+- 设置项：
+  - `slidevScholarly.devMode.enabled`
+  - `slidevScholarly.devMode.slowThresholdMs`（默认 `25`）
+
+开启后：
+
+- 状态栏会显示 `Scholarly Dev`
+- `Slidev Scholarly` 输出通道会打印性能耗时日志
+- 超过阈值的操作会标记为 `SLOW`
+
+如果你在本地开发插件，可使用 `vscode-extension/.vscode/launch.json` 中的 `Run Extension (Dev Mode)` 调试配置。
+
 ### 使用侧边栏
 
 1. 点击侧边栏（左侧）中的 **Slidev Scholarly** 图标
-2. 浏览五个部分：
+2. 浏览六个部分：
    - **Layouts（布局）** - 按类别组织的幻灯片布局：
      - *结构布局* - cover、default、intro、section、center、auto-center、end
      - *内容布局* - two-cols、image-left/right、bullets、figure、split-image
@@ -52,6 +83,11 @@ scholarly-cite # 插入引用
    - **Templates（模板）** - 预制的演示文稿模板
    - **Themes（主题）** - 应用主题预设（会更新 frontmatter）
    - **References（参考文献）** - 浏览 BibTeX 条目并插入 cite key
+   - **CLI** - 在侧边栏直接运行 Scholarly CLI：
+     - *Create* - 新建演示与模板列表
+     - *Theme* - 应用/查看主题，应用预设组合，查看布局/组件清单
+     - *Snippets* - 追加/查看/列出片段，追加 workflow
+     - *Tools* - 环境检查与帮助
 3. 点击任意项目（或有 `+` 的地方点击 `+`）即可插入/应用
 
 ### 创建新演示文稿
