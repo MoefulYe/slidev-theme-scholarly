@@ -75,7 +75,7 @@ If you develop the extension locally, use the debug target `Run Extension (Dev M
 1. Click the **Slidev Scholarly** icon in the Activity Bar (left sidebar)
 2. Browse through six sections:
    - **Layouts** - Slide layouts organized by category:
-     - *Structure* - cover, default, intro, section, center, auto-center, end
+     - *Structure* - cover, default, intro, section, center, auto-center, toc, end
      - *Content* - two-cols, image-left/right, bullets, figure, split-image
      - *Emphasis* - quote, fact, statement, focus
      - *Academic* - compare, methodology, results, timeline, agenda, acknowledgments, references
@@ -113,6 +113,7 @@ Layouts are organized into four categories. You can use category-specific prefix
 | `ss-section` | Section divider (supports `sectionMode: dark/light`) |
 | `ss-center` | Centered content |
 | `ss-auto-center` | Auto-adjusting centered content |
+| `ss-toc` | Auto-generated table of contents |
 | `ss-end` | Thank you/closing slide |
 
 #### Content Layouts
@@ -171,10 +172,9 @@ Layouts are organized into four categories. You can use category-specific prefix
 
 | Prefix | Description |
 |--------|-------------|
+| `ss-theme-classic` | Classic Blue + Classic fonts |
 | `ss-theme-oxford` | Oxford Burgundy + Traditional fonts |
 | `ss-theme-cambridge` | Cambridge Green + Elegant fonts |
-| `ss-theme-yale` | Yale Blue + Classic fonts |
-| `ss-theme-princeton` | Princeton Orange + Modern fonts |
 | `ss-theme-modern` | Monochrome + Sans-default fonts |
 
 ### Utility Snippets

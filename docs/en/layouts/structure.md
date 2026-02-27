@@ -140,6 +140,37 @@ sectionMode: dark  # Override global setting for this slide
 
 ---
 
+## toc - Table of Contents
+
+**Use for:** Outline/agenda slide (auto-generated from your `layout: section` slides)
+
+![TOC Layout Example](/images/layouts/toc.png)
+
+```markdown
+---
+layout: toc
+title: Outline        # set to false to hide
+showNumbers: true     # optional, default: true
+highlightCurrent: true # optional, default: true
+---
+```
+
+**What it shows:**
+
+- A title (defaults to `Outline` or `目录` based on `lang`)
+- A list of all `layout: section` slides (click to navigate)
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string \| false` | `Outline` | Title text, set to `false` to hide |
+| `showNumbers` | `boolean` | `true` | Show numbered badges |
+| `highlightCurrent` | `boolean` | `true` | Highlight the current section |
+| `sections` | `string[]` | - | Manually specify section titles (overrides auto-extraction) |
+
+---
+
 ## center - Centered Content
 
 **Use for:** Short messages or key points

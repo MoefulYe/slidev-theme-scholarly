@@ -140,6 +140,37 @@ sectionMode: dark  # 覆盖全局设置
 
 ---
 
+## toc - 目录（Table of Contents）
+
+**用于：** 目录/大纲页（自动从 `layout: section` 的章节页生成）
+
+![目录布局示例](/images/layouts/toc.png)
+
+```markdown
+---
+layout: toc
+title: 目录            # 设为 false 可隐藏
+showNumbers: true      # 可选，默认：true
+highlightCurrent: true # 可选，默认：true
+---
+```
+
+**显示内容：**
+
+- 标题（默认会根据 `lang` 显示 `Outline` 或 `目录`）
+- 自动汇总所有 `layout: section` 的章节页（可点击跳转）
+
+**属性：**
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `title` | `string \| false` | `目录` | 标题文本，设为 `false` 可隐藏 |
+| `showNumbers` | `boolean` | `true` | 是否显示序号圆点 |
+| `highlightCurrent` | `boolean` | `true` | 是否高亮当前章节 |
+| `sections` | `string[]` | - | 手动指定章节标题（覆盖自动提取） |
+
+---
+
 ## center - 居中内容
 
 **用于：** 简短信息或关键要点

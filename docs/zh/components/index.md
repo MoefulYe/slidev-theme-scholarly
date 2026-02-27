@@ -96,3 +96,4 @@ $$a^2 + b^2 = c^2$$
 - [Columns](./columns.md) - 多列布局
 - [Highlight](./highlight.md) - 文本高亮
 - [Cite](./cite.md) - 学术引用
+- [ThemePreview](./theme-preview.md) - 主题配色预览

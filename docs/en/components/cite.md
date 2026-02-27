@@ -15,6 +15,7 @@ Configure citation settings in your frontmatter:
 theme: scholarly
 bibFile: references.bib  # Path to BibTeX file (default: references.bib)
 bibStyle: apa            # Citation style
+bibShowNum: false        # Show numbered markers in bibliography (e.g. [1])
 ---
 ```
 
@@ -114,12 +115,38 @@ Create a `references.bib` file in your project root:
 }
 ```
 
-## Legacy Cite Component
+## Cite Component (Manual)
 
-The `<Cite>` component is still available for manual citations:
+The `<Cite>` component is a lightweight helper for manual citation notes (non-BibTeX). For BibTeX citations, prefer `@citekey` / `!@citekey`.
+
+### Author-Year Marker (Legacy)
 
 ```markdown
 <Cite author="Smith et al." year="2024" />
 ```
 
 Renders as: (Smith et al., 2024)
+
+You can also provide additional context:
+
+```markdown
+<Cite author="Smith et al." year="2024">
+Citation text here.
+</Cite>
+```
+
+### Numeric Marker
+
+```markdown
+<Cite :inline="true">
+Citation text here.
+</Cite>
+```
+
+Optionally set a fixed `id`:
+
+```markdown
+<Cite :inline="false" :id="1">
+Reference item here.
+</Cite>
+```

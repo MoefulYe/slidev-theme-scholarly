@@ -79,7 +79,7 @@ title: 核心特性
 数学内容
 :::
 
-:::columns{cols="2"}
+:::columns{columns="2"}
 左列
 +++
 右列

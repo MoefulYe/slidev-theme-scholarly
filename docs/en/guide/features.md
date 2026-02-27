@@ -79,7 +79,7 @@ Content here
 Mathematical content
 :::
 
-:::columns{cols="2"}
+:::columns{columns="2"}
 Left column
 +++
 Right column
@@ -99,4 +99,3 @@ Supports English and Chinese (中文) for mathematical content.
 | `fact` layout | New `purple` color variant |
 | Booktabs tables | Academic three-line tables |
 | Code blocks | Enhanced styling |
-

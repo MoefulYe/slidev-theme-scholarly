@@ -4,7 +4,7 @@ title: Highlight
 
 # Highlight 组件
 
-`Highlight` 组件提供多种颜色的内联文本高亮。
+`Highlight` 组件提供内联文本高亮。
 
 ## 基本用法
 
@@ -15,34 +15,51 @@ title: Highlight
 或使用语法糖：
 
 ```markdown
-:::highlight{color="yellow"}
+:::highlight{type="warning"}
 需要高亮的重要文本
 :::
 ```
 
 ## 示例
 
-### 不同颜色
+### 不同类型
 
 ```markdown
-<Highlight color="yellow">黄色高亮</Highlight>
+<Highlight type="primary">主要高亮</Highlight>
 
-<Highlight color="green">绿色高亮</Highlight>
+<Highlight type="success">成功高亮</Highlight>
 
-<Highlight color="blue">蓝色高亮</Highlight>
+<Highlight type="warning">警告高亮</Highlight>
 
-<Highlight color="pink">粉色高亮</Highlight>
+<Highlight type="danger">危险高亮</Highlight>
+
+<Highlight type="info">信息高亮</Highlight>
 ```
 
 ### 在上下文中使用
 
 ```markdown
-我们的方法达到了 <Highlight color="green">94.7% 的准确率</Highlight>，
-这 <Highlight color="yellow">显著优于</Highlight> 基线方法。
+我们的方法达到了 <Highlight type="success">94.7% 的准确率</Highlight>，
+这 <Highlight type="warning">显著优于</Highlight> 基线方法。
+```
+
+### 传统 `color` 别名
+
+为兼容旧写法，仍支持 `color`，并会映射到 `type`：
+
+- `yellow` -> `warning`
+- `green` -> `success`
+- `blue` -> `info`
+- `pink` -> `danger`
+- `purple` -> `primary`
+
+```markdown
+<Highlight color="yellow">黄色高亮</Highlight>
 ```
 
 ## 属性
 
 | 属性 | 类型 | 默认值 | 描述 |
 |------|------|--------|------|
-| `color` | `string` | `'yellow'` | 高亮颜色：`yellow`、`green`、`blue`、`pink`、`purple` |
+| `type` | `string` | `'primary'` | 高亮类型：`primary`、`success`、`warning`、`danger`、`info` |
+| `color` | `string` | - | `type` 的传统别名：`yellow`、`green`、`blue`、`pink`、`purple` |

@@ -9,13 +9,13 @@ The `Keywords` component displays keyword tags, perfect for showing research top
 ## Basic Usage
 
 ```markdown
-<Keywords :items="['Machine Learning', 'Deep Learning', 'Neural Networks']" />
+<Keywords :keywords="['Machine Learning', 'Deep Learning', 'Neural Networks']" />
 ```
 
 Or using the syntax sugar:
 
 ```markdown
-:::keywords{:items='["Machine Learning", "Deep Learning"]' color="blue"}:::
+:::keywords{:keywords='["Machine Learning", "Deep Learning"]' color="blue"}:::
 ```
 
 ## Examples
@@ -24,7 +24,7 @@ Or using the syntax sugar:
 
 ```markdown
 <Keywords 
-  :items="['Computer Vision', 'Object Detection', 'CNN', 'Transfer Learning']" 
+  :keywords="['Computer Vision', 'Object Detection', 'CNN', 'Transfer Learning']" 
   color="blue" 
 />
 ```
@@ -33,7 +33,7 @@ Or using the syntax sugar:
 
 ```markdown
 <Keywords 
-  :items="['Optimization', 'Convergence', 'Gradient Descent']" 
+  :keywords="['Optimization', 'Convergence', 'Gradient Descent']" 
   color="green" 
 />
 ```
@@ -42,5 +42,5 @@ Or using the syntax sugar:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `items` | `string[]` | `[]` | Array of keyword strings |
-| `color` | `string` | `'blue'` | Color theme: `blue`, `green`, `purple`, `amber`, `red` |
+| `keywords` | `string[]` | `[]` | Array of keyword strings (alias: `items`) |
+| `color` | `string` | `'primary'` | Color theme: `primary`, `blue`, `green`, `purple`, `gray` |
