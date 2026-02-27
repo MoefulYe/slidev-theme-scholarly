@@ -9,7 +9,7 @@ VS Code extension for quickly inserting Slidev Theme Scholarly layouts and compo
 The extension adds a dedicated panel in the VS Code Activity Bar with six sections:
 
 - **Layouts** - Slide layouts organized by category:
-  - *Structure* - cover, default, intro, section, center, auto-center, end
+  - *Structure* - cover, default, intro, section, center, auto-center, toc, end
   - *Content* - two-cols, image-left/right, bullets, figure, split-image
   - *Emphasis* - quote, fact, statement, focus
   - *Academic* - compare, methodology, results, timeline, agenda, acknowledgments, references
@@ -72,6 +72,7 @@ Layouts are organized into four categories. Use category-specific prefixes (`ss-
 | `ss-section` | Section divider |
 | `ss-center` | Centered content |
 | `ss-auto-center` | Auto-adjusting centered content |
+| `ss-toc` | Auto-generated table of contents |
 | `ss-end` | Closing slide |
 
 **Content Layouts**
