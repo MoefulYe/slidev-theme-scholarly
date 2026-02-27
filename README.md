@@ -41,7 +41,54 @@ A professional presentation theme for [Slidev](https://sli.dev), designed specif
 npm i -D slidev-theme-scholarly
 ```
 
-### Create Your Presentation
+### Create with CLI (Recommended)
+
+```bash
+# one-time usage
+npx -y --package slidev-theme-scholarly sch init my-talk
+
+# after package is installed in a workspace
+npx sch init my-talk --template academic
+# or
+npx sts init my-talk --template academic
+```
+
+Available templates:
+
+```bash
+npx sch template list
+```
+
+Common commands:
+
+```bash
+# show help
+npx sch help
+npx sch help theme
+
+# list Scholarly presets and assets
+npx sch theme list
+npx sch layout list
+npx sch component list
+npx sch snippet list
+
+# apply Scholarly visual preset to slides frontmatter
+npx sch theme apply oxford-burgundy --font traditional --file slides.md
+npx sch theme preset apply oxford --file slides.md
+
+# append academic snippet blocks into slides
+npx sch snippet append theorem --file slides.md
+npx sch snippet append references --file slides.md
+
+# append full scholarly workflow skeleton
+npx sch workflow list
+npx sch workflow apply paper --file slides.md
+
+# check environment and project readiness (includes Scholarly checks)
+npx sch doctor
+```
+
+### Create Manually
 
 ```markdown
 ---
@@ -133,8 +180,8 @@ Layouts are organized into **four categories**:
 | **Block** | Beamer-style info blocks | `<Block type="info">...</Block>` |
 | **Citations** | BibTeX citations | `@citekey` or `!@citekey` |
 | **Steps** | Process visualization | `<Steps :steps="[...]" />` |
-| **Keywords** | Keyword tags | `<Keywords :items="[...]" />` |
-| **Columns** | Multi-column layout | `<Columns :cols="2">...</Columns>` |
+| **Keywords** | Keyword tags | `<Keywords :keywords="[...]" />` |
+| **Columns** | Multi-column layout | `<Columns :columns="2">...</Columns>` |
 | **Highlight** | Text highlighting | `<Highlight>text</Highlight>` |
 
 [View Component Documentation →](https://scholarly-docs.jxpeng.dev/en/components/index.html)
@@ -203,6 +250,7 @@ Boost your productivity with our VS Code extension:
 
 - 🎯 Activity Bar panel for layouts/components
 - ✨ Snippets: type `ss-` to insert layouts/components
+- ⚡ Smart completion for `layout:`, `themeConfig`, `<components>`, and `:::` directives
 - 📚 BibTeX integration with auto-complete
 - 👁️ Preview support
 
@@ -244,4 +292,3 @@ MIT License - see [LICENSE](./LICENSE) for details.
 - [📦 NPM Package](https://www.npmjs.com/package/slidev-theme-scholarly)
 
 ---
-

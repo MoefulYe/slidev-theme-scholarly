@@ -41,7 +41,54 @@
 npm i -D slidev-theme-scholarly
 ```
 
-### 创建演示文稿
+### 使用 CLI 创建（推荐）
+
+```bash
+# 一次性使用
+npx -y --package slidev-theme-scholarly sch init my-talk
+
+# 在已安装本包的工作区中
+npx sch init my-talk --template academic
+# 或
+npx sts init my-talk --template academic
+```
+
+可用模板列表：
+
+```bash
+npx sch template list
+```
+
+常用命令：
+
+```bash
+# 查看帮助
+npx sch help
+npx sch help theme
+
+# 查看 Scholarly 主题资产
+npx sch theme list
+npx sch layout list
+npx sch component list
+npx sch snippet list
+
+# 一键写入 Scholarly 主题预设到 frontmatter
+npx sch theme apply oxford-burgundy --font traditional --file slides.md
+npx sch theme preset apply oxford --file slides.md
+
+# 追加学术片段到 slides
+npx sch snippet append theorem --file slides.md
+npx sch snippet append references --file slides.md
+
+# 追加整套学术演示骨架
+npx sch workflow list
+npx sch workflow apply paper --file slides.md
+
+# 检查环境和项目状态（包含 Scholarly 检查）
+npx sch doctor
+```
+
+### 手动创建演示文稿
 
 ```markdown
 ---
@@ -148,8 +195,8 @@ layout: intro
 | **Block** | Beamer 风格信息块 | `<Block type="info">...</Block>` |
 | **Citations** | BibTeX 引用 | `@citekey` 或 `!@citekey` |
 | **Steps** | 流程可视化 | `<Steps :steps="[...]" />` |
-| **Keywords** | 关键词标签 | `<Keywords :items="[...]" />` |
-| **Columns** | 多栏布局 | `<Columns :cols="2">...</Columns>` |
+| **Keywords** | 关键词标签 | `<Keywords :keywords="[...]" />` |
+| **Columns** | 多栏布局 | `<Columns :columns="2">...</Columns>` |
 | **Highlight** | 文本高亮 | `<Highlight>文本</Highlight>` |
 
 [查看组件文档 →](https://scholarly-docs.jxpeng.dev/zh/components/index.html)
@@ -261,6 +308,7 @@ layout: intro
 
 - 🎯 侧边栏面板，快速访问布局/组件
 - ✨ 代码片段：输入 `ss-` 插入布局/组件
+- ⚡ 智能补全：`layout:`、`themeConfig`、`<组件>`、`:::` 指令可直接候选
 - 📚 BibTeX 集成，自动补全
 - 👁️ 预览支持
 
@@ -302,4 +350,3 @@ MIT 许可证 - 详见 [LICENSE](./LICENSE)。
 - [📦 NPM 包](https://www.npmjs.com/package/slidev-theme-scholarly)
 
 ---
-
