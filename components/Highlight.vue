@@ -1,17 +1,40 @@
 <template>
-  <span :class="['scholarly-highlight', `highlight-${type}`]">
+  <span :class="['scholarly-highlight', `highlight-${resolvedType}`]">
     <slot />
   </span>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
 interface Props {
   /** Highlight type: primary (default), success, warning, danger, info */
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
+  /** Legacy alias of `type` */
+  color?: 'yellow' | 'green' | 'blue' | 'pink' | 'purple'
 }
 
-withDefaults(defineProps<Props>(), {
-  type: 'primary'
+const props = withDefaults(defineProps<Props>(), {
+  type: undefined,
+  color: undefined
+})
+
+const resolvedType = computed(() => {
+  if (props.type) return props.type
+  switch (props.color) {
+    case 'yellow':
+      return 'warning'
+    case 'green':
+      return 'success'
+    case 'blue':
+      return 'info'
+    case 'pink':
+      return 'danger'
+    case 'purple':
+      return 'primary'
+    default:
+      return 'primary'
+  }
 })
 </script>
 

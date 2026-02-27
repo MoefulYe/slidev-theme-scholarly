@@ -33,84 +33,17 @@ const TEMPLATE_ALIAS = {
   chinese: 'zh',
 }
 
-const COLOR_THEMES = [
-  { id: 'classic-blue', label: 'Classic Blue' },
-  { id: 'oxford-burgundy', label: 'Oxford Burgundy' },
-  { id: 'cambridge-green', label: 'Cambridge Green' },
-  { id: 'yale-blue', label: 'Yale Blue' },
-  { id: 'princeton-orange', label: 'Princeton Orange' },
-  { id: 'nordic-blue', label: 'Nordic Blue' },
-  { id: 'monochrome', label: 'Monochrome' },
-  { id: 'warm-sepia', label: 'Warm Sepia' },
-  { id: 'high-contrast', label: 'High Contrast' },
-]
+// ── Shared data (Single Source of Truth) ────────────────────────────────────
+const __sharedDir = path.resolve(__dirname, '..', 'shared')
+const __themesData = JSON.parse(fs.readFileSync(path.join(__sharedDir, 'themes.json'), 'utf8'))
+const __layoutsData = JSON.parse(fs.readFileSync(path.join(__sharedDir, 'layouts.json'), 'utf8'))
 
-const FONT_THEMES = [
-  { id: 'classic', label: 'Classic Palatino' },
-  { id: 'modern', label: 'Modern Academica' },
-  { id: 'traditional', label: 'Traditional Garamond' },
-  { id: 'contemporary', label: 'Contemporary Sans' },
-  { id: 'humanist', label: 'Humanist' },
-  { id: 'technical', label: 'Technical' },
-  { id: 'elegant', label: 'Elegant Serif' },
-  { id: 'sans-default', label: 'Sans Default' },
-]
+const COLOR_THEMES = __themesData.colorThemes.map(t => ({ id: t.id, label: t.label }))
+const FONT_THEMES = __themesData.fontThemes.map(t => ({ id: t.id, label: t.label }))
+const THEME_PRESETS = __themesData.themePresets
+const LAYOUT_GROUPS = __layoutsData.layoutGroups
+const COMPONENT_LIST = __layoutsData.componentNames
 
-const THEME_PRESETS = [
-  {
-    id: 'classic',
-    label: 'Classic',
-    colorTheme: 'classic-blue',
-    fontTheme: 'classic',
-  },
-  {
-    id: 'oxford',
-    label: 'Oxford',
-    colorTheme: 'oxford-burgundy',
-    fontTheme: 'traditional',
-  },
-  {
-    id: 'cambridge',
-    label: 'Cambridge',
-    colorTheme: 'cambridge-green',
-    fontTheme: 'elegant',
-  },
-  {
-    id: 'modern',
-    label: 'Modern Minimal',
-    colorTheme: 'monochrome',
-    fontTheme: 'sans-default',
-  },
-]
-
-const LAYOUT_GROUPS = [
-  {
-    name: 'structure',
-    items: ['cover', 'default', 'intro', 'section', 'center', 'auto-center', 'toc', 'end'],
-  },
-  {
-    name: 'content',
-    items: ['two-cols', 'image-left', 'image-right', 'bullets', 'figure', 'split-image'],
-  },
-  {
-    name: 'emphasis',
-    items: ['quote', 'fact', 'statement', 'focus'],
-  },
-  {
-    name: 'academic',
-    items: ['compare', 'methodology', 'results', 'timeline', 'agenda', 'acknowledgments', 'references'],
-  },
-]
-
-const COMPONENT_LIST = [
-  'Theorem',
-  'Block',
-  'Cite',
-  'Steps',
-  'Keywords',
-  'Columns',
-  'Highlight',
-]
 
 const SNIPPETS = {
   theorem: `<Theorem type="theorem" title="Sample Theorem">
@@ -1498,7 +1431,7 @@ function main() {
       return
     }
 
-  if (topic === 'theme') {
+    if (topic === 'theme') {
       printThemeHelp()
       return
     }

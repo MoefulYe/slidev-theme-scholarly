@@ -1,7 +1,8 @@
 <template>
   <div :class="['scholarly-cite', { 'cite-inline': inline }]">
-    <span class="cite-marker">[{{ marker }}]</span>
-    <span class="cite-content">
+    <span v-if="isAuthorYear" class="cite-marker cite-marker-author-year">{{ authorYearMarker }}</span>
+    <span v-else class="cite-marker">[{{ numericMarker }}]</span>
+    <span v-if="$slots.default" class="cite-content">
       <slot />
     </span>
   </div>
@@ -9,20 +10,21 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useSlideContext } from '@slidev/client'
 
 interface Props {
   /** Citation number or key */
   id?: string | number
   /** Display inline (default) or as block */
   inline?: boolean
+  /** Legacy author for manual citations, e.g. "Smith et al." */
+  author?: string
+  /** Legacy year for manual citations, e.g. 2024 */
+  year?: string | number
 }
 
 const props = withDefaults(defineProps<Props>(), {
   inline: true
 })
-
-const { $slidev } = useSlideContext()
 
 // Auto-increment citation counter if no id provided
 let assignedId = 0
@@ -35,7 +37,16 @@ if (typeof window !== 'undefined' && props.id === undefined) {
   assignedId = win.__citationCounter
 }
 
-const marker = computed(() => {
+const isAuthorYear = computed(() => Boolean(props.author || props.year !== undefined))
+
+const authorYearMarker = computed(() => {
+  const parts: string[] = []
+  if (props.author) parts.push(props.author)
+  if (props.year !== undefined) parts.push(String(props.year))
+  return parts.length ? `(${parts.join(', ')})` : ''
+})
+
+const numericMarker = computed(() => {
   if (props.id !== undefined) return props.id
   return assignedId
 })
@@ -61,6 +72,11 @@ const marker = computed(() => {
 .cite-marker {
   color: var(--slidev-theme-primary, #5d8392);
   font-weight: 500;
+}
+
+.cite-marker-author-year {
+  /* Keep the author-year marker tight to the surrounding text */
+  font-variant-numeric: tabular-nums;
 }
 
 .cite-content {
