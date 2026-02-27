@@ -40,6 +40,17 @@ const ensureCounterBases = (): Map<string, TheoremCounters> | undefined => {
   return win.__theoremCounterBases as Map<string, TheoremCounters>
 }
 
+const ensurePreparedRoute = (): { current?: string } | undefined => {
+  if (typeof window === 'undefined') {
+    return undefined
+  }
+  const win = window as any
+  if (!win.__theoremCounterPrepared) {
+    win.__theoremCounterPrepared = { current: undefined as string | undefined }
+  }
+  return win.__theoremCounterPrepared as { current?: string }
+}
+
 export const snapshotTheoremCounters = (): TheoremCounters => {
   const counters = ensureCounterStore()
   const snapshot = createEmptyCounters()
@@ -59,6 +70,11 @@ export const restoreTheoremCounters = (snapshot?: Partial<TheoremCounters>) => {
 
 export const prepareTheoremCountersForRoute = (routePath?: string) => {
   if (typeof window === 'undefined' || !routePath) return
+  const prepared = ensurePreparedRoute()
+  // Prevent restoring the same base snapshot for every theorem instance on the same slide.
+  // Restore once per active route, then let counters increment normally.
+  if (prepared?.current === routePath) return
+  if (prepared) prepared.current = routePath
   const bases = ensureCounterBases()
   if (!bases) return
   if (bases.has(routePath)) {

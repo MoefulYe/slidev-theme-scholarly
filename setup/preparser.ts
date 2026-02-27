@@ -9,20 +9,28 @@ import { definePreparserSetup } from '@slidev/types'
  * Content here
  * :::
  * 
+ * :::block
+ * Content here
+ * :::
+ *
  * :::theorem{type="theorem" title="Title"}
  * Content here
  * :::
  * 
+ * :::theorem
+ * Content here
+ * :::
+ *
  * :::steps{:steps='[...]' :activeStep="1"}
  * :::
  * 
- * :::columns{cols="2" gap="2rem"}
+ * :::columns{columns="2" gap="2rem"}
  * Column 1 content
  * +++
  * Column 2 content
  * :::
  * 
- * :::highlight{color="yellow"}
+ * :::highlight{type="warning"}
  * Text to highlight
  * :::
  * 
@@ -30,7 +38,7 @@ import { definePreparserSetup } from '@slidev/types'
  * Citation text
  * :::
  * 
- * :::keywords{:items='["ML", "AI"]' color="blue"}
+ * :::keywords{:keywords='["ML", "AI"]' color="blue"}
  * :::
  */
 
@@ -70,6 +78,8 @@ export default definePreparserSetup(() => {
             name: 'scholarly-citations-collector',
 
             transformRawLines(lines) {
+                // Recompute citekeys from scratch each time to avoid keeping stale keys in dev/HMR.
+                citekeys.clear()
                 collectCitations(lines.join('\n'))
             },
 
@@ -118,70 +128,76 @@ export default definePreparserSetup(() => {
 
                 // Transform :::block{type="info" title="Title"} ... :::
                 content = content.replace(
-                    /:::block\{([^}]*)\}\s*\n([\s\S]*?):::/g,
+                    /:::block(?:\{([^}]*)\})?\s*\n([\s\S]*?):::/g,
                     (_, attrs, inner) => {
                         const props = parseAttributes(attrs)
-                        return `<Block ${props}>\n\n${inner.trim()}\n\n</Block>`
+                        return `<Block${formatProps(props)}>\n\n${inner.trim()}\n\n</Block>`
                     }
                 )
 
                 // Transform :::theorem{type="theorem" title="Title"} ... :::
                 content = content.replace(
-                    /:::theorem\{([^}]*)\}\s*\n([\s\S]*?):::/g,
+                    /:::theorem(?:\{([^}]*)\})?\s*\n([\s\S]*?):::/g,
                     (_, attrs, inner) => {
                         const props = parseAttributes(attrs)
-                        return `<Theorem ${props}>\n\n${inner.trim()}\n\n</Theorem>`
+                        return `<Theorem${formatProps(props)}>\n\n${inner.trim()}\n\n</Theorem>`
                     }
                 )
 
                 // Transform :::highlight{color="yellow"} ... :::
                 content = content.replace(
-                    /:::highlight\{([^}]*)\}\s*\n([\s\S]*?):::/g,
+                    /:::highlight(?:\{([^}]*)\})?\s*\n([\s\S]*?):::/g,
                     (_, attrs, inner) => {
                         const props = parseAttributes(attrs)
-                        return `<Highlight ${props}>${inner.trim()}</Highlight>`
+                        return `<Highlight${formatProps(props)}>${inner.trim()}</Highlight>`
                     }
                 )
 
                 // Transform :::cite{author="Smith" year="2024"} ... :::
                 content = content.replace(
-                    /:::cite\{([^}]*)\}\s*\n([\s\S]*?):::/g,
+                    /:::cite(?:\{([^}]*)\})?\s*\n([\s\S]*?):::/g,
                     (_, attrs, inner) => {
                         const props = parseAttributes(attrs)
-                        return `<Cite ${props}>${inner.trim()}</Cite>`
+                        return `<Cite${formatProps(props)}>${inner.trim()}</Cite>`
                     }
                 )
 
                 // Transform :::steps{:steps='[...]' :activeStep="1"} :::
                 content = content.replace(
-                    /:::steps\{([^}]*)\}\s*:::/g,
+                    /:::steps(?:\{([^}]*)\})?\s*:::/g,
                     (_, attrs) => {
                         const props = parseAttributes(attrs)
-                        return `<Steps ${props} />`
+                        return `<Steps${formatProps(props)} />`
                     }
                 )
 
-                // Transform :::keywords{:items='["ML", "AI"]' color="blue"} :::
+                // Transform :::keywords{:keywords='["ML", "AI"]' color="blue"} :::
                 content = content.replace(
-                    /:::keywords\{([^}]*)\}\s*:::/g,
+                    /:::keywords(?:\{([^}]*)\})?\s*:::/g,
                     (_, attrs) => {
                         const props = parseAttributes(attrs)
-                        return `<Keywords ${props} />`
+                        return `<Keywords${formatProps(props)} />`
                     }
                 )
 
-                // Transform :::columns{cols="2"} ... +++ ... ::: (use +++ as separator)
+                // Transform :::columns{columns="2"} ... +++ ... ::: (use +++ as separator)
                 content = content.replace(
-                    /:::columns\{([^}]*)\}\s*\n([\s\S]*?):::/g,
+                    /:::columns(?:\{([^}]*)\})?\s*\n([\s\S]*?):::/g,
                     (_, attrs, inner) => {
-                        const props = parseAttributes(attrs)
                         const columns = inner.split(/\n\+\+\+\n/).map((col: string) => col.trim())
+                        let props = parseAttributes(attrs)
 
-                        if (columns.length === 1) {
-                            return `<Columns ${props}>\n\n${columns[0]}\n\n</Columns>`
+                        // If the author forgot to specify the column count, infer it from the number of sections.
+                        // This keeps the syntax sugar ergonomic and avoids silently dropping extra columns.
+                        if (columns.length > 1 && !/(^|\s):?(cols|columns)\s*=/.test(props)) {
+                            props = `${props} columns="${Math.min(columns.length, 4)}"`.trim()
                         }
 
-                        let result = `<Columns ${props}>\n\n${columns[0]}\n\n`
+                        if (columns.length === 1) {
+                            return `<Columns${formatProps(props)}>\n\n${columns[0]}\n\n</Columns>`
+                        }
+
+                        let result = `<Columns${formatProps(props)}>\n\n${columns[0]}\n\n`
                         for (let i = 1; i < columns.length; i++) {
                             result += `<template #col${i + 1}>\n\n${columns[i]}\n\n</template>\n`
                         }
@@ -202,7 +218,10 @@ export default definePreparserSetup(() => {
  *   'type="info" title="Hello"' => 'type="info" title="Hello"'
  *   ':steps="[...]" :active="1"' => ':steps="[...]" :active="1"'
  */
-function parseAttributes(attrs: string): string {
-    // Already in correct format, just clean up
-    return attrs.trim()
+function parseAttributes(attrs?: string): string {
+    return (attrs ?? '').trim()
+}
+
+function formatProps(props: string): string {
+    return props ? ` ${props}` : ''
 }

@@ -10,7 +10,7 @@ import Cite from '../components/Cite.vue'
 import Steps from '../components/Steps.vue'
 import Keywords from '../components/Keywords.vue'
 import ThemePreview from '../components/ThemePreview.vue'
-import { resetTheoremCounters, invalidateTheoremCounterBases } from '../utils/theorem'
+import { resetTheoremCounters } from '../utils/theorem'
 
 const DEFAULT_FONT_SIZE = '1rem'
 type FontsizeConfig =
@@ -232,9 +232,6 @@ export default defineAppSetup(({ app, router }) => {
   const updateFontSize = (route: RouteLocationNormalized | undefined) => {
     const frontmatter = route?.meta?.slide?.frontmatter ?? {}
     applyFontSizes(frontmatter?.fontsize as FontsizeConfig | undefined, getGlobalFontConfig())
-    if (typeof window !== 'undefined') {
-      invalidateTheoremCounterBases(route?.path)
-    }
   }
 
   // Apply font size for the initial route
