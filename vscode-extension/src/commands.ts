@@ -1,4 +1,11 @@
 import * as vscode from 'vscode';
+import {
+  COLOR_THEMES,
+  FONT_THEMES,
+  COLOR_MODES,
+  THEME_PRESETS,
+  THEME_PRESET_IDS
+} from './sharedData';
 
 type ThemeConfigUpdate = {
   colorTheme?: string
@@ -34,68 +41,8 @@ type ThemePreset = {
 const CLI_COMMAND_PREFIX = ['npx', '-y', '--package', 'slidev-theme-scholarly', 'sch'];
 const CLI_TEMPLATES = ['basic', 'academic', 'zh'] as const;
 const CLI_SNIPPETS = ['theorem', 'block', 'cite', 'cover', 'section', 'methodology', 'results', 'references'] as const;
-const CLI_THEME_PRESETS = ['classic', 'oxford', 'cambridge', 'modern'] as const;
 const CLI_WORKFLOWS = ['paper', 'seminar', 'quick'] as const;
 let scholarlyCliTerminal: vscode.Terminal | undefined;
-
-const COLOR_THEMES: Array<{ value: string; label: string; description: string }> = [
-  { value: 'classic-blue', label: 'Classic Blue', description: 'Default scholarly palette' },
-  { value: 'oxford-burgundy', label: 'Oxford Burgundy', description: 'Deep burgundy accents' },
-  { value: 'cambridge-green', label: 'Cambridge Green', description: 'Elegant green accents' },
-  { value: 'yale-blue', label: 'Yale Blue', description: 'Strong blue accents' },
-  { value: 'princeton-orange', label: 'Princeton Orange', description: 'Vibrant orange accents' },
-  { value: 'nordic-blue', label: 'Nordic Blue', description: 'Cool nordic tones' },
-  { value: 'warm-sepia', label: 'Warm Sepia', description: 'Warm paper-like tones' },
-  { value: 'monochrome', label: 'Monochrome', description: 'Minimal black & white' },
-  { value: 'high-contrast', label: 'High Contrast', description: 'Maximum contrast' }
-];
-
-const COLOR_MODES: Array<{ value: 'light' | 'dark'; label: string; description: string }> = [
-  { value: 'dark', label: 'Dark', description: 'Dark background with light text (default)' },
-  { value: 'light', label: 'Light', description: 'Light background with dark text' }
-];
-
-const FONT_THEMES: Array<{ value: string; label: string; description: string }> = [
-  { value: 'classic', label: 'Classic', description: 'Traditional academic feel' },
-  { value: 'modern', label: 'Modern', description: 'Clean and minimal' },
-  { value: 'traditional', label: 'Traditional', description: 'Serif-forward classic' },
-  { value: 'contemporary', label: 'Contemporary', description: 'Balanced and readable' },
-  { value: 'humanist', label: 'Humanist', description: 'Friendly humanist sans' },
-  { value: 'technical', label: 'Technical', description: 'Engineering/tech vibe' },
-  { value: 'elegant', label: 'Elegant', description: 'Refined serif accents' },
-  { value: 'sans-default', label: 'Sans Default', description: 'Simple sans default' }
-];
-
-const THEME_PRESETS: ThemePreset[] = [
-  {
-    id: 'classic',
-    label: 'Classic',
-    description: 'Classic Blue + Classic',
-    colorTheme: 'classic-blue',
-    fontTheme: 'classic'
-  },
-  {
-    id: 'oxford',
-    label: 'Oxford',
-    description: 'Oxford Burgundy + Traditional',
-    colorTheme: 'oxford-burgundy',
-    fontTheme: 'traditional'
-  },
-  {
-    id: 'cambridge',
-    label: 'Cambridge',
-    description: 'Cambridge Green + Elegant',
-    colorTheme: 'cambridge-green',
-    fontTheme: 'elegant'
-  },
-  {
-    id: 'modern',
-    label: 'Modern Minimal',
-    description: 'Monochrome + Sans Default',
-    colorTheme: 'monochrome',
-    fontTheme: 'sans-default'
-  }
-];
 
 export function insertSnippet(snippet: string) {
   const editor = vscode.window.activeTextEditor;
@@ -518,7 +465,7 @@ async function runThemeApplyAction(): Promise<void> {
 
 async function runThemePresetApplyAction(): Promise<void> {
   const preset = await vscode.window.showQuickPick(
-    CLI_THEME_PRESETS.map(name => ({
+    THEME_PRESET_IDS.map(name => ({
       label: name,
       description: `theme preset: ${name}`,
       value: name

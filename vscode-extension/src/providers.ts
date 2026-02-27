@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
 import { getColorThemePreviewDir, getComponentPreviewFile } from './preview';
 import type { CliActionId } from './commands';
 
@@ -14,6 +16,17 @@ function toMarkdownCodeBlock(snippet: string): string {
   return '```md\n' + snippet.trim() + '\n```';
 }
 
+const previewExistsCache = new Map<string, boolean>();
+
+function hasPreview(extensionUri: vscode.Uri, ...segments: string[]): boolean {
+  const absPath = path.join(extensionUri.fsPath, ...segments);
+  const cached = previewExistsCache.get(absPath);
+  if (cached !== undefined) return cached;
+  const exists = fs.existsSync(absPath);
+  previewExistsCache.set(absPath, exists);
+  return exists;
+}
+
 function createLayoutTooltip(
   extensionUri: vscode.Uri,
   layoutId: string,
@@ -23,7 +36,9 @@ function createLayoutTooltip(
   const md = new vscode.MarkdownString('', true);
   md.baseUri = extensionUri;
   md.supportHtml = true;
-  md.appendMarkdown(`![${layoutId}](media/previews/layouts/${layoutId}.png)\n\n`);
+  if (hasPreview(extensionUri, 'media', 'previews', 'layouts', `${layoutId}.png`)) {
+    md.appendMarkdown(`![${layoutId}](media/previews/layouts/${layoutId}.png)\n\n`);
+  }
   md.appendMarkdown(`**${layoutId}** — ${description}\n\n`);
   md.appendMarkdown(toMarkdownCodeBlock(snippet));
   md.appendMarkdown('\n\n*Click 👁 for larger preview*');
@@ -40,7 +55,7 @@ function createComponentTooltip(
   md.baseUri = extensionUri;
   md.supportHtml = true;
   const file = getComponentPreviewFile(label);
-  if (file) {
+  if (file && hasPreview(extensionUri, 'media', 'previews', 'components', `${file}.png`)) {
     md.appendMarkdown(`![${label}](media/previews/components/${file}.png)\n\n`);
   }
   md.appendMarkdown(`**${label}** — ${description}\n\n`);
@@ -61,7 +76,7 @@ function createThemeTooltip(
 
   if (colorTheme) {
     const dir = getColorThemePreviewDir(colorTheme);
-    if (dir) {
+    if (dir && hasPreview(extensionUri, 'media', 'previews', 'themes', dir, '1.png')) {
       md.appendMarkdown(`![${label}](media/previews/themes/${dir}/1.png)\n\n`);
     }
   }
@@ -166,6 +181,17 @@ subtitle: Subtitle
 ## Auto-Centered Content
 
 Content with auto-adjusting font size.
+
+`
+      },
+      {
+        label: 'toc',
+        description: 'Table of contents (auto-generated)',
+        icon: '📋',
+        snippet: `---
+layout: toc
+title: Outline
+---
 
 `
       },
@@ -508,17 +534,6 @@ layout: references
 [[bibliography]]
 
 `
-      },
-      {
-        label: 'toc',
-        description: 'Table of contents (auto-generated)',
-        icon: '📋',
-        snippet: `---
-layout: toc
-title: Outline
----
-
-`
       }
     ]
   }
@@ -726,13 +741,17 @@ Citation text here.
 
 Column 1 content
 
----
+<template #col2>
 
 Column 2 content
 
----
+</template>
+
+<template #col3>
 
 Column 3 content
+
+</template>
 
 </Columns>
 
@@ -840,7 +859,7 @@ class LayoutCategoryTreeItem extends vscode.TreeItem {
 
 // Layouts Provider with categories
 export class LayoutsProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
-  constructor(private readonly extensionUri: vscode.Uri) {}
+  constructor(private readonly extensionUri: vscode.Uri) { }
 
   getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
     return element;
@@ -885,7 +904,7 @@ export class LayoutsProvider implements vscode.TreeDataProvider<vscode.TreeItem>
 
 // Components Provider
 export class ComponentsProvider implements vscode.TreeDataProvider<SnippetTreeItem> {
-  constructor(private readonly extensionUri: vscode.Uri) {}
+  constructor(private readonly extensionUri: vscode.Uri) { }
 
   getTreeItem(element: SnippetTreeItem): vscode.TreeItem {
     element.contextValue = 'componentSnippet';
@@ -956,59 +975,12 @@ type ThemePresetItem = {
   fontTheme: string;
 };
 
-const COLOR_THEMES: Array<{ value: string; label: string }> = [
-  { value: 'classic-blue', label: 'Classic Blue' },
-  { value: 'oxford-burgundy', label: 'Oxford Burgundy' },
-  { value: 'cambridge-green', label: 'Cambridge Green' },
-  { value: 'yale-blue', label: 'Yale Blue' },
-  { value: 'princeton-orange', label: 'Princeton Orange' },
-  { value: 'nordic-blue', label: 'Nordic Blue' },
-  { value: 'warm-sepia', label: 'Warm Sepia' },
-  { value: 'monochrome', label: 'Monochrome' },
-  { value: 'high-contrast', label: 'High Contrast' }
-];
-
-const FONT_THEMES: Array<{ value: string; label: string }> = [
-  { value: 'classic', label: 'Classic' },
-  { value: 'modern', label: 'Modern' },
-  { value: 'traditional', label: 'Traditional' },
-  { value: 'contemporary', label: 'Contemporary' },
-  { value: 'humanist', label: 'Humanist' },
-  { value: 'technical', label: 'Technical' },
-  { value: 'elegant', label: 'Elegant' },
-  { value: 'sans-default', label: 'Sans Default' }
-];
-
-const THEME_PRESETS: ThemePresetItem[] = [
-  {
-    id: 'classic',
-    label: 'Classic',
-    description: 'Classic Blue + Classic',
-    colorTheme: 'classic-blue',
-    fontTheme: 'classic'
-  },
-  {
-    id: 'oxford',
-    label: 'Oxford',
-    description: 'Oxford Burgundy + Traditional',
-    colorTheme: 'oxford-burgundy',
-    fontTheme: 'traditional'
-  },
-  {
-    id: 'cambridge',
-    label: 'Cambridge',
-    description: 'Cambridge Green + Elegant',
-    colorTheme: 'cambridge-green',
-    fontTheme: 'elegant'
-  },
-  {
-    id: 'modern',
-    label: 'Modern Minimal',
-    description: 'Monochrome + Sans Default',
-    colorTheme: 'monochrome',
-    fontTheme: 'sans-default'
-  }
-];
+// Theme data imported from shared definitions (Single Source of Truth)
+import {
+  COLOR_THEMES_SIMPLE as COLOR_THEMES,
+  FONT_THEMES_SIMPLE as FONT_THEMES,
+  THEME_PRESETS
+} from './sharedData';
 
 class ThemeGroupTreeItem extends vscode.TreeItem {
   constructor(
@@ -1049,7 +1021,7 @@ class ThemeValueTreeItem extends vscode.TreeItem {
 }
 
 export class ThemesProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
-  constructor(private readonly extensionUri: vscode.Uri) {}
+  constructor(private readonly extensionUri: vscode.Uri) { }
 
   getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
     return element;

@@ -1,6 +1,11 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import {
+  LAYOUT_NAMES,
+  COLOR_THEME_IDS as COLOR_THEMES,
+  FONT_THEME_IDS as FONT_THEMES
+} from './sharedData';
 
 type SnippetDefinition = {
   name: string;
@@ -9,147 +14,98 @@ type SnippetDefinition = {
   description: string;
 };
 
-const LAYOUT_NAMES = [
-  'cover',
-  'default',
-  'intro',
-  'section',
-  'center',
-  'auto-center',
-  'end',
-  'two-cols',
-  'image-left',
-  'image-right',
-  'bullets',
-  'figure',
-  'split-image',
-  'quote',
-  'fact',
-  'statement',
-  'focus',
-  'compare',
-  'methodology',
-  'results',
-  'timeline',
-  'agenda',
-  'acknowledgments',
-  'references',
-  'toc'
-];
+// LAYOUT_NAMES, COLOR_THEMES, FONT_THEMES imported from ./sharedData
 
-const COLOR_THEMES = [
-  'classic-blue',
-  'oxford-burgundy',
-  'cambridge-green',
-  'yale-blue',
-  'princeton-orange',
-  'nordic-blue',
-  'warm-sepia',
-  'monochrome',
-  'high-contrast'
-];
-
-const FONT_THEMES = [
-  'classic',
-  'modern',
-  'traditional',
-  'contemporary',
-  'humanist',
-  'technical',
-  'elegant',
-  'sans-default'
-];
-
-const BIB_STYLES = ['apa', 'harvard', 'ieee', 'mla'];
+const BIB_STYLES = ['apa', 'harvard1', 'vancouver', 'ieee', 'mla', 'chicago-author-date'];
 
 const COMPONENT_SNIPPETS: Array<{
   name: string;
   description: string;
   insertBody: string;
 }> = [
-  {
-    name: 'Block',
-    description: 'Beamer-style information block',
-    insertBody: 'Block type="${1|info,default,success,warning,danger,example|}" title="${2:Block Title}">\n${3:Block content}\n</Block>'
-  },
-  {
-    name: 'Theorem',
-    description: 'Theorem/lemma/definition container',
-    insertBody: 'Theorem type="${1|theorem,lemma,definition,corollary,claim,example,proof,note|}" title="${2:Theorem Title}">\n${3:Statement}\n</Theorem>'
-  },
-  {
-    name: 'Highlight',
-    description: 'Inline highlight',
-    insertBody: 'Highlight type="${1|primary,success,warning,danger,info|}">${2:highlighted text}</Highlight>'
-  },
-  {
-    name: 'Cite',
-    description: 'Citation helper component',
-    insertBody: 'Cite :inline="${1|true,false|}">\n${2:Citation text}\n</Cite>'
-  },
-  {
-    name: 'Steps',
-    description: 'Step-by-step process',
-    insertBody: 'Steps :steps="[\n  { title: \'${1:Step 1}\', description: \'${2:Description 1}\' },\n  { title: \'${3:Step 2}\', description: \'${4:Description 2}\' }\n]" :activeStep="${5:1}" />'
-  },
-  {
-    name: 'Columns',
-    description: 'Multi-column container',
-    insertBody: 'Columns :columns="${1:2}" :gap="${2:2}">\n${3:Column 1}\n\n---\n\n${4:Column 2}\n</Columns>'
-  },
-  {
-    name: 'Keywords',
-    description: 'Keyword tags',
-    insertBody: 'Keywords :keywords="[\'${1:Keyword 1}\', \'${2:Keyword 2}\']" />'
-  },
-  {
-    name: 'ThemePreview',
-    description: 'Preview a theme color set',
-    insertBody: 'ThemePreview colorTheme="${1|classic-blue,oxford-burgundy,cambridge-green,yale-blue,princeton-orange,nordic-blue,warm-sepia,monochrome,high-contrast|}">\n${2:Preview content}\n</ThemePreview>'
-  }
-];
+    {
+      name: 'Block',
+      description: 'Beamer-style information block',
+      insertBody: 'Block type="${1|info,default,success,warning,danger,example|}" title="${2:Block Title}">\n${3:Block content}\n</Block>'
+    },
+    {
+      name: 'Theorem',
+      description: 'Theorem/lemma/definition container',
+      insertBody: 'Theorem type="${1|theorem,lemma,definition,corollary,claim,example,proof,note|}" title="${2:Theorem Title}">\n${3:Statement}\n</Theorem>'
+    },
+    {
+      name: 'Highlight',
+      description: 'Inline highlight',
+      insertBody: 'Highlight type="${1|primary,success,warning,danger,info|}">${2:highlighted text}</Highlight>'
+    },
+    {
+      name: 'Cite',
+      description: 'Citation helper component',
+      insertBody: 'Cite :inline="${1|true,false|}">\n${2:Citation text}\n</Cite>'
+    },
+    {
+      name: 'Steps',
+      description: 'Step-by-step process',
+      insertBody: 'Steps :steps="[\n  { title: \'${1:Step 1}\', description: \'${2:Description 1}\' },\n  { title: \'${3:Step 2}\', description: \'${4:Description 2}\' }\n]" :activeStep="${5:1}" />'
+    },
+    {
+      name: 'Columns',
+      description: 'Multi-column container',
+      insertBody: 'Columns :columns="${1:2}" :gap="${2:2}">\n${3:Column 1}\n\n<template #col2>\n\n${4:Column 2}\n\n</template>\n\n</Columns>'
+    },
+    {
+      name: 'Keywords',
+      description: 'Keyword tags',
+      insertBody: 'Keywords :keywords="[\'${1:Keyword 1}\', \'${2:Keyword 2}\']" />'
+    },
+    {
+      name: 'ThemePreview',
+      description: 'Preview a theme color set',
+      insertBody: 'ThemePreview colorTheme="${1|classic-blue,oxford-burgundy,cambridge-green,yale-blue,princeton-orange,nordic-blue,warm-sepia,monochrome,high-contrast|}">\n${2:Preview content}\n</ThemePreview>'
+    }
+  ];
 
 const DIRECTIVE_SNIPPETS: Array<{
   name: string;
   description: string;
   insertBody: string;
 }> = [
-  {
-    name: 'block',
-    description: 'Block directive',
-    insertBody: 'block{type="${1|info,default,success,warning,danger,example|}" title="${2:Block Title}"}\n${3:Block content}\n:::'
-  },
-  {
-    name: 'theorem',
-    description: 'Theorem directive',
-    insertBody: 'theorem{type="${1|theorem,lemma,definition,corollary,claim,example,proof,note|}" title="${2:Theorem Title}"}\n${3:Statement}\n:::'
-  },
-  {
-    name: 'highlight',
-    description: 'Highlight directive',
-    insertBody: 'highlight{type="${1|primary,success,warning,danger,info|}"}\n${2:highlighted text}\n:::'
-  },
-  {
-    name: 'cite',
-    description: 'Cite directive',
-    insertBody: 'cite{:inline="${1|true,false|}"}\n${2:Citation text}\n:::'
-  },
-  {
-    name: 'steps',
-    description: 'Steps directive',
-    insertBody: 'steps{:steps=\'[\n  { title: "${1:Step 1}", description: "${2:Description 1}" },\n  { title: "${3:Step 2}", description: "${4:Description 2}" }\n]\' :activeStep="${5:1}"}\n:::'
-  },
-  {
-    name: 'columns',
-    description: 'Columns directive',
-    insertBody: 'columns{columns="${1|2,3,4|}" gap="${2:2rem}" ratio="${3:1:1}"}\n${4:Column 1}\n\n+++\n\n${5:Column 2}\n:::'
-  },
-  {
-    name: 'keywords',
-    description: 'Keywords directive',
-    insertBody: 'keywords{:keywords=\'["${1:Keyword 1}", "${2:Keyword 2}"]\' color="${3|primary,blue,green,purple,gray|}"}\n:::'
-  }
-];
+    {
+      name: 'block',
+      description: 'Block directive',
+      insertBody: 'block{type="${1|info,default,success,warning,danger,example|}" title="${2:Block Title}"}\n${3:Block content}\n:::'
+    },
+    {
+      name: 'theorem',
+      description: 'Theorem directive',
+      insertBody: 'theorem{type="${1|theorem,lemma,definition,corollary,claim,example,proof,note|}" title="${2:Theorem Title}"}\n${3:Statement}\n:::'
+    },
+    {
+      name: 'highlight',
+      description: 'Highlight directive',
+      insertBody: 'highlight{type="${1|primary,success,warning,danger,info|}"}\n${2:highlighted text}\n:::'
+    },
+    {
+      name: 'cite',
+      description: 'Cite directive',
+      insertBody: 'cite{:inline="${1|true,false|}"}\n${2:Citation text}\n:::'
+    },
+    {
+      name: 'steps',
+      description: 'Steps directive',
+      insertBody: 'steps{:steps=\'[\n  { title: "${1:Step 1}", description: "${2:Description 1}" },\n  { title: "${3:Step 2}", description: "${4:Description 2}" }\n]\' :activeStep="${5:1}"}\n:::'
+    },
+    {
+      name: 'columns',
+      description: 'Columns directive',
+      insertBody: 'columns{columns="${1|2,3,4|}" gap="${2:2rem}" ratio="${3:1:1}"}\n${4:Column 1}\n\n+++\n\n${5:Column 2}\n:::'
+    },
+    {
+      name: 'keywords',
+      description: 'Keywords directive',
+      insertBody: 'keywords{:keywords=\'["${1:Keyword 1}", "${2:Keyword 2}"]\' color="${3|primary,blue,green,purple,gray|}"}\n:::'
+    }
+  ];
 
 function toBodyString(body: string | string[]): string {
   return Array.isArray(body) ? body.join('\n') : body;
@@ -271,6 +227,13 @@ export class ScholarlyCompletionProvider implements vscode.CompletionItemProvide
       const partial = bibStyleMatch[1] ?? '';
       const range = asRange(position, linePrefix.length - partial.length);
       items.push(...createValueItems(BIB_STYLES, partial, range, 'Bibliography style'));
+    }
+
+    const bibShowNumMatch = linePrefix.match(/\bbibShowNum:\s*([a-z]*)$/);
+    if (bibShowNumMatch) {
+      const partial = bibShowNumMatch[1] ?? '';
+      const range = asRange(position, linePrefix.length - partial.length);
+      items.push(...createValueItems(['true', 'false'], partial, range, 'Show numbered bibliography markers'));
     }
 
     const componentMatch = linePrefix.match(/<([A-Za-z-]*)$/);
