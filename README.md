@@ -252,7 +252,7 @@ Boost your productivity with our VS Code extension:
 - ✨ Snippets: type `ss-` to insert layouts/components
 - ⚡ Smart completion for `layout:`, `themeConfig`, `<components>`, and `:::` directives
 - 📚 BibTeX integration with auto-complete
-- 👁️ Preview support
+- 👁️ **Visual Previews**: Directly preview layouts, components, and themes in the sidebar
 
 [Download from Releases →](https://github.com/jxpeng98/slidev-theme-scholarly/releases)
 

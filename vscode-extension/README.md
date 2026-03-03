@@ -22,6 +22,7 @@ The extension adds a dedicated panel in the VS Code Activity Bar with six sectio
   - *Theme* - apply/list themes, apply preset combos, list layouts/components
   - *Snippets* - append/show/list Scholarly snippets and append workflows
   - *Tools* - `doctor` and `help`
+- **Preview** - Click the 👁️ icon on any layout, component, or theme to see a visual preview
 
 Click any item to insert content at the cursor or update frontmatter.
 
@@ -40,6 +41,10 @@ In Markdown files, Scholarly-specific suggestions now appear while typing (witho
 - `ss-` / `scholarly-` -> snippet candidates from built-in snippet library
 
 If suggestions do not pop up automatically, press `Ctrl+Space` (`Cmd+Space` on macOS if available) to trigger completion.
+
+### 👁️ Visual Previews (New)
+
+The extension now features a dedicated Preview panel. Simply click the eye icon (👁️) next to any Layout, Component, or Theme in the sidebar to view a high-quality visualization of how it looks in the rendered slides.
 
 ### 🧪 Dev Mode (Performance Testing)
 

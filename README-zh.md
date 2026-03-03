@@ -310,7 +310,7 @@ layout: intro
 - ✨ 代码片段：输入 `ss-` 插入布局/组件
 - ⚡ 智能补全：`layout:`、`themeConfig`、`<组件>`、`:::` 指令可直接候选
 - 📚 BibTeX 集成，自动补全
-- 👁️ 预览支持
+- 👁️ **可视化预览**：在侧边栏直接预览各种布局、组件和主题的实际效果
 
 [从 Releases 下载 →](https://github.com/jxpeng98/slidev-theme-scholarly/releases)
 

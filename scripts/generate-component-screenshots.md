@@ -99,22 +99,20 @@ title: Columns Component
 subtitle: Multi-column layouts
 ---
 
-<Columns :columns="3" :gap="2">
-
+:::columns{columns="3" gap="2rem" ratio="1:1:1"}
 ### Column 1
 First column content with some text.
 
----
++++
 
 ### Column 2
 Second column with different information.
 
----
++++
 
 ### Column 3
 Third column completing the layout.
-
-</Columns>
+:::
 
 <!-- Slide 7: Keywords Component -->
 ---

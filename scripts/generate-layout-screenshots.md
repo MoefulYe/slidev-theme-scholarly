@@ -81,7 +81,13 @@ subtitle: Comprehensive Evaluation
 
 Our approach achieves superior results across multiple datasets while maintaining computational efficiency
 
-<!-- Slide 7: end -->
+<!-- Slide 7: toc -->
+---
+layout: toc
+title: Presentation Outline
+---
+
+<!-- Slide 8: end -->
 ---
 layout: end
 email: ab.smith@xyz-tech.edu
@@ -92,7 +98,7 @@ qrcodeLabel: Paper & Code
 
 Thank you for your attention!
 
-<!-- Slide 8: two-cols -->
+<!-- Slide 9: two-cols -->
 ---
 layout: two-cols
 ratio: "1:1"
@@ -115,7 +121,7 @@ title: Architecture Comparison
 - Efficient parameters
 - Parallel processing
 
-<!-- Slide 9: image-left -->
+<!-- Slide 10: image-left -->
 ---
 layout: image-left
 image: https://picsum.photos/seed/network/800/600
@@ -134,7 +140,7 @@ Key innovations:
 
 The architecture diagram shows the complete pipeline from input to output.
 
-<!-- Slide 10: image-right -->
+<!-- Slide 11: image-right -->
 ---
 layout: image-right
 image: https://picsum.photos/seed/results/800/600
@@ -153,7 +159,7 @@ Example predictions demonstrate:
 
 See detailed visualizations on the right.
 
-<!-- Slide 11: bullets -->
+<!-- Slide 12: bullets -->
 ---
 layout: bullets
 title: Key Contributions
@@ -168,7 +174,7 @@ icon: "▸"
 - **Benchmark Results** - State-of-the-art on 5 major datasets
 - **Efficiency** - 3x faster inference with comparable accuracy
 
-<!-- Slide 12: figure -->
+<!-- Slide 13: figure -->
 ---
 layout: figure
 src: https://picsum.photos/seed/diagram/1200/600
@@ -179,7 +185,7 @@ height: 65%
 fit: contain
 ---
 
-<!-- Slide 13: split-image -->
+<!-- Slide 14: split-image -->
 ---
 layout: split-image
 images:
@@ -191,7 +197,7 @@ captions:
 title: Prediction Examples
 ---
 
-<!-- Slide 14: quote -->
+<!-- Slide 15: quote -->
 ---
 layout: quote
 author: Prof. E.F. Davis
@@ -200,7 +206,7 @@ source: Neural Information Processing Systems, 2012
 
 The future of AI lies in systems that can learn hierarchical representations without explicit programming.
 
-<!-- Slide 15: fact -->
+<!-- Slide 16: fact -->
 ---
 layout: fact
 color: blue
@@ -210,7 +216,7 @@ color: blue
 
 Training time compared to baseline methods
 
-<!-- Slide 16: statement -->
+<!-- Slide 17: statement -->
 ---
 layout: statement
 author: Research Team
@@ -220,7 +226,7 @@ author: Research Team
 
 Our approach proves you don't have to sacrifice one for the other
 
-<!-- Slide 17: focus -->
+<!-- Slide 18: focus -->
 ---
 layout: focus
 color: amber
@@ -231,7 +237,7 @@ icon: "🎯"
 
 How can we build accurate models that remain computationally efficient for real-world deployment?
 
-<!-- Slide 18: compare -->
+<!-- Slide 19: compare -->
 ---
 layout: compare
 title: Method Comparison
@@ -257,7 +263,7 @@ rightColor: green
 - Memory: 2.8 GB
 - Training: 18 hours
 
-<!-- Slide 19: methodology -->
+<!-- Slide 20: methodology -->
 ---
 layout: methodology
 ratio: "1:1"
@@ -288,7 +294,7 @@ graph TD
     E --> F[Deployment]
 ```
 
-<!-- Slide 20: results -->
+<!-- Slide 21: results -->
 ---
 layout: results
 cols: 2
@@ -319,7 +325,7 @@ title: Performance Metrics
   <p class="text-sm text-gray-600">Power Consumption</p>
 </div>
 
-<!-- Slide 21: timeline -->
+<!-- Slide 22: timeline -->
 ---
 layout: timeline
 title: Project Timeline
@@ -341,7 +347,7 @@ items:
     description: Submitted to top-tier conference
 ---
 
-<!-- Slide 22: agenda -->
+<!-- Slide 23: agenda -->
 ---
 layout: agenda
 title: Presentation Outline
@@ -355,7 +361,7 @@ items:
   - Conclusions
 ---
 
-<!-- Slide 23: acknowledgments -->
+<!-- Slide 24: acknowledgments -->
 ---
 layout: acknowledgments
 title: Acknowledgments
@@ -371,7 +377,7 @@ collaborators:
 
 Special thanks to our amazing research team and computing infrastructure support.
 
-<!-- Slide 24: references -->
+<!-- Slide 25: references -->
 ---
 layout: references
 ---
