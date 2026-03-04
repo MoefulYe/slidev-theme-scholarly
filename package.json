@@ -1,6 +1,6 @@
 {
   "name": "slidev-theme-scholarly",
-  "version": "1.0.3",
+  "version": "1.1.0-beta.1",
   "type": "module",
   "description": "A scholarly presentation theme for Slidev with LaTeX Beamer-style styling",
   "author": "Jiaxin Peng",
@@ -67,9 +67,7 @@
     "docs:serve": "vitepress serve docs",
     "version:print": "node -p \"require('./package.json').version\"",
     "version:sync": "node scripts/sync-version.mjs",
-    "bump:patch": "pnpm version patch --no-git-tag-version && pnpm run version:sync",
-    "bump:minor": "pnpm version minor --no-git-tag-version && pnpm run version:sync",
-    "bump:major": "pnpm version major --no-git-tag-version && pnpm run version:sync",
+    "bump": "bash scripts/bump-version.sh",
     "tag": "git tag -a \"v$(pnpm -s run version:print)\" -m \"v$(pnpm -s run version:print)\"",
     "tag:push": "git push && git push origin \"v$(pnpm -s run version:print)\"",
     "release": "pnpm run version:sync && git add -A && git commit -m \"chore: release v$(pnpm -s run version:print)\" && pnpm run tag && pnpm run tag:push",
