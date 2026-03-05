@@ -21,7 +21,24 @@ jobs:
         run: |
           set -euo pipefail
 
-          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+
+          # Only handle theme tags like:
+          #   v1.2.3
+          #   v1.2.3-beta.1
+          #
+          # This workflow may also be triggered by other tag namespaces
+          # (e.g. VS Code extension tags) that start with "v" but are not
+          # theme releases.
+          if [[ ! "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            echo "Skipping: not a theme release tag ($TAG_NAME)"
+            echo "version=" >> "$GITHUB_OUTPUT"
+            echo "is_stable=false" >> "$GITHUB_OUTPUT"
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          TAG_VERSION="${TAG_NAME#v}"
           PKG_VERSION="$(node -p "require('./package.json').version")"
 
           echo "Tag version:     $TAG_VERSION"
@@ -103,6 +120,7 @@ jobs:
       - name: Publish to NPM
         run: npm publish --access public
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
 
   prerelease:
@@ -159,4 +177,5 @@ jobs:
       - name: Publish to NPM (dist-tag next)
         run: npm publish --access public --tag next
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true

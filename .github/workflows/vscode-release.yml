@@ -3,12 +3,17 @@ name: VS Code Extension Release
 on:
   push:
     tags:
-      - 'v*'
+      - 'vscode-v*'
+      - 'vscode-pre-v*'
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release (e.g., 1.0.0 or 1.0.0-beta.1)'
+        description: 'Extension version to release (x.y.z)'
         required: false
+      channel:
+        description: 'Release channel (stable|prerelease)'
+        required: false
+        default: 'stable'
 
 jobs:
   check:
@@ -16,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.meta.outputs.version }}
+      tag_name: ${{ steps.meta.outputs.tag_name }}
       is_stable: ${{ steps.meta.outputs.is_stable }}
       is_prerelease: ${{ steps.meta.outputs.is_prerelease }}
     steps:
@@ -31,14 +37,57 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.version }}" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ -z "${{ github.event.inputs.version }}" ]; then
+              echo "::error::workflow_dispatch requires 'version' input (x.y.z)."
+              exit 1
+            fi
+
             TAG_VERSION="${{ github.event.inputs.version }}"
+            CHANNEL="${{ github.event.inputs.channel }}"
+
+            if [ -z "$CHANNEL" ]; then
+              CHANNEL="stable"
+            fi
+
+            if [ "$CHANNEL" = "prerelease" ]; then
+              TAG_NAME="vscode-pre-v${TAG_VERSION}"
+              echo "Detected: PRE-RELEASE (workflow_dispatch)"
+              echo "is_stable=false" >> "$GITHUB_OUTPUT"
+              echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+            else
+              TAG_NAME="vscode-v${TAG_VERSION}"
+              echo "Detected: STABLE release (workflow_dispatch)"
+              echo "is_stable=true" >> "$GITHUB_OUTPUT"
+              echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+            fi
           else
-            TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+            TAG_NAME="${GITHUB_REF#refs/tags/}"
+
+            if [[ "$TAG_NAME" == vscode-pre-v* ]]; then
+              TAG_VERSION="${TAG_NAME#vscode-pre-v}"
+              echo "Detected: PRE-RELEASE (tag)"
+              echo "is_stable=false" >> "$GITHUB_OUTPUT"
+              echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+            elif [[ "$TAG_NAME" == vscode-v* ]]; then
+              TAG_VERSION="${TAG_NAME#vscode-v}"
+              echo "Detected: STABLE release (tag)"
+              echo "is_stable=true" >> "$GITHUB_OUTPUT"
+              echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "::error::Tag name ($TAG_NAME) does not match vscode-v* or vscode-pre-v*."
+              exit 1
+            fi
+          fi
+
+          if [[ ! "$TAG_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Extension version must be plain x.y.z (got: $TAG_VERSION)."
+            exit 1
           fi
 
           PKG_VERSION="$(node -p "require('./vscode-extension/package.json').version")"
 
+          echo "Tag name:        $TAG_NAME"
           echo "Tag version:     $TAG_VERSION"
           echo "Package version: $PKG_VERSION"
 
@@ -48,21 +97,9 @@ jobs:
           fi
 
           echo "version=$TAG_VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
 
-          # Stable: X.Y.Z (no prerelease segment)
-          # Prerelease: X.Y.Z-<pre> (has hyphen after patch)
-          if [[ "$TAG_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "is_stable=true" >> "$GITHUB_OUTPUT"
-            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
-            echo "Detected: STABLE release"
-          elif [[ "$TAG_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$ ]]; then
-            echo "is_stable=false" >> "$GITHUB_OUTPUT"
-            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
-            echo "Detected: PRE-RELEASE"
-          else
-            echo "::error::Tag version ($TAG_VERSION) is not valid semver."
-            exit 1
-          fi
+          # is_stable / is_prerelease already set above.
 
   build:
     name: Build Extension
@@ -115,7 +152,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ needs.check.outputs.version }}
+          tag_name: ${{ needs.check.outputs.tag_name }}
           files: ./vsix/*.vsix
           draft: false
           prerelease: false
@@ -142,7 +179,7 @@ jobs:
       - name: Create GitHub Pre-release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ needs.check.outputs.version }}
+          tag_name: ${{ needs.check.outputs.tag_name }}
           files: ./vsix/*.vsix
           draft: false
           prerelease: true

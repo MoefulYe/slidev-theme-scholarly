@@ -2,7 +2,7 @@
   "name": "slidev-scholarly-snippets",
   "displayName": "Slidev Scholarly Snippets",
   "description": "Quick snippets and templates for Slidev Theme Scholarly",
-  "version": "1.1.0-beta.1",
+  "version": "1.1.0",
   "publisher": "jxpeng98",
   "engines": {
     "vscode": "^1.85.0"
@@ -267,7 +267,8 @@
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext ts",
     "package": "npx @vscode/vsce package",
-    "publish": "npx @vscode/vsce publish"
+    "publish": "npx @vscode/vsce publish",
+    "publish:pre": "npx @vscode/vsce publish --pre-release"
   },
   "devDependencies": {
     "@types/vscode": "^1.85.0",

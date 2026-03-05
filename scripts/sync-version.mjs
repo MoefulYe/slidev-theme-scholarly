@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Synchronise the root package.json version into:
- *   - vscode-extension/package.json
+ * Synchronise the root package.json (theme) version into:
  *   - docs/package.json
  *
  * Usage:
@@ -21,7 +20,6 @@ const rootPkg = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), '
 const version = rootPkg.version
 
 const targets = [
-    { file: path.join(rootDir, 'vscode-extension', 'package.json'), indent: 2 },
     { file: path.join(rootDir, 'docs', 'package.json'), indent: 4 },
 ]
 
