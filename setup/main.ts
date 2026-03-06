@@ -39,6 +39,11 @@ type ThemeConfig = {
   colorTheme?: string
   fontTheme?: string
   colorMode?: 'light' | 'dark'
+  beamerNav?: boolean
+  outlineSidebar?: boolean
+  outlineSidebarOpen?: boolean
+  outlineToc?: boolean
+  outlineTocOpen?: boolean
 }
 
 const normalizeFontSize = (value: unknown): string | null => {

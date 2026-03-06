@@ -66,6 +66,31 @@ authors:
 - Middle: Empty (or your custom text)
 - Right: Page numbers (automatic)
 
+### Theme Configuration
+
+Use `themeConfig` for theme-level behavior:
+
+```yaml
+themeConfig:
+  beamerNav: false  # hide footer navigation buttons
+  outlineToc: true
+  outlineTocOpen: false
+```
+
+| Option | What it controls | Default |
+|--------|------------------|---------|
+| `themeConfig.beamerNav` | Show beamer-style footer navigation buttons in live play mode | `true` |
+| `themeConfig.outlineToc` | Show a compact TOC button in the footer that opens an outline panel | `false` |
+| `themeConfig.outlineTocOpen` | Start with the outline panel expanded | `false` |
+
+Notes:
+
+- The buttons appear only in the live slide player.
+- They are automatically hidden in overview, embedded, and print/export views.
+- The TOC panel is grouped by `layout: section` and lists jump targets inside each section.
+- Slides with `hideInToc: true` are hidden automatically.
+- The legacy `outlineSidebar` / `outlineSidebarOpen` keys still work, but `outlineToc` / `outlineTocOpen` are the preferred names now.
+
 ### Theorem Number Format
 
 Customize how theorem numbers appear:

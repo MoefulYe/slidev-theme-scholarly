@@ -66,6 +66,31 @@ authors:
 - 中间：空（或你的自定义文本）
 - 右侧：页码（自动）
 
+### 主题配置
+
+可以通过 `themeConfig` 控制主题级行为：
+
+```yaml
+themeConfig:
+  beamerNav: false  # 隐藏页脚导航按钮
+  outlineToc: true
+  outlineTocOpen: false
+```
+
+| 选项 | 控制内容 | 默认值 |
+|------|---------|--------|
+| `themeConfig.beamerNav` | 在放映视图中显示 beamer 风格页脚导航按钮 | `true` |
+| `themeConfig.outlineToc` | 在页脚显示一个紧凑 TOC 按钮，点击后唤起目录面板 | `false` |
+| `themeConfig.outlineTocOpen` | 初始加载时默认展开目录面板 | `false` |
+
+说明：
+
+- 这些按钮只会出现在实际放映视图中。
+- 在概览、嵌入和打印/导出视图中会自动隐藏。
+- TOC 面板会按 `layout: section` 分组，并列出组内可跳转页面。
+- 单页设置 `hideInToc: true` 时会自动隐藏该页。
+- `outlineSidebar` / `outlineSidebarOpen` 旧配置仍然兼容，但新配置建议使用 `outlineToc` / `outlineTocOpen`。
+
 ### 定理编号格式
 
 自定义定理编号的显示方式：

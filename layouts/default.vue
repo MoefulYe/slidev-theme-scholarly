@@ -120,7 +120,7 @@ watch(() => $slidev?.nav?.currentPage, () => {
 <style scoped>
 .content-wrapper {
   padding-top: 50px; /* Space for fixed header when it has content */
-  padding-bottom: 35px; /* Space for fixed footer */
+  padding-bottom: calc(var(--scholarly-footer-height) + 0.5rem); /* Space for fixed footer */
   padding-left: 0;
   padding-right: 0;
   width: 100%;

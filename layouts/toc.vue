@@ -164,7 +164,7 @@ const highlightCurrent = computed(() => props.highlightCurrent !== false)
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2rem 3rem 35px;
+  padding: 2rem 3rem calc(var(--scholarly-footer-height) + 0.5rem);
 }
 
 .toc-container.has-header {

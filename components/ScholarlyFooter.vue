@@ -1,9 +1,13 @@
 <template>
   <footer class="fixed bottom-0 left-0 right-0 z-50">
     <div class="flex justify-between beamer-footer">
-      <span class="beamer-footer-left">{{ leftContent }}</span>
-      <span class="beamer-footer-center">{{ middleContent }}</span>
-      <span class="beamer-footer-right">{{ $slidev.nav.currentPage }} / {{ $slidev.nav.total }}</span>
+      <div class="beamer-footer-left">{{ leftContent }}</div>
+      <div class="beamer-footer-center">{{ middleContent }}</div>
+      <div class="beamer-footer-right">
+        <BeamerNavControls />
+        <FooterTocControl />
+        <span class="beamer-footer-page">{{ $slidev.nav.currentPage }} / {{ $slidev.nav.total }}</span>
+      </div>
     </div>
   </footer>
 </template>
@@ -11,6 +15,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
+import BeamerNavControls from './BeamerNavControls.vue'
+import FooterTocControl from './FooterTocControl.vue'
 
 interface Author {
   name?: string

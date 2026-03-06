@@ -30,7 +30,7 @@ Subtitle or description
 
 - Large title in the center
 - Author(s) with institution and email
-- Footer with author, conference, and page number
+- Footer with author, conference, page number, and live beamer-style navigation buttons
 
 ---
 
@@ -58,7 +58,7 @@ You can add text, images, code, math formulas, etc.
 
 - Optional header with title and subtitle
 - Your content in the middle
-- Footer at the bottom
+- Footer at the bottom with page number and live beamer-style navigation buttons
 
 ---
 

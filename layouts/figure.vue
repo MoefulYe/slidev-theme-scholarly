@@ -59,7 +59,7 @@ const imageStyle = computed(() => ({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem 2rem 35px;
+  padding: 1rem 2rem calc(var(--scholarly-footer-height) + 0.5rem);
   text-align: center;
 }
 
