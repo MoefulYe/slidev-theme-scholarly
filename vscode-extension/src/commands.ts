@@ -103,6 +103,8 @@ lang: en
 themeConfig:
   colorTheme: classic-blue
   fontTheme: classic
+  outlineToc: true
+  outlineTocOpen: false
 bibFile: ./references.bib
 bibStyle: apa
 authors:
@@ -124,22 +126,14 @@ LAYOUT: cover (default for first slide)
 -->
 
 ---
-layout: bullets
+layout: toc
 title: Outline
-subtitle: What we'll cover today
 ---
 
 <!--
 SLIDE: Outline
-LAYOUT: bullets
+LAYOUT: toc
 -->
-
-## Today's Agenda
-
-1. **Introduction** - Background and motivation
-2. **Methods** - Our approach
-3. **Results** - Key findings
-4. **Discussion** - Conclusions
 
 ---
 layout: section
@@ -269,6 +263,8 @@ lang: en
 themeConfig:
   colorTheme: classic-blue
   fontTheme: classic
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Your Name
     institution: Your Institution
@@ -278,6 +274,11 @@ authors:
 # Presentation Title
 
 Your subtitle here
+
+---
+layout: toc
+title: Outline
+---
 
 ---
 layout: section
