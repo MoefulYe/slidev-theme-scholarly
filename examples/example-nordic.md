@@ -8,6 +8,8 @@ themeConfig:
   fontTheme: humanist
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Dr. Q.R. Berg
     institution: MNO University

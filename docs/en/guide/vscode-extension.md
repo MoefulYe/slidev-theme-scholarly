@@ -113,7 +113,7 @@ Layouts are organized into four categories. You can use category-specific prefix
 | `ss-section` | Section divider (supports `sectionMode: dark/light`) |
 | `ss-center` | Centered content |
 | `ss-auto-center` | Auto-adjusting centered content |
-| `ss-toc` | Auto-generated table of contents |
+| `ss-toc` | Auto-generated table of contents grouped by sections |
 | `ss-end` | Thank you/closing slide |
 
 #### Content Layouts

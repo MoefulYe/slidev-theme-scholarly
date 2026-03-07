@@ -570,6 +570,7 @@
       "  colorTheme: ${3|classic-blue,oxford-burgundy,cambridge-green,yale-blue,princeton-orange,monochrome,warm-sepia,nordic-blue,high-contrast|}",
       "  fontTheme: ${4|classic,modern,traditional,contemporary,humanist,technical,elegant,sans-default|}",
       "  sectionMode: ${5|dark,light|}",
+      "  outlineToc: true",
       "bibFile: ./references.bib",
       "bibStyle: ${6|apa,harvard1,vancouver,ieee,mla,chicago-author-date|}",
       "authors:",

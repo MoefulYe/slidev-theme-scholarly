@@ -113,7 +113,7 @@ scholarly-cite # 插入引用
 | `ss-section` | 章节分隔符（支持 `sectionMode: dark/light`） |
 | `ss-center` | 居中内容 |
 | `ss-auto-center` | 自动调整的居中内容 |
-| `ss-toc` | 自动生成目录页 |
+| `ss-toc` | 按 section 分组的自动目录页 |
 | `ss-end` | 致谢/结束幻灯片 |
 
 #### 内容布局

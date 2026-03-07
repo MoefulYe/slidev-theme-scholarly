@@ -8,6 +8,8 @@ themeConfig:
   fontTheme: sans-default
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: S.T. Adams
     institution: PQR Design Lab

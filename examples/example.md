@@ -9,6 +9,8 @@ themeConfig:
   fontTheme: contemporary
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 theoremNumberFormat: '{number}'
 bibFile: ./references.bib
 bibStyle: apa

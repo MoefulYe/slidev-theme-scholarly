@@ -8,6 +8,8 @@ themeConfig:
   fontTheme: contemporary
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Dr. O.P. Clark
     institution: JKL Institute

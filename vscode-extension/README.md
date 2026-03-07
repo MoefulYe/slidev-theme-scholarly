@@ -192,6 +192,7 @@ lang: en
 themeConfig:
   colorTheme: classic-blue
   fontTheme: classic
+  outlineToc: true
 bibFile: ./references.bib
 bibStyle: apa
 authors:

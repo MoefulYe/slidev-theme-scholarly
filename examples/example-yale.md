@@ -8,6 +8,8 @@ themeConfig:
   fontTheme: modern
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Dr. M.N. Taylor
     institution: GHI University

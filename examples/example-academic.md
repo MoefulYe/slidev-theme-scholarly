@@ -5,6 +5,8 @@ lang: en
 themeConfig:
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 bibFile: ./references.bib
 bibStyle: apa
 authors:

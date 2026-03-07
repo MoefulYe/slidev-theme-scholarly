@@ -8,6 +8,8 @@ themeConfig:
   fontTheme: classic
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Dr. A.B. Smith
     institution: XYZ Institute of Technology
