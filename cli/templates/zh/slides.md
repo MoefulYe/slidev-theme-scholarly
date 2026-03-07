@@ -9,6 +9,8 @@ themeConfig:
   colorTheme: cambridge-green
   fontTheme: academic
   colorMode: light
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: 你的名字
     institution: 你的单位

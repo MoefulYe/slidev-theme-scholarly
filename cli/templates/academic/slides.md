@@ -8,6 +8,8 @@ lang: en
 themeConfig:
   colorTheme: oxford-burgundy
   fontTheme: academic
+  outlineToc: true
+  outlineTocOpen: false
 bibFile: ./references.bib
 bibStyle: apa
 authors:

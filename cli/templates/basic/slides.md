@@ -10,6 +10,8 @@ themeConfig:
   colorTheme: classic-blue
   fontTheme: contemporary
   colorMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Your Name
     institution: Your Institution
