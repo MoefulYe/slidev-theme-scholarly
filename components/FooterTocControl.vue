@@ -39,6 +39,7 @@
     <Transition name="footer-toc-panel">
       <div
         v-if="isOpen"
+        ref="panelRef"
         :id="panelId"
         class="footer-toc-panel"
         :aria-label="labels.title"
@@ -67,7 +68,10 @@
           </button>
         </div>
 
-        <div class="footer-toc-panel-body">
+        <div
+          class="footer-toc-panel-body"
+          @scroll.passive="syncPreviewAnchor()"
+        >
           <p
             v-if="sectionGroups.length === 0"
             class="footer-toc-empty"
@@ -85,6 +89,9 @@
               <button
                 type="button"
                 class="footer-toc-section-header"
+                :data-preview-no="section.no"
+                @mouseenter="setPreviewTarget(section.no, $event)"
+                @focus="setPreviewTarget(section.no, $event)"
                 @click="navigateToSlide(section.no)"
               >
                 <span class="footer-toc-section-index">{{ section.no }}</span>
@@ -101,6 +108,9 @@
                   type="button"
                   class="footer-toc-slide"
                   :class="{ 'is-active': slide.active }"
+                  :data-preview-no="slide.no"
+                  @mouseenter="setPreviewTarget(slide.no, $event)"
+                  @focus="setPreviewTarget(slide.no, $event)"
                   @click="navigateToSlide(slide.no)"
                 >
                   <span class="footer-toc-slide-index">{{ slide.no }}</span>
@@ -112,13 +122,33 @@
         </div>
       </div>
     </Transition>
+
+    <FooterTocPreviewCard
+      :visible="previewVisible"
+      :route="previewRoute"
+      :slide-no="previewTargetNo"
+      :clicks-context="previewClicksContext"
+      :position-style="previewPositionStyle"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useSlideContext } from '@slidev/client'
+import type { ClicksContext, SlideRoute } from '@slidev/types'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { slideAspect, useSlideContext } from '@slidev/client'
 import { isInteractiveSlideRoute } from '../utils/presentationMode'
+import { CLICKS_MAX, createFixedClicks } from '../utils/fixedClicks'
+import FooterTocPreviewCard from './FooterTocPreviewCard.vue'
+
+interface PreviewAnchorRect {
+  top: number
+  left: number
+  right: number
+  bottom: number
+  width: number
+  height: number
+}
 
 interface TocSlideItem {
   no: number
@@ -134,12 +164,22 @@ interface TocSectionGroup {
 }
 
 const panelOpen = ref<boolean | null>(null)
+const panelRef = ref<HTMLElement | null>(null)
+const previewVisible = ref(false)
+const previewTargetNo = ref<number | null>(null)
+const previewAnchorRect = ref<PreviewAnchorRect | null>(null)
+const previewAnchorEl = ref<HTMLElement | null>(null)
 
 const { $slidev } = useSlideContext()
 const slidevConfigs = computed(() => ($slidev.configs as any) || {})
 const themeConfig = computed(() => slidevConfigs.value?.themeConfig || {})
 const currentPage = computed(() => $slidev.nav.currentPage)
-const allSlides = computed(() => (($slidev.nav as any).slides || []) as any[])
+const allSlides = computed(() => (($slidev.nav as any).slides || []) as SlideRoute[])
+const previewContexts = new Map<number, ClicksContext>()
+const desktopHover = ref(false)
+const viewportWidth = ref(0)
+const viewportHeight = ref(0)
+let hoverMediaQuery: MediaQueryList | null = null
 
 const tocEnabled = computed(() => {
   const enabled = themeConfig.value?.outlineToc ?? themeConfig.value?.outlineSidebar
@@ -157,7 +197,12 @@ if (panelOpen.value === null)
   panelOpen.value = initialOpen.value
 
 const isOpen = computed(() => panelOpen.value === true)
+const previewEnabled = computed(() => tocEnabled.value && desktopHover.value && viewportWidth.value >= 1100)
 const panelId = 'scholarly-footer-toc-panel'
+const previewCardWidthPx = 248
+const previewCardHeightPx = computed(() => previewCardWidthPx / slideAspect.value)
+const previewGapPx = 12
+const previewViewportPaddingPx = 12
 
 const isChinese = computed(() => `${slidevConfigs.value?.lang || ''}`.toLowerCase().startsWith('zh'))
 
@@ -262,8 +307,184 @@ const sectionGroups = computed<TocSectionGroup[]>(() => {
   return groups
 })
 
+const previewableSlideNos = computed(() => {
+  const slideNos: number[] = []
+  for (const section of sectionGroups.value) {
+    slideNos.push(section.no)
+    for (const slide of section.slides)
+      slideNos.push(slide.no)
+  }
+  return slideNos
+})
+
+const fallbackPreviewTargetNo = computed(() => {
+  if (previewableSlideNos.value.length === 0)
+    return null
+
+  if (previewableSlideNos.value.includes(currentPage.value))
+    return currentPage.value
+
+  return previewableSlideNos.value[0]
+})
+
+const previewRoute = computed<SlideRoute | null>(() => {
+  if (!previewTargetNo.value)
+    return null
+
+  return allSlides.value[previewTargetNo.value - 1] || null
+})
+
+const previewClicksContext = computed<ClicksContext | null>(() => {
+  const route = previewRoute.value
+  if (!route)
+    return null
+
+  let context = previewContexts.get(route.no)
+  if (!context) {
+    context = createFixedClicks(route, CLICKS_MAX)
+    previewContexts.set(route.no, context)
+  }
+
+  return context
+})
+
+const previewPositionStyle = computed(() => {
+  if (!previewVisible.value || !previewEnabled.value || !previewAnchorRect.value || !panelRef.value)
+    return null
+
+  const panelRect = panelRef.value.getBoundingClientRect()
+  const anchorRect = previewAnchorRect.value
+  const headerHeight = getChromeInset('--scholarly-header-height', 56)
+  const footerHeight = getChromeInset('--scholarly-footer-height', 36)
+  const previewHeight = previewCardHeightPx.value
+
+  const maxTop = Math.max(
+    headerHeight + previewViewportPaddingPx,
+    viewportHeight.value - footerHeight - previewHeight - previewViewportPaddingPx,
+  )
+  const left = Math.max(
+    previewViewportPaddingPx,
+    panelRect.left - previewCardWidthPx - previewGapPx,
+  )
+  const top = clampValue(
+    anchorRect.top + anchorRect.height / 2 - previewHeight / 2,
+    headerHeight + previewViewportPaddingPx,
+    maxTop,
+  )
+
+  return {
+    left: `${left}px`,
+    top: `${top}px`,
+  }
+})
+
+const setPreviewTarget = (slideNo: number, event: MouseEvent | FocusEvent) => {
+  if (!previewEnabled.value)
+    return
+
+  const target = event.currentTarget
+  if (!(target instanceof HTMLElement))
+    return
+
+  previewTargetNo.value = slideNo
+  previewAnchorEl.value = target
+  syncPreviewAnchor(target)
+  previewVisible.value = true
+}
+
+const syncPreviewAnchor = (source?: HTMLElement | Event) => {
+  if (!previewEnabled.value || !isOpen.value) {
+    previewAnchorRect.value = null
+    return
+  }
+
+  let element: HTMLElement | null = null
+
+  if (source instanceof HTMLElement) {
+    element = source
+  }
+  else if (source instanceof Event && source.currentTarget instanceof HTMLElement) {
+    element = source.currentTarget
+  }
+  else {
+    element = previewAnchorEl.value
+  }
+
+  if (!element) {
+    previewAnchorRect.value = null
+    return
+  }
+
+  const rect = element.getBoundingClientRect()
+  previewAnchorEl.value = element
+  previewAnchorRect.value = {
+    top: rect.top,
+    left: rect.left,
+    right: rect.right,
+    bottom: rect.bottom,
+    width: rect.width,
+    height: rect.height,
+  }
+}
+
+const syncPreviewToTargetNo = async (slideNo: number | null) => {
+  if (!slideNo || !previewEnabled.value || !isOpen.value) {
+    previewVisible.value = false
+    previewTargetNo.value = slideNo
+    previewAnchorEl.value = null
+    previewAnchorRect.value = null
+    return
+  }
+
+  previewTargetNo.value = slideNo
+  await nextTick()
+
+  const element = panelRef.value?.querySelector<HTMLElement>(`[data-preview-no="${slideNo}"]`) || null
+  if (!element) {
+    previewVisible.value = false
+    previewAnchorEl.value = null
+    previewAnchorRect.value = null
+    return
+  }
+
+  previewAnchorEl.value = element
+  syncPreviewAnchor(element)
+  previewVisible.value = true
+}
+
+watch(
+  [isOpen, previewEnabled, fallbackPreviewTargetNo],
+  async ([open, enabled, fallbackTarget]) => {
+    if (!open || !enabled || !fallbackTarget) {
+      previewVisible.value = false
+      previewTargetNo.value = null
+      previewAnchorEl.value = null
+      previewAnchorRect.value = null
+      return
+    }
+
+    await syncPreviewToTargetNo(fallbackTarget)
+  },
+  { immediate: true },
+)
+
+watch(previewEnabled, async (enabled) => {
+  if (!enabled) {
+    previewVisible.value = false
+    previewAnchorEl.value = null
+    previewAnchorRect.value = null
+    return
+  }
+
+  if (isOpen.value)
+    await syncPreviewToTargetNo(fallbackPreviewTargetNo.value)
+})
+
 const closePanel = () => {
   panelOpen.value = false
+  previewVisible.value = false
+  previewAnchorEl.value = null
+  previewAnchorRect.value = null
 }
 
 const togglePanel = () => {
@@ -277,6 +498,67 @@ const navigateToSlide = async (slideNo: number) => {
   await $slidev.nav.go(slideNo)
   closePanel()
 }
+
+const clampValue = (value: number, min: number, max: number) => {
+  return Math.min(Math.max(value, min), max)
+}
+
+const getChromeInset = (cssVarName: string, fallback: number) => {
+  if (typeof window === 'undefined')
+    return fallback
+
+  const rawValue = window.getComputedStyle(document.documentElement).getPropertyValue(cssVarName)
+  const parsed = Number.parseFloat(rawValue)
+  return Number.isFinite(parsed) ? parsed : fallback
+}
+
+const refreshPreviewEnvironment = () => {
+  if (typeof window === 'undefined')
+    return
+
+  viewportWidth.value = window.innerWidth
+  viewportHeight.value = window.innerHeight
+  desktopHover.value = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+}
+
+const handleViewportChange = () => {
+  refreshPreviewEnvironment()
+  syncPreviewAnchor()
+}
+
+const handleHoverModeChange = () => {
+  refreshPreviewEnvironment()
+  syncPreviewAnchor()
+}
+
+onMounted(() => {
+  if (typeof window === 'undefined')
+    return
+
+  refreshPreviewEnvironment()
+  hoverMediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
+  window.addEventListener('resize', handleViewportChange, { passive: true })
+
+  if ('addEventListener' in hoverMediaQuery)
+    hoverMediaQuery.addEventListener('change', handleHoverModeChange)
+  else
+    hoverMediaQuery.addListener(handleHoverModeChange)
+})
+
+onUnmounted(() => {
+  if (typeof window === 'undefined')
+    return
+
+  window.removeEventListener('resize', handleViewportChange)
+
+  if (!hoverMediaQuery)
+    return
+
+  if ('removeEventListener' in hoverMediaQuery)
+    hoverMediaQuery.removeEventListener('change', handleHoverModeChange)
+  else
+    hoverMediaQuery.removeListener(handleHoverModeChange)
+})
 </script>
 
 <style scoped>
