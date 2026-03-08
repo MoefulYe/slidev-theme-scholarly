@@ -13,7 +13,14 @@
       :aria-label="labels.first"
       @click="$slidev.nav.goFirst()"
     >
-      {{ '|<' }}
+      <svg
+        class="beamer-nav-icon"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+      >
+        <path d="M4 3.25V12.75" />
+        <path d="M10.5 4L6.5 8L10.5 12" />
+      </svg>
     </button>
     <button
       type="button"
@@ -23,7 +30,13 @@
       :aria-label="labels.previous"
       @click="$slidev.nav.prev()"
     >
-      {{ '<' }}
+      <svg
+        class="beamer-nav-icon"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+      >
+        <path d="M10.5 4L6.5 8L10.5 12" />
+      </svg>
     </button>
     <button
       type="button"
@@ -33,7 +46,13 @@
       :aria-label="labels.next"
       @click="$slidev.nav.next()"
     >
-      {{ '>' }}
+      <svg
+        class="beamer-nav-icon"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+      >
+        <path d="M5.5 4L9.5 8L5.5 12" />
+      </svg>
     </button>
     <button
       type="button"
@@ -43,7 +62,14 @@
       :aria-label="labels.last"
       @click="$slidev.nav.goLast()"
     >
-      {{ '>|' }}
+      <svg
+        class="beamer-nav-icon"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+      >
+        <path d="M12 3.25V12.75" />
+        <path d="M5.5 4L9.5 8L5.5 12" />
+      </svg>
     </button>
   </div>
 </template>
@@ -51,6 +77,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
+import { isInteractiveSlideRoute } from '../utils/presentationMode'
 
 const { $slidev } = useSlideContext()
 const slidevConfigs = computed(() => ($slidev.configs as any) || {})
@@ -59,21 +86,7 @@ const showNavControls = computed(() => {
   if (slidevConfigs.value?.themeConfig?.beamerNav === false)
     return false
 
-  if (typeof window === 'undefined')
-    return false
-
-  const path = window.location.pathname
-  const search = window.location.search
-  const isEmbedded = search.includes('embedded')
-  const isPrintMode = search.includes('print') || path.includes('/export') || path.includes('/print')
-  const isPlayRoute = !path.includes('/overview')
-    && !path.includes('/notes')
-    && !path.includes('/entry')
-    && !path.includes('/presenter')
-    && !path.includes('/export')
-    && !path.includes('/print')
-
-  return isPlayRoute && !isEmbedded && !isPrintMode
+  return isInteractiveSlideRoute()
 })
 
 const isChinese = computed(() => `${slidevConfigs.value?.lang || ''}`.toLowerCase().startsWith('zh'))

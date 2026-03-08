@@ -1,12 +1,34 @@
 <template>
   <footer class="fixed bottom-0 left-0 right-0 z-50">
-    <div class="flex justify-between beamer-footer">
+    <div class="beamer-footer">
       <div class="beamer-footer-left">{{ leftContent }}</div>
       <div class="beamer-footer-center">{{ middleContent }}</div>
       <div class="beamer-footer-right">
-        <BeamerNavControls />
-        <FooterTocControl />
-        <span class="beamer-footer-page">{{ $slidev.nav.currentPage }} / {{ $slidev.nav.total }}</span>
+        <div
+          v-if="showInteractiveControls"
+          class="beamer-footer-toolbar"
+        >
+          <BeamerNavControls />
+          <FooterTocControl />
+          <span
+            class="beamer-footer-page"
+            :style="pageNumberStyle"
+          >
+            <span class="beamer-footer-page-slot beamer-footer-page-current">{{ $slidev.nav.currentPage }}</span>
+            <span class="beamer-footer-page-separator">/</span>
+            <span class="beamer-footer-page-slot beamer-footer-page-total">{{ $slidev.nav.total }}</span>
+          </span>
+        </div>
+        <span
+          v-else
+          class="beamer-footer-page"
+          :class="{ 'is-plain': showStaticPageNumber }"
+          :style="pageNumberStyle"
+        >
+          <span class="beamer-footer-page-slot beamer-footer-page-current">{{ $slidev.nav.currentPage }}</span>
+          <span class="beamer-footer-page-separator">/</span>
+          <span class="beamer-footer-page-slot beamer-footer-page-total">{{ $slidev.nav.total }}</span>
+        </span>
       </div>
     </div>
   </footer>
@@ -17,6 +39,7 @@ import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
 import BeamerNavControls from './BeamerNavControls.vue'
 import FooterTocControl from './FooterTocControl.vue'
+import { isInteractiveSlideRoute, isPrintExportRoute } from '../utils/presentationMode'
 
 interface Author {
   name?: string
@@ -33,6 +56,14 @@ const props = defineProps<{
 // Get configs from useSlideContext
 const { $slidev } = useSlideContext()
 const slidevConfigs = computed(() => ($slidev.configs as any) || {})
+const showInteractiveControls = computed(() => isInteractiveSlideRoute())
+const showStaticPageNumber = computed(() => isPrintExportRoute())
+const pageNumberStyle = computed(() => {
+  const totalDigits = Math.max(String($slidev.nav.total || 0).length, 1)
+  return {
+    '--scholarly-page-slot-width': `${totalDigits}ch`,
+  }
+})
 
 // Parse authors from authors array (frontmatter)
 const parsedAuthors = computed(() => {
