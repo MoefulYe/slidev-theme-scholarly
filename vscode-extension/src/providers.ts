@@ -186,7 +186,7 @@ Content with auto-adjusting font size.
       },
       {
         label: 'toc',
-        description: 'Table of contents (auto-generated, grouped by sections)',
+        description: 'Table of contents (auto-generated, section-grouped outline)',
         icon: '📋',
         snippet: `---
 layout: toc
