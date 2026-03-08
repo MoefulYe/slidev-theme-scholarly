@@ -116,6 +116,8 @@ scholarly-cite # 插入引用
 | `ss-toc` | 按 section 分组的自动目录页 |
 | `ss-end` | 致谢/结束幻灯片 |
 
+说明：如果在 frontmatter 里启用 `themeConfig.outlineToc: true`，放映页脚中的 TOC 也会使用同样的 section 分组；桌面端放映视图下，悬停或聚焦条目时还会显示对应页面预览。
+
 #### 内容布局
 
 | 前缀 | 描述 |

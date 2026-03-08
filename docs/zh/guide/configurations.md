@@ -88,6 +88,8 @@ themeConfig:
 - 这些按钮只会出现在实际放映视图中。
 - 在概览、嵌入和打印/导出视图中会自动隐藏。
 - TOC 面板会按 `layout: section` 分组，并列出组内可跳转页面。
+- 在桌面端放映视图中，如果设备支持 hover 且视口足够宽，悬停或键盘聚焦 TOC 条目时会在面板左侧显示对应页面预览。
+- TOC 打开时会默认预览当前页；如果当前页被 `hideInToc: true` 隐藏，则自动回退到第一个可见目录项。
 - 单页设置 `hideInToc: true` 时会自动隐藏该页。
 - `outlineSidebar` / `outlineSidebarOpen` 旧配置仍然兼容，但新配置建议使用 `outlineToc` / `outlineTocOpen`。
 

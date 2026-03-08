@@ -193,6 +193,7 @@ themeConfig:
   colorTheme: classic-blue
   fontTheme: classic
   outlineToc: true
+  outlineTocOpen: false
 bibFile: ./references.bib
 bibStyle: apa
 authors:
@@ -207,6 +208,8 @@ Subtitle
 ```
 
 Then add slides with `ss-section`, `ss-default`, etc.
+
+If `outlineToc` is enabled, the footer TOC in live play mode uses the same section grouping as the `toc` layout. On desktop play mode, hovering or focusing a TOC item also shows a slide preview.
 
 ## Requirements
 

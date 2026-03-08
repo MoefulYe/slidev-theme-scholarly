@@ -116,6 +116,8 @@ Layouts are organized into four categories. You can use category-specific prefix
 | `ss-toc` | Auto-generated table of contents grouped by sections |
 | `ss-end` | Thank you/closing slide |
 
+Note: if you enable `themeConfig.outlineToc: true` in frontmatter, the footer TOC in play mode uses the same section grouping. On desktop play mode, hovering or focusing TOC items also shows a slide preview.
+
 #### Content Layouts
 
 | Prefix | Description |
