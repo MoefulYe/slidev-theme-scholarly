@@ -540,7 +540,7 @@
       "",
       "$0"
     ],
-    "description": "[Structure] Table of contents (auto-generated from sections)"
+    "description": "[Structure] Table of contents (section-grouped outline)"
   },
   "_comment_utility": "=== UTILITY ===",
   "Slidev Scholarly: Slide Divider": {
@@ -571,6 +571,7 @@
       "  fontTheme: ${4|classic,modern,traditional,contemporary,humanist,technical,elegant,sans-default|}",
       "  sectionMode: ${5|dark,light|}",
       "  outlineToc: true",
+      "  outlineTocOpen: false",
       "bibFile: ./references.bib",
       "bibStyle: ${6|apa,harvard1,vancouver,ieee,mla,chicago-author-date|}",
       "authors:",
