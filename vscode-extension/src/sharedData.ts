@@ -43,7 +43,7 @@ interface LayoutsData {
 
 // ── Load shared JSON ────────────────────────────────────────────────────────
 
-const sharedDir = path.resolve(__dirname, '..', '..', 'shared');
+const sharedDir = path.resolve(__dirname, '..', 'shared');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const themesData: ThemesData = require(path.join(sharedDir, 'themes.json'));
