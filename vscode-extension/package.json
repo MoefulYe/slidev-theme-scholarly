@@ -2,10 +2,11 @@
   "name": "slidev-scholarly-snippets",
   "displayName": "Slidev Scholarly Snippets",
   "description": "Quick snippets and templates for Slidev Theme Scholarly",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "publisher": "jxpeng98",
+  "icon": "images/icon-256.png",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.106.0"
   },
   "categories": [
     "Snippets",
@@ -33,6 +34,7 @@
     "onCommand:slidev-scholarly.setColorTheme",
     "onCommand:slidev-scholarly.setFontTheme",
     "onCommand:slidev-scholarly.setColorMode",
+    "onCommand:slidev-scholarly.openSidebar",
     "onCommand:slidev-scholarly.cliAction",
     "onCommand:slidev-scholarly.cliMenu",
     "onCommand:slidev-scholarly.toggleDevMode",
@@ -42,7 +44,7 @@
   "main": "./out/extension.js",
   "contributes": {
     "viewsContainers": {
-      "activitybar": [
+      "secondarySidebar": [
         {
           "id": "slidev-scholarly",
           "title": "Slidev Scholarly",
@@ -86,7 +88,8 @@
           "type": "webview",
           "id": "scholarly-preview",
           "name": "Preview",
-          "icon": "$(eye)"
+          "icon": "$(eye)",
+          "visibility": "hidden"
         }
       ]
     },
@@ -135,6 +138,11 @@
         "command": "slidev-scholarly.setColorMode",
         "title": "Set Color Mode",
         "icon": "$(color-mode)"
+      },
+      {
+        "command": "slidev-scholarly.openSidebar",
+        "title": "Open Slidev Scholarly Sidebar",
+        "icon": "$(layout-sidebar-left)"
       },
       {
         "command": "slidev-scholarly.refreshReferences",

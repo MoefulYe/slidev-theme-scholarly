@@ -8,7 +8,7 @@ We provide a VS Code extension to boost your productivity when creating Slidev p
 
 ## Features
 
-- 🎯 **Activity Bar Panel** - Quick access to layouts, components, templates, themes, references, and CLI actions
+- 🎯 **Secondary Side Bar Panel** - Quick access to layouts, components, templates, themes, references, and CLI actions
 - ✨ **Code Snippets** - Type `ss-` or `scholarly-` to trigger snippets for layouts and components
 - ⚡ **Smart Completion** - Context-aware candidates for `layout:`, `themeConfig`, components (`<...>`), and directives (`:::`)
 - 📝 **One-Click Insert** - Click any item in the panel to insert code at cursor position
@@ -70,9 +70,9 @@ After enabling:
 
 If you develop the extension locally, use the debug target `Run Extension (Dev Mode)` in `vscode-extension/.vscode/launch.json`.
 
-### Using Activity Bar
+### Using Secondary Side Bar
 
-1. Click the **Slidev Scholarly** icon in the Activity Bar (left sidebar)
+1. Open the **Secondary Side Bar** on the right and select **Slidev Scholarly**
 2. Browse through six sections:
    - **Layouts** - Slide layouts organized by category:
      - *Structure* - cover, default, intro, section, center, auto-center, toc, end
@@ -225,10 +225,10 @@ If you want to modify the snippets, you can:
 2. Check that you're editing a `.md` file
 3. Try pressing `Ctrl+Space` to manually trigger suggestions
 
-### Activity Bar Icon Missing
+### Slidev Scholarly View Missing
 
-1. Right-click on the Activity Bar
-2. Make sure "Slidev Scholarly" is checked
+1. Run `View: Toggle Secondary Side Bar`
+2. If the view is still not on the right, run `View: Reset View Locations`
 
 ## Feedback
 

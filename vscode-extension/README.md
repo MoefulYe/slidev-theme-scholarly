@@ -4,9 +4,9 @@ VS Code extension for quickly inserting Slidev Theme Scholarly layouts and compo
 
 ## Features
 
-### 🎯 Activity Bar Panel
+### 🎯 Secondary Side Bar Panel
 
-The extension adds a dedicated panel in the VS Code Activity Bar with six sections:
+The extension adds a dedicated panel in the VS Code Secondary Side Bar with six sections:
 
 - **Layouts** - Slide layouts organized by category:
   - *Structure* - cover, default, intro, section, center, auto-center, toc, end
@@ -176,7 +176,7 @@ Search for "Slidev Scholarly Snippets" in the VS Code Extensions marketplace.
 
 1. Open a Markdown file (`.md`)
 2. Use one of these methods:
-   - **Activity Bar**: Click the Slidev Scholarly icon in the sidebar
+  - **Secondary Side Bar**: Click the Slidev Scholarly view in the right sidebar
    - **Snippets**: Type `ss-` and select from autocomplete
    - **Command Palette**: `Cmd+Shift+P` → "Slidev Scholarly"
 
@@ -213,7 +213,7 @@ If `outlineToc` is enabled, the footer TOC in live play mode uses the same secti
 
 ## Requirements
 
-- VS Code 1.85.0 or higher
+- VS Code 1.106.0 or higher
 - [Slidev Theme Scholarly](https://github.com/jxpeng98/slidev-theme-scholarly) installed in your project
 
 ## License

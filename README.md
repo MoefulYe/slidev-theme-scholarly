@@ -248,7 +248,7 @@ At the top of each slide, add:
 
 Boost your productivity with our VS Code extension:
 
-- 🎯 Activity Bar panel for layouts/components
+- 🎯 Secondary Side Bar panel for layouts/components
 - ✨ Snippets: type `ss-` to insert layouts/components
 - ⚡ Smart completion for `layout:`, `themeConfig`, `<components>`, and `:::` directives
 - 📚 BibTeX integration with auto-complete

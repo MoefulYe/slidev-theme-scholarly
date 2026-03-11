@@ -137,6 +137,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('slidev-scholarly.setColorMode', (value?: 'light' | 'dark') =>
       setColorMode(value)
     ),
+    vscode.commands.registerCommand('slidev-scholarly.openSidebar', async () => {
+      await vscode.commands.executeCommand('workbench.view.extension.slidev-scholarly');
+    }),
     vscode.commands.registerCommand('slidev-scholarly.applyThemePreset', (preset?: any) =>
       applyThemePreset(preset)
     ),

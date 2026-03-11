@@ -72,7 +72,7 @@ scholarly-cite # 插入引用
 
 ### 使用侧边栏
 
-1. 点击侧边栏（左侧）中的 **Slidev Scholarly** 图标
+1. 打开右侧的 **Secondary Side Bar**，然后选择 **Slidev Scholarly**
 2. 浏览六个部分：
    - **Layouts（布局）** - 按类别组织的幻灯片布局：
      - *结构布局* - cover、default、intro、section、center、auto-center、toc、end
@@ -225,10 +225,10 @@ scholarly-cite # 插入引用
 2. 检查你是否正在编辑 `.md` 文件
 3. 尝试按 `Ctrl+Space` 手动触发建议
 
-### 侧边栏图标缺失
+### Slidev Scholarly 视图未显示在右侧
 
-1. 右键点击侧边栏
-2. 确保 "Slidev Scholarly" 已勾选
+1. 运行 `View: Toggle Secondary Side Bar`
+2. 如果它仍然不在右侧，运行 `View: Reset View Locations`
 
 ## 反馈
 
