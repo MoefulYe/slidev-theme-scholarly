@@ -2,7 +2,7 @@
   "name": "slidev-scholarly-snippets",
   "displayName": "Slidev Scholarly Snippets",
   "description": "Quick snippets and templates for Slidev Theme Scholarly",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "publisher": "jxpeng98",
   "engines": {
     "vscode": "^1.85.0"
@@ -261,10 +261,11 @@
     }
   },
   "scripts": {
+    "sync-shared-data": "node ./scripts/sync-shared-data.mjs",
     "sync-previews": "node ./scripts/sync-previews.mjs",
     "vscode:prepublish": "npm run sync-previews && npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "compile": "npm run sync-shared-data && tsc -p ./",
+    "watch": "npm run sync-shared-data && tsc -watch -p ./",
     "lint": "eslint src --ext ts",
     "package": "npx @vscode/vsce package",
     "publish": "npx @vscode/vsce publish",
