@@ -121,7 +121,7 @@ For any $\epsilon > 0$, the algorithm converges in $O(1/\epsilon^2)$ steps.
 
 ## Notes
 
-- The syntax sugar is processed at build time by the preparser
+- The syntax sugar is processed at build time by the theme markdown transformers
 - All props from the original components are supported
 - For complex props (arrays, objects), use the Vue binding syntax with `:prop`
 - Restart Slidev after making changes to see the effect
