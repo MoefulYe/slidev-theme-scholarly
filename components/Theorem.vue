@@ -12,9 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
 import { useSlideContext } from '@slidev/client'
-import { prepareTheoremCountersForRoute, ensureTheoremCounters } from '../utils/theorem'
+import { getOccurrenceIndex, releaseOccurrenceIndex, lookupTheoremNumber } from '../utils/theorem'
 import type { TheoremType } from '../utils/theorem'
 
 interface Props {
@@ -95,21 +95,25 @@ const typeLabel = computed(() => {
 })
 
 // Assign a number to this theorem instance
-let assignedNumber = 0
+let occurrenceIndex = 0
+let slideNoForTheorem = 1
+const typeKey = props.type as TheoremType
+
 if (typeof window !== 'undefined' && props.autoNumber && props.number === undefined) {
   // proof, note types typically don't need numbering
   const noNumberTypes = ['proof', 'note']
   if (!noNumberTypes.includes(props.type)) {
-    const routePath = $slidev?.nav?.currentSlideRoute?.path
-    prepareTheoremCountersForRoute(routePath ?? '')
-    const counters = ensureTheoremCounters()
-    const typeKey = props.type as TheoremType
-    if (counters && counters[typeKey] !== undefined) {
-      counters[typeKey]++
-      assignedNumber = counters[typeKey]
-    }
+    const currentRoute = $slidev?.nav?.currentSlideRoute
+    slideNoForTheorem = currentRoute?.meta?.slide?.no ?? currentRoute?.no ?? $slidev?.nav?.currentPage ?? 1
+    
+    occurrenceIndex = getOccurrenceIndex(slideNoForTheorem, typeKey)
+    onUnmounted(() => {
+      releaseOccurrenceIndex(slideNoForTheorem, typeKey)
+    })
   }
 }
+
+const allSlides = computed(() => (($slidev?.nav as any)?.slides || []))
 
 // Calculate display number with format
 const displayNumber = computed(() => {
@@ -119,7 +123,8 @@ const displayNumber = computed(() => {
   }
   
   // If autoNumber is enabled, use assigned number
-  if (props.autoNumber && assignedNumber > 0) {
+  if (props.autoNumber && occurrenceIndex > 0) {
+    const assignedNumber = lookupTheoremNumber(allSlides.value, slideNoForTheorem, typeKey, occurrenceIndex)
     return formatNumber(assignedNumber.toString())
   }
   
