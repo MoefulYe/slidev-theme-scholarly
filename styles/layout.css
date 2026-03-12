@@ -279,7 +279,7 @@ footer {
   min-width: 0;
   min-height: 100%;
   line-height: 1;
-  font-family: var(--scholarly-font-serif);
+  font-family: var(--scholarly-font-body);
   font-size: 0.9em;
 }
 
@@ -601,7 +601,7 @@ footer {
 
 .slidev-layout.cover h1+p {
   @apply -mt-1 opacity-50 mb-4 text-center;
-  font-family: var(--scholarly-font-serif);
+  font-family: var(--scholarly-font-body);
   font-style: italic;
 }
 
