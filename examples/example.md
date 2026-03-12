@@ -613,6 +613,29 @@ Multiple works have contributed to this area @smith2023deep @wang2022attention.
 For a comprehensive introduction, see @bishop2006pattern.
 
 ---
+layout: default
+title: Footnotes
+subtitle: Standard Markdown Notes
+---
+
+<!--
+FEATURE: Standard Markdown footnotes
+- Use [^key] inline and [^key]: below
+- Desktop hover previews the footnote content
+- Click the marker to pin the popover
+-->
+
+## Footnote Examples
+
+Our compact variant remains stable across five random seeds[^stability] and reduces inference cost by 38%[^cost].
+
+The release package also includes prompts, configs, and evaluation scripts for reproducibility[^repro].
+
+[^stability]: Across five random seeds, validation accuracy varied by less than 0.3 percentage points.
+[^cost]: Measured on a single RTX 4090 with mixed precision enabled.
+[^repro]: In Slidev's interactive view, hover over a footnote marker to preview the note, or click the marker to pin the popover.
+
+---
 layout: references
 ---
 

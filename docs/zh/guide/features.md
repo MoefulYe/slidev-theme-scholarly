@@ -51,6 +51,8 @@ title: 核心特性
 
 - 使用 `@citekey` 进行括号引用
 - 使用 `!@citekey` 进行叙述性引用
+- 使用标准 Markdown 注脚并继承学术化样式
+- 桌面端悬停注脚标记可预览内容，点击可固定浮窗
 - 支持 APA、Harvard、Vancouver、IEEE、MLA、Chicago 样式
 - 自动从所有引用生成参考文献列表
 - 无需额外配置！

@@ -27,7 +27,7 @@ A professional presentation theme for [Slidev](https://sli.dev), designed specif
 | 📐 **24 Layouts** | Structure, Content, Emphasis, and Academic categories |
 | 🧩 **Rich Components** | Theorem, Block, Citations, Steps, Keywords, Columns, Highlight |
 | 🎨 **9 Color Themes** | Classic Blue, Oxford, Cambridge, Yale, Princeton, Nordic, Monochrome, Sepia, High Contrast |
-| 📚 **BibTeX Citations** | Automatic bibliography with APA, Harvard, IEEE, MLA styles |
+| 📚 **Citations & Footnotes** | BibTeX bibliography plus academic Markdown footnotes with inline preview |
 | 📝 **Syntax Sugar** | Simplified Markdown directives for components |
 | 🔧 **VS Code Extension** | Snippets, previews, and BibTeX integration |
 

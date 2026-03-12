@@ -570,6 +570,29 @@ subtitle: 学术文献引用支持
 如需全面了解，请参阅 @bishop2006pattern。
 
 ---
+layout: default
+title: 注脚
+subtitle: 标准 Markdown 注脚
+---
+
+<!--
+功能：标准 Markdown 注脚
+- 行内使用 [^key]，文末使用 [^key]:
+- 桌面端悬停可预览注脚内容
+- 点击标记可固定浮窗
+-->
+
+## 注脚示例
+
+我们的紧凑模型在五个随机种子下依然稳定[^stability]，并将推理成本降低了 38%[^cost]。
+
+发布包同时包含 prompts、配置文件和评测脚本，便于复现[^repro]。
+
+[^stability]: 在五个随机种子下，验证集准确率波动小于 0.3 个百分点。
+[^cost]: 在启用混合精度的单张 RTX 4090 上测得。
+[^repro]: 在 Slidev 的交互视图中，可将鼠标悬停在注脚标记上进行预览，或点击标记固定浮窗。
+
+---
 layout: references
 ---
 

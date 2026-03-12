@@ -56,6 +56,24 @@ Renders as: Vaswani et al. (2017) introduced the Transformer architecture.
 Recent advances @smith2023deep @wang2022attention have shown...
 ```
 
+## Markdown Footnotes
+
+Standard Markdown footnotes work out of the box. No theme-specific syntax is required:
+
+```markdown
+Our compact model stays stable across five seeds[^1].
+
+[^1]: Validation accuracy varied by less than 0.3 percentage points.
+```
+
+In Slidev's interactive view, the theme applies academic footnote styling automatically:
+
+- Hover a footnote marker on desktop to preview the note
+- Click the marker to pin the popover
+- Press `Esc` or click outside to close it
+
+When you print or export slides, footnotes fall back to the normal footnote block at the bottom of the slide.
+
 ## Bibliography
 
 Add a references slide with the `[[bibliography]]` marker:

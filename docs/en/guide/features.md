@@ -51,6 +51,8 @@ Automatic bibliography generation from BibTeX files:
 
 - Use `@citekey` for parenthetical citations
 - Use `!@citekey` for narrative citations
+- Use standard Markdown footnotes with academic styling
+- Hover footnote markers on desktop to preview notes, or click to pin them
 - Supports APA, Harvard, Vancouver, IEEE, MLA, Chicago styles
 - Auto-generates bibliography from all cited references
 - No additional configuration required!
