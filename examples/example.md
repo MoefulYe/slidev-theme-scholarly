@@ -374,6 +374,12 @@ $$a^2 + b^2 = c^2$$
 
 </Theorem>
 
+:::theorem{type="theorem" title="Theorem Name"}
+For a right triangle with legs \(a\) and \(b\), and hypotenuse \(c\), we have:
+
+$$a^2 + b^2 = c^2$$
+:::
+
 <Theorem type="lemma">
 
 All continuous functions on a closed interval are uniformly continuous.
