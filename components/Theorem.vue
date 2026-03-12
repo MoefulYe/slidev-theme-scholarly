@@ -12,9 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted } from 'vue'
+import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
-import { getOccurrenceIndex, releaseOccurrenceIndex, lookupTheoremNumber } from '../utils/theorem'
+import { getOccurrenceIndex, lookupTheoremNumber } from '../utils/theorem'
 import type { TheoremType } from '../utils/theorem'
 
 interface Props {
@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // Get slide context for language config
-const { $slidev } = useSlideContext()
+const { $page, $slidev } = useSlideContext()
 
 // Type labels in different languages
 const typeLabels: Record<string, Record<string, string>> = {
@@ -94,24 +94,15 @@ const typeLabel = computed(() => {
   return labels[props.type] || labels['theorem']
 })
 
-// Assign a number to this theorem instance
-let occurrenceIndex = 0
-let slideNoForTheorem = 1
 const typeKey = props.type as TheoremType
-
-if (typeof window !== 'undefined' && props.autoNumber && props.number === undefined) {
-  // proof, note types typically don't need numbering
-  const noNumberTypes = ['proof', 'note']
-  if (!noNumberTypes.includes(props.type)) {
-    const currentRoute = $slidev?.nav?.currentSlideRoute
-    slideNoForTheorem = currentRoute?.meta?.slide?.no ?? currentRoute?.no ?? $slidev?.nav?.currentPage ?? 1
-    
-    occurrenceIndex = getOccurrenceIndex(slideNoForTheorem, typeKey)
-    onUnmounted(() => {
-      releaseOccurrenceIndex(slideNoForTheorem, typeKey)
-    })
-  }
-}
+const noNumberTypes: TheoremType[] = ['proof', 'note']
+const slideNoForTheorem = Number($page?.value ?? 1) || 1
+const occurrenceIndex = typeof window !== 'undefined'
+  && props.autoNumber
+  && props.number === undefined
+  && !noNumberTypes.includes(typeKey)
+  ? getOccurrenceIndex(slideNoForTheorem, typeKey)
+  : -1
 
 const allSlides = computed(() => (($slidev?.nav as any)?.slides || []))
 
@@ -123,9 +114,10 @@ const displayNumber = computed(() => {
   }
   
   // If autoNumber is enabled, use assigned number
-  if (props.autoNumber && occurrenceIndex > 0) {
+  if (props.autoNumber && occurrenceIndex >= 0) {
     const assignedNumber = lookupTheoremNumber(allSlides.value, slideNoForTheorem, typeKey, occurrenceIndex)
-    return formatNumber(assignedNumber.toString())
+    if (assignedNumber > 0)
+      return formatNumber(assignedNumber.toString())
   }
   
   return ''

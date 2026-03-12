@@ -10,7 +10,7 @@ import Cite from '../components/Cite.vue'
 import Steps from '../components/Steps.vue'
 import Keywords from '../components/Keywords.vue'
 import ThemePreview from '../components/ThemePreview.vue'
-import { resetTheoremCounters } from '../utils/theorem'
+import { invalidateTheoremNumberMap, resetOccurrenceTracker } from '../utils/theorem'
 
 const DEFAULT_FONT_SIZE = '1rem'
 type FontsizeConfig =
@@ -274,11 +274,13 @@ export default defineAppSetup(({ app, router }) => {
     { deep: true, immediate: true }
   )
 
-  // Reset theorem counters and update font sizing when navigating
+  // Reset theorem numbering state and update font sizing when navigating
   router.afterEach((to) => {
     updateFontSize(to)
+    resetOccurrenceTracker()
+
     if (to.path === '/1' || to.path === '/') {
-      resetTheoremCounters()
+      invalidateTheoremNumberMap()
     }
   })
 })
