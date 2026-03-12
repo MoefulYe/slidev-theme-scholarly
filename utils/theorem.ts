@@ -43,6 +43,15 @@ const createEmptyCounters = (): TheoremCounters => ({
   claim: 0,
 })
 
+const resetTheoremState = (): void => {
+  const win = getWindowState()
+  if (!win)
+    return
+
+  delete win.__theoremMapCache
+  win.__theoremOccurrenceTracker?.clear()
+}
+
 const getWindowState = () => {
   if (typeof window === 'undefined')
     return null
@@ -229,27 +238,27 @@ export const resetOccurrenceTracker = (slideNo?: number): void => {
 }
 
 export const invalidateTheoremNumberMap = (): void => {
-  const win = getWindowState()
-  if (!win)
-    return
-
-  delete win.__theoremMapCache
-  win.__theoremOccurrenceTracker?.clear()
+  resetTheoremState()
 }
 
+// Legacy compatibility shims.
+// The old global mutable counter model no longer exists; numbering now depends on
+// slide order plus the per-slide occurrence claimed at render time. We keep these
+// exports so external imports do not break, but route them to the new state model
+// where that makes sense.
 export const snapshotTheoremCounters = (): TheoremCounters => createEmptyCounters()
 export const restoreTheoremCounters = (_snapshot?: Partial<TheoremCounters>): void => {}
 export const prepareTheoremCountersForRoute = (_routePath?: string): void => {
   resetOccurrenceTracker()
 }
 export const invalidateTheoremCounterBases = (_keepPath?: string): void => {
-  invalidateTheoremNumberMap()
+  resetTheoremState()
 }
 export const resetTheoremCounters = (): void => {
-  invalidateTheoremNumberMap()
+  resetTheoremState()
 }
 export const resetTheoremCounter = (_type: TheoremType): void => {
-  invalidateTheoremNumberMap()
+  resetTheoremState()
 }
 export const getTheoremCounter = (_type: TheoremType): number => 0
 export const ensureTheoremCounters = (): TheoremCounters => createEmptyCounters()

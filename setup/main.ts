@@ -181,6 +181,422 @@ const syncColorModeWithDark = () => {
 // Watch for Slidev's dark mode toggle (class changes on html element)
 let darkModeObserver: MutationObserver | null = null
 
+const FOOTNOTE_TRIGGER_SELECTOR = '.slidev-layout sup.footnote-ref a[href^="#fn"]'
+const FOOTNOTE_SCOPE_SELECTOR = '.slidev-layout'
+const FOOTNOTE_ACTIVE_ATTR = 'data-scholarly-footnote-active'
+const FOOTNOTE_PINNED_ATTR = 'data-scholarly-footnote-pinned'
+const FOOTNOTE_HIDE_DELAY = 120
+
+type FootnotePopoverState = {
+  initialized: boolean
+  popover: HTMLDivElement | null
+  label: HTMLDivElement | null
+  content: HTMLDivElement | null
+  activeAnchor: HTMLAnchorElement | null
+  pinnedAnchor: HTMLAnchorElement | null
+  hideTimer: number | null
+}
+
+type FootnotePopoverWindow = Window & typeof globalThis & {
+  __scholarlyFootnotePopoverCleanup?: () => void
+}
+
+const footnotePopoverState: FootnotePopoverState = {
+  initialized: false,
+  popover: null,
+  label: null,
+  content: null,
+  activeAnchor: null,
+  pinnedAnchor: null,
+  hideTimer: null,
+}
+
+const escapeIdSelector = (value: string): string => {
+  if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function')
+    return CSS.escape(value)
+
+  return value.replace(/[^a-zA-Z0-9_-]/g, '\\$&')
+}
+
+const getEventElement = (target: EventTarget | null): Element | null => {
+  if (target instanceof Element)
+    return target
+
+  if (target instanceof Node)
+    return target.parentElement
+
+  return null
+}
+
+const getFootnoteAnchor = (target: EventTarget | null): HTMLAnchorElement | null => {
+  const element = getEventElement(target)
+  if (!element)
+    return null
+
+  return element.closest(FOOTNOTE_TRIGGER_SELECTOR) as HTMLAnchorElement | null
+}
+
+const clearFootnoteHideTimer = () => {
+  if (footnotePopoverState.hideTimer !== null) {
+    window.clearTimeout(footnotePopoverState.hideTimer)
+    footnotePopoverState.hideTimer = null
+  }
+}
+
+const setFootnoteAnchorState = (
+  anchor: HTMLAnchorElement | null,
+  isActive: boolean,
+  isPinned = false,
+) => {
+  if (!anchor)
+    return
+
+  anchor.setAttribute('aria-haspopup', 'dialog')
+  anchor.setAttribute('aria-expanded', isActive ? 'true' : 'false')
+
+  if (isActive)
+    anchor.setAttribute(FOOTNOTE_ACTIVE_ATTR, 'true')
+  else
+    anchor.removeAttribute(FOOTNOTE_ACTIVE_ATTR)
+
+  if (isPinned)
+    anchor.setAttribute(FOOTNOTE_PINNED_ATTR, 'true')
+  else
+    anchor.removeAttribute(FOOTNOTE_PINNED_ATTR)
+}
+
+const enhanceFootnoteTriggers = () => {
+  if (typeof document === 'undefined')
+    return
+
+  document.querySelectorAll<HTMLAnchorElement>(FOOTNOTE_TRIGGER_SELECTOR).forEach((anchor) => {
+    anchor.setAttribute('aria-haspopup', 'dialog')
+    if (!anchor.hasAttribute('aria-expanded'))
+      anchor.setAttribute('aria-expanded', 'false')
+    anchor.dataset.scholarlyFootnoteTrigger = 'true'
+  })
+}
+
+const getFootnoteItemForAnchor = (anchor: HTMLAnchorElement): HTMLElement | null => {
+  const href = anchor.getAttribute('href')
+  if (!href?.startsWith('#'))
+    return null
+
+  const id = decodeURIComponent(href.slice(1))
+  if (!id)
+    return null
+
+  const scope = anchor.closest(FOOTNOTE_SCOPE_SELECTOR)
+  const scopedMatch = scope?.querySelector<HTMLElement>(`#${escapeIdSelector(id)}`)
+  if (scopedMatch)
+    return scopedMatch
+
+  return document.getElementById(id)
+}
+
+const extractFootnotePreview = (item: HTMLElement): DocumentFragment => {
+  const clone = item.cloneNode(true) as HTMLElement
+
+  clone.removeAttribute('id')
+  clone.querySelectorAll('[id]').forEach((node) => node.removeAttribute('id'))
+  clone.querySelectorAll('.footnote-backref, [data-footnote-backref], a[href^="#fnref"]').forEach((node) => node.remove())
+
+  const fragment = document.createDocumentFragment()
+  while (clone.firstChild)
+    fragment.appendChild(clone.firstChild)
+
+  return fragment
+}
+
+const ensureFootnotePopover = (): HTMLDivElement | null => {
+  if (typeof document === 'undefined')
+    return null
+
+  if (footnotePopoverState.popover && footnotePopoverState.label && footnotePopoverState.content)
+    return footnotePopoverState.popover
+
+  const popover = document.createElement('div')
+  popover.className = 'scholarly-footnote-popover'
+  popover.setAttribute('role', 'note')
+  popover.setAttribute('aria-hidden', 'true')
+
+  const label = document.createElement('div')
+  label.className = 'scholarly-footnote-popover__label'
+
+  const content = document.createElement('div')
+  content.className = 'scholarly-footnote-popover__content'
+
+  popover.append(label, content)
+
+  popover.addEventListener('pointerenter', () => clearFootnoteHideTimer())
+  popover.addEventListener('pointerleave', () => {
+    if (!footnotePopoverState.pinnedAnchor)
+      scheduleFootnoteHide()
+  })
+
+  document.body.appendChild(popover)
+
+  footnotePopoverState.popover = popover
+  footnotePopoverState.label = label
+  footnotePopoverState.content = content
+
+  return popover
+}
+
+const positionFootnotePopover = (anchor: HTMLAnchorElement, popover: HTMLDivElement) => {
+  const anchorRect = anchor.getBoundingClientRect()
+  const viewportPadding = 16
+  const gap = 12
+
+  popover.style.left = `${viewportPadding}px`
+  popover.style.top = `${viewportPadding}px`
+
+  const popoverRect = popover.getBoundingClientRect()
+  const fitsBelow = anchorRect.bottom + gap + popoverRect.height <= window.innerHeight - viewportPadding
+  const fitsAbove = anchorRect.top - gap - popoverRect.height >= viewportPadding
+  const placeAbove = !fitsBelow && fitsAbove
+
+  let top = placeAbove
+    ? anchorRect.top - popoverRect.height - gap
+    : anchorRect.bottom + gap
+
+  if (top < viewportPadding)
+    top = viewportPadding
+  if (top + popoverRect.height > window.innerHeight - viewportPadding)
+    top = Math.max(viewportPadding, window.innerHeight - popoverRect.height - viewportPadding)
+
+  let left = anchorRect.left + (anchorRect.width / 2) - (popoverRect.width / 2)
+  if (left < viewportPadding)
+    left = viewportPadding
+  if (left + popoverRect.width > window.innerWidth - viewportPadding)
+    left = Math.max(viewportPadding, window.innerWidth - popoverRect.width - viewportPadding)
+
+  popover.dataset.placement = placeAbove ? 'top' : 'bottom'
+  popover.style.left = `${Math.round(left)}px`
+  popover.style.top = `${Math.round(top)}px`
+}
+
+const syncFootnotePopoverPosition = () => {
+  const { activeAnchor, popover } = footnotePopoverState
+  if (!activeAnchor || !popover || popover.getAttribute('aria-hidden') === 'true')
+    return
+
+  if (!document.contains(activeAnchor)) {
+    hideFootnotePopover()
+    return
+  }
+
+  positionFootnotePopover(activeAnchor, popover)
+}
+
+const hideFootnotePopover = () => {
+  clearFootnoteHideTimer()
+
+  if (footnotePopoverState.activeAnchor)
+    setFootnoteAnchorState(footnotePopoverState.activeAnchor, false, false)
+
+  if (footnotePopoverState.pinnedAnchor && footnotePopoverState.pinnedAnchor !== footnotePopoverState.activeAnchor)
+    setFootnoteAnchorState(footnotePopoverState.pinnedAnchor, false, false)
+
+  footnotePopoverState.activeAnchor = null
+  footnotePopoverState.pinnedAnchor = null
+
+  if (!footnotePopoverState.popover)
+    return
+
+  footnotePopoverState.popover.classList.remove('is-visible')
+  footnotePopoverState.popover.dataset.pinned = 'false'
+  footnotePopoverState.popover.setAttribute('aria-hidden', 'true')
+}
+
+const scheduleFootnoteHide = () => {
+  clearFootnoteHideTimer()
+
+  if (footnotePopoverState.pinnedAnchor)
+    return
+
+  footnotePopoverState.hideTimer = window.setTimeout(() => {
+    hideFootnotePopover()
+  }, FOOTNOTE_HIDE_DELAY)
+}
+
+const showFootnotePopover = (anchor: HTMLAnchorElement, pinned = false): boolean => {
+  const item = getFootnoteItemForAnchor(anchor)
+  const popover = ensureFootnotePopover()
+  const label = footnotePopoverState.label
+  const content = footnotePopoverState.content
+
+  if (!item || !popover || !label || !content)
+    return false
+
+  const fragment = extractFootnotePreview(item)
+  if (!fragment.hasChildNodes())
+    return false
+
+  clearFootnoteHideTimer()
+
+  if (footnotePopoverState.activeAnchor && footnotePopoverState.activeAnchor !== anchor)
+    setFootnoteAnchorState(footnotePopoverState.activeAnchor, false, false)
+
+  if (footnotePopoverState.pinnedAnchor && footnotePopoverState.pinnedAnchor !== anchor)
+    setFootnoteAnchorState(footnotePopoverState.pinnedAnchor, false, false)
+
+  footnotePopoverState.activeAnchor = anchor
+  footnotePopoverState.pinnedAnchor = pinned ? anchor : null
+
+  label.textContent = anchor.textContent?.trim() ?? ''
+  label.hidden = !label.textContent
+
+  content.replaceChildren(fragment)
+
+  popover.dataset.pinned = pinned ? 'true' : 'false'
+  popover.setAttribute('aria-hidden', 'false')
+  popover.classList.add('is-visible')
+
+  setFootnoteAnchorState(anchor, true, pinned)
+  positionFootnotePopover(anchor, popover)
+
+  window.requestAnimationFrame(() => {
+    if (footnotePopoverState.activeAnchor === anchor)
+      syncFootnotePopoverPosition()
+  })
+
+  return true
+}
+
+const initializeFootnotePopovers = () => {
+  if (typeof window === 'undefined' || footnotePopoverState.initialized)
+    return
+
+  const globalWindow = window as FootnotePopoverWindow
+  globalWindow.__scholarlyFootnotePopoverCleanup?.()
+
+  const handlePointerOver = (event: PointerEvent) => {
+    if (event.pointerType && event.pointerType !== 'mouse')
+      return
+
+    if (footnotePopoverState.pinnedAnchor)
+      return
+
+    const anchor = getFootnoteAnchor(event.target)
+    if (!anchor)
+      return
+
+    showFootnotePopover(anchor, false)
+  }
+
+  const handlePointerOut = (event: PointerEvent) => {
+    if (event.pointerType && event.pointerType !== 'mouse')
+      return
+
+    if (footnotePopoverState.pinnedAnchor)
+      return
+
+    const anchor = getFootnoteAnchor(event.target)
+    if (!anchor)
+      return
+
+    const relatedTarget = event.relatedTarget
+    if (relatedTarget instanceof Node) {
+      if (anchor.contains(relatedTarget))
+        return
+
+      if (footnotePopoverState.popover?.contains(relatedTarget))
+        return
+    }
+
+    scheduleFootnoteHide()
+  }
+
+  const handleFocusIn = (event: FocusEvent) => {
+    if (footnotePopoverState.pinnedAnchor)
+      return
+
+    const anchor = getFootnoteAnchor(event.target)
+    if (!anchor)
+      return
+
+    showFootnotePopover(anchor, false)
+  }
+
+  const handleFocusOut = (event: FocusEvent) => {
+    if (footnotePopoverState.pinnedAnchor)
+      return
+
+    const anchor = getFootnoteAnchor(event.target)
+    if (!anchor)
+      return
+
+    const relatedTarget = event.relatedTarget
+    if (relatedTarget instanceof Node && footnotePopoverState.popover?.contains(relatedTarget))
+      return
+
+    scheduleFootnoteHide()
+  }
+
+  const handleClick = (event: MouseEvent) => {
+    const anchor = getFootnoteAnchor(event.target)
+    if (anchor) {
+      event.preventDefault()
+      clearFootnoteHideTimer()
+
+      if (footnotePopoverState.pinnedAnchor === anchor) {
+        hideFootnotePopover()
+      } else {
+        showFootnotePopover(anchor, true)
+      }
+      return
+    }
+
+    const element = getEventElement(event.target)
+    if (element && footnotePopoverState.popover?.contains(element))
+      return
+
+    hideFootnotePopover()
+  }
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape')
+      hideFootnotePopover()
+  }
+
+  const handleViewportChange = () => {
+    syncFootnotePopoverPosition()
+  }
+
+  document.addEventListener('pointerover', handlePointerOver)
+  document.addEventListener('pointerout', handlePointerOut)
+  document.addEventListener('focusin', handleFocusIn)
+  document.addEventListener('focusout', handleFocusOut)
+  document.addEventListener('click', handleClick)
+  document.addEventListener('keydown', handleKeyDown)
+  document.addEventListener('scroll', handleViewportChange, true)
+  window.addEventListener('resize', handleViewportChange)
+
+  const cleanup = () => {
+    document.removeEventListener('pointerover', handlePointerOver)
+    document.removeEventListener('pointerout', handlePointerOut)
+    document.removeEventListener('focusin', handleFocusIn)
+    document.removeEventListener('focusout', handleFocusOut)
+    document.removeEventListener('click', handleClick)
+    document.removeEventListener('keydown', handleKeyDown)
+    document.removeEventListener('scroll', handleViewportChange, true)
+    window.removeEventListener('resize', handleViewportChange)
+
+    hideFootnotePopover()
+    footnotePopoverState.popover?.remove()
+    footnotePopoverState.popover = null
+    footnotePopoverState.label = null
+    footnotePopoverState.content = null
+    footnotePopoverState.initialized = false
+  }
+
+  globalWindow.__scholarlyFootnotePopoverCleanup = cleanup
+  footnotePopoverState.initialized = true
+
+  enhanceFootnoteTriggers()
+}
+
 const setupDarkModeSync = (config: ThemeConfig | null | undefined) => {
   if (typeof window === 'undefined') return
 
@@ -246,6 +662,13 @@ export default defineAppSetup(({ app, router }) => {
   applyThemeColors(getThemeColorConfig())
   applyThemePresets(getThemeConfig())
   setupDarkModeSync(getThemeConfig())
+  initializeFootnotePopovers()
+
+  if (typeof window !== 'undefined') {
+    window.requestAnimationFrame(() => {
+      enhanceFootnoteTriggers()
+    })
+  }
 
   watch(
     () => router.currentRoute.value?.meta?.slide?.frontmatter?.fontsize,
@@ -278,6 +701,13 @@ export default defineAppSetup(({ app, router }) => {
   router.afterEach((to) => {
     updateFontSize(to)
     resetOccurrenceTracker()
+    hideFootnotePopover()
+
+    if (typeof window !== 'undefined') {
+      window.requestAnimationFrame(() => {
+        enhanceFootnoteTriggers()
+      })
+    }
 
     if (to.path === '/1' || to.path === '/') {
       invalidateTheoremNumberMap()

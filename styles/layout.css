@@ -178,10 +178,164 @@
 .slidev-layout .footnote,
 .slidev-layout .footnotes,
 .slidev-layout blockquote cite,
-.slidev-layout .citation,
-.slidev-layout sup {
+.slidev-layout .citation {
   font-size: 0.85em;
   color: #6b7280;
+}
+
+.slidev-layout sup.footnote-ref {
+  vertical-align: super;
+  font-size: 0.68em;
+  line-height: 0;
+  margin-left: 0.08em;
+}
+
+.slidev-layout .footnote-ref a {
+  color: var(--slidev-theme-primary, #1e3a5f);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.slidev-layout .footnotes-sep {
+  width: 32%;
+  margin: 1rem 0 0.45rem;
+  border: 0;
+  border-top: 1px solid rgba(30, 58, 95, 0.22);
+}
+
+.slidev-layout .footnotes {
+  margin-top: 0;
+  padding-top: 0;
+  font-family: var(--scholarly-font-serif);
+  font-size: 0.72em;
+  line-height: 1.35;
+  color: rgba(45, 55, 72, 0.82);
+}
+
+.slidev-layout .footnotes ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.slidev-layout .footnotes li {
+  margin: 0.18rem 0;
+  padding-left: 0.2rem;
+}
+
+.slidev-layout .footnotes p {
+  display: inline;
+  margin: 0;
+}
+
+.slidev-layout .footnote-backref {
+  margin-left: 0.35rem;
+  color: rgba(30, 58, 95, 0.62);
+  text-decoration: none;
+}
+
+.slidev-layout .footnote-ref a[data-scholarly-footnote-active="true"] {
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+.slidev-layout .footnote-ref a[data-scholarly-footnote-pinned="true"] {
+  color: color-mix(in srgb, var(--slidev-theme-primary, #1e3a5f) 92%, black 8%);
+}
+
+.scholarly-footnote-popover {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 80;
+  width: min(30rem, calc(100vw - 2rem));
+  max-height: min(18rem, calc(100vh - 3rem));
+  overflow: auto;
+  padding: 0.9rem 1rem 1rem;
+  border: 1px solid rgba(30, 58, 95, 0.14);
+  border-radius: 0.85rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.97));
+  box-shadow:
+    0 18px 44px rgba(15, 23, 42, 0.16),
+    0 4px 14px rgba(15, 23, 42, 0.08);
+  color: rgba(30, 41, 59, 0.92);
+  font-family: var(--scholarly-font-serif);
+  font-size: 0.78rem;
+  line-height: 1.48;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px) scale(0.985);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
+  backdrop-filter: blur(12px);
+}
+
+.scholarly-footnote-popover.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.scholarly-footnote-popover[data-pinned="true"] {
+  box-shadow:
+    0 22px 52px rgba(15, 23, 42, 0.22),
+    0 4px 14px rgba(15, 23, 42, 0.1);
+}
+
+.scholarly-footnote-popover__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  margin-bottom: 0.55rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: rgba(30, 58, 95, 0.08);
+  color: var(--slidev-theme-primary, #1e3a5f);
+  font-family: var(--scholarly-font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.scholarly-footnote-popover__content {
+  color: inherit;
+}
+
+.scholarly-footnote-popover__content>:first-child {
+  margin-top: 0;
+}
+
+.scholarly-footnote-popover__content>:last-child {
+  margin-bottom: 0;
+}
+
+.scholarly-footnote-popover__content p {
+  margin: 0.1rem 0 0.45rem;
+}
+
+.scholarly-footnote-popover__content a:not(.footnote-backref) {
+  color: var(--slidev-theme-primary, #1e3a5f);
+  text-decoration-color: rgba(30, 58, 95, 0.32);
+}
+
+.scholarly-footnote-popover__content code {
+  font-size: 0.92em;
+}
+
+.scholarly-footnote-popover__content ol,
+.scholarly-footnote-popover__content ul {
+  margin: 0.3rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.scholarly-footnote-popover__content li + li {
+  margin-top: 0.18rem;
 }
 
 .slidev-layout blockquote {
@@ -197,6 +351,64 @@
   margin-top: 0.5rem;
   font-style: normal;
   font-size: 0.85em;
+}
+
+:root.dark .slidev-layout .footnote-ref a {
+  color: rgba(191, 219, 254, 0.92);
+}
+
+:root.dark .slidev-layout .footnotes-sep {
+  border-top-color: rgba(148, 163, 184, 0.35);
+}
+
+:root.dark .slidev-layout .footnotes {
+  color: rgba(226, 232, 240, 0.78);
+}
+
+:root.dark .slidev-layout .footnote-backref {
+  color: rgba(191, 219, 254, 0.68);
+}
+
+:root.dark .slidev-layout .footnote-ref a[data-scholarly-footnote-pinned="true"] {
+  color: rgba(219, 234, 254, 0.96);
+}
+
+:root.dark .scholarly-footnote-popover {
+  border-color: rgba(148, 163, 184, 0.22);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.9));
+  box-shadow:
+    0 20px 48px rgba(2, 6, 23, 0.5),
+    0 4px 16px rgba(2, 6, 23, 0.3);
+  color: rgba(226, 232, 240, 0.88);
+}
+
+:root.dark .scholarly-footnote-popover[data-pinned="true"] {
+  box-shadow:
+    0 24px 56px rgba(2, 6, 23, 0.58),
+    0 4px 18px rgba(2, 6, 23, 0.32);
+}
+
+:root.dark .scholarly-footnote-popover__label {
+  background: rgba(191, 219, 254, 0.12);
+  color: rgba(219, 234, 254, 0.94);
+}
+
+:root.dark .scholarly-footnote-popover__content a:not(.footnote-backref) {
+  color: rgba(191, 219, 254, 0.94);
+  text-decoration-color: rgba(191, 219, 254, 0.34);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scholarly-footnote-popover {
+    transition: none;
+  }
+}
+
+@media print {
+  .scholarly-footnote-popover {
+    display: none !important;
+  }
 }
 
 footer {
