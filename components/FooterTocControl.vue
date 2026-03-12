@@ -487,8 +487,26 @@ const closePanel = () => {
   previewAnchorRect.value = null
 }
 
-const togglePanel = () => {
+const scrollToActiveItem = async () => {
+  await nextTick()
+  if (!panelRef.value) return
+  const body = panelRef.value.querySelector('.footer-toc-panel-body')
+  if (!body) return
+
+  // Prefer active slide, fall back to active section
+  const activeEl =
+    body.querySelector<HTMLElement>('.footer-toc-slide.is-active')
+    || body.querySelector<HTMLElement>('.footer-toc-section.is-active')
+  if (activeEl) {
+    activeEl.scrollIntoView({ block: 'center', behavior: 'instant' })
+  }
+}
+
+const togglePanel = async () => {
   panelOpen.value = !isOpen.value
+  if (panelOpen.value) {
+    await scrollToActiveItem()
+  }
 }
 
 const navigateToSlide = async (slideNo: number) => {
