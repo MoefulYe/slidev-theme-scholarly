@@ -546,6 +546,55 @@ title: 大量内容测试
 字体会自动缩小以容纳所有内容，同时保持居中展示。
 
 ---
+layout: auto-size
+title: Auto Size 布局
+subtitle: 保留默认流式正文的页面自适应字号
+autoSizePadding: normal
+---
+
+<!--
+布局：auto-size
+用途：保留 default 的阅读流，同时让 main matter 自动适应可用宽高
+-->
+
+## 自动适应页面的正文区域
+
+这个布局保留了默认布局的 header、footer 和正文流式排版，但会在溢出前自动调整 main matter 的字号。
+
+- 保留默认布局的阅读节奏
+- 不做垂直居中，正文仍然从上往下展开
+- 内容少时放大，内容多时缩小
+- 需要更强约束时，可在 frontmatter 中设置 `minFontSize` 和 `maxFontSize`
+
+它比较适合定理、表格、定义列表较多，但又希望页面行为更接近 LaTeX Beamer frame 的场景。
+
+---
+layout: auto-size
+title: Auto Size 控制项
+subtitle: 放大策略、对齐方式和内边距预设
+autoSizeGrow: false
+autoSizeAlign: center
+autoSizePadding: compact
+minFontSize: 16
+---
+
+<!--
+布局：auto-size
+用途：展示 fit growth、垂直对齐和内边距三个入口
+-->
+
+## 可配置的页面自适应字号
+
+这一页保持相同布局，但可以更细地控制 main matter 的占位方式。
+
+- `autoSizeGrow: false` 表示默认不主动放大，只在需要时缩小
+- `autoSizeAlign: center` 会让正文在可用区域内垂直居中
+- `autoSizePadding: compact` 会压缩正文内边距，留出更多可用空间
+- `minFontSize` 仍然定义内容很密时的最小字号下限
+
+适合希望保留 Beamer 式自动适配，但又想自己控制页面节奏的幻灯片。
+
+---
 layout: default
 title: 学术引用
 subtitle: 学术文献引用支持

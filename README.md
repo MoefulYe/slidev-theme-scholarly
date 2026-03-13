@@ -24,7 +24,7 @@ A professional presentation theme for [Slidev](https://sli.dev), designed specif
 | Feature | Description |
 |---------|-------------|
 | 🎓 **Professional Design** | LaTeX Beamer-inspired with academic styling |
-| 📐 **24 Layouts** | Structure, Content, Emphasis, and Academic categories |
+| 📐 **26 Layouts** | Structure, Content, Emphasis, and Academic categories |
 | 🧩 **Rich Components** | Theorem, Block, Citations, Steps, Keywords, Columns, Highlight |
 | 🎨 **9 Color Themes** | Classic Blue, Oxford, Cambridge, Yale, Princeton, Nordic, Monochrome, Sepia, High Contrast |
 | 📚 **Citations & Footnotes** | BibTeX bibliography plus academic Markdown footnotes with inline preview |
@@ -134,6 +134,7 @@ Layouts are organized into **four categories**:
 | `section` | Chapter divider |
 | `center` | Centered content |
 | `auto-center` | Auto-centered content |
+| `auto-size` | Default flow with fit-to-page sizing |
 | `end` | Closing slide |
 
 ### Content Layouts

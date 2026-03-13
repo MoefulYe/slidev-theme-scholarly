@@ -31,10 +31,10 @@ authors:
 Professional academic presentations with LaTeX Beamer-inspired styling
 
 <!--
-This example demonstrates all 24 layouts and features of the Scholarly theme.
+This example demonstrates the full set of 26 layouts and features of the Scholarly theme.
 
-24 SPECIALIZED LAYOUTS:
-- Structure Layouts (7): cover, default, intro, section, center, auto-center, end
+26 SPECIALIZED LAYOUTS:
+- Structure Layouts (9): cover, default, intro, section, center, auto-center, auto-size, toc, end
 - Content Layouts (6): two-cols, image-left, image-right, bullets, figure, split-image
 - Emphasis Layouts (4): quote, fact, statement, focus
 - Academic Layouts (7): compare, methodology, results, timeline, agenda, acknowledgments, references
@@ -508,7 +508,7 @@ layout: section
 
 # Part 4: Customization Features
 
-## Font sizing, auto-centering, and academic citations
+## Font sizing, auto-centering, fit-to-page sizing, and academic citations
 
 ---
 fontsize:
@@ -587,6 +587,55 @@ title: Dense Content Test
 - Point 7: Laboris nisi ut aliquip ex ea commodo consequat
 
 The font size should automatically decrease to fit all this content while keeping it centered.
+
+---
+layout: auto-size
+title: Auto Size Layout
+subtitle: Default flow with Beamer-style page fitting
+autoSizePadding: normal
+---
+
+<!--
+LAYOUT: auto-size
+PURPOSE: Keep the default reading flow while fitting the main matter to the available area
+-->
+
+## Auto-Sized Main Matter
+
+This layout keeps the familiar default layout structure, but it scales the main matter to fit the available width and height before overflow occurs.
+
+- Preserves the default header and footer
+- Keeps content top-aligned instead of vertically centered
+- Scales sparse slides up and dense slides down
+- Supports `minFontSize` and `maxFontSize` in frontmatter when you need tighter control
+
+This is useful for theorem-heavy or table-heavy slides that should behave more like a LaTeX Beamer frame.
+
+---
+layout: auto-size
+title: Auto Size Controls
+subtitle: Growth, alignment, and padding presets
+autoSizeGrow: false
+autoSizeAlign: center
+autoSizePadding: compact
+minFontSize: 16
+---
+
+<!--
+LAYOUT: auto-size
+PURPOSE: Show the configuration entry points for fit growth, vertical alignment, and inner padding
+-->
+
+## Configurable Auto-Sizing
+
+This variant keeps the same layout, but changes how aggressively the content area is used.
+
+- `autoSizeGrow: false` keeps the base size and only shrinks when needed
+- `autoSizeAlign: center` vertically centers the main matter in the available area
+- `autoSizePadding: compact` reduces inner whitespace to maximize usable space
+- `minFontSize` still defines the floor when content gets dense
+
+Use this when you want Beamer-like fitting, but with tighter control over visual rhythm.
 
 ---
 layout: default
