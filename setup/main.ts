@@ -44,6 +44,7 @@ type ThemeConfig = {
   outlineSidebarOpen?: boolean
   outlineToc?: boolean
   outlineTocOpen?: boolean
+  footnoteDisplay?: 'both' | 'hover-only' | 'notes-only'
 }
 
 const normalizeFontSize = (value: unknown): string | null => {
@@ -185,7 +186,9 @@ const FOOTNOTE_TRIGGER_SELECTOR = '.slidev-layout sup.footnote-ref a[href^="#fn"
 const FOOTNOTE_SCOPE_SELECTOR = '.slidev-layout'
 const FOOTNOTE_ACTIVE_ATTR = 'data-scholarly-footnote-active'
 const FOOTNOTE_PINNED_ATTR = 'data-scholarly-footnote-pinned'
+const FOOTNOTE_DISPLAY_ATTR = 'data-scholarly-footnote-display'
 const FOOTNOTE_HIDE_DELAY = 120
+type FootnoteDisplayMode = 'both' | 'hover-only' | 'notes-only'
 
 type FootnotePopoverState = {
   initialized: boolean
@@ -209,6 +212,25 @@ const footnotePopoverState: FootnotePopoverState = {
   activeAnchor: null,
   pinnedAnchor: null,
   hideTimer: null,
+}
+
+const normalizeFootnoteDisplay = (value: unknown): FootnoteDisplayMode => {
+  if (typeof value !== 'string')
+    return 'both'
+
+  const normalized = value.trim().toLowerCase()
+  if (normalized === 'hover-only' || normalized === 'hover')
+    return 'hover-only'
+  if (normalized === 'notes-only' || normalized === 'footnotes-only' || normalized === 'static')
+    return 'notes-only'
+  return 'both'
+}
+
+const getFootnoteDisplayMode = (): FootnoteDisplayMode => {
+  if (typeof document === 'undefined')
+    return 'both'
+
+  return normalizeFootnoteDisplay(document.documentElement.getAttribute(FOOTNOTE_DISPLAY_ATTR))
 }
 
 const escapeIdSelector = (value: string): string => {
@@ -269,11 +291,20 @@ const enhanceFootnoteTriggers = () => {
   if (typeof document === 'undefined')
     return
 
+  const interactive = getFootnoteDisplayMode() !== 'notes-only'
   document.querySelectorAll<HTMLAnchorElement>(FOOTNOTE_TRIGGER_SELECTOR).forEach((anchor) => {
-    anchor.setAttribute('aria-haspopup', 'dialog')
-    if (!anchor.hasAttribute('aria-expanded'))
-      anchor.setAttribute('aria-expanded', 'false')
-    anchor.dataset.scholarlyFootnoteTrigger = 'true'
+    if (interactive) {
+      anchor.setAttribute('aria-haspopup', 'dialog')
+      if (!anchor.hasAttribute('aria-expanded'))
+        anchor.setAttribute('aria-expanded', 'false')
+      anchor.dataset.scholarlyFootnoteTrigger = 'true'
+    } else {
+      anchor.removeAttribute('aria-haspopup')
+      anchor.removeAttribute('aria-expanded')
+      anchor.removeAttribute(FOOTNOTE_ACTIVE_ATTR)
+      anchor.removeAttribute(FOOTNOTE_PINNED_ATTR)
+      delete anchor.dataset.scholarlyFootnoteTrigger
+    }
   })
 }
 
@@ -475,6 +506,9 @@ const initializeFootnotePopovers = () => {
     if (event.pointerType && event.pointerType !== 'mouse')
       return
 
+    if (getFootnoteDisplayMode() === 'notes-only')
+      return
+
     if (footnotePopoverState.pinnedAnchor)
       return
 
@@ -487,6 +521,9 @@ const initializeFootnotePopovers = () => {
 
   const handlePointerOut = (event: PointerEvent) => {
     if (event.pointerType && event.pointerType !== 'mouse')
+      return
+
+    if (getFootnoteDisplayMode() === 'notes-only')
       return
 
     if (footnotePopoverState.pinnedAnchor)
@@ -509,6 +546,9 @@ const initializeFootnotePopovers = () => {
   }
 
   const handleFocusIn = (event: FocusEvent) => {
+    if (getFootnoteDisplayMode() === 'notes-only')
+      return
+
     if (footnotePopoverState.pinnedAnchor)
       return
 
@@ -520,6 +560,9 @@ const initializeFootnotePopovers = () => {
   }
 
   const handleFocusOut = (event: FocusEvent) => {
+    if (getFootnoteDisplayMode() === 'notes-only')
+      return
+
     if (footnotePopoverState.pinnedAnchor)
       return
 
@@ -537,10 +580,16 @@ const initializeFootnotePopovers = () => {
   const handleClick = (event: MouseEvent) => {
     const anchor = getFootnoteAnchor(event.target)
     if (anchor) {
+      const footnoteDisplay = getFootnoteDisplayMode()
+      if (footnoteDisplay === 'notes-only')
+        return
+
       event.preventDefault()
       clearFootnoteHideTimer()
 
-      if (footnotePopoverState.pinnedAnchor === anchor) {
+      if (footnoteDisplay === 'hover-only') {
+        showFootnotePopover(anchor, false)
+      } else if (footnotePopoverState.pinnedAnchor === anchor) {
         hideFootnotePopover()
       } else {
         showFootnotePopover(anchor, true)
@@ -556,6 +605,9 @@ const initializeFootnotePopovers = () => {
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
+    if (getFootnoteDisplayMode() === 'notes-only')
+      return
+
     if (event.key === 'Escape')
       hideFootnotePopover()
   }
@@ -655,8 +707,20 @@ export default defineAppSetup(({ app, router }) => {
     applyFontSizes(frontmatter?.fontsize as FontsizeConfig | undefined, getGlobalFontConfig())
   }
 
+  const applyFootnoteDisplay = (route: RouteLocationNormalized | undefined) => {
+    if (typeof document === 'undefined')
+      return
+
+    const frontmatter = route?.meta?.slide?.frontmatter ?? {}
+    const mode = normalizeFootnoteDisplay(frontmatter?.footnoteDisplay ?? getThemeConfig()?.footnoteDisplay)
+    document.documentElement.setAttribute(FOOTNOTE_DISPLAY_ATTR, mode)
+    hideFootnotePopover()
+    enhanceFootnoteTriggers()
+  }
+
   // Apply font size for the initial route
   updateFontSize(router.currentRoute.value)
+  applyFootnoteDisplay(router.currentRoute.value)
 
   // Apply theme colors and theme presets
   applyThemeColors(getThemeColorConfig())
@@ -677,6 +741,12 @@ export default defineAppSetup(({ app, router }) => {
   )
 
   watch(
+    () => router.currentRoute.value?.meta?.slide?.frontmatter?.footnoteDisplay,
+    () => applyFootnoteDisplay(router.currentRoute.value),
+    { deep: true }
+  )
+
+  watch(
     () => (configs as any)?.fontsize as FontsizeConfig | undefined,
     () => updateFontSize(router.currentRoute.value),
     { deep: true }
@@ -693,6 +763,7 @@ export default defineAppSetup(({ app, router }) => {
     (newConfig) => {
       applyThemePresets(newConfig)
       setupDarkModeSync(newConfig)
+      applyFootnoteDisplay(router.currentRoute.value)
     },
     { deep: true, immediate: true }
   )
@@ -700,6 +771,7 @@ export default defineAppSetup(({ app, router }) => {
   // Reset theorem numbering state and update font sizing when navigating
   router.afterEach((to) => {
     updateFontSize(to)
+    applyFootnoteDisplay(to)
     resetOccurrenceTracker()
     hideFootnotePopover()
 
