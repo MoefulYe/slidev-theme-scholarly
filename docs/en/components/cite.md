@@ -72,6 +72,18 @@ In Slidev's interactive view, the theme applies academic footnote styling automa
 - Click the marker to pin the popover
 - Press `Esc` or click outside to close it
 
+You can control the behavior per slide with frontmatter:
+
+```markdown
+---
+footnoteDisplay: both
+---
+```
+
+- `footnoteDisplay: both` keeps the bottom footnotes and the inline hover/click preview
+- `footnoteDisplay: hover-only` hides the bottom footnote block and keeps only the inline preview
+- `footnoteDisplay: notes-only` keeps the bottom footnotes and disables the hover/click popover
+
 When you print or export slides, footnotes fall back to the normal footnote block at the bottom of the slide.
 
 ## Bibliography

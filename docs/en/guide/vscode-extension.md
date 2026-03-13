@@ -103,6 +103,8 @@ If you develop the extension locally, use the debug target `Run Extension (Dev M
 
 Layouts are organized into four categories. You can use category-specific prefixes (`ss-structure-*`, `ss-content-*`, `ss-emphasis-*`, `ss-academic-*`) or the shorter `ss-*` prefix.
 
+The `ss-*` prefixes are the canonical snippet labels shown in completion. Legacy `scholarly-*` aliases remain available through the extension's smart completion for compatibility.
+
 #### Structure Layouts
 
 | Prefix | Description |

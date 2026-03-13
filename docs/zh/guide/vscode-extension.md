@@ -103,6 +103,8 @@ scholarly-cite # 插入引用
 
 布局按四个类别组织。你可以使用类别前缀（`ss-structure-*`、`ss-content-*`、`ss-emphasis-*`、`ss-academic-*`）或简短的 `ss-*` 前缀。
 
+补全列表中会以 `ss-*` 作为规范前缀显示。旧的 `scholarly-*` 别名仍然通过扩展的智能补全保留兼容。
+
 #### 结构布局
 
 | 前缀 | 描述 |
