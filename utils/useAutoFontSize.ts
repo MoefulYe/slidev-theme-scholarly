@@ -1,13 +1,31 @@
 import type { Ref } from 'vue'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, unref, watch } from 'vue'
 import { useSlideContext } from '@slidev/client'
+
+type AutoFontSizeStrategy = 'shrink' | 'fit'
+type MaybeRef<T> = T | Ref<T>
 
 interface UseAutoFontSizeOptions {
   /**
    * Minimum font size in pixels when auto-adjusting.
    * Defaults to 60% of the current computed size, but not lower than 12px.
    */
-  minFontSizePx?: number
+  minFontSizePx?: MaybeRef<number | undefined>
+  /**
+   * Maximum font size in pixels when fitting content to the available area.
+   * Only used when `strategy` is `fit`.
+   */
+  maxFontSizePx?: MaybeRef<number | undefined>
+  /**
+   * Auto-sizing behavior.
+   * - `shrink`: keep the current font size unless the content overflows
+   * - `fit`: grow up to a ceiling, then shrink until content fits
+   */
+  strategy?: MaybeRef<AutoFontSizeStrategy | undefined>
+  /**
+   * Multiplier used to derive a default maximum size in `fit` mode.
+   */
+  growthFactor?: MaybeRef<number | undefined>
 }
 
 interface UseAutoFontSizeReturn {
@@ -44,6 +62,14 @@ const resolveBodyFontSize = (value: unknown): string | null => {
     return normalizeFontSize(body)
   }
   return normalizeFontSize(value)
+}
+
+const parsePxValue = (value: string | null | undefined): number => {
+  if (!value)
+    return 0
+
+  const parsed = Number.parseFloat(value)
+  return Number.isFinite(parsed) ? parsed : 0
 }
 
 export function useAutoFontSize(
@@ -101,13 +127,24 @@ export function useAutoFontSize(
     }
 
     let candidateSize = computedSize
-    const minFontSize = options.minFontSizePx ?? Math.max(12, Math.round(computedSize * 0.6))
+    const strategy = unref(options.strategy) ?? 'shrink'
+    const minFontSize = unref(options.minFontSizePx) ?? Math.max(12, Math.round(computedSize * 0.6))
+    const growthFactor = unref(options.growthFactor) ?? 1.5
+    const maxFontSize = unref(options.maxFontSizePx) ?? Math.round(computedSize * growthFactor)
     const maxAttempts = 80
     let attempts = 0
+    const wrapperStyles = window.getComputedStyle(wrapper)
+    const availableHeight = Math.max(0, wrapper.clientHeight - parsePxValue(wrapperStyles.paddingTop) - parsePxValue(wrapperStyles.paddingBottom))
+    const availableWidth = Math.max(0, wrapper.clientWidth - parsePxValue(wrapperStyles.paddingLeft) - parsePxValue(wrapperStyles.paddingRight))
+
+    if (strategy === 'fit') {
+      candidateSize = Math.max(minFontSize, maxFontSize)
+      content.style.fontSize = `${candidateSize}px`
+    }
 
     while (
       attempts < maxAttempts
-      && (content.scrollHeight > wrapper.clientHeight || content.scrollWidth > wrapper.clientWidth)
+      && (content.scrollHeight > availableHeight || content.scrollWidth > availableWidth)
     ) {
       candidateSize -= 1
       if (candidateSize <= minFontSize) {
