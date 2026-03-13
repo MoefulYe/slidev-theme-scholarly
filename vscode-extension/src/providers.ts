@@ -185,6 +185,27 @@ Content with auto-adjusting font size.
 `
       },
       {
+        label: 'auto-size',
+        description: 'Default flow with fit-to-page sizing',
+        icon: '📏',
+        snippet: `---
+layout: auto-size
+title: Title
+subtitle: Subtitle
+autoSizeGrow: true
+autoSizeAlign: top
+autoSizePadding: normal
+minFontSize: 14
+maxFontSize: 30
+---
+
+## Auto-Sized Main Matter
+
+Content that should fit the available width and height.
+
+`
+      },
+      {
         label: 'toc',
         description: 'Table of contents (auto-generated, section-grouped outline)',
         icon: '📋',

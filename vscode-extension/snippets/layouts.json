@@ -119,6 +119,32 @@
     ],
     "description": "[Structure] Auto-adjusting centered content"
   },
+  "Slidev Scholarly: Auto Size Layout": {
+    "prefix": [
+      "scholarly-auto-size",
+      "ss-auto-size",
+      "ss-structure-auto-size"
+    ],
+    "body": [
+      "---",
+      "layout: auto-size",
+      "title: ${1:Title}",
+      "subtitle: ${2:Subtitle}",
+      "autoSizeGrow: ${3|true,false|}",
+      "autoSizeAlign: ${4|top,center|}",
+      "autoSizePadding: ${5|normal,compact|}",
+      "minFontSize: ${6:14}",
+      "maxFontSize: ${7:30}",
+      "---",
+      "",
+      "## ${8:Auto-Sized Main Matter}",
+      "",
+      "${9:Content that should fit the available width and height.}",
+      "",
+      "$0"
+    ],
+    "description": "[Structure] Default flow with fit-to-page sizing"
+  },
   "Slidev Scholarly: End Layout": {
     "prefix": [
       "scholarly-end",
