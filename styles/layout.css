@@ -213,6 +213,28 @@
   color: rgba(45, 55, 72, 0.82);
 }
 
+/* Let footnotes sit near the bottom of the content area on short slides. */
+.slidev-layout.default .content-wrapper:has(.content-inner > .footnotes),
+.slidev-layout.intro .intro-content:has(.content-inner > .footnotes),
+.slidev-layout.bullets .bullets-container:has(.bullets-content > .footnotes),
+.slidev-layout .content-wrapper-centered:has(.content-inner > .footnotes) {
+  padding-bottom: calc(var(--scholarly-footer-height) + 0.1rem) !important;
+}
+
+.slidev-layout .content-inner:has(> .footnotes),
+.slidev-layout .bullets-content:has(> .footnotes),
+.slidev-layout .prose:has(> .footnotes) {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.slidev-layout .content-inner:has(> .footnotes) > .footnotes-sep,
+.slidev-layout .bullets-content:has(> .footnotes) > .footnotes-sep,
+.slidev-layout .prose:has(> .footnotes) > .footnotes-sep {
+  margin-top: auto;
+}
+
 .slidev-layout .footnotes ol {
   margin: 0;
   padding-left: 1.2rem;
