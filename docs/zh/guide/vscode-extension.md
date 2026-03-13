@@ -75,7 +75,7 @@ scholarly-cite # 插入引用
 1. 打开右侧的 **Secondary Side Bar**，然后选择 **Slidev Scholarly**
 2. 浏览六个部分：
    - **Layouts（布局）** - 按类别组织的幻灯片布局：
-     - *结构布局* - cover、default、intro、section、center、auto-center、toc、end
+     - *结构布局* - cover、default、intro、section、center、auto-center、auto-size、toc、end
      - *内容布局* - two-cols、image-left/right、bullets、figure、split-image
      - *强调布局* - quote、fact、statement、focus
      - *学术布局* - compare、methodology、results、timeline、agenda、acknowledgments、references
@@ -113,6 +113,7 @@ scholarly-cite # 插入引用
 | `ss-section` | 章节分隔符（支持 `sectionMode: dark/light`） |
 | `ss-center` | 居中内容 |
 | `ss-auto-center` | 自动调整的居中内容 |
+| `ss-auto-size` | 带 `autoSizeGrow`、`autoSizeAlign`、`autoSizePadding` 控制项的页面自适应布局 |
 | `ss-toc` | 按 section 分组的自动目录页 |
 | `ss-end` | 致谢/结束幻灯片 |
 

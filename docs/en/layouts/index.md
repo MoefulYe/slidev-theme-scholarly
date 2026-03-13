@@ -21,6 +21,7 @@ This theme provides 20+ professional layouts designed for academic presentations
 
 - **cover** - Title slide with authors and affiliations
 - **section** - Section divider
+- **auto-size** - Default layout with fit-to-page main matter
 - **agenda** - Presentation outline
 - **end** - Closing slide
 

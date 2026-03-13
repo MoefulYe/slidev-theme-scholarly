@@ -34,7 +34,7 @@ Different layouts for different needs:
 - **Basic**: cover, default, intro, section, center
 - **Content**: quote, fact, statement, two-cols
 - **Image**: image-left, image-right
-- **Advanced (v2.0)**: focus, compare, bullets, figure, references, end, auto-center
+- **Advanced (v2.0)**: focus, compare, bullets, figure, references, end, auto-center, auto-size
 
 ## 📊 Academic Styling (v0.1.2)
 

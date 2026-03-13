@@ -220,6 +220,43 @@ This layout automatically adjusts font size to fit content.
 
 ---
 
+## auto-size - Fit-to-Page Default Layout
+
+**Use for:** Default-style slides that should behave more like a LaTeX Beamer frame
+
+```markdown
+---
+layout: auto-size
+title: Title
+subtitle: Subtitle
+autoSizeGrow: true
+autoSizeAlign: top
+autoSizePadding: normal
+minFontSize: 14
+maxFontSize: 30
+---
+
+## Auto-Sized Main Matter
+
+This layout keeps the default reading flow,
+but it adjusts the main matter font size to fit the page.
+```
+
+**What it shows:**
+
+- Keeps the default header and footer structure
+- Fits the main matter to the available width and height
+- Keeps content top-aligned instead of vertically centered
+- Supports `minFontSize` and `maxFontSize` frontmatter overrides
+
+**Configuration entry points:**
+
+- `autoSizeGrow: true | false` - allow sparse slides to grow above their base size, or only shrink when needed
+- `autoSizeAlign: top | center` - keep the main matter pinned to the top or vertically centered inside the available area
+- `autoSizePadding: compact | normal` - switch between tighter and roomier inner spacing for the main matter box
+
+---
+
 ## end - Thank You Slide
 
 **Use for:** Professional closing slide with contact information

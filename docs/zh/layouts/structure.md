@@ -220,6 +220,43 @@ subtitle: 副标题
 
 ---
 
+## auto-size - 页面自适应的默认布局
+
+**用于：** 希望保留默认布局阅读流，同时让页面行为更接近 LaTeX Beamer frame 的内容页
+
+```markdown
+---
+layout: auto-size
+title: 标题
+subtitle: 副标题
+autoSizeGrow: true
+autoSizeAlign: top
+autoSizePadding: normal
+minFontSize: 14
+maxFontSize: 30
+---
+
+## 自动适应页面的正文
+
+这个布局会保留 default 的阅读流，
+同时自动调整 main matter 的字号以适应页面。
+```
+
+**显示内容：**
+
+- 保留默认布局的 header 和 footer
+- 根据可用宽高自动调整 main matter
+- 正文保持自上而下展开，不做垂直居中
+- 支持使用 `minFontSize` 和 `maxFontSize` frontmatter 约束字号范围
+
+**配置入口：**
+
+- `autoSizeGrow: true | false` - 稀疏内容是否允许放大，或只在需要时缩小
+- `autoSizeAlign: top | center` - main matter 是贴顶部展示，还是在可用区域内垂直居中
+- `autoSizePadding: compact | normal` - 切换更紧凑或更常规的正文内边距
+
+---
+
 ## end - 致谢页
 
 **用于：** 带有联系信息的专业结束幻灯片

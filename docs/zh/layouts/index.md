@@ -21,6 +21,7 @@ title: 布局
 
 - **cover** - 标题页，含作者和机构信息
 - **section** - 章节分隔页
+- **auto-size** - main matter 自适应页面的默认布局
 - **agenda** - 演示大纲
 - **end** - 结束页
 

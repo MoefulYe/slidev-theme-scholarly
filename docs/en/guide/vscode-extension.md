@@ -75,7 +75,7 @@ If you develop the extension locally, use the debug target `Run Extension (Dev M
 1. Open the **Secondary Side Bar** on the right and select **Slidev Scholarly**
 2. Browse through six sections:
    - **Layouts** - Slide layouts organized by category:
-     - *Structure* - cover, default, intro, section, center, auto-center, toc, end
+     - *Structure* - cover, default, intro, section, center, auto-center, auto-size, toc, end
      - *Content* - two-cols, image-left/right, bullets, figure, split-image
      - *Emphasis* - quote, fact, statement, focus
      - *Academic* - compare, methodology, results, timeline, agenda, acknowledgments, references
@@ -113,6 +113,7 @@ Layouts are organized into four categories. You can use category-specific prefix
 | `ss-section` | Section divider (supports `sectionMode: dark/light`) |
 | `ss-center` | Centered content |
 | `ss-auto-center` | Auto-adjusting centered content |
+| `ss-auto-size` | Default flow with `autoSizeGrow`, `autoSizeAlign`, and `autoSizePadding` controls |
 | `ss-toc` | Auto-generated table of contents grouped by sections |
 | `ss-end` | Thank you/closing slide |
 

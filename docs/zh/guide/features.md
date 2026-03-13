@@ -34,7 +34,7 @@ title: 核心特性
 - **基础**: cover, default, intro, section, center
 - **内容**: quote, fact, statement, two-cols
 - **图片**: image-left, image-right
-- **高级 (v2.0)**: focus, compare, bullets, figure, references, end, auto-center
+- **高级 (v2.0)**: focus, compare, bullets, figure, references, end, auto-center, auto-size
 
 ## 📊 学术样式 (v0.1.2)
 
