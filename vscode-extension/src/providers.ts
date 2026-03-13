@@ -1255,6 +1255,12 @@ const CLI_GROUPS: Record<CliGroupId, { label: string; icon: string; items: CliAc
         action: 'doctor'
       },
       {
+        label: 'Setup Vite Citation Bridge...',
+        description: 'Create or repair Scholarly Vite citation integration',
+        icon: 'link',
+        action: 'setupVite'
+      },
+      {
         label: 'Help',
         description: 'Run scholarly help',
         icon: 'question',
