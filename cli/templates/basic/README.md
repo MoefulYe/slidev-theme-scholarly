@@ -14,3 +14,7 @@ pnpm run dev
 ```bash
 pnpm run build
 ```
+
+## Notes
+
+- `vite.config.ts` is included for Slidev markdown hook compatibility
