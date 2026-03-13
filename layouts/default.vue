@@ -119,7 +119,7 @@ watch(() => $slidev?.nav?.currentPage, () => {
 
 <style scoped>
 .content-wrapper {
-  padding-top: 50px; /* Space for fixed header when it has content */
+  padding-top: calc(var(--scholarly-header-height) - 0.25rem); /* Reserve header space without leaving an oversized gap */
   padding-bottom: calc(var(--scholarly-footer-height) + 0.5rem); /* Space for fixed footer */
   padding-left: 0;
   padding-right: 0;
@@ -144,6 +144,10 @@ watch(() => $slidev?.nav?.currentPage, () => {
   width: 100%;
   margin-left: 0;
   margin-right: 0;
+}
+
+.content-wrapper :deep(.content-inner > :first-child) {
+  margin-top: 0;
 }
 
 .content-inner {
