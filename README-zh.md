@@ -41,6 +41,8 @@
 npm i -D slidev-theme-scholarly
 ```
 
+安装时，包本身也会额外提醒你：如果这是一个已有项目，请运行 `npx sch setup vite`。
+
 ### 使用 CLI 创建（推荐）
 
 ```bash
@@ -58,6 +60,10 @@ npx sts init my-talk --template academic
 ```bash
 npx sch template list
 ```
+
+初始化模板会自动包含根目录 `vite.config.ts`，用于保持 BibTeX 引用在不同 Slidev 版本下的兼容性。
+
+如果是已有的 Slidev 项目，可以显式运行 `npx sch setup vite` 来补上同样的桥接配置。
 
 常用命令：
 
@@ -83,6 +89,9 @@ npx sch snippet append references --file slides.md
 # 追加整套学术演示骨架
 npx sch workflow list
 npx sch workflow apply paper --file slides.md
+
+# 给已有项目补上 Scholarly 的 Vite 引用桥接
+npx sch setup vite
 
 # 检查环境和项目状态（包含 Scholarly 检查）
 npx sch doctor
