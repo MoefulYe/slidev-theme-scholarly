@@ -67,6 +67,8 @@ For local extension-host debugging, use `.vscode/launch.json` -> `Run Extension 
 
 Layouts are organized into four categories. Use category-specific prefixes (`ss-structure-*`, `ss-content-*`, `ss-emphasis-*`, `ss-academic-*`) or the shorter `ss-*` prefix.
 
+The `ss-*` prefixes are the canonical snippet names shown in completion. Legacy `scholarly-*` aliases are still accepted by the extension's smart completion for compatibility.
+
 **Structure Layouts**
 
 | Prefix | Description |

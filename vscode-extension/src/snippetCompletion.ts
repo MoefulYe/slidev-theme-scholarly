@@ -277,8 +277,7 @@ export class ScholarlyCompletionProvider implements vscode.CompletionItemProvide
     const tokenMatch = linePrefix.match(/([!@A-Za-z0-9._:-]+)$/);
     const token = tokenMatch?.[1] ?? '';
     const normalizedToken = token.toLowerCase();
-    const shouldSuggestSnippetPrefixes = normalizedToken.startsWith('ss')
-      || normalizedToken.startsWith('scholarly')
+    const shouldSuggestSnippetPrefixes = normalizedToken.startsWith('scholarly')
       || normalizedToken.startsWith('@cite')
       || normalizedToken.startsWith('!@cite');
 

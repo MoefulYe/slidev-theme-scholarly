@@ -244,11 +244,11 @@
     "snippets": [
       {
         "language": "markdown",
-        "path": "./snippets/layouts.json"
+        "path": "./snippets/layouts.vscode.json"
       },
       {
         "language": "markdown",
-        "path": "./snippets/components.json"
+        "path": "./snippets/components.vscode.json"
       }
     ],
     "configuration": {
@@ -271,9 +271,10 @@
   "scripts": {
     "sync-shared-data": "node ./scripts/sync-shared-data.mjs",
     "sync-previews": "node ./scripts/sync-previews.mjs",
-    "vscode:prepublish": "npm run sync-previews && npm run compile",
-    "compile": "npm run sync-shared-data && tsc -p ./",
-    "watch": "npm run sync-shared-data && tsc -watch -p ./",
+    "sync-snippets": "node ./scripts/sync-snippets.mjs",
+    "vscode:prepublish": "npm run sync-previews && npm run sync-snippets && npm run compile",
+    "compile": "npm run sync-shared-data && npm run sync-snippets && tsc -p ./",
+    "watch": "npm run sync-shared-data && npm run sync-snippets && tsc -watch -p ./",
     "lint": "eslint src --ext ts",
     "package": "npx @vscode/vsce package",
     "publish": "npx @vscode/vsce publish",
