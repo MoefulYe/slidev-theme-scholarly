@@ -672,6 +672,7 @@ FEATURE: Standard Markdown footnotes
 - Use [^key] inline and [^key]: below
 - Desktop hover previews the footnote content
 - Click the marker to pin the popover
+- Set footnoteDisplay: hover-only | notes-only | both to control the rendered mode
 -->
 
 ## Footnote Examples
@@ -683,6 +684,40 @@ The release package also includes prompts, configs, and evaluation scripts for r
 [^stability]: Across five random seeds, validation accuracy varied by less than 0.3 percentage points.
 [^cost]: Measured on a single RTX 4090 with mixed precision enabled.
 [^repro]: In Slidev's interactive view, hover over a footnote marker to preview the note, or click the marker to pin the popover.
+
+---
+layout: default
+title: Footnotes
+subtitle: Hover Preview Only
+footnoteDisplay: hover-only
+---
+
+<!--
+FEATURE: Hide the bottom footnote block and keep only inline preview
+-->
+
+## Hover-Only Footnotes
+
+This slide hides the footnote block at the bottom while keeping the inline preview on footnote markers[^hover-only].
+
+[^hover-only]: Use `footnoteDisplay: hover-only` in frontmatter when you want a cleaner slide with preview-only notes.
+
+---
+layout: default
+title: Footnotes
+subtitle: Static Notes Only
+footnoteDisplay: notes-only
+---
+
+<!--
+FEATURE: Keep visible footnotes and disable inline preview / pinning
+-->
+
+## Notes-Only Footnotes
+
+This slide keeps classic footnotes at the bottom[^notes-only] and disables hover or click popovers on the inline markers.
+
+[^notes-only]: Use `footnoteDisplay: notes-only` when you want explicit notes on the slide and no floating preview UI.
 
 ---
 layout: references

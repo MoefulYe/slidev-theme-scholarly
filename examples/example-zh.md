@@ -629,6 +629,7 @@ subtitle: 标准 Markdown 注脚
 - 行内使用 [^key]，文末使用 [^key]:
 - 桌面端悬停可预览注脚内容
 - 点击标记可固定浮窗
+- 通过 footnoteDisplay: hover-only | notes-only | both 控制显示模式
 -->
 
 ## 注脚示例
@@ -640,6 +641,40 @@ subtitle: 标准 Markdown 注脚
 [^stability]: 在五个随机种子下，验证集准确率波动小于 0.3 个百分点。
 [^cost]: 在启用混合精度的单张 RTX 4090 上测得。
 [^repro]: 在 Slidev 的交互视图中，可将鼠标悬停在注脚标记上进行预览，或点击标记固定浮窗。
+
+---
+layout: default
+title: 注脚
+subtitle: 仅保留悬停预览
+footnoteDisplay: hover-only
+---
+
+<!--
+功能：隐藏底部注脚，仅保留行内预览
+-->
+
+## 仅保留悬停预览
+
+这一页会隐藏底部注脚区域，只保留行内标记的预览效果[^hover-only]。
+
+[^hover-only]: 当你希望页面更干净，但仍然想通过行内标记查看说明时，可使用 `footnoteDisplay: hover-only`。
+
+---
+layout: default
+title: 注脚
+subtitle: 仅保留底部注脚
+footnoteDisplay: notes-only
+---
+
+<!--
+功能：保留底部注脚，关闭悬停和点击弹窗
+-->
+
+## 仅保留底部注脚
+
+这一页会保留传统底部注脚[^notes-only]，同时关闭行内标记的 hover / click 弹窗。
+
+[^notes-only]: 当你希望讲稿和投影片表现一致，并明确把注脚放在页面底部时，可使用 `footnoteDisplay: notes-only`。
 
 ---
 layout: references
