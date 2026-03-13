@@ -87,7 +87,9 @@ scholarly-cite # 插入引用
      - *Create* - 新建演示与模板列表
      - *Theme* - 应用/查看主题，应用预设组合，查看布局/组件清单
      - *Snippets* - 追加/查看/列出片段，追加 workflow
-     - *Tools* - 环境检查与帮助
+     - *Tools* - setup vite、环境检查与帮助
+
+CLI 的 Tools 分组里现在包含 **Setup Vite Citation Bridge...**，会针对当前工作区运行 `sch setup vite`，并可选传入 `--force`。
 3. 点击任意项目（或有 `+` 的地方点击 `+`）即可插入/应用
 
 ### 创建新演示文稿

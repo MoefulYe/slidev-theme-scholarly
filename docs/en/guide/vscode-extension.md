@@ -87,7 +87,9 @@ If you develop the extension locally, use the debug target `Run Extension (Dev M
      - *Create* - new presentation and template list
      - *Theme* - apply/list themes, apply preset combos, list layouts/components
      - *Snippets* - append/show/list snippets, append workflows
-     - *Tools* - doctor and help
+     - *Tools* - setup vite, doctor, and help
+
+The CLI tools section includes **Setup Vite Citation Bridge...**, which runs `sch setup vite` for the current workspace and can optionally pass `--force`.
 3. Click an item (or the `+` button where available) to insert/apply
 
 ### Creating New Presentation

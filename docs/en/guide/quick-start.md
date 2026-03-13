@@ -55,6 +55,9 @@ npx sch snippet append methodology --file slides.md
 npx sch workflow list
 npx sch workflow apply paper --file slides.md
 
+# add the Scholarly Vite citation bridge to an existing project
+npx sch setup vite
+
 # environment checker (with Scholarly checks)
 npx sch doctor
 ```
@@ -69,6 +72,8 @@ pnpm run dev
 
 Your browser will open automatically with live preview.
 
+The generated starter includes a root `vite.config.ts` that keeps Scholarly citations compatible across Slidev versions.
+
 ## Step 3: Edit `slides.md`
 
 The generated project already includes a ready-to-use `slides.md`.
@@ -80,6 +85,8 @@ Install theme dependency:
 ```bash
 npm i -D slidev-theme-scholarly
 ```
+
+The install step also prints a reminder to run `npx sch setup vite` when you are wiring Scholarly into an existing project.
 
 Set your Slidev frontmatter:
 
@@ -93,4 +100,32 @@ Then run:
 
 ```bash
 npx slidev
+```
+
+If you want Scholarly's citation bridge in an existing project, the recommended path is:
+
+```bash
+npx sch setup vite
+```
+
+This creates a root `vite.config.ts` when none exists, or reuses the detected `vite.config.*`. It will not overwrite an unrelated existing Vite config unless you pass `--force`.
+
+If you prefer to wire it up manually, add:
+
+```ts
+import { defineConfig } from 'vite'
+import { setupScholarlyCitationMarkdown } from 'slidev-theme-scholarly/citation-vite'
+
+export default defineConfig({
+  slidev: {
+    markdown: {
+      markdownSetup(md) {
+        setupScholarlyCitationMarkdown(md)
+      },
+      markdownItSetup(md) {
+        setupScholarlyCitationMarkdown(md)
+      },
+    },
+  },
+})
 ```

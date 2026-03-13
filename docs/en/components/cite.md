@@ -100,6 +100,36 @@ layout: references
 
 The bibliography is automatically generated from all citations used in your slides.
 
+`layout: references` by itself does not inject the bibliography block. Keep the `[[bibliography]]` marker in the slide body.
+
+Projects generated with `sch init` now include a root `vite.config.ts` that bridges Slidev's `markdownSetup` / `markdownItSetup` hook differences automatically.
+
+For an existing project, run:
+
+```bash
+npx sch setup vite
+```
+
+If you prefer to add the same bridge manually, use:
+
+```ts
+import { defineConfig } from 'vite'
+import { setupScholarlyCitationMarkdown } from 'slidev-theme-scholarly/citation-vite'
+
+export default defineConfig({
+  slidev: {
+    markdown: {
+      markdownSetup(md) {
+        setupScholarlyCitationMarkdown(md)
+      },
+      markdownItSetup(md) {
+        setupScholarlyCitationMarkdown(md)
+      },
+    },
+  },
+})
+```
+
 ## Pagination
 
 For long reference lists, use pagination:

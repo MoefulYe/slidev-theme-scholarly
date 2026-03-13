@@ -100,6 +100,36 @@ layout: references
 
 参考文献会自动从幻灯片中使用的所有引用生成。
 
+仅写 `layout: references` 不会自动插入参考文献块，仍然需要在幻灯片正文中保留 `[[bibliography]]` 标记。
+
+`sch init` 生成的项目现在会自带根目录 `vite.config.ts`，自动兼容 Slidev 的 `markdownSetup` / `markdownItSetup` 差异。
+
+对于已有项目，推荐直接运行：
+
+```bash
+npx sch setup vite
+```
+
+如果你更希望手动添加同样的桥接配置，也可以写成：
+
+```ts
+import { defineConfig } from 'vite'
+import { setupScholarlyCitationMarkdown } from 'slidev-theme-scholarly/citation-vite'
+
+export default defineConfig({
+  slidev: {
+    markdown: {
+      markdownSetup(md) {
+        setupScholarlyCitationMarkdown(md)
+      },
+      markdownItSetup(md) {
+        setupScholarlyCitationMarkdown(md)
+      },
+    },
+  },
+})
+```
+
 ## 分页
 
 对于较长的参考文献列表，使用分页：
