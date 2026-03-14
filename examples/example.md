@@ -648,7 +648,7 @@ FEATURE: Academic citations using BibTeX
 - Configure in frontmatter: bibFile, bibStyle
 - @citekey for parenthetical citations (Author, Year)
 - !@citekey for narrative citations: Author (Year)
-- [[bibliography]] marker generates reference list
+- layout: references auto-generates the reference list
 -->
 
 ## Citation Examples
@@ -742,8 +742,6 @@ perPage: 3
 page: 2
 title: "References (continued)"
 -->
-
-[[bibliography]]
 
 ---
 layout: section

@@ -605,7 +605,7 @@ subtitle: 学术文献引用支持
 - 在 frontmatter 中配置：bibFile, bibStyle
 - @citekey 用于括号引用 (Author, Year)
 - !@citekey 用于叙述性引用：Author (Year)
-- [[bibliography]] 标记生成参考文献列表
+- layout: references 会自动生成参考文献列表
 -->
 
 ## 引用示例
@@ -699,8 +699,6 @@ perPage: 3
 page: 2
 title: "参考文献（续）"
 -->
-
-[[bibliography]]
 
 ---
 layout: section

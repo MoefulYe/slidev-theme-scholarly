@@ -401,10 +401,8 @@ layout: references
 SLIDE: References
 LAYOUT: references
 PURPOSE: Auto-generated bibliography from BibTeX citations
-MARKER: [[bibliography]] generates the reference list
+AUTO: empty or heading-only references slides inject the bibliography automatically
 -->
-
-[[bibliography]]
 
 ---
 layout: section
