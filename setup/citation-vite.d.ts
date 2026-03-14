@@ -1,30 +1,25 @@
-export type ScholarlyCitationMarkdownOptions = {
-  autoGenerate?: boolean
-  bibFile?: string
-  bibTitle?: string
-  showNum?: boolean
-  style?: string
+export interface ScholarlyCitationMarkdownOptions {
+    autoGenerate?: boolean;
+    bibFile?: string;
+    bibTitle?: string;
+    showNum?: boolean;
+    style?: string;
 }
-
-export declare function setupScholarlyCitationMarkdown(
-  md: {
+type CitationMarkdownState = {
+    env?: {
+        frontmatter?: {
+            citations?: string[];
+        };
+    };
+    src: string;
+};
+export interface CitationMarkdownInstance {
     core: {
-      ruler: {
-        before: (
-          beforeName: string,
-          ruleName: string,
-          rule: (state: {
-            env?: {
-              frontmatter?: {
-                citations?: string[]
-              }
-            }
-            src: string
-          }) => void,
-        ) => void
-      }
-    }
-    use: (plugin: unknown, options?: unknown) => void
-  },
-  options?: ScholarlyCitationMarkdownOptions,
-): void
+        ruler: {
+            before: (beforeName: string, ruleName: string, rule: (state: CitationMarkdownState) => void) => void;
+        };
+    };
+    use: (plugin: unknown, options?: unknown) => void;
+}
+export declare function setupScholarlyCitationMarkdown(md: CitationMarkdownInstance, options?: ScholarlyCitationMarkdownOptions): void;
+export {};

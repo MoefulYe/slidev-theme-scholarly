@@ -1,6 +1,12 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.setupScholarlyCitationMarkdown = void 0;
 // Source of truth for Scholarly's citation markdown helper.
 // Runtime JS/CJS and declaration outputs are generated from this file.
-import citationPluginMod from '@jxpeng98/markdown-it-citation';
+const markdown_it_citation_1 = __importDefault(require("@jxpeng98/markdown-it-citation"));
 const SCHOLARLY_CITATIONS_RE = /<!--\s*scholarly-citations:\s*(\[.*?\])\s*-->/;
 const SCHOLARLY_CITATION_SETUP_FLAG = Symbol.for('scholarly.citation.setup');
 function resolvePlugin(mod) {
@@ -16,14 +22,14 @@ function resolveCitationConfig(options = {}) {
         autoGenerate: options.autoGenerate ?? false,
     };
 }
-export function setupScholarlyCitationMarkdown(md, options = {}) {
+function setupScholarlyCitationMarkdown(md, options = {}) {
     const flaggedMd = md;
     if (flaggedMd[SCHOLARLY_CITATION_SETUP_FLAG])
         return;
     flaggedMd[SCHOLARLY_CITATION_SETUP_FLAG] = true;
-    const citationPlugin = resolvePlugin(citationPluginMod);
+    const citationPlugin = resolvePlugin(markdown_it_citation_1.default);
     if (typeof citationPlugin !== 'function') {
-        console.warn('[citation] resolved plugin is not a function:', citationPluginMod);
+        console.warn('[citation] resolved plugin is not a function:', markdown_it_citation_1.default);
         return;
     }
     md.use(citationPlugin, resolveCitationConfig(options));
@@ -43,3 +49,4 @@ export function setupScholarlyCitationMarkdown(md, options = {}) {
         }
     });
 }
+exports.setupScholarlyCitationMarkdown = setupScholarlyCitationMarkdown;

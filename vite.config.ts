@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import { setupScholarlyCitationMarkdown } from './setup/citation-vite.js'
+import { setupScholarlyCitationMarkdown } from './setup/citation-vite.ts'
 
 export default defineConfig({
   slidev: {

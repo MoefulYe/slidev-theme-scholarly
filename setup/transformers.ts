@@ -2,6 +2,7 @@ import { defineTransformersSetup } from '@slidev/types'
 import type { MarkdownTransformer } from '@slidev/types'
 
 const BIBLIOGRAPHY_MARKER = '[[bibliography]]'
+const REFERENCES_LAYOUT = 'references'
 const SCHOLARLY_CITATIONS_COMMENT_RE = /<!--\s*scholarly-citations:\s*\[.*?\]\s*-->\s*\n?/g
 const PROTECTED_BLOCKS_RE = /```[\s\S]*?```|<!--[\s\S]*?-->/g
 
@@ -11,17 +12,22 @@ export default defineTransformersSetup(() => ({
 
 const transformScholarlyMarkdown: MarkdownTransformer = async (ctx) => {
   const original = ctx.s.toString()
-  let transformed = original
+  const frontmatter = ctx.slide.frontmatter as Record<string, unknown>
+  let transformed = ensureBibliographyMarker(original, frontmatter)
 
   if (transformed.includes(BIBLIOGRAPHY_MARKER)) {
-    const citations = resolveBibliographyCitations(ctx.slide.frontmatter, ctx.options.data.slides)
+    const citations = resolveBibliographyCitations(frontmatter, ctx.options.data.slides)
     transformed = injectBibliographyComment(transformed, citations)
   }
 
   transformed = transformSyntaxSugar(transformed)
 
-  if (transformed !== original)
-    ctx.s.overwrite(0, original.length, transformed)
+  if (transformed !== original) {
+    if (original.length === 0)
+      ctx.s.appendLeft(0, transformed)
+    else
+      ctx.s.overwrite(0, original.length, transformed)
+  }
 }
 
 function resolveBibliographyCitations(frontmatter: Record<string, unknown>, slides: Array<{ content?: string; source?: { content?: string; contentRaw?: string } }>): string[] {
@@ -65,6 +71,30 @@ function injectBibliographyComment(content: string, citations: string[]): string
     BIBLIOGRAPHY_MARKER,
     `<!-- scholarly-citations: ${citationsJson} -->\n${BIBLIOGRAPHY_MARKER}`
   )
+}
+
+function ensureBibliographyMarker(content: string, frontmatter: Record<string, unknown>): string {
+  if (!shouldAutoInjectBibliography(content, frontmatter))
+    return content
+
+  const trimmed = content.replace(/\s*$/, '')
+  return trimmed ? `${trimmed}\n\n${BIBLIOGRAPHY_MARKER}\n` : `${BIBLIOGRAPHY_MARKER}\n`
+}
+
+function shouldAutoInjectBibliography(content: string, frontmatter: Record<string, unknown>): boolean {
+  if ((frontmatter.layout as string | undefined) !== REFERENCES_LAYOUT)
+    return false
+
+  if (content.includes(BIBLIOGRAPHY_MARKER))
+    return false
+
+  const stripped = content
+    .replace(SCHOLARLY_CITATIONS_COMMENT_RE, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/^\s*#{1,6}\s+.*$/gm, '')
+    .replace(/^\s*---+\s*$/gm, '')
+
+  return stripped.trim().length === 0
 }
 
 function collectCitations(text: string, citekeys: Set<string>) {
