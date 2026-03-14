@@ -237,12 +237,46 @@ fontsize:
   h3: 32          # number (treated as pixels)
 ```
 
-**Notes:**
+**Font size notes:**
 
 - All font size options are optional - you can set any combination
 - Per-slide settings override global settings
 - If not specified, the theme uses default font sizes optimized for each layout
 - Font sizes are applied using CSS variables for maximum compatibility
+
+### Footnote Display Configuration
+
+You can set a global footnote display mode in the headmatter, and override it for individual slides when needed.
+
+**Global footnote display (applies to all slides by default):**
+
+```yaml
+---
+theme: scholarly
+footnoteDisplay: hover-only
+---
+```
+
+**Per-slide footnote display override:**
+
+```markdown
+---
+footnoteDisplay: notes-only
+---
+```
+
+Priority order:
+
+- Per-slide `footnoteDisplay`
+- Global headmatter `footnoteDisplay`
+- Legacy `themeConfig.footnoteDisplay`
+- Default `both`
+
+Available values:
+
+- `both`: keep the bottom footnotes and the inline hover/click preview
+- `hover-only`: hide the bottom footnotes and keep only the inline preview
+- `notes-only`: keep the bottom footnotes and disable the hover/click popover
 
 ## Per-Slide Settings
 

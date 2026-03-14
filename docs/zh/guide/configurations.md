@@ -237,12 +237,46 @@ fontsize:
   h3: 32          # 数字（视为像素）
 ```
 
-**注意事项：**
+**字体大小注意事项：**
 
 - 所有字体大小选项都是可选的 - 你可以设置任意组合
 - 单页设置会覆盖全局设置
 - 如果未指定, 主题使用为每种布局优化的默认字体大小
 - 字体大小使用 CSS 变量应用, 以实现最大兼容性
+
+### 注脚显示模式配置
+
+你可以在首页 headmatter 中设置全局注脚显示模式，并在单页 frontmatter 中按需覆盖。
+
+**全局注脚显示模式（默认应用到所有页面）：**
+
+```yaml
+---
+theme: scholarly
+footnoteDisplay: hover-only
+---
+```
+
+**单页注脚显示模式覆盖：**
+
+```markdown
+---
+footnoteDisplay: notes-only
+---
+```
+
+优先级顺序：
+
+- 单页 `footnoteDisplay`
+- 首页 headmatter `footnoteDisplay`
+- 兼容旧配置 `themeConfig.footnoteDisplay`
+- 默认值 `both`
+
+可用取值：
+
+- `both`：同时保留底部注脚和行内 hover / click 预览
+- `hover-only`：隐藏底部注脚，只保留行内预览
+- `notes-only`：保留底部注脚，并关闭 hover / click 浮窗
 
 ## 单页设置
 

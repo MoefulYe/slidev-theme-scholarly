@@ -72,17 +72,32 @@ bibShowNum: false        # 参考文献是否显示数字标记（如 [1]）
 - 点击标记可固定浮窗
 - 按 `Esc` 或点击外部即可关闭
 
-你也可以通过 slide frontmatter 按页控制显示方式：
+你也可以先在首页 headmatter 中设置全局默认值：
+
+```yaml
+---
+footnoteDisplay: hover-only
+---
+```
+
+再通过单页 frontmatter 按页覆盖：
 
 ```markdown
 ---
-footnoteDisplay: both
+footnoteDisplay: notes-only
 ---
 ```
 
 - `footnoteDisplay: both` 同时保留底部注脚和行内 hover / click 预览
 - `footnoteDisplay: hover-only` 隐藏底部注脚，只保留行内预览
 - `footnoteDisplay: notes-only` 保留底部注脚，并关闭 hover / click 浮窗
+
+优先级顺序：
+
+- 单页 `footnoteDisplay`
+- 首页 headmatter `footnoteDisplay`
+- 兼容旧配置 `themeConfig.footnoteDisplay`
+- 默认值 `both`
 
 打印或导出时，注脚会回退为幻灯片底部的普通注脚列表。
 

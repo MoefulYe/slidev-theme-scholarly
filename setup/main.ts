@@ -701,6 +701,10 @@ export default defineAppSetup(({ app, router }) => {
     return (configs as any)?.fontsize as FontsizeConfig | undefined
   }
 
+  const getGlobalFootnoteDisplay = (): ThemeConfig['footnoteDisplay'] | undefined => {
+    return (configs as any)?.footnoteDisplay as ThemeConfig['footnoteDisplay'] | undefined
+  }
+
   const getThemeColorConfig = (): ThemeColorConfig | undefined => {
     return (configs as any)?.themeColors as ThemeColorConfig | undefined
   }
@@ -741,7 +745,11 @@ export default defineAppSetup(({ app, router }) => {
       return
 
     const frontmatter = getSlideFrontmatter(route)
-    const mode = normalizeFootnoteDisplay(frontmatter?.footnoteDisplay ?? getThemeConfig()?.footnoteDisplay)
+    const mode = normalizeFootnoteDisplay(
+      frontmatter?.footnoteDisplay
+        ?? getGlobalFootnoteDisplay()
+        ?? getThemeConfig()?.footnoteDisplay,
+    )
     document.documentElement.setAttribute(FOOTNOTE_DISPLAY_ATTR, mode)
     hideFootnotePopover()
     enhanceFootnoteTriggers()
@@ -778,6 +786,12 @@ export default defineAppSetup(({ app, router }) => {
   watch(
     () => (configs as any)?.fontsize as FontsizeConfig | undefined,
     () => updateFontSize(router.currentRoute.value),
+    { deep: true }
+  )
+
+  watch(
+    () => (configs as any)?.footnoteDisplay as ThemeConfig['footnoteDisplay'] | undefined,
+    () => applyFootnoteDisplay(router.currentRoute.value),
     { deep: true }
   )
 
