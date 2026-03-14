@@ -41,8 +41,6 @@ A professional presentation theme for [Slidev](https://sli.dev), designed specif
 npm i -D slidev-theme-scholarly
 ```
 
-During install, the package also prints a reminder to run `npx sch setup vite` for existing projects.
-
 ### Create with CLI (Recommended)
 
 ```bash
@@ -61,9 +59,7 @@ Available templates:
 npx sch template list
 ```
 
-Generated starters include a root `vite.config.ts` so BibTeX citations stay compatible across Slidev releases.
-
-For an existing Slidev project, run `npx sch setup vite` to add the same bridge explicitly.
+Generated starters work out of the box with Scholarly's built-in citation support. Normal theme usage does not require a project-level `vite.config`.
 
 Common commands:
 
@@ -89,9 +85,6 @@ npx sch snippet append references --file slides.md
 # append full scholarly workflow skeleton
 npx sch workflow list
 npx sch workflow apply paper --file slides.md
-
-# add the Scholarly Vite citation bridge to an existing project
-npx sch setup vite
 
 # check environment and project readiness (includes Scholarly checks)
 npx sch doctor
@@ -120,6 +113,8 @@ Subtitle or description
 - Point 2
 - Point 3
 ```
+
+BibTeX citations and the `references` layout work automatically once the theme is enabled. Use `layout: references` for a generated bibliography slide, or add `[[bibliography]]` only when you need custom placement inside that slide.
 
 ### Preview
 
