@@ -1,5 +1,6 @@
 import { defineAppSetup } from '@slidev/types'
 import { configs } from '@slidev/client'
+import { slides } from '#slidev/slides'
 import { watch } from 'vue'
 import type { RouteLocationNormalized } from 'vue-router'
 import Theorem from '../components/Theorem.vue'
@@ -45,6 +46,12 @@ type ThemeConfig = {
   outlineToc?: boolean
   outlineTocOpen?: boolean
   footnoteDisplay?: 'both' | 'hover-only' | 'notes-only'
+}
+
+type SlideFrontmatter = {
+  fontsize?: FontsizeConfig
+  footnoteDisplay?: ThemeConfig['footnoteDisplay']
+  routeAlias?: string
 }
 
 const normalizeFontSize = (value: unknown): string | null => {
@@ -702,8 +709,30 @@ export default defineAppSetup(({ app, router }) => {
     return (configs as any)?.themeConfig as ThemeConfig | undefined
   }
 
+  const getSlideFrontmatter = (route?: RouteLocationNormalized): SlideFrontmatter => {
+    const frontmatterFromRoute = route?.meta?.slide?.frontmatter as SlideFrontmatter | undefined
+    if (frontmatterFromRoute)
+      return frontmatterFromRoute
+
+    const routeNo = Array.isArray(route?.params?.no)
+      ? route?.params?.no[0]
+      : route?.params?.no
+
+    if (typeof routeNo === 'string' && routeNo) {
+      const matchedSlide = slides.value.find((slide) => {
+        const slideRouteAlias = slide?.meta?.slide?.frontmatter?.routeAlias
+        return String(slide?.no) === routeNo || slideRouteAlias === routeNo
+      })
+      const frontmatterFromSlides = matchedSlide?.meta?.slide?.frontmatter as SlideFrontmatter | undefined
+      if (frontmatterFromSlides)
+        return frontmatterFromSlides
+    }
+
+    return slides.value[0]?.meta?.slide?.frontmatter as SlideFrontmatter ?? {}
+  }
+
   const updateFontSize = (route: RouteLocationNormalized | undefined) => {
-    const frontmatter = route?.meta?.slide?.frontmatter ?? {}
+    const frontmatter = getSlideFrontmatter(route)
     applyFontSizes(frontmatter?.fontsize as FontsizeConfig | undefined, getGlobalFontConfig())
   }
 
@@ -711,7 +740,7 @@ export default defineAppSetup(({ app, router }) => {
     if (typeof document === 'undefined')
       return
 
-    const frontmatter = route?.meta?.slide?.frontmatter ?? {}
+    const frontmatter = getSlideFrontmatter(route)
     const mode = normalizeFootnoteDisplay(frontmatter?.footnoteDisplay ?? getThemeConfig()?.footnoteDisplay)
     document.documentElement.setAttribute(FOOTNOTE_DISPLAY_ATTR, mode)
     hideFootnotePopover()
@@ -735,13 +764,13 @@ export default defineAppSetup(({ app, router }) => {
   }
 
   watch(
-    () => router.currentRoute.value?.meta?.slide?.frontmatter?.fontsize,
+    () => getSlideFrontmatter(router.currentRoute.value)?.fontsize,
     () => updateFontSize(router.currentRoute.value),
     { deep: true }
   )
 
   watch(
-    () => router.currentRoute.value?.meta?.slide?.frontmatter?.footnoteDisplay,
+    () => getSlideFrontmatter(router.currentRoute.value)?.footnoteDisplay,
     () => applyFootnoteDisplay(router.currentRoute.value),
     { deep: true }
   )
