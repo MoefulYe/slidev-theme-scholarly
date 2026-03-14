@@ -101,29 +101,66 @@ jobs:
 
           # is_stable / is_prerelease already set above.
 
+  validate:
+    name: Validate extension release
+    needs: check
+    if: needs.check.outputs.version != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+          cache-dependency-path: vscode-extension/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: vscode-extension
+        run: pnpm install --frozen-lockfile
+
+      - name: Compile extension
+        working-directory: vscode-extension
+        run: pnpm run compile
+
   build:
     name: Build Extension
-    needs: check
+    needs: [check, validate]
     runs-on: ubuntu-latest
     outputs:
       vsix_name: ${{ steps.package.outputs.vsix_name }}
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10'
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
+          cache: pnpm
+          cache-dependency-path: vscode-extension/pnpm-lock.yaml
 
       - name: Install dependencies
         working-directory: vscode-extension
-        run: npm install
+        run: pnpm install --frozen-lockfile
 
       - name: Package Extension
         id: package
         working-directory: vscode-extension
         run: |
-          npm run package
+          pnpm run package
           VSIX_FILE=$(ls *.vsix)
           echo "vsix_name=$VSIX_FILE" >> "$GITHUB_OUTPUT"
 
