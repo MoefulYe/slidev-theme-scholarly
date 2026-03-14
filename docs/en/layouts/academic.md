@@ -192,8 +192,6 @@ Special thanks to all contributors.
 ---
 layout: references
 ---
-
-[[bibliography]]
 ```
 
 **For long reference lists, use pagination:**
@@ -205,17 +203,15 @@ perPage: 5
 page: 1
 ---
 
-[[bibliography]]
-
 ---
 layout: references
 perPage: 5
 page: 2
 title: "References (continued)"
 ---
-
-[[bibliography]]
 ```
+
+If you want the bibliography to appear at a specific point inside the slide, add `[[bibliography]]` manually at that exact position.
 
 **Manual references (without BibTeX):**
 

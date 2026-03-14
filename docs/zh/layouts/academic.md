@@ -192,8 +192,6 @@ collaborators:
 ---
 layout: references
 ---
-
-[[bibliography]]
 ```
 
 **对于较长的参考文献列表，使用分页：**
@@ -205,17 +203,15 @@ perPage: 5
 page: 1
 ---
 
-[[bibliography]]
-
 ---
 layout: references
 perPage: 5
 page: 2
 title: "参考文献（续）"
 ---
-
-[[bibliography]]
 ```
+
+如果你想把 bibliography 放在该页里的某个精确位置，可以手动在对应位置写 `[[bibliography]]`。
 
 **手动参考文献（不使用 BibTeX）：**
 

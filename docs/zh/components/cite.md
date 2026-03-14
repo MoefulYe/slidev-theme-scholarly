@@ -88,47 +88,21 @@ footnoteDisplay: both
 
 ## 参考文献
 
-添加带有 `[[bibliography]]` 标记的参考文献幻灯片：
+添加一个参考文献页：
 
 ```markdown
 ---
 layout: references
 ---
-
-[[bibliography]]
 ```
 
 参考文献会自动从幻灯片中使用的所有引用生成。
 
-仅写 `layout: references` 不会自动插入参考文献块，仍然需要在幻灯片正文中保留 `[[bibliography]]` 标记。
+如果这一页的正文为空，或者只包含标题 / 注释，主题会自动插入 bibliography。
 
-`sch init` 生成的项目现在会自带根目录 `vite.config.ts`，自动兼容 Slidev 的 `markdownSetup` / `markdownItSetup` 差异。
+如果你想精确控制 bibliography 在该页中的插入位置，可以显式写 `[[bibliography]]`。
 
-对于已有项目，推荐直接运行：
-
-```bash
-npx sch setup vite
-```
-
-如果你更希望手动添加同样的桥接配置，也可以写成：
-
-```ts
-import { defineConfig } from 'vite'
-import { setupScholarlyCitationMarkdown } from 'slidev-theme-scholarly/citation-vite'
-
-export default defineConfig({
-  slidev: {
-    markdown: {
-      markdownSetup(md) {
-        setupScholarlyCitationMarkdown(md)
-      },
-      markdownItSetup(md) {
-        setupScholarlyCitationMarkdown(md)
-      },
-    },
-  },
-})
-```
+正常使用这个主题时，不需要额外维护项目级 `vite.config.ts`；Scholarly 会从主题包内部自动注册 citation 相关 hook。
 
 ## 分页
 
@@ -141,16 +115,12 @@ perPage: 5
 page: 1
 ---
 
-[[bibliography]]
-
 ---
 layout: references
 perPage: 5
 page: 2
 title: "参考文献（续）"
 ---
-
-[[bibliography]]
 ```
 
 ## BibTeX 文件示例
