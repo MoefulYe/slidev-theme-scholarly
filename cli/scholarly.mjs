@@ -996,22 +996,21 @@ ${cdStep}  pnpm install
 }
 
 function createScholarlyViteBridgeContent() {
-  return `import { defineConfig } from 'vite'
-import { setupScholarlyCitationMarkdown } from '${SCHOLARLY_CITATION_BRIDGE_IMPORT}'
+  return `import { setupScholarlyCitationMarkdown } from '${SCHOLARLY_CITATION_BRIDGE_IMPORT}'
 
-export default defineConfig({
+export default {
   slidev: {
     markdown: {
       // Slidev has used both hook names across releases.
-      markdownSetup(md) {
+      markdownSetup(md: any) {
         setupScholarlyCitationMarkdown(md)
       },
-      markdownItSetup(md) {
+      markdownItSetup(md: any) {
         setupScholarlyCitationMarkdown(md)
       },
     },
   },
-})
+}
 `
 }
 
@@ -1044,11 +1043,19 @@ function setupViteConfig(options) {
   const targetPath = resolveSetupViteTarget(options)
   const exists = fs.existsSync(targetPath)
   const localPkg = readLocalPackageJson()
+  const desiredContent = createScholarlyViteBridgeContent()
 
   if (exists) {
     const current = fs.readFileSync(targetPath, 'utf8')
     if (isScholarlyViteBridge(current)) {
-      console.log(`Scholarly citation Vite bridge already configured in ${targetPath}`)
+      if (current === desiredContent) {
+        console.log(`Scholarly citation Vite bridge already configured in ${targetPath}`)
+        return
+      }
+
+      fs.writeFileSync(targetPath, desiredContent, 'utf8')
+      console.log(`Updated ${targetPath}`)
+      console.log('Refreshed Scholarly citation bridge to the latest compatible template.')
       return
     }
 
@@ -1060,7 +1067,7 @@ function setupViteConfig(options) {
   }
 
   fs.mkdirSync(path.dirname(targetPath), { recursive: true })
-  fs.writeFileSync(targetPath, createScholarlyViteBridgeContent(), 'utf8')
+  fs.writeFileSync(targetPath, desiredContent, 'utf8')
 
   console.log(`${exists ? 'Overwrote' : 'Created'} ${targetPath}`)
   console.log('Added Scholarly citation bridge for Slidev markdownSetup / markdownItSetup compatibility.')

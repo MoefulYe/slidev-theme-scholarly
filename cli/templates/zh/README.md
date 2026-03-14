@@ -17,4 +17,4 @@ pnpm run build
 
 ## 说明
 
-- 初始化项目会自带 `vite.config.ts`，用于兼容不同 Slidev 版本的 Markdown hook
+- 使用 `layout: references` 可以自动生成参考文献页

@@ -17,4 +17,4 @@ pnpm run build
 
 ## Notes
 
-- `vite.config.ts` is included for Slidev markdown hook compatibility
+- Use `layout: references` for an automatically generated bibliography slide

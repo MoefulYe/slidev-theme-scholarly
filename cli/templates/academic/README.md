@@ -13,4 +13,4 @@ pnpm run dev
 
 - Add references to `references.bib`
 - Use `@citekey` in slides
-- `vite.config.ts` is included so citations keep working across Slidev versions
+- Add a `layout: references` slide when you want the bibliography page
