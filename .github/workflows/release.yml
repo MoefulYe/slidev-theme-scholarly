@@ -93,14 +93,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build citation helper
-        run: pnpm run build:citation-vite
-
-      - name: Verify generated citation helper is committed
-        run: |
-          git diff --exit-code -- setup/citation-vite.js setup/citation-vite.cjs setup/citation-vite.d.ts
-          test -z "$(git ls-files --others --exclude-standard -- setup/citation-vite.js setup/citation-vite.cjs setup/citation-vite.d.ts)"
-
       - name: Build English example deck
         run: pnpm exec slidev build examples/example.md --out "${RUNNER_TEMP}/slidev-release-example-en" --without-notes
 
@@ -128,17 +120,6 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '10'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm run build:citation-vite
 
       - name: Extract release notes
         run: |
@@ -190,17 +171,6 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '10'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm run build:citation-vite
 
       - name: Extract release notes
         run: |

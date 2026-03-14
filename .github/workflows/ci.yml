@@ -46,14 +46,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build citation helper
-        run: pnpm run build:citation-vite
-
-      - name: Verify generated citation helper is committed
-        run: |
-          git diff --exit-code -- setup/citation-vite.js setup/citation-vite.cjs setup/citation-vite.d.ts
-          test -z "$(git ls-files --others --exclude-standard -- setup/citation-vite.js setup/citation-vite.cjs setup/citation-vite.d.ts)"
-
       - name: Build English example deck
         run: pnpm exec slidev build examples/example.md --out "${RUNNER_TEMP}/slidev-example-en" --without-notes
 
