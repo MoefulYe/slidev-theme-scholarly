@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setupScholarlyCitationMarkdown = void 0;
+exports.setupScholarlyCitationMarkdown = setupScholarlyCitationMarkdown;
 // Source of truth for Scholarly's citation markdown helper.
 // Runtime JS/CJS and declaration outputs are generated from this file.
 const markdown_it_citation_1 = __importDefault(require("@jxpeng98/markdown-it-citation"));
@@ -49,4 +49,3 @@ function setupScholarlyCitationMarkdown(md, options = {}) {
         }
     });
 }
-exports.setupScholarlyCitationMarkdown = setupScholarlyCitationMarkdown;

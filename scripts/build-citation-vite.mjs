@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
+import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
 
@@ -9,11 +10,12 @@ const sourceFile = path.join(setupDir, 'citation-vite.ts')
 const esmOutputFile = path.join(setupDir, 'citation-vite.js')
 const cjsOutputFile = path.join(setupDir, 'citation-vite.cjs')
 const dtsOutputFile = path.join(setupDir, 'citation-vite.d.ts')
-const tscBin = path.join(repoRoot, 'node_modules', '.bin', process.platform === 'win32' ? 'tsc.cmd' : 'tsc')
-const pnpmBin = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm'
+const require = createRequire(import.meta.url)
+const localTscEntrypoint = resolveLocalTscEntrypoint()
 
-const tscCommand = fs.existsSync(tscBin) ? tscBin : pnpmBin
-const tscCommandPrefix = fs.existsSync(tscBin) ? [] : ['exec', 'tsc']
+if (!localTscEntrypoint) {
+  throw new Error('Unable to resolve the local TypeScript compiler. Run `pnpm install --frozen-lockfile` first.')
+}
 
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'scholarly-citation-vite-'))
 const tempEsmDir = path.join(tempRoot, 'esm')
@@ -61,8 +63,31 @@ finally {
 }
 
 function runTsc(args) {
-  execFileSync(tscCommand, [...tscCommandPrefix, ...args], {
+  execFileSync(process.execPath, [localTscEntrypoint, ...args], {
     cwd: repoRoot,
     stdio: 'inherit',
   })
+}
+
+function resolveLocalTscEntrypoint() {
+  try {
+    return require.resolve('typescript/lib/tsc.js', { paths: [repoRoot] })
+  }
+  catch {}
+
+  const pnpmStoreDir = path.join(repoRoot, 'node_modules', '.pnpm')
+  if (fs.existsSync(pnpmStoreDir)) {
+    const match = fs.readdirSync(pnpmStoreDir)
+      .filter(name => name.startsWith('typescript@'))
+      .sort()
+      .at(-1)
+
+    if (match) {
+      const candidate = path.join(pnpmStoreDir, match, 'node_modules', 'typescript', 'lib', 'tsc.js')
+      if (fs.existsSync(candidate))
+        return candidate
+    }
+  }
+
+  throw new Error('Unable to resolve the local TypeScript compiler. Run `pnpm install --frozen-lockfile` first.')
 }
