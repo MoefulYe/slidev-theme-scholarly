@@ -15,7 +15,6 @@ type ThemeConfigUpdate = {
 
 export type CliActionId =
   | 'initPresentation'
-  | 'setupVite'
   | 'templateList'
   | 'themeApply'
   | 'themeList'
@@ -232,13 +231,6 @@ title: Conclusions
 ---
 layout: references
 ---
-
-<!--
-SLIDE: References
-LAYOUT: references
--->
-
-[[bibliography]]
 
 ---
 layout: end
@@ -488,35 +480,6 @@ async function runThemePresetApplyAction(): Promise<void> {
   await runCliArgs(['theme', 'preset', 'apply', preset.value, '--file', file], `theme preset apply ${preset.value}`);
 }
 
-async function runSetupViteAction(): Promise<void> {
-  const mode = await vscode.window.showQuickPick(
-    [
-      {
-        label: 'Safe (Recommended)',
-        description: 'Create or reuse vite.config.* without overwriting unrelated files',
-        value: 'safe'
-      },
-      {
-        label: 'Overwrite Existing',
-        description: 'Run scholarly setup vite --force',
-        value: 'force'
-      }
-    ],
-    {
-      placeHolder: 'How should Scholarly set up the Vite citation bridge?'
-    }
-  );
-
-  if (!mode) return;
-
-  const args = ['setup', 'vite'];
-  if (mode.value === 'force') {
-    args.push('--force');
-  }
-
-  await runCliArgs(args, `setup vite${mode.value === 'force' ? ' --force' : ''}`);
-}
-
 async function runSnippetAppendAction(): Promise<void> {
   const snippet = await vscode.window.showQuickPick(
     CLI_SNIPPETS.map(name => ({
@@ -584,9 +547,6 @@ export async function runCliAction(action: CliActionId): Promise<void> {
     case 'initPresentation':
       await runInitPresentationAction();
       return;
-    case 'setupVite':
-      await runSetupViteAction();
-      return;
     case 'templateList':
       await runCliArgs(['template', 'list'], 'template list');
       return;
@@ -637,7 +597,6 @@ export async function runCliAction(action: CliActionId): Promise<void> {
 export async function openCliActionMenu(): Promise<void> {
   const items: Array<vscode.QuickPickItem & { action: CliActionId }> = [
     { label: 'New Presentation...', description: 'sch init with prompts', action: 'initPresentation' },
-    { label: 'Setup Vite Citation Bridge...', description: 'sch setup vite', action: 'setupVite' },
     { label: 'Apply Theme Preset...', description: 'sch theme apply', action: 'themeApply' },
     { label: 'Apply Theme Preset Combo...', description: 'sch theme preset apply', action: 'themePresetApply' },
     { label: 'Append Snippet...', description: 'sch snippet append', action: 'snippetAppend' },

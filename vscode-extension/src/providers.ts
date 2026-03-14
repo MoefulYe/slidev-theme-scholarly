@@ -551,9 +551,6 @@ Special thanks to all contributors.
         snippet: `---
 layout: references
 ---
-
-[[bibliography]]
-
 `
       }
     ]
@@ -1253,12 +1250,6 @@ const CLI_GROUPS: Record<CliGroupId, { label: string; icon: string; items: CliAc
         description: 'Check CLI environment and project status',
         icon: 'pulse',
         action: 'doctor'
-      },
-      {
-        label: 'Setup Vite Citation Bridge...',
-        description: 'Create or repair Scholarly Vite citation integration',
-        icon: 'link',
-        action: 'setupVite'
       },
       {
         label: 'Help',

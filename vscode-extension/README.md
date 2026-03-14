@@ -21,7 +21,7 @@ The extension adds a dedicated panel in the VS Code Secondary Side Bar with six 
   - *Create* - `init` and template list
   - *Theme* - apply/list themes, apply preset combos, list layouts/components
   - *Snippets* - append/show/list Scholarly snippets and append workflows
-  - *Tools* - `setup vite`, `doctor`, and `help`
+  - *Tools* - `doctor` and `help`
 - **Preview** - Click the 👁️ icon on any layout, component, or theme to see a visual preview
 
 Click any item to insert content at the cursor or update frontmatter.
