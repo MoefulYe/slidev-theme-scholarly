@@ -38,11 +38,6 @@
     ".": {
       "types": "./index.d.ts",
       "import": "./index.js"
-    },
-    "./citation-vite": {
-      "types": "./setup/citation-vite.d.ts",
-      "import": "./setup/citation-vite.js",
-      "require": "./setup/citation-vite.cjs"
     }
   },
   "bin": {
@@ -58,7 +53,6 @@
     "provenance": true
   },
   "scripts": {
-    "build:citation-vite": "node scripts/build-citation-vite.mjs",
     "cli": "node cli/scholarly.mjs --help",
     "dev": "node scripts/slidev.mjs dev --open",
     "build": "node scripts/slidev.mjs build",
@@ -82,8 +76,7 @@
     "tag:push:vscode": "git push && git push origin \"vscode-v$(pnpm -s run version:print:vscode)\"",
     "tag:vscode:pre": "git tag -a \"vscode-pre-v$(pnpm -s run version:print:vscode)\" -m \"vscode-pre-v$(pnpm -s run version:print:vscode)\"",
     "tag:push:vscode:pre": "git push && git push origin \"vscode-pre-v$(pnpm -s run version:print:vscode)\"",
-    "prepare": "node scripts/build-citation-vite.mjs",
-    "release": "pnpm run build:citation-vite && pnpm run version:sync && git add -A && git commit -m \"chore: release v$(pnpm -s run version:print)\" && pnpm run tag && pnpm run tag:push",
+    "release": "pnpm run version:sync && git add -A && git commit -m \"chore: release v$(pnpm -s run version:print)\" && pnpm run tag && pnpm run tag:push",
     "vscode:compile": "cd vscode-extension && pnpm run compile",
     "vscode:watch": "cd vscode-extension && pnpm run watch",
     "vscode:package": "cd vscode-extension && pnpm run package",
@@ -97,7 +90,6 @@
   "devDependencies": {
     "@slidev/cli": "^52.11.3",
     "playwright-chromium": "^1.58.0",
-    "typescript": "^5.9.3",
     "vite": "^7.3.0",
     "vitepress": "2.0.0-alpha.15"
   },

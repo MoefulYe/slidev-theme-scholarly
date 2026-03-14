@@ -44,15 +44,6 @@ const THEME_PRESETS = __themesData.themePresets
 const LAYOUT_GROUPS = __layoutsData.layoutGroups
 const COMPONENT_LIST = __layoutsData.componentNames
 
-const SCHOLARLY_CITATION_BRIDGE_IMPORT = 'slidev-theme-scholarly/citation-vite'
-const SCHOLARLY_CITATION_BRIDGE_SYMBOL = 'setupScholarlyCitationMarkdown'
-const VITE_CONFIG_CANDIDATES = [
-  'vite.config.ts',
-  'vite.config.mts',
-  'vite.config.js',
-  'vite.config.mjs',
-]
-
 const SNIPPETS = {
   theorem: `<Theorem type="theorem" title="Sample Theorem">
 For every epsilon > 0, there exists delta > 0.
@@ -139,7 +130,6 @@ Usage:
   ${cliName} snippet list [--json]
   ${cliName} snippet show <name>
   ${cliName} snippet append <name> [--file <slides.md>]
-  ${cliName} setup vite [--force] [--file <vite.config.ts>]
   ${cliName} workflow list [--json]
   ${cliName} workflow apply <name> [--file <slides.md>]
   ${cliName} dev [entry.md] [slidev options]
@@ -158,7 +148,6 @@ Commands:
   layout list       List built-in Scholarly layouts
   component list    List built-in Scholarly components
   snippet           Show/append Scholarly snippet blocks
-  setup             Create project-level integration files
   dev               Start Slidev dev server (default entry: slides.md)
   build             Build static slides (default entry: slides.md)
   export            Export slides to PDF/PNG (default entry: slides.md)
@@ -174,7 +163,6 @@ Examples:
   ${cliName} workflow apply paper --file slides.md
   ${cliName} theme apply oxford-burgundy --font traditional
   ${cliName} snippet append theorem --file slides.md
-  ${cliName} setup vite
   ${cliName} help init
 `)
 }
@@ -257,25 +245,6 @@ Examples:
   ${cliName} snippet list
   ${cliName} snippet show theorem
   ${cliName} snippet append methodology --file slides.md
-`)
-}
-
-function printSetupHelp() {
-  console.log(`Usage:
-  ${cliName} setup vite [--force] [--file <vite.config.ts>]
-
-Subcommands:
-  vite        Create a Scholarly-compatible Vite bridge for citations
-
-Options:
-  -f, --force         Overwrite an existing non-Scholarly vite config target
-  --file <path>       Explicit target file (defaults to detected vite.config.* or vite.config.ts)
-  -h, --help          Show help
-
-Examples:
-  ${cliName} setup vite
-  ${cliName} setup vite --force
-  ${cliName} setup vite --file vite.config.mjs
 `)
 }
 
@@ -753,58 +722,6 @@ function parseWorkflowArgs(args) {
   throw new Error(`Unknown workflow subcommand: ${subcommand}`)
 }
 
-function parseSetupArgs(args) {
-  const subcommand = args[0] || ''
-
-  if (!subcommand || subcommand === '-h' || subcommand === '--help') {
-    printSetupHelp()
-    process.exit(0)
-  }
-
-  if (subcommand !== 'vite') {
-    throw new Error(`Unknown setup subcommand: ${subcommand}`)
-  }
-
-  const result = {
-    subcommand: 'vite',
-    force: false,
-    file: '',
-  }
-
-  for (let i = 1; i < args.length; i += 1) {
-    const arg = args[i]
-
-    if (arg === '-h' || arg === '--help') {
-      printSetupHelp()
-      process.exit(0)
-    }
-
-    if (arg === '-f' || arg === '--force') {
-      result.force = true
-      continue
-    }
-
-    if (arg === '--file') {
-      const value = args[i + 1]
-      if (!value || value.startsWith('-')) {
-        throw new Error('Missing value for --file.')
-      }
-      result.file = value
-      i += 1
-      continue
-    }
-
-    if (arg.startsWith('--file=')) {
-      result.file = arg.split('=', 2)[1] || ''
-      continue
-    }
-
-    throw new Error(`Unknown option: ${arg}`)
-  }
-
-  return result
-}
-
 function parseSnippetArgs(args) {
   const subcommand = args[0] || 'list'
 
@@ -993,87 +910,6 @@ Next steps:
 ${cdStep}  pnpm install
   pnpm run dev
 `)
-}
-
-function createScholarlyViteBridgeContent() {
-  return `import { setupScholarlyCitationMarkdown } from '${SCHOLARLY_CITATION_BRIDGE_IMPORT}'
-
-export default {
-  slidev: {
-    markdown: {
-      // Slidev has used both hook names across releases.
-      markdownSetup(md: any) {
-        setupScholarlyCitationMarkdown(md)
-      },
-      markdownItSetup(md: any) {
-        setupScholarlyCitationMarkdown(md)
-      },
-    },
-  },
-}
-`
-}
-
-function isScholarlyViteBridge(content) {
-  return content.includes(SCHOLARLY_CITATION_BRIDGE_IMPORT) && content.includes(SCHOLARLY_CITATION_BRIDGE_SYMBOL)
-}
-
-function resolveSetupViteTarget(options) {
-  if (options.file) {
-    return path.resolve(process.cwd(), options.file)
-  }
-
-  const existing = VITE_CONFIG_CANDIDATES
-    .map(name => path.resolve(process.cwd(), name))
-    .filter(file => fs.existsSync(file))
-
-  if (existing.length > 1) {
-    const names = existing.map(file => path.basename(file)).join(', ')
-    throw new Error(`Multiple vite config files found: ${names}\nUse --file to choose which one to update.`)
-  }
-
-  if (existing.length === 1) {
-    return existing[0]
-  }
-
-  return path.resolve(process.cwd(), 'vite.config.ts')
-}
-
-function setupViteConfig(options) {
-  const targetPath = resolveSetupViteTarget(options)
-  const exists = fs.existsSync(targetPath)
-  const localPkg = readLocalPackageJson()
-  const desiredContent = createScholarlyViteBridgeContent()
-
-  if (exists) {
-    const current = fs.readFileSync(targetPath, 'utf8')
-    if (isScholarlyViteBridge(current)) {
-      if (current === desiredContent) {
-        console.log(`Scholarly citation Vite bridge already configured in ${targetPath}`)
-        return
-      }
-
-      fs.writeFileSync(targetPath, desiredContent, 'utf8')
-      console.log(`Updated ${targetPath}`)
-      console.log('Refreshed Scholarly citation bridge to the latest compatible template.')
-      return
-    }
-
-    if (!options.force) {
-      throw new Error(
-        `Existing Vite config found at ${targetPath}\nRun "${cliName} setup vite --force${options.file ? ` --file ${options.file}` : ''}" to overwrite it, or merge the Scholarly bridge manually.`,
-      )
-    }
-  }
-
-  fs.mkdirSync(path.dirname(targetPath), { recursive: true })
-  fs.writeFileSync(targetPath, desiredContent, 'utf8')
-
-  console.log(`${exists ? 'Overwrote' : 'Created'} ${targetPath}`)
-  console.log('Added Scholarly citation bridge for Slidev markdownSetup / markdownItSetup compatibility.')
-  if (!hasThemeDependency(localPkg) && localPkg?.name !== 'slidev-theme-scholarly') {
-    console.log('Note: install `slidev-theme-scholarly` in this project so the generated Vite config can resolve `slidev-theme-scholarly/citation-vite`.')
-  }
 }
 
 function printTemplateList(asJson = false) {
@@ -1619,11 +1455,6 @@ function main() {
       return
     }
 
-    if (topic === 'setup') {
-      printSetupHelp()
-      return
-    }
-
     if (topic === 'dev' || topic === 'build' || topic === 'export') {
       printRunHelp(topic)
       return
@@ -1704,14 +1535,6 @@ function main() {
 
     if (options.subcommand === 'append') {
       appendSnippet(options.name, options.file)
-      return
-    }
-  }
-
-  if (command === 'setup') {
-    const options = parseSetupArgs(args.slice(1))
-    if (options.subcommand === 'vite') {
-      setupViteConfig(options)
       return
     }
   }
