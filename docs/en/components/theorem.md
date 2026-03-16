@@ -81,3 +81,13 @@ This remark has no number.
 
 </Theorem>
 ```
+
+**Content only, without the header label:**
+
+```markdown
+<Theorem type="note" :showHeader="false">
+
+The original cash payment was real, but the **expense for this year** is only the part that has been consumed.
+
+</Theorem>
+```

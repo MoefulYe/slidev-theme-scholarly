@@ -81,3 +81,13 @@ $$a^2 + b^2 = c^2$$
 
 </Theorem>
 ```
+
+**只显示内容，不显示标题行：**
+
+```markdown
+<Theorem type="note" :showHeader="false">
+
+The original cash payment was real, but the **expense for this year** is only the part that has been consumed.
+
+</Theorem>
+```
