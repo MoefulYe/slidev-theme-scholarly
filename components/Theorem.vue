@@ -1,6 +1,6 @@
 <template>
   <div :class="['theorem-box', `theorem-${type}`, { 'theorem-compact': compact }]">
-    <div class="theorem-header">
+    <div v-if="showHeader" class="theorem-header">
       <span class="theorem-type">{{ typeLabel }}</span>
       <span v-if="displayNumber" class="theorem-number">{{ displayNumber }}</span>
       <span v-if="title" class="theorem-title">{{ titleWrapper.left }}{{ title }}{{ titleWrapper.right }}</span>
@@ -24,12 +24,15 @@ interface Props {
   autoNumber?: boolean
   /** Compact mode with less padding */
   compact?: boolean
+  /** Hide the theorem header and render only the content box */
+  showHeader?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'theorem',
   autoNumber: true,
-  compact: false
+  compact: false,
+  showHeader: true,
 })
 
 // Get slide context for language config

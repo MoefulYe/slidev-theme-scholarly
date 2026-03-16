@@ -40,9 +40,11 @@ const resolvedType = computed(() => {
 
 <style scoped>
 .scholarly-highlight {
-  padding: 0.125em 0.375em;
-  border-radius: 0.25em;
+  display: inline-block;
+  padding: 0.2em 0.55em;
+  border-radius: 0.4em;
   font-weight: 500;
+  line-height: 1.25;
 }
 
 .highlight-primary {
