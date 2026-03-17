@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { LayoutsProvider, ComponentsProvider, TemplatesProvider, ThemesProvider, CliProvider } from './providers';
 import { insertSnippet, createNewPresentation, setColorTheme, setFontTheme, setColorMode, applyThemePreset, runCliAction, openCliActionMenu } from './commands';
-import { BibCompletionProvider, BibHoverProvider, BibTreeProvider } from './bibtex';
+import { AnchorCompletionProvider, BibCompletionProvider, BibHoverProvider, BibTreeProvider } from './bibtex';
 import { registerPreviewCommand, registerPreviewView } from './preview';
 import { ScholarlyCompletionProvider } from './snippetCompletion';
 import { DevModeController } from './devMode';
@@ -53,12 +53,46 @@ export function activate(context: vscode.ExtensionContext) {
   registerTree('scholarly-cli', cliProvider);
   registerTree('scholarly-references', bibTreeProvider);
 
+  let referenceRefreshTimer: NodeJS.Timeout | undefined;
+  const scheduleReferenceRefresh = () => {
+    if (referenceRefreshTimer)
+      clearTimeout(referenceRefreshTimer);
+
+    referenceRefreshTimer = setTimeout(() => {
+      referenceRefreshTimer = undefined;
+      bibTreeProvider.refresh();
+    }, 120);
+  };
+
+  context.subscriptions.push({
+    dispose: () => {
+      if (referenceRefreshTimer)
+        clearTimeout(referenceRefreshTimer);
+    }
+  });
+
   const bibWatcher = vscode.workspace.createFileSystemWatcher('**/*.bib');
   context.subscriptions.push(
     bibWatcher,
     bibWatcher.onDidCreate(() => bibTreeProvider.refresh()),
     bibWatcher.onDidChange(() => bibTreeProvider.refresh()),
-    bibWatcher.onDidDelete(() => bibTreeProvider.refresh())
+    bibWatcher.onDidDelete(() => bibTreeProvider.refresh()),
+    vscode.workspace.onDidChangeTextDocument((event) => {
+      if (event.document.languageId === 'markdown')
+        scheduleReferenceRefresh();
+    }),
+    vscode.workspace.onDidOpenTextDocument((document) => {
+      if (document.languageId === 'markdown')
+        scheduleReferenceRefresh();
+    }),
+    vscode.workspace.onDidSaveTextDocument((document) => {
+      if (document.languageId === 'markdown')
+        scheduleReferenceRefresh();
+    }),
+    vscode.window.onDidChangeActiveTextEditor((editor) => {
+      if (editor?.document.languageId === 'markdown')
+        scheduleReferenceRefresh();
+    })
   );
 
   // Register BibTeX completion and hover providers
@@ -70,6 +104,10 @@ export function activate(context: vscode.ExtensionContext) {
   const scholarlyCompletionProvider = devMode.wrapCompletionProvider(
     'scholarly',
     new ScholarlyCompletionProvider(context.extensionUri)
+  );
+  const anchorCompletionProvider = devMode.wrapCompletionProvider(
+    'anchor',
+    new AnchorCompletionProvider()
   );
 
   context.subscriptions.push(
@@ -85,6 +123,14 @@ export function activate(context: vscode.ExtensionContext) {
       mdSelector,
       scholarlyCompletionProvider,
       ':', '-', '<'
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.languages.registerCompletionItemProvider(
+      mdSelector,
+      anchorCompletionProvider,
+      '#'
     )
   );
 
@@ -127,6 +173,13 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
       insertSnippet(`@${key}`);
+    }),
+    vscode.commands.registerCommand('slidev-scholarly.insertAnchorKey', (key: string) => {
+      if (!key) {
+        vscode.window.showWarningMessage('No anchor key provided');
+        return;
+      }
+      insertSnippet(`#${key}`);
     }),
     vscode.commands.registerCommand('slidev-scholarly.setColorTheme', (value?: string) =>
       setColorTheme(value)

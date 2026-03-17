@@ -16,6 +16,97 @@ export interface BibEntry {
     pages?: string;
 }
 
+export interface AnchorTarget {
+    id: string;
+    label: string;
+    line: number;
+    syntax: 'heading' | 'anchor' | 'html-id' | 'named-anchor';
+}
+
+const HEADING_ID_SUFFIX_RE = /^([ \t]*#{1,6}\s+.*?)[ \t]+\{#([^\s}]+)\}[ \t]*$/gm;
+const ANCHOR_SUGAR_RE = /^[ \t]*::anchor\{#([^\s}]+)\}[ \t]*$/gm;
+const HTML_ID_RE = /<([A-Za-z][\w:-]*)\b[^>]*\bid\s*=\s*["']([^"'<>]+)["'][^>]*>/gi;
+const NAMED_ANCHOR_RE = /<a\b[^>]*\bname\s*=\s*["']([^"'<>]+)["'][^>]*>/gi;
+const ANCHOR_COMPLETION_CONTEXT_RE = /(?:\]\(#|(?:href|to)\s*=\s*["']#)([\w-]*)$/;
+
+function getAnchorSyntaxLabel(syntax: AnchorTarget['syntax']): string {
+    switch (syntax) {
+        case 'heading':
+            return 'Heading anchor';
+        case 'anchor':
+            return 'Standalone anchor';
+        case 'named-anchor':
+            return 'Named anchor';
+        default:
+            return 'HTML id';
+    }
+}
+
+function stripHeadingMarker(heading: string): string {
+    return heading.replace(/^[ \t]*#{1,6}\s*/, '').trim();
+}
+
+export function parseAnchorTargets(document: vscode.TextDocument): AnchorTarget[] {
+    const text = document.getText();
+    const anchors: AnchorTarget[] = [];
+    const seen = new Set<string>();
+
+    const addAnchor = (id: string | undefined, label: string, syntax: AnchorTarget['syntax'], index: number) => {
+        const normalizedId = id?.trim();
+        if (!normalizedId || seen.has(normalizedId))
+            return;
+
+        seen.add(normalizedId);
+        anchors.push({
+            id: normalizedId,
+            label: label.trim() || normalizedId,
+            line: document.positionAt(index).line,
+            syntax,
+        });
+    };
+
+    for (const match of text.matchAll(HEADING_ID_SUFFIX_RE)) {
+        const heading = stripHeadingMarker(match[1] ?? '');
+        addAnchor(match[2], heading, 'heading', match.index ?? 0);
+    }
+
+    for (const match of text.matchAll(ANCHOR_SUGAR_RE))
+        addAnchor(match[1], `Anchor #${match[1]}`, 'anchor', match.index ?? 0);
+
+    for (const match of text.matchAll(HTML_ID_RE)) {
+        const tag = (match[1] ?? 'element').toLowerCase();
+        addAnchor(match[2], `<${tag}> #${match[2]}`, 'html-id', match.index ?? 0);
+    }
+
+    for (const match of text.matchAll(NAMED_ANCHOR_RE))
+        addAnchor(match[1], `<a name="${match[1]}">`, 'named-anchor', match.index ?? 0);
+
+    return anchors.sort((left, right) => left.line - right.line || left.id.localeCompare(right.id));
+}
+
+function resolveAnchorCompletionContext(linePrefix: string): string | null {
+    const match = linePrefix.match(ANCHOR_COMPLETION_CONTEXT_RE);
+    return match ? match[1] ?? '' : null;
+}
+
+function createAnchorCompletionItem(anchor: AnchorTarget, range: vscode.Range): vscode.CompletionItem {
+    const item = new vscode.CompletionItem(anchor.id, vscode.CompletionItemKind.Reference);
+    const syntaxLabel = getAnchorSyntaxLabel(anchor.syntax);
+
+    item.detail = `${syntaxLabel} · line ${anchor.line + 1}`;
+    item.documentation = new vscode.MarkdownString(
+        `**${anchor.label}**\n\n` +
+        `\`#${anchor.id}\`\n\n` +
+        `${syntaxLabel} on line ${anchor.line + 1}`
+    );
+    item.insertText = anchor.id;
+    item.filterText = anchor.id;
+    item.range = range;
+    item.sortText = `${String(anchor.line).padStart(5, '0')}-${anchor.id}`;
+
+    return item;
+}
+
 // Parse a .bib file and extract entries
 export function parseBibFile(content: string): BibEntry[] {
     const entries: BibEntry[] = [];
@@ -280,6 +371,29 @@ export class BibCompletionProvider implements vscode.CompletionItemProvider {
     }
 }
 
+export class AnchorCompletionProvider implements vscode.CompletionItemProvider {
+    provideCompletionItems(
+        document: vscode.TextDocument,
+        position: vscode.Position
+    ): vscode.CompletionItem[] {
+        const lineText = document.lineAt(position).text;
+        const linePrefix = lineText.substring(0, position.character);
+        const partial = resolveAnchorCompletionContext(linePrefix);
+
+        if (partial === null)
+            return [];
+
+        const range = new vscode.Range(
+            position.line,
+            position.character - partial.length,
+            position.line,
+            position.character
+        );
+
+        return parseAnchorTargets(document).map(anchor => createAnchorCompletionItem(anchor, range));
+    }
+}
+
 // Hover provider for citations
 export class BibHoverProvider implements vscode.HoverProvider {
     async provideHover(
@@ -324,6 +438,7 @@ export class BibTreeItem extends vscode.TreeItem {
         this.description = entry.key;
         this.tooltip = entry.title || entry.key;
         this.iconPath = new vscode.ThemeIcon('book');
+        this.contextValue = 'referenceCitation';
         this.command = {
             command: 'slidev-scholarly.insertBibKey',
             title: 'Insert Citation',
@@ -332,23 +447,78 @@ export class BibTreeItem extends vscode.TreeItem {
     }
 }
 
-export class BibTreeProvider implements vscode.TreeDataProvider<BibTreeItem> {
-    private _onDidChangeTreeData: vscode.EventEmitter<BibTreeItem | undefined | null | void> = new vscode.EventEmitter<BibTreeItem | undefined | null | void>();
-    readonly onDidChangeTreeData: vscode.Event<BibTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
+class AnchorTreeItem extends vscode.TreeItem {
+    constructor(
+        public readonly anchor: AnchorTarget,
+        public readonly collapsibleState: vscode.TreeItemCollapsibleState
+    ) {
+        super(anchor.label, collapsibleState);
+        this.description = `#${anchor.id}`;
+        this.tooltip = `${anchor.label}\n#${anchor.id}\n${getAnchorSyntaxLabel(anchor.syntax)} · line ${anchor.line + 1}`;
+        this.iconPath = new vscode.ThemeIcon(anchor.syntax === 'heading' ? 'symbol-key' : 'link');
+        this.contextValue = 'referenceAnchor';
+        this.command = {
+            command: 'slidev-scholarly.insertAnchorKey',
+            title: 'Insert Anchor Reference',
+            arguments: [anchor.id]
+        };
+    }
+}
+
+class ReferenceGroupItem extends vscode.TreeItem {
+    constructor(
+        public readonly kind: 'citations' | 'anchors',
+        count: number
+    ) {
+        super(kind === 'citations' ? 'Citations' : 'Internal Anchors', vscode.TreeItemCollapsibleState.Expanded);
+        this.description = String(count);
+        this.iconPath = new vscode.ThemeIcon(kind === 'citations' ? 'book' : 'link');
+        this.contextValue = 'referenceGroup';
+    }
+}
+
+type ReferenceTreeItem = BibTreeItem | AnchorTreeItem | ReferenceGroupItem;
+
+export class BibTreeProvider implements vscode.TreeDataProvider<ReferenceTreeItem> {
+    private _onDidChangeTreeData: vscode.EventEmitter<ReferenceTreeItem | undefined | null | void> = new vscode.EventEmitter<ReferenceTreeItem | undefined | null | void>();
+    readonly onDidChangeTreeData: vscode.Event<ReferenceTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
     refresh(): void {
         clearBibCache();
         this._onDidChangeTreeData.fire();
     }
 
-    getTreeItem(element: BibTreeItem): vscode.TreeItem {
+    getTreeItem(element: ReferenceTreeItem): vscode.TreeItem {
         return element;
     }
 
-    async getChildren(): Promise<BibTreeItem[]> {
-        const entries = await loadBibEntries(vscode.window.activeTextEditor?.document);
-        return entries.map(entry =>
-            new BibTreeItem(entry, vscode.TreeItemCollapsibleState.None)
-        );
+    async getChildren(element?: ReferenceTreeItem): Promise<ReferenceTreeItem[]> {
+        const document = vscode.window.activeTextEditor?.document;
+
+        if (element instanceof ReferenceGroupItem) {
+            if (element.kind === 'citations') {
+                const entries = await loadBibEntries(document);
+                return entries.map(entry => new BibTreeItem(entry, vscode.TreeItemCollapsibleState.None));
+            }
+
+            if (!document)
+                return [];
+
+            return parseAnchorTargets(document).map(anchor =>
+                new AnchorTreeItem(anchor, vscode.TreeItemCollapsibleState.None)
+            );
+        }
+
+        const entries = await loadBibEntries(document);
+        const anchors = document ? parseAnchorTargets(document) : [];
+        const rootItems: ReferenceTreeItem[] = [];
+
+        if (entries.length > 0)
+            rootItems.push(new ReferenceGroupItem('citations', entries.length));
+
+        if (anchors.length > 0)
+            rootItems.push(new ReferenceGroupItem('anchors', anchors.length));
+
+        return rootItems;
     }
 }

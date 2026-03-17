@@ -120,6 +120,11 @@
         "icon": "$(add)"
       },
       {
+        "command": "slidev-scholarly.insertAnchorKey",
+        "title": "Insert Anchor Key",
+        "icon": "$(link)"
+      },
+      {
         "command": "slidev-scholarly.applyThemePreset",
         "title": "Apply Theme Preset",
         "icon": "$(wand)"
@@ -236,7 +241,12 @@
         },
         {
           "command": "slidev-scholarly.insertBibKey",
-          "when": "view == scholarly-references",
+          "when": "view == scholarly-references && viewItem == referenceCitation",
+          "group": "inline"
+        },
+        {
+          "command": "slidev-scholarly.insertAnchorKey",
+          "when": "view == scholarly-references && viewItem == referenceAnchor",
           "group": "inline"
         }
       ]
