@@ -11,6 +11,11 @@ import Cite from '../components/Cite.vue'
 import Steps from '../components/Steps.vue'
 import Keywords from '../components/Keywords.vue'
 import ThemePreview from '../components/ThemePreview.vue'
+import {
+  initializeInternalAnchorNavigation,
+  rebuildInternalAnchorTargets,
+  resolvePendingInternalAnchorNavigation,
+} from '../utils/internalAnchorNavigation'
 import { invalidateTheoremNumberMap, resetOccurrenceTracker } from '../utils/theorem'
 
 const DEFAULT_FONT_SIZE = '1rem'
@@ -857,12 +862,15 @@ export default defineAppSetup(({ app, router }) => {
   applyThemePresets(getThemeConfig())
   setupDarkModeSync(getThemeConfig())
   initializeFootnotePopovers()
+  initializeInternalAnchorNavigation(router)
   observeFootnoteLayout()
 
   if (typeof window !== 'undefined') {
     window.requestAnimationFrame(() => {
       enhanceFootnoteTriggers()
       scheduleFootnoteLayoutSync()
+      rebuildInternalAnchorTargets()
+      void resolvePendingInternalAnchorNavigation(router.currentRoute.value)
     })
   }
 
@@ -906,11 +914,17 @@ export default defineAppSetup(({ app, router }) => {
     { deep: true, immediate: true }
   )
 
+  watch(
+    () => slides.value.map(slide => slide.meta.slide.revision).join('|'),
+    () => rebuildInternalAnchorTargets(),
+  )
+
   // Reset theorem numbering state and update font sizing when navigating
   router.afterEach((to) => {
     updateFontSize(to)
     applyFootnoteDisplay(to)
     observeFootnoteLayout()
+    rebuildInternalAnchorTargets()
     resetOccurrenceTracker()
     hideFootnotePopover()
 
@@ -918,6 +932,7 @@ export default defineAppSetup(({ app, router }) => {
       window.requestAnimationFrame(() => {
         enhanceFootnoteTriggers()
         scheduleFootnoteLayoutSync()
+        void resolvePendingInternalAnchorNavigation(to)
       })
     }
 

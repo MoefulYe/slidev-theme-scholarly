@@ -5,6 +5,9 @@ const BIBLIOGRAPHY_MARKER = '[[bibliography]]'
 const REFERENCES_LAYOUT = 'references'
 const SCHOLARLY_CITATIONS_COMMENT_RE = /<!--\s*scholarly-citations:\s*\[.*?\]\s*-->\s*\n?/g
 const PROTECTED_BLOCKS_RE = /```[\s\S]*?```|<!--[\s\S]*?-->/g
+const ANCHOR_MARKER_CLASS = 'scholarly-anchor-marker'
+const HEADING_ID_SUFFIX_RE = /^([ \t]*#{1,6}\s+.*?)[ \t]+\{#([^\s}]+)\}[ \t]*$/gm
+const ANCHOR_SUGAR_RE = /^[ \t]*::anchor\{#([^\s}]+)\}[ \t]*$/gm
 
 export default defineTransformersSetup(() => ({
   pre: [transformScholarlyMarkdown],
@@ -185,6 +188,16 @@ function transformSyntaxSugar(content: string): string {
         result += '</Columns>'
         return result
       }
+    )
+
+    transformed = transformed.replace(
+      HEADING_ID_SUFFIX_RE,
+      (_, heading, id) => `${heading} <span id="${id}" class="${ANCHOR_MARKER_CLASS}" aria-hidden="true"></span>`,
+    )
+
+    transformed = transformed.replace(
+      ANCHOR_SUGAR_RE,
+      (_, id) => `<div id="${id}" class="${ANCHOR_MARKER_CLASS}" aria-hidden="true"></div>`,
     )
 
     return transformed
