@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-03-17
+
+This stable release rolls up all changes shipped after `v1.0.3`, including the `v1.1.x`, `v1.2.x`, and `v1.3.0-beta.1` prerelease series.
+
+### Upgrade Notes
+
+- **Runtime requirements**: Scholarly now targets **Node.js 20+** and **Slidev v52+**
+- **Citations**: Scholarly citations and bibliography generation are now handled directly by the theme; a project-level citation Vite bridge is no longer required for normal usage
+- **Figure layout**: Use `image:` instead of `src:` in `layout: figure` frontmatter, because `src:` is reserved by Slidev and can break build/export
+
+### Added
+
+- **Scholarly CLI**: Added `scholarly`, `sch`, and `sts` commands with starter templates (`academic`, `basic`, `zh`), theme/layout/component listing, snippet appenders, workflow helpers, and doctor commands
+- **Expanded layout library**: Grew the theme to **26 layouts**, including `toc`, `auto-size`, `agenda`, `methodology`, `results`, `timeline`, `acknowledgments`, and `references`
+- **Interactive presentation navigation**: Added Beamer-style footer navigation controls, outline/TOC drawer, section grouping, and hover previews in play mode
+- **Academic footnotes**: Added Markdown footnote popovers with `both`, `hover-only`, and `notes-only` display modes, plus global and per-slide configuration
+- **Internal anchor navigation**: Added slide-aware jumps for bibliography entries and generic `href="#..."` links, with a `Back to source` return action
+- **VS Code extension upgrades**: Added preview panels, synced layout/theme/component data, richer snippets, BibTeX completion and hover, internal anchor completion, references insertion commands, CLI actions, and dev-mode diagnostics
+- **Preview asset pipeline**: Added generated screenshots for layouts, themes, and components, and synced these assets into the documentation site and VS Code extension
+
+### Changed
+
+- **Citation pipeline**: Moved bibliography handling into the theme package and markdown transformers, simplifying normal project setup
+- **Shared metadata**: Centralized layouts and themes into shared JSON sources and reused them across docs, CLI, screenshots, and the VS Code extension
+- **Documentation**: Reworked English and Chinese docs, examples, screenshots, and quick-start guides to match the current feature set
+- **Release tooling**: Added dedicated version bump/sync scripts and separated the release/versioning flow for the npm theme and VS Code extension
+- **Component coverage**: Expanded and refined Theorem, Highlight, Columns, Keywords, Steps, Cite, and ThemePreview behavior and documentation
+
+### Removed
+
+- **Standalone citation bridge workflow**: Removed the old `setup vite` / citation helper flow and related preparser-based setup that is no longer needed in standard Scholarly projects
+
+### Fixed
+
+- **Theorem and slide state**: Improved theorem numbering stability, cached lookup logic, fixed-click handling, and slide frontmatter synchronization
+- **Footnote and typography behavior**: Fixed footnote positioning, short-slide layout behavior, dense-slide font sizing, and `auto-size` rendering consistency
+- **Navigation and anchors**: Fixed cross-slide citation jumps, internal anchor lookup, return-button placement, and generic internal link handling
+- **Preview correctness**: Fixed layout/component screenshot mismatches, stale export artifacts, preview image paths, and VS Code preview consistency
+- **Figure export reliability**: Resolved the `figure` frontmatter `src` conflict that caused missing slides and shifted screenshot mappings during build/export
+
 ## [1.0.0-beta.1] - 2026-01-07
 
 ### ⚠️ Breaking Changes
