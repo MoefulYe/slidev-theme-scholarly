@@ -661,6 +661,29 @@ Multiple works have contributed to this area @smith2023deep @wang2022attention.
 
 For a comprehensive introduction, see @bishop2006pattern.
 
+In interactive view, click any citation above to jump to its matching bibliography entry on the references slide.
+
+---
+layout: default
+title: Internal Anchor Navigation
+subtitle: Cross-Slide href Demo
+---
+
+<!--
+FEATURE: Internal anchor navigation
+- Click any in-text citation to jump to the matching bibliography entry
+- Use plain href="#target-id" links for arbitrary cross-slide navigation
+- Use the floating "Back to source" button after jumping
+-->
+
+## Jump Examples
+
+Try a bibliography jump here as well: @lecun2015deep.
+
+Try a custom cross-slide anchor: [Jump to the appendix-style target](#anchor-demo-proof).
+
+After the jump, use the floating `Back to source` button to return here.
+
 ---
 layout: default
 title: Footnotes
@@ -742,6 +765,24 @@ perPage: 3
 page: 2
 title: "References (continued)"
 -->
+
+---
+layout: default
+title: Internal Anchor Target
+subtitle: Generic href="#..." Destination
+---
+
+<!--
+FEATURE: Generic internal anchor target
+- Declare a target with heading syntax ## Title {#id}
+- Or place a standalone target using ::anchor{#id}
+-->
+
+## Appendix-Style Target {#anchor-demo-proof}
+
+This slide is a generic destination for internal `href="#..."` navigation.
+
+Jump here from the earlier link, then use `Back to source` to return to the previous slide position.
 
 ---
 layout: section

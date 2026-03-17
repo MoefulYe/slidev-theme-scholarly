@@ -618,6 +618,29 @@ subtitle: 学术文献引用支持
 
 如需全面了解，请参阅 @bishop2006pattern。
 
+在交互视图中，点击上面的任意 citation，即可跳转到 references 页中对应的参考文献条目。
+
+---
+layout: default
+title: 内部锚点跳转
+subtitle: 跨页 href 示例
+---
+
+<!--
+功能：内部锚点跳转
+- 点击行内 citation 跳到对应参考文献条目
+- 使用普通 href="#target-id" 实现任意跨页跳转
+- 跳转后使用浮动的 "Back to source" 按钮返回
+-->
+
+## 跳转示例
+
+这里也可以直接测试 bibliography 跳转：@lecun2015deep。
+
+也可以测试自定义跨页锚点：[跳到附录式目标页](#anchor-demo-proof)。
+
+跳转后，使用浮动的 `Back to source` 按钮返回这里。
+
 ---
 layout: default
 title: 注脚
@@ -699,6 +722,24 @@ perPage: 3
 page: 2
 title: "参考文献（续）"
 -->
+
+---
+layout: default
+title: 内部锚点目标
+subtitle: 通用 href="#..." 目标页
+---
+
+<!--
+功能：通用内部锚点目标
+- 使用 ## 标题 {#id} 声明目标位置
+- 或通过 ::anchor{#id} 放置一个独立锚点
+-->
+
+## 附录式目标页 {#anchor-demo-proof}
+
+这一页是普通内部 `href="#..."` 跳转的目标位置示例。
+
+可以从前面的链接跳到这里，然后使用 `Back to source` 回到之前的位置。
 
 ---
 layout: section
