@@ -198,13 +198,15 @@ icon: "▸"
 <!-- Slide 14: figure -->
 ---
 layout: figure
-src: https://picsum.photos/seed/diagram/1200/600
+image: https://picsum.photos/seed/diagram/1200/600
 caption: Overview of the proposed neural network architecture showing feature extraction, attention modules, and classification heads.
 label: "Figure 1:"
 title: System Architecture
 height: 65%
 fit: contain
 ---
+
+Additional description below the figure.
 
 <!-- Slide 15: split-image -->
 ---
@@ -367,6 +369,8 @@ items:
     title: Publication
     description: Submitted to top-tier conference
 ---
+
+Major milestones from the first literature review to the final conference submission.
 
 <!-- Slide 24: agenda -->
 ---

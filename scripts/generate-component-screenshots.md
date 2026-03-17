@@ -13,25 +13,17 @@ authors:
     institution: Documentation Team
 ---
 
-<!-- Slide 1: Block (Vue) -->
+<!-- Slide 1: block -->
 
-<Block type="info" title="Information">
-This is an informational block with important details.
+<Block type="info" title="Research Finding">
+Our evaluation shows a consistent accuracy gain across all three benchmark datasets while keeping inference latency within the target budget.
 </Block>
 
-<Block type="warning" title="Warning">
-This is a warning block to alert users.
-</Block>
-
-<Block type="example" title="Example">
-This demonstrates an example block.
-</Block>
-
-<!-- Slide 2: Theorem Components -->
+<!-- Slide 2: theorem -->
 ---
 layout: default
-title: Theorem Components
-subtitle: Mathematical environments
+title: Theorem Component
+subtitle: Formal mathematical statement
 ---
 
 <Theorem type="theorem" title="Pythagorean Theorem">
@@ -42,26 +34,18 @@ $$a^2 + b^2 = c^2$$
 
 </Theorem>
 
-<Theorem type="proof">
-By the definition of right triangles... $\square$
-</Theorem>
-
-<!-- Slide 3: Definition and Lemma -->
+<!-- Slide 3: definition -->
 ---
 layout: default
-title: Definition & Lemma
-subtitle: Mathematical statements
+title: Definition Component
+subtitle: Styled explanatory statement
 ---
 
 <Theorem type="definition" title="Continuous Function">
-A function $f$ is continuous at $x_0$ if $\lim_{x \to x_0} f(x) = f(x_0)$.
+A function is continuous at a point when arbitrarily small input changes produce arbitrarily small output changes.
 </Theorem>
 
-<Theorem type="lemma" title="Boundedness Lemma">
-Every continuous function on a closed interval is bounded.
-</Theorem>
-
-<!-- Slide 4: Highlight Component -->
+<!-- Slide 4: highlight -->
 ---
 layout: default
 title: Highlight Component
@@ -78,7 +62,7 @@ Consider the <Highlight type="success">success highlight</Highlight> for achieve
 
 Also available: <Highlight type="info">info</Highlight> and <Highlight type="error">error</Highlight> styles.
 
-<!-- Slide 5: Steps Component -->
+<!-- Slide 5: steps -->
 ---
 layout: default
 title: Steps Component
@@ -92,7 +76,7 @@ subtitle: Step-by-step process
   { title: 'Evaluation', description: 'Test and validate results' }
 ]" :activeStep="2" />
 
-<!-- Slide 6: Columns Component -->
+<!-- Slide 6: columns -->
 ---
 layout: default
 title: Columns Component
@@ -114,7 +98,7 @@ Second column with different information.
 Third column completing the layout.
 :::
 
-<!-- Slide 7: Keywords Component -->
+<!-- Slide 7: keywords -->
 ---
 layout: default
 title: Keywords Component
@@ -125,27 +109,32 @@ subtitle: Tag-style keywords
 
 <Keywords :keywords="['Machine Learning', 'Neural Networks', 'Computer Vision', 'Deep Learning', 'Optimization']" />
 
-## Technology Stack
-
-<Keywords :keywords="['Python', 'PyTorch', 'TensorFlow', 'CUDA']" color="green" />
-
-<!-- Slide 8: Cite Component -->
+<!-- Slide 8: cite -->
 ---
 layout: default
 title: Cite Component
-subtitle: Citation annotations
+subtitle: Manual citation note
 ---
 
 ## Research Background
 
 Recent studies have shown significant improvements in model accuracy.
 
-<Cite :inline="true">
-Smith et al. (2023) demonstrated that attention mechanisms improve performance by 15%.
-</Cite>
-
-This finding aligns with our experimental results.
-
 <Cite>
 For comprehensive analysis, see Johnson & Williams (2024), "Advanced Methods in Deep Learning", pp. 45-67.
 </Cite>
+
+<!-- Slide 9: theme-preview -->
+---
+layout: default
+title: ThemePreview Component
+subtitle: Local color theme preview
+---
+
+<ThemePreview colorTheme="oxford-burgundy">
+
+## Local Theme Preview
+
+This block previews a Scholarly color theme without changing the rest of the slide.
+
+</ThemePreview>

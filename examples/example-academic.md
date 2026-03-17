@@ -166,7 +166,7 @@ PURPOSE: Show step-by-step process with active step highlighted
 
 ---
 layout: figure
-src: https://cover.sli.dev
+image: https://cover.sli.dev
 caption: Overview of our proposed architecture showing the main components and data flow.
 label: "Figure 1:"
 title: System Architecture
@@ -176,7 +176,7 @@ title: System Architecture
 SLIDE: Figure
 LAYOUT: figure
 PURPOSE: Display image with caption and label
-OPTIONS: src, caption, label, fit
+OPTIONS: image, caption, label, fit
 -->
 
 The model consists of three main modules working together.

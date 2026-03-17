@@ -43,8 +43,8 @@ async function runScript(name, scriptPath) {
 async function main() {
   console.log('🎨 Generating all preview screenshots...\n')
   console.log('This will generate:')
-  console.log('  - Layout screenshots (25 layouts)')
-  console.log('  - Component screenshots (8 components)')
+  console.log('  - Layout screenshots (26 layouts)')
+  console.log('  - Component screenshots (9 components)')
   console.log('  - Theme screenshots (9 themes × 4 slides)')
 
   let failed = 0
