@@ -39,6 +39,11 @@ Each type has a different color:
 | `definition` | Definition | 定义 | Amber |
 | `example` | Example | 例 | Pink |
 | `remark` | Remark | 注 | Gray |
+| `proof` | Proof | 证明 | Slate |
+| `note` | Note | 注意 | Sky |
+| `claim` | Claim | 断言 | Indigo |
+
+`proof` and `note` are rendered without automatic numbering by default. `claim` participates in the same auto-numbering flow as the other numbered theorem types.
 
 ### Examples
 

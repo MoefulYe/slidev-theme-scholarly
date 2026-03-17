@@ -14,7 +14,7 @@ title: VS Code 插件
 - 📝 **一键插入/应用** - 点击面板中的项目即可插入内容或更新 frontmatter
 - 🚀 **新建演示** - 创建带有预配置模板的新演示文稿
 - 🎨 **主题预设** - 在 Themes 面板中一键应用 `themeConfig.colorTheme` / `themeConfig.fontTheme`
-- 📚 **BibTeX 参考文献** - 引用补全、悬浮预览，以及 References 面板浏览/插入 cite key
+- 📚 **参考文献与锚点** - BibTeX 引用补全/悬浮预览，加上内部锚点补全与统一的 References 面板
 - 🧪 **Dev Mode** - 内置性能诊断，提供耗时日志与慢操作标记
 
 ## 安装方法
@@ -49,6 +49,7 @@ scholarly-cite # 插入引用
 - `colorTheme:` / `fontTheme:` / `colorMode:` -> 主题配置值候选
 - `<` -> Scholarly 组件候选（`Theorem`、`Block`、`Columns` 等）
 - `:::` -> Markdown 语法糖指令候选（`theorem`、`block`、`keywords` 等）
+- `](#` / `href="#` / `to="#` -> 当前文档中可用的内部锚点 id
 - `ss-` / `scholarly-` -> 内置 snippet 候选
 
 如果没有自动弹出建议，可按 `Ctrl+Space`（macOS 也可使用 `Cmd+Space`，若未被系统占用）手动触发。
@@ -82,7 +83,7 @@ scholarly-cite # 插入引用
    - **Components（组件）** - 内置 Vue 组件
    - **Templates（模板）** - 预制的演示文稿模板
    - **Themes（主题）** - 应用主题预设（会更新 frontmatter）
-   - **References（参考文献）** - 浏览 BibTeX 条目并插入 cite key
+   - **References（参考文献）** - 同时浏览 BibTeX 条目和内部锚点，并插入 cite key 或 `#anchor-id`
    - **CLI** - 在侧边栏直接运行 Scholarly CLI：
      - *Create* - 新建演示与模板列表
      - *Theme* - 应用/查看主题，应用预设组合，查看布局/组件清单

@@ -6,6 +6,8 @@ title: ThemePreview
 
 The `ThemePreview` component is a lightweight wrapper for previewing one of the Scholarly color themes inside a block. It sets a small set of CSS variables for the content inside the component only.
 
+![ThemePreview example](/images/components/theme-preview.png)
+
 ## Basic Usage
 
 ```markdown

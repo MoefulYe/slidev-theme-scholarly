@@ -159,7 +159,7 @@ icon: "→"
 ```markdown
 ---
 layout: figure
-src: ./images/architecture.png
+image: ./images/architecture.png
 caption: 我们提出的系统架构概览。
 label: "图 1："
 title: 系统架构
@@ -169,8 +169,10 @@ height: 60%
 图片下方的额外描述。
 ```
 
+在 Slidev 的 frontmatter 里请使用 `image`，不要使用 `src`。`src` 是 Slidev 用于外部幻灯片源的保留字段，使用它会导致 figure 页面在 build/export 时被吞掉。
+
 **属性：**
-- `src`：图片 URL 或路径
+- `image`：图片 URL 或路径
 - `caption`：图片说明
 - `label`：标签前缀（如 "图 1："）
 - `title`：幻灯片标题

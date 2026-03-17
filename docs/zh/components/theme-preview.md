@@ -6,6 +6,8 @@ title: ThemePreview
 
 `ThemePreview` 是一个用于在局部区域预览 Scholarly 配色主题的包装组件。它只会为组件内部内容设置一组预览用的 CSS 变量，不会影响全局主题。
 
+![ThemePreview 示例](/images/components/theme-preview.png)
+
 ## 基本用法
 
 ```markdown

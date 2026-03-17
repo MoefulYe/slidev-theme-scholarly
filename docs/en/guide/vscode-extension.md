@@ -14,7 +14,7 @@ We provide a VS Code extension to boost your productivity when creating Slidev p
 - 📝 **One-Click Insert** - Click any item in the panel to insert code at cursor position
 - 🚀 **New Presentation** - Create a new presentation with pre-configured template
 - 🎨 **Theme Presets** - Apply `themeConfig.colorTheme` / `themeConfig.fontTheme` from the Themes view
-- 📚 **BibTeX References** - Completion, hover, and a References view for your `.bib` file
+- 📚 **References & Anchors** - BibTeX completion/hover plus internal-anchor completion and a unified References view
 - 🧪 **Dev Mode** - Built-in performance diagnostics with timing logs and slow-operation markers
 
 ## Installation
@@ -49,6 +49,7 @@ The extension also provides context-aware completion suggestions:
 - `colorTheme:` / `fontTheme:` / `colorMode:` -> theme values
 - `<` -> Scholarly components (`Theorem`, `Block`, `Columns`, ...)
 - `:::` -> Markdown syntax sugar directives (`theorem`, `block`, `keywords`, ...)
+- `](#` / `href="#` / `to="#` -> internal anchor ids from the current document
 - `ss-` / `scholarly-` -> built-in snippet candidates
 
 If suggestions are not shown automatically, use `Ctrl+Space` (or `Cmd+Space` on macOS if available).
@@ -82,7 +83,7 @@ If you develop the extension locally, use the debug target `Run Extension (Dev M
    - **Components** - Built-in Vue components
    - **Templates** - Pre-made presentation templates
    - **Themes** - Apply theme presets (updates frontmatter)
-   - **References** - Browse BibTeX entries and insert cite keys
+   - **References** - Browse both BibTeX citations and internal anchors, then insert cite keys or `#anchor-id` targets
    - **CLI** - Run Scholarly CLI actions from sidebar:
      - *Create* - new presentation and template list
      - *Theme* - apply/list themes, apply preset combos, list layouts/components
