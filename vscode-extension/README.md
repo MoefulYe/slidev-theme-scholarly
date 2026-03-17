@@ -16,7 +16,7 @@ The extension adds a dedicated panel in the VS Code Secondary Side Bar with six 
 - **Components** - Vue components and syntax sugar
 - **Templates** - Quick-start presentation templates
 - **Themes** - Apply `themeConfig` presets (colorTheme / fontTheme)
-- **References** - Browse BibTeX entries and insert cite keys
+- **References** - Browse BibTeX citations and internal anchors, then insert cite keys or `#anchor-id`
 - **CLI** - Run Scholarly CLI actions directly from sidebar:
   - *Create* - `init` and template list
   - *Theme* - apply/list themes, apply preset combos, list layouts/components
@@ -38,6 +38,7 @@ In Markdown files, Scholarly-specific suggestions now appear while typing (witho
 - `colorTheme:` / `fontTheme:` / `colorMode:` -> themeConfig value candidates
 - `<` -> component candidates such as `Theorem`, `Block`, `Steps`
 - `:::` -> syntax sugar directive candidates such as `theorem`, `block`, `columns`
+- `](#` / `href="#` / `to="#` -> internal anchor ids from the current Markdown document
 - `ss-` / `scholarly-` -> snippet candidates from built-in snippet library
 
 If suggestions do not pop up automatically, press `Ctrl+Space` (`Cmd+Space` on macOS if available) to trigger completion.

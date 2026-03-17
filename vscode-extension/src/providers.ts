@@ -320,7 +320,7 @@ icon: "▸"
         icon: '🖼️',
         snippet: `---
 layout: figure
-src: https://example.com/figure.jpg
+image: https://example.com/figure.jpg
 caption: Figure caption describing the image.
 label: "Figure 1:"
 title: Figure Title
@@ -659,6 +659,18 @@ Proof content here. $\\square$
     snippet: `<Theorem type="corollary" title="Corollary">
 
 Corollary statement here.
+
+</Theorem>
+
+`
+  },
+  {
+    label: 'Claim',
+    description: 'Claim statement',
+    icon: '📣',
+    snippet: `<Theorem type="claim" title="Claim">
+
+Claim statement here.
 
 </Theorem>
 

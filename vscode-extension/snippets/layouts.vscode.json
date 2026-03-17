@@ -218,7 +218,7 @@
     "body": [
       "---",
       "layout: figure",
-      "src: ${1:https://example.com/figure.jpg}",
+      "image: ${1:https://example.com/figure.jpg}",
       "caption: ${2:Figure caption.}",
       "label: \"${3:Figure 1:}\"",
       "title: ${4:Figure Title}",
