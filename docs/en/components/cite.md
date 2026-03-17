@@ -119,6 +119,16 @@ If you want custom placement inside a references slide, add `[[bibliography]]` e
 
 Normal theme usage does not require a project-level `vite.config.ts`; Scholarly registers the citation hooks from the theme package itself.
 
+## Internal Anchor Jumps
+
+In Slidev's interactive view, Scholarly now upgrades internal `href="#..."` links into slide-aware jumps:
+
+- In-text BibTeX citations can jump to the matching bibliography entry, even when the references list is on another slide
+- Generic internal links such as `[Jump](#appendix-proof)` work across slides when the target is declared with `## Appendix {#appendix-proof}`, `::anchor{#appendix-proof}`, or an explicit `id="appendix-proof"`
+- After jumping, a floating `Back to source` button appears so you can return to the previous citation or link position
+
+This behavior is designed for live presentations and local browser viewing. Print and export outputs keep the normal static content.
+
 ## Pagination
 
 For long reference lists, use pagination:

@@ -119,6 +119,16 @@ layout: references
 
 正常使用这个主题时，不需要额外维护项目级 `vite.config.ts`；Scholarly 会从主题包内部自动注册 citation 相关 hook。
 
+## 内部锚点跳转
+
+在 Slidev 的交互式浏览视图中，Scholarly 会把内部 `href="#..."` 链接升级成支持跨页的跳转：
+
+- 文中的 BibTeX citation 可以直接跳到对应的参考文献条目，即使参考文献列表在另一页
+- 普通内部链接如 `[跳转](#appendix-proof)` 也可以跨页工作，只要目标位置使用了 `## 标题 {#appendix-proof}`、`::anchor{#appendix-proof}`，或者显式声明了 `id="appendix-proof"`
+- 跳转后会出现一个浮动的 `Back to source` 按钮，用来回到之前的 citation 或链接位置
+
+这个能力主要用于现场演示和浏览器中的交互式查看；打印和导出结果仍然保持静态内容。
+
 ## 分页
 
 对于较长的参考文献列表，使用分页：
