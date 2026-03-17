@@ -219,24 +219,24 @@
 }
 
 /* Let footnotes sit near the bottom of the content area on short slides. */
-:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout.default .content-wrapper:has(.content-inner > .footnotes),
-:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout.intro .intro-content:has(.content-inner > .footnotes),
-:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout.bullets .bullets-container:has(.bullets-content > .footnotes),
-:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .content-wrapper-centered:has(.content-inner > .footnotes) {
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout.default .content-wrapper[data-scholarly-has-footnotes="true"],
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout.intro .intro-content[data-scholarly-has-footnotes="true"],
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout.bullets .bullets-container[data-scholarly-has-footnotes="true"],
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .content-wrapper-centered[data-scholarly-has-footnotes="true"] {
   padding-bottom: calc(var(--scholarly-footer-height) + 0.1rem) !important;
 }
 
-:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .content-inner:has(> .footnotes),
-:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .bullets-content:has(> .footnotes),
-:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .prose:has(> .footnotes) {
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .content-inner[data-scholarly-has-footnotes="true"],
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .bullets-content[data-scholarly-has-footnotes="true"],
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .prose[data-scholarly-has-footnotes="true"] {
   min-height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .content-inner:has(> .footnotes) > .footnotes-sep,
-:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .bullets-content:has(> .footnotes) > .footnotes-sep,
-:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .prose:has(> .footnotes) > .footnotes-sep {
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .content-inner[data-scholarly-has-footnotes="true"] > .footnotes-sep,
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .bullets-content[data-scholarly-has-footnotes="true"] > .footnotes-sep,
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .prose[data-scholarly-has-footnotes="true"] > .footnotes-sep {
   margin-top: auto;
 }
 

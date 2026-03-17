@@ -95,8 +95,12 @@ export function useAutoFontSize(
   let resizeObserver: ResizeObserver | undefined
   let mutationObserver: MutationObserver | undefined
   let rafId: number | null = null
+  let nextTickPending = false
+  let scheduleEpoch = 0
 
   const cancelScheduledAdjust = () => {
+    scheduleEpoch += 1
+    nextTickPending = false
     if (rafId !== null && isClient) {
       cancelAnimationFrame(rafId)
       rafId = null
@@ -109,8 +113,6 @@ export function useAutoFontSize(
     const content = contentRef.value
 
     if (!wrapper || !content) return
-
-    cancelScheduledAdjust()
 
     if (explicitFontSize.value) {
       fontSize.value = explicitFontSize.value
@@ -161,10 +163,22 @@ export function useAutoFontSize(
 
   const scheduleAdjust = () => {
     if (!isClient) return
-    cancelScheduledAdjust()
+    if (nextTickPending || rafId !== null)
+      return
+
+    const epoch = scheduleEpoch
+    nextTickPending = true
     nextTick(() => {
-      cancelScheduledAdjust()
+      if (epoch !== scheduleEpoch)
+        return
+
+      nextTickPending = false
       rafId = requestAnimationFrame(() => {
+        if (epoch !== scheduleEpoch) {
+          rafId = null
+          return
+        }
+
         adjustFontSize()
         rafId = null
       })
@@ -199,7 +213,6 @@ export function useAutoFontSize(
     if (typeof ResizeObserver !== 'undefined') {
       resizeObserver = new ResizeObserver(() => scheduleAdjust())
       if (wrapperRef.value) resizeObserver.observe(wrapperRef.value)
-      if (contentRef.value) resizeObserver.observe(contentRef.value)
     }
 
     if (typeof MutationObserver !== 'undefined' && contentRef.value) {

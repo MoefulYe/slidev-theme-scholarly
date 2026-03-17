@@ -191,9 +191,12 @@ let darkModeObserver: MutationObserver | null = null
 
 const FOOTNOTE_TRIGGER_SELECTOR = '.slidev-layout sup.footnote-ref a[href^="#fn"]'
 const FOOTNOTE_SCOPE_SELECTOR = '.slidev-layout'
+const FOOTNOTE_LAYOUT_CONTENT_SELECTOR = '.content-inner, .bullets-content, .prose, .references-content'
+const FOOTNOTE_LAYOUT_WRAPPER_SELECTOR = '.content-wrapper, .intro-content, .bullets-container, .content-wrapper-centered'
 const FOOTNOTE_ACTIVE_ATTR = 'data-scholarly-footnote-active'
 const FOOTNOTE_PINNED_ATTR = 'data-scholarly-footnote-pinned'
 const FOOTNOTE_DISPLAY_ATTR = 'data-scholarly-footnote-display'
+const FOOTNOTE_LAYOUT_ATTR = 'data-scholarly-has-footnotes'
 const FOOTNOTE_HIDE_DELAY = 120
 type FootnoteDisplayMode = 'both' | 'hover-only' | 'notes-only'
 
@@ -209,6 +212,7 @@ type FootnotePopoverState = {
 
 type FootnotePopoverWindow = Window & typeof globalThis & {
   __scholarlyFootnotePopoverCleanup?: () => void
+  __scholarlyFootnoteLayoutCleanup?: () => void
 }
 
 const footnotePopoverState: FootnotePopoverState = {
@@ -220,6 +224,9 @@ const footnotePopoverState: FootnotePopoverState = {
   pinnedAnchor: null,
   hideTimer: null,
 }
+
+let footnoteLayoutObserver: MutationObserver | null = null
+let footnoteLayoutSyncRaf: number | null = null
 
 const normalizeFootnoteDisplay = (value: unknown): FootnoteDisplayMode => {
   if (typeof value !== 'string')
@@ -313,6 +320,92 @@ const enhanceFootnoteTriggers = () => {
       delete anchor.dataset.scholarlyFootnoteTrigger
     }
   })
+}
+
+const setFootnoteLayoutState = (element: Element, enabled: boolean) => {
+  const hasState = element.getAttribute(FOOTNOTE_LAYOUT_ATTR) === 'true'
+  if (enabled === hasState)
+    return
+
+  if (enabled)
+    element.setAttribute(FOOTNOTE_LAYOUT_ATTR, 'true')
+  else
+    element.removeAttribute(FOOTNOTE_LAYOUT_ATTR)
+}
+
+const hasDirectFootnotes = (element: Element) => {
+  return Array.from(element.children).some((child) => child.classList.contains('footnotes'))
+}
+
+const syncFootnoteLayoutState = () => {
+  if (typeof document === 'undefined')
+    return
+
+  document.querySelectorAll<HTMLElement>(FOOTNOTE_SCOPE_SELECTOR).forEach((root) => {
+    root.querySelectorAll<HTMLElement>(FOOTNOTE_LAYOUT_CONTENT_SELECTOR).forEach((container) => {
+      setFootnoteLayoutState(container, hasDirectFootnotes(container))
+    })
+
+    root.querySelectorAll<HTMLElement>(FOOTNOTE_LAYOUT_WRAPPER_SELECTOR).forEach((wrapper) => {
+      const hasFootnotes = Array.from(
+        wrapper.querySelectorAll<HTMLElement>(FOOTNOTE_LAYOUT_CONTENT_SELECTOR),
+      ).some(container => container.getAttribute(FOOTNOTE_LAYOUT_ATTR) === 'true')
+      setFootnoteLayoutState(wrapper, hasFootnotes)
+    })
+  })
+}
+
+const cancelFootnoteLayoutSync = () => {
+  if (footnoteLayoutSyncRaf !== null) {
+    window.cancelAnimationFrame(footnoteLayoutSyncRaf)
+    footnoteLayoutSyncRaf = null
+  }
+}
+
+const scheduleFootnoteLayoutSync = () => {
+  if (typeof window === 'undefined' || footnoteLayoutSyncRaf !== null)
+    return
+
+  footnoteLayoutSyncRaf = window.requestAnimationFrame(() => {
+    footnoteLayoutSyncRaf = null
+    syncFootnoteLayoutState()
+  })
+}
+
+const observeFootnoteLayout = () => {
+  if (typeof window === 'undefined')
+    return
+
+  const globalWindow = window as FootnotePopoverWindow
+  globalWindow.__scholarlyFootnoteLayoutCleanup?.()
+
+  const scope = document.querySelector<HTMLElement>(FOOTNOTE_SCOPE_SELECTOR) ?? document.body
+
+  if (typeof MutationObserver !== 'undefined') {
+    footnoteLayoutObserver = new MutationObserver((mutations) => {
+      if (!mutations.some(mutation => mutation.type === 'childList' || mutation.type === 'characterData'))
+        return
+
+      scheduleFootnoteLayoutSync()
+    })
+
+    footnoteLayoutObserver.observe(scope, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    })
+  }
+
+  globalWindow.__scholarlyFootnoteLayoutCleanup = () => {
+    cancelFootnoteLayoutSync()
+    footnoteLayoutObserver?.disconnect()
+    footnoteLayoutObserver = null
+    document.querySelectorAll<HTMLElement>(`[${FOOTNOTE_LAYOUT_ATTR}]`).forEach((element) => {
+      element.removeAttribute(FOOTNOTE_LAYOUT_ATTR)
+    })
+  }
+
+  scheduleFootnoteLayoutSync()
 }
 
 const getFootnoteItemForAnchor = (anchor: HTMLAnchorElement): HTMLElement | null => {
@@ -764,10 +857,12 @@ export default defineAppSetup(({ app, router }) => {
   applyThemePresets(getThemeConfig())
   setupDarkModeSync(getThemeConfig())
   initializeFootnotePopovers()
+  observeFootnoteLayout()
 
   if (typeof window !== 'undefined') {
     window.requestAnimationFrame(() => {
       enhanceFootnoteTriggers()
+      scheduleFootnoteLayoutSync()
     })
   }
 
@@ -815,12 +910,14 @@ export default defineAppSetup(({ app, router }) => {
   router.afterEach((to) => {
     updateFontSize(to)
     applyFootnoteDisplay(to)
+    observeFootnoteLayout()
     resetOccurrenceTracker()
     hideFootnotePopover()
 
     if (typeof window !== 'undefined') {
       window.requestAnimationFrame(() => {
         enhanceFootnoteTriggers()
+        scheduleFootnoteLayoutSync()
       })
     }
 
