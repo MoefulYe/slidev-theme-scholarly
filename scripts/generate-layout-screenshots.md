@@ -81,13 +81,34 @@ subtitle: Comprehensive Evaluation
 
 Our approach achieves superior results across multiple datasets while maintaining computational efficiency
 
-<!-- Slide 7: toc -->
+<!-- Slide 7: auto-size -->
+---
+layout: auto-size
+title: Dense Technical Summary
+subtitle: Fit-to-page layout preview
+autoSizeGrow: true
+autoSizeAlign: top
+autoSizePadding: normal
+minFontSize: 14
+maxFontSize: 28
+---
+
+## Compact Summary
+
+- **Dataset scale**: 1.2M training images across 1,000 categories
+- **Training recipe**: mixed precision, cosine decay, progressive resizing
+- **Inference target**: sustain triple-digit FPS on a single workstation GPU
+- **Deployment note**: layout automatically balances heading size and body density
+
+This slide intentionally packs more text than the standard default layout so the screenshot shows how `auto-size` preserves hierarchy while shrinking content to fit the available canvas.
+
+<!-- Slide 8: toc -->
 ---
 layout: toc
 title: Presentation Outline
 ---
 
-<!-- Slide 8: end -->
+<!-- Slide 9: end -->
 ---
 layout: end
 email: ab.smith@xyz-tech.edu
@@ -98,7 +119,7 @@ qrcodeLabel: Paper & Code
 
 Thank you for your attention!
 
-<!-- Slide 9: two-cols -->
+<!-- Slide 10: two-cols -->
 ---
 layout: two-cols
 ratio: "1:1"
@@ -121,7 +142,7 @@ title: Architecture Comparison
 - Efficient parameters
 - Parallel processing
 
-<!-- Slide 10: image-left -->
+<!-- Slide 11: image-left -->
 ---
 layout: image-left
 image: https://picsum.photos/seed/network/800/600
@@ -140,7 +161,7 @@ Key innovations:
 
 The architecture diagram shows the complete pipeline from input to output.
 
-<!-- Slide 11: image-right -->
+<!-- Slide 12: image-right -->
 ---
 layout: image-right
 image: https://picsum.photos/seed/results/800/600
@@ -159,7 +180,7 @@ Example predictions demonstrate:
 
 See detailed visualizations on the right.
 
-<!-- Slide 12: bullets -->
+<!-- Slide 13: bullets -->
 ---
 layout: bullets
 title: Key Contributions
@@ -174,7 +195,7 @@ icon: "▸"
 - **Benchmark Results** - State-of-the-art on 5 major datasets
 - **Efficiency** - 3x faster inference with comparable accuracy
 
-<!-- Slide 13: figure -->
+<!-- Slide 14: figure -->
 ---
 layout: figure
 src: https://picsum.photos/seed/diagram/1200/600
@@ -185,7 +206,7 @@ height: 65%
 fit: contain
 ---
 
-<!-- Slide 14: split-image -->
+<!-- Slide 15: split-image -->
 ---
 layout: split-image
 images:
@@ -197,7 +218,7 @@ captions:
 title: Prediction Examples
 ---
 
-<!-- Slide 15: quote -->
+<!-- Slide 16: quote -->
 ---
 layout: quote
 author: Prof. E.F. Davis
@@ -206,7 +227,7 @@ source: Neural Information Processing Systems, 2012
 
 The future of AI lies in systems that can learn hierarchical representations without explicit programming.
 
-<!-- Slide 16: fact -->
+<!-- Slide 17: fact -->
 ---
 layout: fact
 color: blue
@@ -216,7 +237,7 @@ color: blue
 
 Training time compared to baseline methods
 
-<!-- Slide 17: statement -->
+<!-- Slide 18: statement -->
 ---
 layout: statement
 author: Research Team
@@ -226,7 +247,7 @@ author: Research Team
 
 Our approach proves you don't have to sacrifice one for the other
 
-<!-- Slide 18: focus -->
+<!-- Slide 19: focus -->
 ---
 layout: focus
 color: amber
@@ -237,7 +258,7 @@ icon: "🎯"
 
 How can we build accurate models that remain computationally efficient for real-world deployment?
 
-<!-- Slide 19: compare -->
+<!-- Slide 20: compare -->
 ---
 layout: compare
 title: Method Comparison
@@ -263,7 +284,7 @@ rightColor: green
 - Memory: 2.8 GB
 - Training: 18 hours
 
-<!-- Slide 20: methodology -->
+<!-- Slide 21: methodology -->
 ---
 layout: methodology
 ratio: "1:1"
@@ -294,7 +315,7 @@ graph TD
     E --> F[Deployment]
 ```
 
-<!-- Slide 21: results -->
+<!-- Slide 22: results -->
 ---
 layout: results
 cols: 2
@@ -325,7 +346,7 @@ title: Performance Metrics
   <p class="text-sm text-gray-600">Power Consumption</p>
 </div>
 
-<!-- Slide 22: timeline -->
+<!-- Slide 23: timeline -->
 ---
 layout: timeline
 title: Project Timeline
@@ -347,7 +368,7 @@ items:
     description: Submitted to top-tier conference
 ---
 
-<!-- Slide 23: agenda -->
+<!-- Slide 24: agenda -->
 ---
 layout: agenda
 title: Presentation Outline
@@ -361,7 +382,7 @@ items:
   - Conclusions
 ---
 
-<!-- Slide 24: acknowledgments -->
+<!-- Slide 25: acknowledgments -->
 ---
 layout: acknowledgments
 title: Acknowledgments
@@ -377,7 +398,7 @@ collaborators:
 
 Special thanks to our amazing research team and computing infrastructure support.
 
-<!-- Slide 25: references -->
+<!-- Slide 26: references -->
 ---
 layout: references
 ---
