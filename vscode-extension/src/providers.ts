@@ -37,7 +37,7 @@ function createLayoutTooltip(
   md.baseUri = extensionUri;
   md.supportHtml = true;
   if (hasPreview(extensionUri, 'media', 'previews', 'layouts', `${layoutId}.png`)) {
-    md.appendMarkdown(`![${layoutId}](media/previews/layouts/${layoutId}.png)\n\n`);
+    md.appendMarkdown(`![${layoutId}](./media/previews/layouts/${layoutId}.png)\n\n`);
   }
   md.appendMarkdown(`**${layoutId}** — ${description}\n\n`);
   md.appendMarkdown(toMarkdownCodeBlock(snippet));
@@ -56,7 +56,7 @@ function createComponentTooltip(
   md.supportHtml = true;
   const file = getComponentPreviewFile(label);
   if (file && hasPreview(extensionUri, 'media', 'previews', 'components', `${file}.png`)) {
-    md.appendMarkdown(`![${label}](media/previews/components/${file}.png)\n\n`);
+    md.appendMarkdown(`![${label}](./media/previews/components/${file}.png)\n\n`);
   }
   md.appendMarkdown(`**${label}** — ${description}\n\n`);
   md.appendMarkdown(toMarkdownCodeBlock(snippet));
@@ -77,7 +77,7 @@ function createThemeTooltip(
   if (colorTheme) {
     const dir = getColorThemePreviewDir(colorTheme);
     if (dir && hasPreview(extensionUri, 'media', 'previews', 'themes', dir, '1.png')) {
-      md.appendMarkdown(`![${label}](media/previews/themes/${dir}/1.png)\n\n`);
+      md.appendMarkdown(`![${label}](./media/previews/themes/${dir}/1.png)\n\n`);
     }
   }
 
