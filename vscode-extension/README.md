@@ -4,19 +4,25 @@ VS Code extension for quickly inserting Slidev Theme Scholarly layouts and compo
 
 ## Features
 
-### 🎯 Activity Bar Panel
+### 🎯 Secondary Side Bar Panel
 
-The extension adds a dedicated panel in the VS Code Activity Bar with five sections:
+The extension adds a dedicated panel in the VS Code Secondary Side Bar with six sections:
 
 - **Layouts** - Slide layouts organized by category:
-  - *Structure* - cover, default, intro, section, center, auto-center, end
+  - *Structure* - cover, default, intro, section, center, auto-center, auto-size, toc, end
   - *Content* - two-cols, image-left/right, bullets, figure, split-image
   - *Emphasis* - quote, fact, statement, focus
   - *Academic* - compare, methodology, results, timeline, agenda, acknowledgments, references
 - **Components** - Vue components and syntax sugar
 - **Templates** - Quick-start presentation templates
 - **Themes** - Apply `themeConfig` presets (colorTheme / fontTheme)
-- **References** - Browse BibTeX entries and insert cite keys
+- **References** - Browse BibTeX citations and internal anchors, then insert cite keys or `#anchor-id`
+- **CLI** - Run Scholarly CLI actions directly from sidebar:
+  - *Create* - `init` and template list
+  - *Theme* - apply/list themes, apply preset combos, list layouts/components
+  - *Snippets* - append/show/list Scholarly snippets and append workflows
+  - *Tools* - `doctor` and `help`
+- **Preview** - Click the 👁️ icon on any layout, component, or theme to see a visual preview
 
 Click any item to insert content at the cursor or update frontmatter.
 
@@ -24,9 +30,45 @@ Click any item to insert content at the cursor or update frontmatter.
 
 Type the prefix and press `Tab` to expand snippets:
 
+### ⚡ Smart Completion (New)
+
+In Markdown files, Scholarly-specific suggestions now appear while typing (without memorizing all prefixes):
+
+- `layout:` -> layout candidates such as `cover`, `default`, `methodology`
+- `colorTheme:` / `fontTheme:` / `colorMode:` -> themeConfig value candidates
+- `<` -> component candidates such as `Theorem`, `Block`, `Steps`
+- `:::` -> syntax sugar directive candidates such as `theorem`, `block`, `columns`
+- `](#` / `href="#` / `to="#` -> internal anchor ids from the current Markdown document
+- `ss-` / `scholarly-` -> snippet candidates from built-in snippet library
+
+If suggestions do not pop up automatically, press `Ctrl+Space` (`Cmd+Space` on macOS if available) to trigger completion.
+
+### 👁️ Visual Previews (New)
+
+The extension now features a dedicated Preview panel. Simply click the eye icon (👁️) next to any Layout, Component, or Theme in the sidebar to view a high-quality visualization of how it looks in the rendered slides.
+
+### 🧪 Dev Mode (Performance Testing)
+
+For extension performance diagnostics, enable dev mode:
+
+- Command Palette: `Slidev Scholarly: Toggle Dev Mode`
+- Settings:
+  - `slidevScholarly.devMode.enabled` (boolean)
+  - `slidevScholarly.devMode.slowThresholdMs` (number, default: `25`)
+
+When enabled:
+
+- A `Scholarly Dev` status-bar indicator appears
+- The `Slidev Scholarly` output channel prints timing logs
+- Slow operations are marked as `SLOW` when exceeding your threshold
+
+For local extension-host debugging, use `.vscode/launch.json` -> `Run Extension (Dev Mode)`.
+
 #### Layout Snippets
 
 Layouts are organized into four categories. Use category-specific prefixes (`ss-structure-*`, `ss-content-*`, `ss-emphasis-*`, `ss-academic-*`) or the shorter `ss-*` prefix.
+
+The `ss-*` prefixes are the canonical snippet names shown in completion. Legacy `scholarly-*` aliases are still accepted by the extension's smart completion for compatibility.
 
 **Structure Layouts**
 
@@ -38,6 +80,8 @@ Layouts are organized into four categories. Use category-specific prefixes (`ss-
 | `ss-section` | Section divider |
 | `ss-center` | Centered content |
 | `ss-auto-center` | Auto-adjusting centered content |
+| `ss-auto-size` | Default flow with fit-to-page sizing |
+| `ss-toc` | Auto-generated table of contents |
 | `ss-end` | Closing slide |
 
 **Content Layouts**
@@ -136,7 +180,7 @@ Search for "Slidev Scholarly Snippets" in the VS Code Extensions marketplace.
 
 1. Open a Markdown file (`.md`)
 2. Use one of these methods:
-   - **Activity Bar**: Click the Slidev Scholarly icon in the sidebar
+  - **Secondary Side Bar**: Click the Slidev Scholarly view in the right sidebar
    - **Snippets**: Type `ss-` and select from autocomplete
    - **Command Palette**: `Cmd+Shift+P` → "Slidev Scholarly"
 
@@ -152,6 +196,8 @@ lang: en
 themeConfig:
   colorTheme: classic-blue
   fontTheme: classic
+  outlineToc: true
+  outlineTocOpen: false
 bibFile: ./references.bib
 bibStyle: apa
 authors:
@@ -167,9 +213,11 @@ Subtitle
 
 Then add slides with `ss-section`, `ss-default`, etc.
 
+If `outlineToc` is enabled, the footer TOC in live play mode uses the same section grouping as the `toc` layout. On desktop play mode, hovering or focusing a TOC item also shows a slide preview.
+
 ## Requirements
 
-- VS Code 1.85.0 or higher
+- VS Code 1.106.0 or higher
 - [Slidev Theme Scholarly](https://github.com/jxpeng98/slidev-theme-scholarly) installed in your project
 
 ## License

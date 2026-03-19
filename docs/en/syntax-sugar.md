@@ -49,12 +49,12 @@ Mathematical content here...
 ### Highlight
 
 ```markdown
-:::highlight{color="yellow"}
+:::highlight{type="warning"}
 Text to highlight
 :::
 ```
 
-**Colors:** `yellow`, `green`, `blue`, `pink`, `purple`
+**Types:** `primary`, `success`, `warning`, `danger`, `info` (legacy alias: `color="yellow|green|blue|pink|purple"`)
 
 ### Cite
 
@@ -73,7 +73,7 @@ Citation context
 ### Keywords
 
 ```markdown
-:::keywords{:items='["Keyword 1", "Keyword 2"]' color="blue"}:::
+:::keywords{:keywords='["Keyword 1", "Keyword 2"]' color="blue"}:::
 ```
 
 ### Columns
@@ -81,7 +81,7 @@ Citation context
 Use `+++` to separate columns:
 
 ```markdown
-:::columns{cols="2" gap="2rem"}
+:::columns{columns="2" gap="2rem"}
 Content for column 1
 +++
 Content for column 2
@@ -106,7 +106,7 @@ We propose a novel method that combines...
 For any $\epsilon > 0$, the algorithm converges in $O(1/\epsilon^2)$ steps.
 :::
 
-:::columns{cols="2"}
+:::columns{columns="2"}
 ### Advantages
 - Fast convergence
 - Low memory usage
@@ -116,12 +116,12 @@ For any $\epsilon > 0$, the algorithm converges in $O(1/\epsilon^2)$ steps.
 - Natural language processing
 :::
 
-:::keywords{:items='["Deep Learning", "Optimization", "Convergence"]' color="blue"}:::
+:::keywords{:keywords='["Deep Learning", "Optimization", "Convergence"]' color="blue"}:::
 ```
 
 ## Notes
 
-- The syntax sugar is processed at build time by the preparser
+- The syntax sugar is processed at build time by the theme markdown transformers
 - All props from the original components are supported
 - For complex props (arrays, objects), use the Vue binding syntax with `:prop`
 - Restart Slidev after making changes to see the effect

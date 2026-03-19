@@ -1,10 +1,10 @@
 <template>
   <div class="scholarly-keywords">
     <span 
-      v-for="(keyword, index) in keywords" 
+      v-for="(keyword, index) in resolvedKeywords" 
       :key="index" 
       class="keyword-tag"
-      :class="[`keyword-${color}`]"
+      :class="[`keyword-${resolvedColor}`]"
     >
       {{ keyword }}
     </span>
@@ -12,12 +12,23 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { computed } from 'vue'
+
+interface Props {
   /** Array of keywords to display */
-  keywords: string[]
+  keywords?: string[]
+  /** Legacy alias of `keywords` */
+  items?: string[]
   /** Tag color: primary (default), blue, green, purple, gray */
   color?: 'primary' | 'blue' | 'green' | 'purple' | 'gray'
-}>()
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  color: 'primary'
+})
+
+const resolvedKeywords = computed(() => props.keywords ?? props.items ?? [])
+const resolvedColor = computed(() => props.color ?? 'primary')
 </script>
 
 <style scoped>

@@ -34,7 +34,7 @@ title: 核心特性
 - **基础**: cover, default, intro, section, center
 - **内容**: quote, fact, statement, two-cols
 - **图片**: image-left, image-right
-- **高级 (v2.0)**: focus, compare, bullets, figure, references, end, auto-center
+- **高级 (v2.0)**: focus, compare, bullets, figure, references, end, auto-center, auto-size
 
 ## 📊 学术样式 (v0.1.2)
 
@@ -51,6 +51,8 @@ title: 核心特性
 
 - 使用 `@citekey` 进行括号引用
 - 使用 `!@citekey` 进行叙述性引用
+- 使用标准 Markdown 注脚并继承学术化样式
+- 桌面端悬停注脚标记可预览内容，点击可固定浮窗
 - 支持 APA、Harvard、Vancouver、IEEE、MLA、Chicago 样式
 - 自动从所有引用生成参考文献列表
 - 无需额外配置！
@@ -79,7 +81,7 @@ title: 核心特性
 数学内容
 :::
 
-:::columns{cols="2"}
+:::columns{columns="2"}
 左列
 +++
 右列

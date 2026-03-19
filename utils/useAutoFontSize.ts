@@ -1,13 +1,31 @@
 import type { Ref } from 'vue'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, unref, watch } from 'vue'
 import { useSlideContext } from '@slidev/client'
+
+type AutoFontSizeStrategy = 'shrink' | 'fit'
+type MaybeRef<T> = T | Ref<T>
 
 interface UseAutoFontSizeOptions {
   /**
    * Minimum font size in pixels when auto-adjusting.
    * Defaults to 60% of the current computed size, but not lower than 12px.
    */
-  minFontSizePx?: number
+  minFontSizePx?: MaybeRef<number | undefined>
+  /**
+   * Maximum font size in pixels when fitting content to the available area.
+   * Only used when `strategy` is `fit`.
+   */
+  maxFontSizePx?: MaybeRef<number | undefined>
+  /**
+   * Auto-sizing behavior.
+   * - `shrink`: keep the current font size unless the content overflows
+   * - `fit`: grow up to a ceiling, then shrink until content fits
+   */
+  strategy?: MaybeRef<AutoFontSizeStrategy | undefined>
+  /**
+   * Multiplier used to derive a default maximum size in `fit` mode.
+   */
+  growthFactor?: MaybeRef<number | undefined>
 }
 
 interface UseAutoFontSizeReturn {
@@ -46,6 +64,14 @@ const resolveBodyFontSize = (value: unknown): string | null => {
   return normalizeFontSize(value)
 }
 
+const parsePxValue = (value: string | null | undefined): number => {
+  if (!value)
+    return 0
+
+  const parsed = Number.parseFloat(value)
+  return Number.isFinite(parsed) ? parsed : 0
+}
+
 export function useAutoFontSize(
   wrapperRef: Ref<HTMLElement | undefined>,
   contentRef: Ref<HTMLElement | undefined>,
@@ -69,8 +95,12 @@ export function useAutoFontSize(
   let resizeObserver: ResizeObserver | undefined
   let mutationObserver: MutationObserver | undefined
   let rafId: number | null = null
+  let nextTickPending = false
+  let scheduleEpoch = 0
 
   const cancelScheduledAdjust = () => {
+    scheduleEpoch += 1
+    nextTickPending = false
     if (rafId !== null && isClient) {
       cancelAnimationFrame(rafId)
       rafId = null
@@ -83,8 +113,6 @@ export function useAutoFontSize(
     const content = contentRef.value
 
     if (!wrapper || !content) return
-
-    cancelScheduledAdjust()
 
     if (explicitFontSize.value) {
       fontSize.value = explicitFontSize.value
@@ -101,13 +129,24 @@ export function useAutoFontSize(
     }
 
     let candidateSize = computedSize
-    const minFontSize = options.minFontSizePx ?? Math.max(12, Math.round(computedSize * 0.6))
+    const strategy = unref(options.strategy) ?? 'shrink'
+    const minFontSize = unref(options.minFontSizePx) ?? Math.max(12, Math.round(computedSize * 0.6))
+    const growthFactor = unref(options.growthFactor) ?? 1.5
+    const maxFontSize = unref(options.maxFontSizePx) ?? Math.round(computedSize * growthFactor)
     const maxAttempts = 80
     let attempts = 0
+    const wrapperStyles = window.getComputedStyle(wrapper)
+    const availableHeight = Math.max(0, wrapper.clientHeight - parsePxValue(wrapperStyles.paddingTop) - parsePxValue(wrapperStyles.paddingBottom))
+    const availableWidth = Math.max(0, wrapper.clientWidth - parsePxValue(wrapperStyles.paddingLeft) - parsePxValue(wrapperStyles.paddingRight))
+
+    if (strategy === 'fit') {
+      candidateSize = Math.max(minFontSize, maxFontSize)
+      content.style.fontSize = `${candidateSize}px`
+    }
 
     while (
       attempts < maxAttempts
-      && (content.scrollHeight > wrapper.clientHeight || content.scrollWidth > wrapper.clientWidth)
+      && (content.scrollHeight > availableHeight || content.scrollWidth > availableWidth)
     ) {
       candidateSize -= 1
       if (candidateSize <= minFontSize) {
@@ -124,10 +163,22 @@ export function useAutoFontSize(
 
   const scheduleAdjust = () => {
     if (!isClient) return
-    cancelScheduledAdjust()
+    if (nextTickPending || rafId !== null)
+      return
+
+    const epoch = scheduleEpoch
+    nextTickPending = true
     nextTick(() => {
-      cancelScheduledAdjust()
+      if (epoch !== scheduleEpoch)
+        return
+
+      nextTickPending = false
       rafId = requestAnimationFrame(() => {
+        if (epoch !== scheduleEpoch) {
+          rafId = null
+          return
+        }
+
         adjustFontSize()
         rafId = null
       })
@@ -162,7 +213,6 @@ export function useAutoFontSize(
     if (typeof ResizeObserver !== 'undefined') {
       resizeObserver = new ResizeObserver(() => scheduleAdjust())
       if (wrapperRef.value) resizeObserver.observe(wrapperRef.value)
-      if (contentRef.value) resizeObserver.observe(contentRef.value)
     }
 
     if (typeof MutationObserver !== 'undefined' && contentRef.value) {

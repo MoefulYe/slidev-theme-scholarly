@@ -24,10 +24,10 @@ A professional presentation theme for [Slidev](https://sli.dev), designed specif
 | Feature | Description |
 |---------|-------------|
 | 🎓 **Professional Design** | LaTeX Beamer-inspired with academic styling |
-| 📐 **24 Layouts** | Structure, Content, Emphasis, and Academic categories |
+| 📐 **26 Layouts** | Structure, Content, Emphasis, and Academic categories |
 | 🧩 **Rich Components** | Theorem, Block, Citations, Steps, Keywords, Columns, Highlight |
 | 🎨 **9 Color Themes** | Classic Blue, Oxford, Cambridge, Yale, Princeton, Nordic, Monochrome, Sepia, High Contrast |
-| 📚 **BibTeX Citations** | Automatic bibliography with APA, Harvard, IEEE, MLA styles |
+| 📚 **Citations & Footnotes** | BibTeX bibliography plus academic Markdown footnotes with inline preview |
 | 📝 **Syntax Sugar** | Simplified Markdown directives for components |
 | 🔧 **VS Code Extension** | Snippets, previews, and BibTeX integration |
 
@@ -41,7 +41,56 @@ A professional presentation theme for [Slidev](https://sli.dev), designed specif
 npm i -D slidev-theme-scholarly
 ```
 
-### Create Your Presentation
+### Create with CLI (Recommended)
+
+```bash
+# one-time usage
+npx -y --package slidev-theme-scholarly sch init my-talk
+
+# after package is installed in a workspace
+npx sch init my-talk --template academic
+# or
+npx sts init my-talk --template academic
+```
+
+Available templates:
+
+```bash
+npx sch template list
+```
+
+Generated starters work out of the box with Scholarly's built-in citation support. Normal theme usage does not require a project-level `vite.config`.
+
+Common commands:
+
+```bash
+# show help
+npx sch help
+npx sch help theme
+
+# list Scholarly presets and assets
+npx sch theme list
+npx sch layout list
+npx sch component list
+npx sch snippet list
+
+# apply Scholarly visual preset to slides frontmatter
+npx sch theme apply oxford-burgundy --font traditional --file slides.md
+npx sch theme preset apply oxford --file slides.md
+
+# append academic snippet blocks into slides
+npx sch snippet append theorem --file slides.md
+npx sch snippet append references --file slides.md
+
+# append full scholarly workflow skeleton
+npx sch workflow list
+npx sch workflow apply paper --file slides.md
+
+# check environment and project readiness (includes Scholarly checks)
+npx sch doctor
+```
+
+### Create Manually
 
 ```markdown
 ---
@@ -65,6 +114,8 @@ Subtitle or description
 - Point 3
 ```
 
+BibTeX citations and the `references` layout work automatically once the theme is enabled. Use `layout: references` for a generated bibliography slide, or add `[[bibliography]]` only when you need custom placement inside that slide.
+
 ### Preview
 
 ```bash
@@ -87,6 +138,7 @@ Layouts are organized into **four categories**:
 | `section` | Chapter divider |
 | `center` | Centered content |
 | `auto-center` | Auto-centered content |
+| `auto-size` | Default flow with fit-to-page sizing |
 | `end` | Closing slide |
 
 ### Content Layouts
@@ -133,8 +185,8 @@ Layouts are organized into **four categories**:
 | **Block** | Beamer-style info blocks | `<Block type="info">...</Block>` |
 | **Citations** | BibTeX citations | `@citekey` or `!@citekey` |
 | **Steps** | Process visualization | `<Steps :steps="[...]" />` |
-| **Keywords** | Keyword tags | `<Keywords :items="[...]" />` |
-| **Columns** | Multi-column layout | `<Columns :cols="2">...</Columns>` |
+| **Keywords** | Keyword tags | `<Keywords :keywords="[...]" />` |
+| **Columns** | Multi-column layout | `<Columns :columns="2">...</Columns>` |
 | **Highlight** | Text highlighting | `<Highlight>text</Highlight>` |
 
 [View Component Documentation →](https://scholarly-docs.jxpeng.dev/en/components/index.html)
@@ -201,10 +253,11 @@ At the top of each slide, add:
 
 Boost your productivity with our VS Code extension:
 
-- 🎯 Activity Bar panel for layouts/components
+- 🎯 Secondary Side Bar panel for layouts/components
 - ✨ Snippets: type `ss-` to insert layouts/components
+- ⚡ Smart completion for `layout:`, `themeConfig`, `<components>`, and `:::` directives
 - 📚 BibTeX integration with auto-complete
-- 👁️ Preview support
+- 👁️ **Visual Previews**: Directly preview layouts, components, and themes in the sidebar
 
 [Download from Releases →](https://github.com/jxpeng98/slidev-theme-scholarly/releases)
 
@@ -244,4 +297,3 @@ MIT License - see [LICENSE](./LICENSE) for details.
 - [📦 NPM Package](https://www.npmjs.com/package/slidev-theme-scholarly)
 
 ---
-

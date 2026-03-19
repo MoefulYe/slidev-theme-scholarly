@@ -7,6 +7,8 @@ lang: zh
 themeConfig:
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 theoremNumberFormat: '{number}'
 bibFile: ./references.bib
 bibStyle: apa
@@ -544,6 +546,55 @@ title: 大量内容测试
 字体会自动缩小以容纳所有内容，同时保持居中展示。
 
 ---
+layout: auto-size
+title: Auto Size 布局
+subtitle: 保留默认流式正文的页面自适应字号
+autoSizePadding: normal
+---
+
+<!--
+布局：auto-size
+用途：保留 default 的阅读流，同时让 main matter 自动适应可用宽高
+-->
+
+## 自动适应页面的正文区域
+
+这个布局保留了默认布局的 header、footer 和正文流式排版，但会在溢出前自动调整 main matter 的字号。
+
+- 保留默认布局的阅读节奏
+- 不做垂直居中，正文仍然从上往下展开
+- 内容少时放大，内容多时缩小
+- 需要更强约束时，可在 frontmatter 中设置 `minFontSize` 和 `maxFontSize`
+
+它比较适合定理、表格、定义列表较多，但又希望页面行为更接近 LaTeX Beamer frame 的场景。
+
+---
+layout: auto-size
+title: Auto Size 控制项
+subtitle: 放大策略、对齐方式和内边距预设
+autoSizeGrow: false
+autoSizeAlign: center
+autoSizePadding: compact
+minFontSize: 16
+---
+
+<!--
+布局：auto-size
+用途：展示 fit growth、垂直对齐和内边距三个入口
+-->
+
+## 可配置的页面自适应字号
+
+这一页保持相同布局，但可以更细地控制 main matter 的占位方式。
+
+- `autoSizeGrow: false` 表示默认不主动放大，只在需要时缩小
+- `autoSizeAlign: center` 会让正文在可用区域内垂直居中
+- `autoSizePadding: compact` 会压缩正文内边距，留出更多可用空间
+- `minFontSize` 仍然定义内容很密时的最小字号下限
+
+适合希望保留 Beamer 式自动适配，但又想自己控制页面节奏的幻灯片。
+
+---
 layout: default
 title: 学术引用
 subtitle: 学术文献引用支持
@@ -554,7 +605,7 @@ subtitle: 学术文献引用支持
 - 在 frontmatter 中配置：bibFile, bibStyle
 - @citekey 用于括号引用 (Author, Year)
 - !@citekey 用于叙述性引用：Author (Year)
-- [[bibliography]] 标记生成参考文献列表
+- layout: references 会自动生成参考文献列表
 -->
 
 ## 引用示例
@@ -566,6 +617,87 @@ subtitle: 学术文献引用支持
 多项研究对这一领域做出了贡献 @smith2023deep @wang2022attention。
 
 如需全面了解，请参阅 @bishop2006pattern。
+
+在交互视图中，点击上面的任意 citation，即可跳转到 references 页中对应的参考文献条目。
+
+---
+layout: default
+title: 内部锚点跳转
+subtitle: 跨页 href 示例
+---
+
+<!--
+功能：内部锚点跳转
+- 点击行内 citation 跳到对应参考文献条目
+- 使用普通 href="#target-id" 实现任意跨页跳转
+- 跳转后使用浮动的 "Back to source" 按钮返回
+-->
+
+## 跳转示例
+
+这里也可以直接测试 bibliography 跳转：@lecun2015deep。
+
+也可以测试自定义跨页锚点：[跳到附录式目标页](#anchor-demo-proof)。
+
+跳转后，使用浮动的 `Back to source` 按钮返回这里。
+
+---
+layout: default
+title: 注脚
+subtitle: 标准 Markdown 注脚
+---
+
+<!--
+功能：标准 Markdown 注脚
+- 行内使用 [^key]，文末使用 [^key]:
+- 桌面端悬停可预览注脚内容
+- 点击标记可固定浮窗
+- 通过 footnoteDisplay: hover-only | notes-only | both 控制显示模式
+-->
+
+## 注脚示例
+
+我们的紧凑模型在五个随机种子下依然稳定[^stability]，并将推理成本降低了 38%[^cost]。
+
+发布包同时包含 prompts、配置文件和评测脚本，便于复现[^repro]。
+
+[^stability]: 在五个随机种子下，验证集准确率波动小于 0.3 个百分点。
+[^cost]: 在启用混合精度的单张 RTX 4090 上测得。
+[^repro]: 在 Slidev 的交互视图中，可将鼠标悬停在注脚标记上进行预览，或点击标记固定浮窗。
+
+---
+layout: default
+title: 注脚
+subtitle: 仅保留悬停预览
+footnoteDisplay: hover-only
+---
+
+<!--
+功能：隐藏底部注脚，仅保留行内预览
+-->
+
+## 仅保留悬停预览
+
+这一页会隐藏底部注脚区域，只保留行内标记的预览效果[^hover-only]。
+
+[^hover-only]: 当你希望页面更干净，但仍然想通过行内标记查看说明时，可使用 `footnoteDisplay: hover-only`。
+
+---
+layout: default
+title: 注脚
+subtitle: 仅保留底部注脚
+footnoteDisplay: notes-only
+---
+
+<!--
+功能：保留底部注脚，关闭悬停和点击弹窗
+-->
+
+## 仅保留底部注脚
+
+这一页会保留传统底部注脚[^notes-only]，同时关闭行内标记的 hover / click 弹窗。
+
+[^notes-only]: 当你希望讲稿和投影片表现一致，并明确把注脚放在页面底部时，可使用 `footnoteDisplay: notes-only`。
 
 ---
 layout: references
@@ -591,7 +723,23 @@ page: 2
 title: "参考文献（续）"
 -->
 
-[[bibliography]]
+---
+layout: default
+title: 内部锚点目标
+subtitle: 通用 href="#..." 目标页
+---
+
+<!--
+功能：通用内部锚点目标
+- 使用 ## 标题 {#id} 声明目标位置
+- 或通过 ::anchor{#id} 放置一个独立锚点
+-->
+
+## 附录式目标页 {#anchor-demo-proof}
+
+这一页是普通内部 `href="#..."` 跳转的目标位置示例。
+
+可以从前面的链接跳到这里，然后使用 `Back to source` 回到之前的位置。
 
 ---
 layout: section

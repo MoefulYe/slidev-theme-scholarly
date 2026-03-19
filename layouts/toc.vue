@@ -9,9 +9,8 @@
         ref="contentInnerRef"
         class="toc-content"
         :style="computedStyles"
-      >
-        <!-- Title always shows -->
-        <h1 class="toc-title">
+        >
+        <h1 v-if="tocTitle" class="toc-title">
           {{ tocTitle }}
         </h1>
         
@@ -22,13 +21,14 @@
             :key="idx"
             class="toc-item"
             :class="{
+              'toc-item--no-numbers': !showNumbers,
               'is-active': highlightCurrent && section.isActive,
               'is-inactive': highlightCurrent && !section.isActive
             }"
             @click="navigateToSection(section.slideNo)"
           >
             <!-- Circular number badge -->
-            <span class="toc-number">
+            <span v-if="showNumbers" class="toc-number">
               {{ idx + 1 }}
             </span>
             
@@ -53,7 +53,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useSlideContext } from '@slidev/client'
-import ScholarlyHeader from '../components/ScholarlyHeader.vue'
 import ScholarlyFooter from '../components/ScholarlyFooter.vue'
 import { useAutoFontSize } from '../utils/useAutoFontSize'
 import { useFontSizeStyles } from '../utils/useFontSizeStyles'
@@ -76,10 +75,17 @@ const props = defineProps<{
   sections?: string[]
 }>()
 
-const { $slidev, $frontmatter } = useSlideContext()
+const { $slidev } = useSlideContext()
 
 // TOC title - from frontmatter or default
-const tocTitle = computed(() => $frontmatter.value?.title || 'Outline')
+const tocTitle = computed(() => {
+  if (props.title === false) return ''
+  if (typeof props.title === 'string' && props.title.trim()) return props.title
+
+  const slidevConfigs = $slidev?.configs as any
+  const lang = String(slidevConfigs?.lang || slidevConfigs?.language || 'en')
+  return lang.startsWith('zh') ? '目录' : 'Outline'
+})
 
 // Refs for auto-font-size
 const contentWrapperRef = ref<HTMLElement>()
@@ -158,7 +164,7 @@ const highlightCurrent = computed(() => props.highlightCurrent !== false)
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2rem 3rem 35px;
+  padding: 2rem 3rem calc(var(--scholarly-footer-height) + 0.5rem);
 }
 
 .toc-container.has-header {
@@ -187,19 +193,23 @@ const highlightCurrent = computed(() => props.highlightCurrent !== false)
 }
 
 /* TOC Item - matching bullets ol > li style */
-.toc-item {
-  position: relative;
-  padding-left: 2.5rem;
-  margin-bottom: 1rem;
+	.toc-item {
+	  position: relative;
+	  padding-left: 2.5rem;
+	  margin-bottom: 1rem;
   font-size: 1.25rem;
   line-height: 1.6;
   cursor: pointer;
-  transition: opacity 0.15s ease;
-}
+	  transition: opacity 0.15s ease;
+	}
 
-.toc-item:hover {
-  opacity: 0.8;
-}
+	.toc-item.toc-item--no-numbers {
+	  padding-left: 0;
+	}
+
+	.toc-item:hover {
+	  opacity: 0.8;
+	}
 
 .toc-item.is-active {
   font-weight: 600;

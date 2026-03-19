@@ -57,7 +57,7 @@ const gridStyle = computed(() => {
 .content-wrapper-left,
 .content-wrapper-right {
   padding-top: 60px; /* Space for fixed header */
-  padding-bottom: 35px; /* Space for fixed footer */
+  padding-bottom: calc(var(--scholarly-footer-height) + 0.5rem); /* Space for fixed footer */
   align-self: start;
   overflow: auto;
 }

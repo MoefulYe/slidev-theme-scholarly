@@ -8,12 +8,14 @@ We provide a VS Code extension to boost your productivity when creating Slidev p
 
 ## Features
 
-- 🎯 **Activity Bar Panel** - Quick access to layouts, components, templates, themes, and references
+- 🎯 **Secondary Side Bar Panel** - Quick access to layouts, components, templates, themes, references, and CLI actions
 - ✨ **Code Snippets** - Type `ss-` or `scholarly-` to trigger snippets for layouts and components
+- ⚡ **Smart Completion** - Context-aware candidates for `layout:`, `themeConfig`, components (`<...>`), and directives (`:::`)
 - 📝 **One-Click Insert** - Click any item in the panel to insert code at cursor position
 - 🚀 **New Presentation** - Create a new presentation with pre-configured template
 - 🎨 **Theme Presets** - Apply `themeConfig.colorTheme` / `themeConfig.fontTheme` from the Themes view
-- 📚 **BibTeX References** - Completion, hover, and a References view for your `.bib` file
+- 📚 **References & Anchors** - BibTeX completion/hover plus internal-anchor completion and a unified References view
+- 🧪 **Dev Mode** - Built-in performance diagnostics with timing logs and slow-operation markers
 
 ## Installation
 
@@ -39,19 +41,54 @@ scholarly-cite # Insert citation
 
 Press `Tab` to move between placeholders in the inserted snippet.
 
-### Using Activity Bar
+### Smart Completion While Typing
 
-1. Click the **Slidev Scholarly** icon in the Activity Bar (left sidebar)
-2. Browse through five sections:
+The extension also provides context-aware completion suggestions:
+
+- `layout:` -> layout names (`cover`, `section`, `results`, ...)
+- `colorTheme:` / `fontTheme:` / `colorMode:` -> theme values
+- `<` -> Scholarly components (`Theorem`, `Block`, `Columns`, ...)
+- `:::` -> Markdown syntax sugar directives (`theorem`, `block`, `keywords`, ...)
+- `](#` / `href="#` / `to="#` -> internal anchor ids from the current document
+- `ss-` / `scholarly-` -> built-in snippet candidates
+
+If suggestions are not shown automatically, use `Ctrl+Space` (or `Cmd+Space` on macOS if available).
+
+### Dev Mode For Performance Testing
+
+Enable dev mode when you need to profile extension behavior:
+
+- Command Palette: `Slidev Scholarly: Toggle Dev Mode`
+- Settings:
+  - `slidevScholarly.devMode.enabled`
+  - `slidevScholarly.devMode.slowThresholdMs` (default `25`)
+
+After enabling:
+
+- You will see a `Scholarly Dev` indicator in the status bar
+- Performance logs are printed to the `Slidev Scholarly` output channel
+- Operations slower than your threshold are tagged as `SLOW`
+
+If you develop the extension locally, use the debug target `Run Extension (Dev Mode)` in `vscode-extension/.vscode/launch.json`.
+
+### Using Secondary Side Bar
+
+1. Open the **Secondary Side Bar** on the right and select **Slidev Scholarly**
+2. Browse through six sections:
    - **Layouts** - Slide layouts organized by category:
-     - *Structure* - cover, default, intro, section, center, auto-center, end
+     - *Structure* - cover, default, intro, section, center, auto-center, auto-size, toc, end
      - *Content* - two-cols, image-left/right, bullets, figure, split-image
      - *Emphasis* - quote, fact, statement, focus
      - *Academic* - compare, methodology, results, timeline, agenda, acknowledgments, references
    - **Components** - Built-in Vue components
    - **Templates** - Pre-made presentation templates
    - **Themes** - Apply theme presets (updates frontmatter)
-   - **References** - Browse BibTeX entries and insert cite keys
+   - **References** - Browse both BibTeX citations and internal anchors, then insert cite keys or `#anchor-id` targets
+   - **CLI** - Run Scholarly CLI actions from sidebar:
+     - *Create* - new presentation and template list
+     - *Theme* - apply/list themes, apply preset combos, list layouts/components
+     - *Snippets* - append/show/list snippets, append workflows
+     - *Tools* - doctor and help
 3. Click an item (or the `+` button where available) to insert/apply
 
 ### Creating New Presentation
@@ -67,6 +104,8 @@ Press `Tab` to move between placeholders in the inserted snippet.
 
 Layouts are organized into four categories. You can use category-specific prefixes (`ss-structure-*`, `ss-content-*`, `ss-emphasis-*`, `ss-academic-*`) or the shorter `ss-*` prefix.
 
+The `ss-*` prefixes are the canonical snippet labels shown in completion. Legacy `scholarly-*` aliases remain available through the extension's smart completion for compatibility.
+
 #### Structure Layouts
 
 | Prefix | Description |
@@ -77,7 +116,11 @@ Layouts are organized into four categories. You can use category-specific prefix
 | `ss-section` | Section divider (supports `sectionMode: dark/light`) |
 | `ss-center` | Centered content |
 | `ss-auto-center` | Auto-adjusting centered content |
+| `ss-auto-size` | Default flow with `autoSizeGrow`, `autoSizeAlign`, and `autoSizePadding` controls |
+| `ss-toc` | Auto-generated table of contents grouped by sections |
 | `ss-end` | Thank you/closing slide |
+
+Note: if you enable `themeConfig.outlineToc: true` in frontmatter, the footer TOC in play mode uses the same section grouping. On desktop play mode, hovering or focusing TOC items also shows a slide preview.
 
 #### Content Layouts
 
@@ -135,10 +178,9 @@ Layouts are organized into four categories. You can use category-specific prefix
 
 | Prefix | Description |
 |--------|-------------|
+| `ss-theme-classic` | Classic Blue + Classic fonts |
 | `ss-theme-oxford` | Oxford Burgundy + Traditional fonts |
 | `ss-theme-cambridge` | Cambridge Green + Elegant fonts |
-| `ss-theme-yale` | Yale Blue + Classic fonts |
-| `ss-theme-princeton` | Princeton Orange + Modern fonts |
 | `ss-theme-modern` | Monochrome + Sans-default fonts |
 
 ### Utility Snippets
@@ -187,10 +229,10 @@ If you want to modify the snippets, you can:
 2. Check that you're editing a `.md` file
 3. Try pressing `Ctrl+Space` to manually trigger suggestions
 
-### Activity Bar Icon Missing
+### Slidev Scholarly View Missing
 
-1. Right-click on the Activity Bar
-2. Make sure "Slidev Scholarly" is checked
+1. Run `View: Toggle Secondary Side Bar`
+2. If the view is still not on the right, run `View: Reset View Locations`
 
 ## Feedback
 

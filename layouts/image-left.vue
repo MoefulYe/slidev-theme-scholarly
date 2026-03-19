@@ -85,7 +85,7 @@ const imageStyle = computed(() => ({
 
 .content-wrapper-text {
   padding-top: calc(60px + 5%); /* Space for fixed header + compensate for removed layout padding */
-  padding-bottom: 35px; /* Space for fixed footer */
+  padding-bottom: calc(var(--scholarly-footer-height) + 0.5rem); /* Space for fixed footer */
   padding-left: 2rem;
   padding-right: 2rem;
   display: flex;

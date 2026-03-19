@@ -51,4 +51,4 @@ title: Steps
 | 属性 | 类型 | 默认值 | 描述 |
 |------|------|--------|------|
 | `steps` | `Array<{title: string, description?: string}>` | `[]` | 步骤对象数组 |
-| `activeStep` | `number` | `-1` | 当前激活的步骤索引（从 0 开始），-1 表示无 |
+| `activeStep` | `number` | - | 当前激活的步骤（从 1 开始）。不传表示无 |

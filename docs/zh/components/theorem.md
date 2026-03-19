@@ -39,6 +39,11 @@ $$a^2 + b^2 = c^2$$
 | `definition` | 定义 | Definition | 琥珀色 |
 | `example` | 例 | Example | 粉色 |
 | `remark` | 注 | Remark | 灰色 |
+| `proof` | 证明 | Proof | 石板灰 |
+| `note` | 注意 | Note | 天蓝色 |
+| `claim` | 断言 | Claim | 靛蓝色 |
+
+默认情况下，`proof` 和 `note` 不参与自动编号；`claim` 会和其他可编号类型一样参与自动编号。
 
 ### 示例
 
@@ -78,6 +83,16 @@ $$a^2 + b^2 = c^2$$
 <Theorem type="remark" :autoNumber="false">
 
 此注记没有编号.
+
+</Theorem>
+```
+
+**只显示内容，不显示标题行：**
+
+```markdown
+<Theorem type="note" :showHeader="false">
+
+原始支付金额是真实发生的，但**本年度费用**只应计入已经消耗的部分。
 
 </Theorem>
 ```

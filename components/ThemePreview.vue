@@ -3,14 +3,8 @@ import { computed } from 'vue'
 
 const props = withDefaults(defineProps<{
   colorTheme?: string
-  showBlock?: boolean
-  showTheorem?: boolean
-  showQuote?: boolean
 }>(), {
   colorTheme: 'classic-blue',
-  showBlock: true,
-  showTheorem: false,
-  showQuote: false,
 })
 
 const themeColors = {

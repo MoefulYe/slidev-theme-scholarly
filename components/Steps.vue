@@ -1,17 +1,17 @@
 <template>
   <div class="scholarly-steps">
     <div 
-      v-for="(step, index) in steps" 
+      v-for="(step, index) in props.steps" 
       :key="index" 
       class="step-item"
-      :class="{ 'step-active': activeStep === index + 1 }"
+      :class="{ 'step-active': props.activeStep === index + 1 }"
     >
       <div class="step-number">{{ index + 1 }}</div>
       <div class="step-content">
         <div class="step-title" v-if="step.title">{{ step.title }}</div>
         <div class="step-description" v-if="step.description">{{ step.description }}</div>
       </div>
-      <div class="step-connector" v-if="index < steps.length - 1"></div>
+      <div class="step-connector" v-if="index < props.steps.length - 1"></div>
     </div>
   </div>
 </template>
@@ -22,12 +22,14 @@ interface Step {
   description?: string
 }
 
-defineProps<{
+const props = withDefaults(defineProps<{
   /** Array of step objects with title and description */
-  steps: Step[]
+  steps?: Step[]
   /** Currently active step (1-based) */
   activeStep?: number
-}>()
+}>(), {
+  steps: () => []
+})
 </script>
 
 <style scoped>

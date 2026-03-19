@@ -57,7 +57,8 @@ const vitePressOptions = {
               { text: 'Keywords', link: '/en/components/keywords' },
               { text: 'Columns', link: '/en/components/columns' },
               { text: 'Highlight', link: '/en/components/highlight' },
-              { text: 'Cite', link: '/en/components/cite' }
+              { text: 'Cite', link: '/en/components/cite' },
+              { text: 'ThemePreview', link: '/en/components/theme-preview' }
             ]
           },
           { text: 'Syntax Sugar', link: '/en/syntax-sugar' },
@@ -102,7 +103,8 @@ const vitePressOptions = {
               { text: 'Keywords', link: '/zh/components/keywords' },
               { text: 'Columns', link: '/zh/components/columns' },
               { text: 'Highlight', link: '/zh/components/highlight' },
-              { text: 'Cite', link: '/zh/components/cite' }
+              { text: 'Cite', link: '/zh/components/cite' },
+              { text: 'ThemePreview', link: '/zh/components/theme-preview' }
             ]
           },
           { text: '语法糖', link: '/zh/syntax-sugar' },
@@ -114,7 +116,8 @@ const vitePressOptions = {
 }
 
 const commonSidebarOptions = {
-  documentRootPath: '/',
+  // `vitepress build` runs from the `docs` package, so the sidebar root is the current directory.
+  documentRootPath: '.',
   useTitleFromFrontmatter: true,
   frontmatterTitleFieldName: 'title',
   collapsed: true,

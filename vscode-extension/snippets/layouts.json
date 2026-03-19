@@ -119,6 +119,32 @@
     ],
     "description": "[Structure] Auto-adjusting centered content"
   },
+  "Slidev Scholarly: Auto Size Layout": {
+    "prefix": [
+      "scholarly-auto-size",
+      "ss-auto-size",
+      "ss-structure-auto-size"
+    ],
+    "body": [
+      "---",
+      "layout: auto-size",
+      "title: ${1:Title}",
+      "subtitle: ${2:Subtitle}",
+      "autoSizeGrow: ${3|true,false|}",
+      "autoSizeAlign: ${4|top,center|}",
+      "autoSizePadding: ${5|normal,compact|}",
+      "minFontSize: ${6:14}",
+      "maxFontSize: ${7:30}",
+      "---",
+      "",
+      "## ${8:Auto-Sized Main Matter}",
+      "",
+      "${9:Content that should fit the available width and height.}",
+      "",
+      "$0"
+    ],
+    "description": "[Structure] Default flow with fit-to-page sizing"
+  },
   "Slidev Scholarly: End Layout": {
     "prefix": [
       "scholarly-end",
@@ -139,7 +165,6 @@
     ],
     "description": "[Structure] Closing slide with contact info"
   },
-
   "_comment_content": "=== CONTENT LAYOUTS ===",
   "Slidev Scholarly: Two Columns Layout": {
     "prefix": [
@@ -223,7 +248,7 @@
       "layout: bullets",
       "title: ${1:Bullet Points}",
       "subtitle: ${2:Key points}",
-      "icon: \"${3:\u25b8}\"",
+      "icon: \"${3:▸}\"",
       "---",
       "",
       "## ${4:Main Topic}",
@@ -245,7 +270,7 @@
     "body": [
       "---",
       "layout: figure",
-      "src: ${1:https://example.com/figure.jpg}",
+      "image: ${1:https://example.com/figure.jpg}",
       "caption: ${2:Figure caption.}",
       "label: \"${3:Figure 1:}\"",
       "title: ${4:Figure Title}",
@@ -279,7 +304,6 @@
     ],
     "description": "[Content] Side-by-side image comparison"
   },
-
   "_comment_emphasis": "=== EMPHASIS LAYOUTS ===",
   "Slidev Scholarly: Quote Layout": {
     "prefix": [
@@ -349,7 +373,7 @@
       "---",
       "layout: focus",
       "color: ${1|primary,blue,green,amber,red,purple|}",
-      "icon: ${2:\ud83c\udfaf}",
+      "icon: ${2:🎯}",
       "---",
       "",
       "# ${3:Main Message}",
@@ -360,7 +384,6 @@
     ],
     "description": "[Emphasis] Focused message with icon"
   },
-
   "_comment_academic": "=== ACADEMIC LAYOUTS ===",
   "Slidev Scholarly: Compare Layout": {
     "prefix": [
@@ -523,13 +546,26 @@
       "layout: references",
       "---",
       "",
-      "[[bibliography]]",
-      "",
       "$0"
     ],
     "description": "[Academic] Bibliography/References"
   },
-
+  "Slidev Scholarly: TOC Layout": {
+    "prefix": [
+      "scholarly-toc",
+      "ss-toc",
+      "ss-structure-toc"
+    ],
+    "body": [
+      "---",
+      "layout: toc",
+      "title: ${1:Outline}",
+      "---",
+      "",
+      "$0"
+    ],
+    "description": "[Structure] Table of contents (section-grouped outline)"
+  },
   "_comment_utility": "=== UTILITY ===",
   "Slidev Scholarly: Slide Divider": {
     "prefix": [
@@ -558,6 +594,8 @@
       "  colorTheme: ${3|classic-blue,oxford-burgundy,cambridge-green,yale-blue,princeton-orange,monochrome,warm-sepia,nordic-blue,high-contrast|}",
       "  fontTheme: ${4|classic,modern,traditional,contemporary,humanist,technical,elegant,sans-default|}",
       "  sectionMode: ${5|dark,light|}",
+      "  outlineToc: true",
+      "  outlineTocOpen: false",
       "bibFile: ./references.bib",
       "bibStyle: ${6|apa,harvard1,vancouver,ieee,mla,chicago-author-date|}",
       "authors:",
@@ -574,8 +612,18 @@
     ],
     "description": "Full frontmatter with theme configuration"
   },
-
   "_comment_presets": "=== THEME PRESETS ===",
+  "Slidev Scholarly: Classic Theme": {
+    "prefix": [
+      "ss-theme-classic"
+    ],
+    "body": [
+      "themeConfig:",
+      "  colorTheme: classic-blue",
+      "  fontTheme: classic"
+    ],
+    "description": "Classic Blue theme preset"
+  },
   "Slidev Scholarly: Oxford Theme": {
     "prefix": [
       "ss-theme-oxford"
@@ -608,27 +656,5 @@
       "  fontTheme: sans-default"
     ],
     "description": "Modern minimal theme preset"
-  },
-  "Slidev Scholarly: Yale Theme": {
-    "prefix": [
-      "ss-theme-yale"
-    ],
-    "body": [
-      "themeConfig:",
-      "  colorTheme: yale-blue",
-      "  fontTheme: classic"
-    ],
-    "description": "Yale Blue theme preset"
-  },
-  "Slidev Scholarly: Princeton Theme": {
-    "prefix": [
-      "ss-theme-princeton"
-    ],
-    "body": [
-      "themeConfig:",
-      "  colorTheme: princeton-orange",
-      "  fontTheme: modern"
-    ],
-    "description": "Princeton Orange theme preset"
   }
 }

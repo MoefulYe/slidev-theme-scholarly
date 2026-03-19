@@ -1,5 +1,8 @@
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
 import { getColorThemePreviewDir, getComponentPreviewFile } from './preview';
+import type { CliActionId } from './commands';
 
 export interface SnippetItem {
   label: string;
@@ -13,6 +16,17 @@ function toMarkdownCodeBlock(snippet: string): string {
   return '```md\n' + snippet.trim() + '\n```';
 }
 
+const previewExistsCache = new Map<string, boolean>();
+
+function hasPreview(extensionUri: vscode.Uri, ...segments: string[]): boolean {
+  const absPath = path.join(extensionUri.fsPath, ...segments);
+  const cached = previewExistsCache.get(absPath);
+  if (cached !== undefined) return cached;
+  const exists = fs.existsSync(absPath);
+  previewExistsCache.set(absPath, exists);
+  return exists;
+}
+
 function createLayoutTooltip(
   extensionUri: vscode.Uri,
   layoutId: string,
@@ -22,7 +36,9 @@ function createLayoutTooltip(
   const md = new vscode.MarkdownString('', true);
   md.baseUri = extensionUri;
   md.supportHtml = true;
-  md.appendMarkdown(`![${layoutId}](media/previews/layouts/${layoutId}.png)\n\n`);
+  if (hasPreview(extensionUri, 'media', 'previews', 'layouts', `${layoutId}.png`)) {
+    md.appendMarkdown(`![${layoutId}](./media/previews/layouts/${layoutId}.png)\n\n`);
+  }
   md.appendMarkdown(`**${layoutId}** — ${description}\n\n`);
   md.appendMarkdown(toMarkdownCodeBlock(snippet));
   md.appendMarkdown('\n\n*Click 👁 for larger preview*');
@@ -39,8 +55,8 @@ function createComponentTooltip(
   md.baseUri = extensionUri;
   md.supportHtml = true;
   const file = getComponentPreviewFile(label);
-  if (file) {
-    md.appendMarkdown(`![${label}](media/previews/components/${file}.png)\n\n`);
+  if (file && hasPreview(extensionUri, 'media', 'previews', 'components', `${file}.png`)) {
+    md.appendMarkdown(`![${label}](./media/previews/components/${file}.png)\n\n`);
   }
   md.appendMarkdown(`**${label}** — ${description}\n\n`);
   md.appendMarkdown(toMarkdownCodeBlock(snippet));
@@ -60,8 +76,8 @@ function createThemeTooltip(
 
   if (colorTheme) {
     const dir = getColorThemePreviewDir(colorTheme);
-    if (dir) {
-      md.appendMarkdown(`![${label}](media/previews/themes/${dir}/1.png)\n\n`);
+    if (dir && hasPreview(extensionUri, 'media', 'previews', 'themes', dir, '1.png')) {
+      md.appendMarkdown(`![${label}](./media/previews/themes/${dir}/1.png)\n\n`);
     }
   }
 
@@ -169,6 +185,38 @@ Content with auto-adjusting font size.
 `
       },
       {
+        label: 'auto-size',
+        description: 'Default flow with fit-to-page sizing',
+        icon: '📏',
+        snippet: `---
+layout: auto-size
+title: Title
+subtitle: Subtitle
+autoSizeGrow: true
+autoSizeAlign: top
+autoSizePadding: normal
+minFontSize: 14
+maxFontSize: 30
+---
+
+## Auto-Sized Main Matter
+
+Content that should fit the available width and height.
+
+`
+      },
+      {
+        label: 'toc',
+        description: 'Table of contents (auto-generated, section-grouped outline)',
+        icon: '📋',
+        snippet: `---
+layout: toc
+title: Outline
+---
+
+`
+      },
+      {
         label: 'end',
         description: 'Closing slide',
         icon: '🎬',
@@ -272,7 +320,7 @@ icon: "▸"
         icon: '🖼️',
         snippet: `---
 layout: figure
-src: https://example.com/figure.jpg
+image: https://example.com/figure.jpg
 caption: Figure caption describing the image.
 label: "Figure 1:"
 title: Figure Title
@@ -503,9 +551,6 @@ Special thanks to all contributors.
         snippet: `---
 layout: references
 ---
-
-[[bibliography]]
-
 `
       }
     ]
@@ -620,6 +665,18 @@ Corollary statement here.
 `
   },
   {
+    label: 'Claim',
+    description: 'Claim statement',
+    icon: '📣',
+    snippet: `<Theorem type="claim" title="Claim">
+
+Claim statement here.
+
+</Theorem>
+
+`
+  },
+  {
     label: 'Example',
     description: 'Example block',
     icon: '💡',
@@ -714,13 +771,17 @@ Citation text here.
 
 Column 1 content
 
----
+<template #col2>
 
 Column 2 content
 
----
+</template>
+
+<template #col3>
 
 Column 3 content
+
+</template>
 
 </Columns>
 
@@ -828,7 +889,7 @@ class LayoutCategoryTreeItem extends vscode.TreeItem {
 
 // Layouts Provider with categories
 export class LayoutsProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
-  constructor(private readonly extensionUri: vscode.Uri) {}
+  constructor(private readonly extensionUri: vscode.Uri) { }
 
   getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
     return element;
@@ -873,7 +934,7 @@ export class LayoutsProvider implements vscode.TreeDataProvider<vscode.TreeItem>
 
 // Components Provider
 export class ComponentsProvider implements vscode.TreeDataProvider<SnippetTreeItem> {
-  constructor(private readonly extensionUri: vscode.Uri) {}
+  constructor(private readonly extensionUri: vscode.Uri) { }
 
   getTreeItem(element: SnippetTreeItem): vscode.TreeItem {
     element.contextValue = 'componentSnippet';
@@ -944,59 +1005,12 @@ type ThemePresetItem = {
   fontTheme: string;
 };
 
-const COLOR_THEMES: Array<{ value: string; label: string }> = [
-  { value: 'classic-blue', label: 'Classic Blue' },
-  { value: 'oxford-burgundy', label: 'Oxford Burgundy' },
-  { value: 'cambridge-green', label: 'Cambridge Green' },
-  { value: 'yale-blue', label: 'Yale Blue' },
-  { value: 'princeton-orange', label: 'Princeton Orange' },
-  { value: 'nordic-blue', label: 'Nordic Blue' },
-  { value: 'warm-sepia', label: 'Warm Sepia' },
-  { value: 'monochrome', label: 'Monochrome' },
-  { value: 'high-contrast', label: 'High Contrast' }
-];
-
-const FONT_THEMES: Array<{ value: string; label: string }> = [
-  { value: 'classic', label: 'Classic' },
-  { value: 'modern', label: 'Modern' },
-  { value: 'traditional', label: 'Traditional' },
-  { value: 'contemporary', label: 'Contemporary' },
-  { value: 'humanist', label: 'Humanist' },
-  { value: 'technical', label: 'Technical' },
-  { value: 'elegant', label: 'Elegant' },
-  { value: 'sans-default', label: 'Sans Default' }
-];
-
-const THEME_PRESETS: ThemePresetItem[] = [
-  {
-    id: 'classic',
-    label: 'Classic',
-    description: 'Classic Blue + Classic',
-    colorTheme: 'classic-blue',
-    fontTheme: 'classic'
-  },
-  {
-    id: 'oxford',
-    label: 'Oxford',
-    description: 'Oxford Burgundy + Traditional',
-    colorTheme: 'oxford-burgundy',
-    fontTheme: 'traditional'
-  },
-  {
-    id: 'cambridge',
-    label: 'Cambridge',
-    description: 'Cambridge Green + Elegant',
-    colorTheme: 'cambridge-green',
-    fontTheme: 'elegant'
-  },
-  {
-    id: 'modern',
-    label: 'Modern Minimal',
-    description: 'Monochrome + Sans Default',
-    colorTheme: 'monochrome',
-    fontTheme: 'sans-default'
-  }
-];
+// Theme data imported from shared definitions (Single Source of Truth)
+import {
+  COLOR_THEMES_SIMPLE as COLOR_THEMES,
+  FONT_THEMES_SIMPLE as FONT_THEMES,
+  THEME_PRESETS
+} from './sharedData';
 
 class ThemeGroupTreeItem extends vscode.TreeItem {
   constructor(
@@ -1037,7 +1051,7 @@ class ThemeValueTreeItem extends vscode.TreeItem {
 }
 
 export class ThemesProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
-  constructor(private readonly extensionUri: vscode.Uri) {}
+  constructor(private readonly extensionUri: vscode.Uri) { }
 
   getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
     return element;
@@ -1127,6 +1141,176 @@ export class ThemesProvider implements vscode.TreeDataProvider<vscode.TreeItem> 
           })
         );
       }
+    }
+
+    return Promise.resolve([]);
+  }
+}
+
+type CliGroupId = 'create' | 'theme' | 'snippets' | 'tools';
+
+type CliActionItem = {
+  label: string;
+  description: string;
+  icon: string;
+  action: CliActionId;
+};
+
+const CLI_GROUPS: Record<CliGroupId, { label: string; icon: string; items: CliActionItem[] }> = {
+  create: {
+    label: 'Create',
+    icon: 'new-file',
+    items: [
+      {
+        label: 'New Presentation...',
+        description: 'Run scholarly init with prompts',
+        icon: 'new-file',
+        action: 'initPresentation'
+      },
+      {
+        label: 'List Templates',
+        description: 'Run scholarly template list',
+        icon: 'list-flat',
+        action: 'templateList'
+      }
+    ]
+  },
+  theme: {
+    label: 'Theme',
+    icon: 'paintcan',
+    items: [
+      {
+        label: 'Apply Theme Preset...',
+        description: 'Apply color/font preset to frontmatter',
+        icon: 'wand',
+        action: 'themeApply'
+      },
+      {
+        label: 'Apply Theme Preset Combo...',
+        description: 'Run scholarly theme preset apply',
+        icon: 'paintcan',
+        action: 'themePresetApply'
+      },
+      {
+        label: 'List Themes',
+        description: 'Run scholarly theme list',
+        icon: 'symbol-color',
+        action: 'themeList'
+      },
+      {
+        label: 'List Theme Presets',
+        description: 'Run scholarly theme preset list',
+        icon: 'list-flat',
+        action: 'themePresetList'
+      },
+      {
+        label: 'List Layouts',
+        description: 'Run scholarly layout list',
+        icon: 'layout',
+        action: 'layoutList'
+      },
+      {
+        label: 'List Components',
+        description: 'Run scholarly component list',
+        icon: 'symbol-method',
+        action: 'componentList'
+      }
+    ]
+  },
+  snippets: {
+    label: 'Snippets',
+    icon: 'symbol-snippet',
+    items: [
+      {
+        label: 'Append Snippet...',
+        description: 'Append theorem/methodology/etc to slides',
+        icon: 'add',
+        action: 'snippetAppend'
+      },
+      {
+        label: 'Show Snippet...',
+        description: 'Print a snippet in terminal',
+        icon: 'eye',
+        action: 'snippetShow'
+      },
+      {
+        label: 'List Snippets',
+        description: 'Run scholarly snippet list',
+        icon: 'list-flat',
+        action: 'snippetList'
+      },
+      {
+        label: 'Append Workflow...',
+        description: 'Append paper/seminar/quick workflow',
+        icon: 'git-commit',
+        action: 'workflowApply'
+      },
+      {
+        label: 'List Workflows',
+        description: 'Run scholarly workflow list',
+        icon: 'list-tree',
+        action: 'workflowList'
+      }
+    ]
+  },
+  tools: {
+    label: 'Tools',
+    icon: 'tools',
+    items: [
+      {
+        label: 'Doctor',
+        description: 'Check CLI environment and project status',
+        icon: 'pulse',
+        action: 'doctor'
+      },
+      {
+        label: 'Help',
+        description: 'Run scholarly help',
+        icon: 'question',
+        action: 'help'
+      }
+    ]
+  }
+};
+
+class CliGroupTreeItem extends vscode.TreeItem {
+  constructor(public readonly groupId: CliGroupId, label: string, icon: string) {
+    super(label, vscode.TreeItemCollapsibleState.Expanded);
+    this.iconPath = new vscode.ThemeIcon(icon);
+  }
+}
+
+class CliActionTreeItem extends vscode.TreeItem {
+  constructor(public readonly actionItem: CliActionItem) {
+    super(actionItem.label, vscode.TreeItemCollapsibleState.None);
+    this.description = actionItem.description;
+    this.tooltip = `${actionItem.label} — ${actionItem.description}`;
+    this.iconPath = new vscode.ThemeIcon(actionItem.icon);
+    this.contextValue = 'cliAction';
+    this.command = {
+      command: 'slidev-scholarly.cliAction',
+      title: 'Run CLI Action',
+      arguments: [actionItem.action]
+    };
+  }
+}
+
+export class CliProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+  getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
+    return element;
+  }
+
+  getChildren(element?: vscode.TreeItem): Thenable<vscode.TreeItem[]> {
+    if (!element) {
+      const groups = (Object.keys(CLI_GROUPS) as CliGroupId[]).map(
+        key => new CliGroupTreeItem(key, CLI_GROUPS[key].label, CLI_GROUPS[key].icon)
+      );
+      return Promise.resolve(groups);
+    }
+
+    if (element instanceof CliGroupTreeItem) {
+      const group = CLI_GROUPS[element.groupId];
+      return Promise.resolve(group.items.map(item => new CliActionTreeItem(item)));
     }
 
     return Promise.resolve([]);

@@ -1,70 +1,69 @@
-import { defineConfig } from 'vite'
 import citationPluginMod from '@jxpeng98/markdown-it-citation'
+import { defineConfig } from 'vite'
 
-function resolvePlugin(mod: unknown): (md: unknown, options: unknown) => void {
-    // 兼容：ESM default / CJS interop / namespace import
-    const plugin = (mod as { default?: unknown })?.default ?? mod
-    return plugin as (md: unknown, options: unknown) => void
+const SCHOLARLY_CITATIONS_RE = /<!--\s*scholarly-citations:\s*(\[.*?\])\s*-->/
+const SCHOLARLY_CITATION_SETUP_FLAG = Symbol.for('scholarly.citation.setup')
+
+function resolveCitationPlugin(mod: unknown): unknown {
+  return (mod as { default?: unknown } | undefined)?.default ?? mod
 }
 
-// Regex to match the scholarly-citations comment injected by preparser
-const SCHOLARLY_CITATIONS_RE = /<!--\s*scholarly-citations:\s*(\[.*?\])\s*-->/
+function resolveCitationConfig(options: Record<string, unknown> = {}) {
+  const config = (globalThis as typeof globalThis & {
+    __scholarlyConfig?: Record<string, unknown>
+  }).__scholarlyConfig || {}
 
-// Declare global config type
-declare global {
-    // eslint-disable-next-line no-var
-    var __scholarlyConfig: {
-        bibFile: string
-        bibStyle: string
-        showNum: boolean
-    } | undefined
+  return {
+    bibFile: options.bibFile || config.bibFile || 'references.bib',
+    style: options.style || config.bibStyle || 'apa',
+    showNum: options.showNum ?? config.showNum ?? false,
+    bibTitle: options.bibTitle ?? '',
+    autoGenerate: options.autoGenerate ?? false,
+  }
+}
+
+function setupScholarlyCitationMarkdown(md: any, options: Record<string, unknown> = {}) {
+  if (md[SCHOLARLY_CITATION_SETUP_FLAG])
+    return
+
+  md[SCHOLARLY_CITATION_SETUP_FLAG] = true
+
+  const citationPlugin = resolveCitationPlugin(citationPluginMod)
+
+  if (typeof citationPlugin !== 'function') {
+    console.warn('[citation] resolved plugin is not a function:', citationPluginMod)
+    return
+  }
+
+  md.use(citationPlugin, resolveCitationConfig(options))
+
+  md.core.ruler.before('citation_bibliography', 'scholarly_citations_parser', (state: any) => {
+    const match = state.src.match(SCHOLARLY_CITATIONS_RE)
+    if (!match)
+      return
+
+    try {
+      const citations = JSON.parse(match[1]) as string[]
+      state.env ||= {}
+      state.env.frontmatter ||= {}
+      state.env.frontmatter.citations = citations
+    }
+    catch (error) {
+      console.error('[scholarly] Failed to parse citations comment:', error)
+    }
+  })
 }
 
 export default defineConfig({
-    slidev: {
-        markdown: {
-            markdownItSetup(md) {
-                const citationPlugin = resolvePlugin(citationPluginMod)
-
-                if (typeof citationPlugin !== 'function') {
-                    console.warn('[citation] resolved plugin is not a function:', citationPluginMod)
-                    return
-                }
-
-                // Get configuration from global config (set by vite-plugins.ts) or use defaults
-                const config = globalThis.__scholarlyConfig || {
-                    bibFile: 'references.bib',
-                    bibStyle: 'apa',
-                    showNum: false,
-                }
-
-                // First, register the citation plugin
-                // bibTitle is empty because the references layout already shows the title in header
-                md.use(citationPlugin, {
-                    bibFile: config.bibFile,
-                    style: config.bibStyle,
-                    showNum: config.showNum,
-                    bibTitle: '',
-                    autoGenerate: false,
-                })
-
-                // Now add a core rule BEFORE the citation_bibliography rule to parse 
-                // the scholarly-citations comment and inject it into state.env.frontmatter
-                // We need to move this rule before citation_bibliography in the ruler
-                md.core.ruler.before('citation_bibliography', 'scholarly_citations_parser', (state: { src: string; env: { frontmatter?: { citations?: string[] } } }) => {
-                    const match = state.src.match(SCHOLARLY_CITATIONS_RE)
-                    if (match) {
-                        try {
-                            const citations = JSON.parse(match[1])
-                            if (!state.env) state.env = {}
-                            if (!state.env.frontmatter) state.env.frontmatter = {}
-                            state.env.frontmatter.citations = citations
-                        } catch (e) {
-                            console.error('[scholarly] Failed to parse citations comment:', e)
-                        }
-                    }
-                })
-            },
-        },
+  slidev: {
+    markdown: {
+      // Slidev has used both hook names across releases.
+      markdownSetup(md) {
+        setupScholarlyCitationMarkdown(md)
+      },
+      markdownItSetup(md) {
+        setupScholarlyCitationMarkdown(md)
+      },
     },
+  },
 })

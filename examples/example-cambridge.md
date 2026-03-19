@@ -8,6 +8,8 @@ themeConfig:
   fontTheme: elegant
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Dr. I.J. Harper
     institution: DEF University

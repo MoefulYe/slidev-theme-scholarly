@@ -9,6 +9,8 @@ themeConfig:
   fontTheme: contemporary
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 theoremNumberFormat: '{number}'
 bibFile: ./references.bib
 bibStyle: apa
@@ -29,10 +31,10 @@ authors:
 Professional academic presentations with LaTeX Beamer-inspired styling
 
 <!--
-This example demonstrates all 24 layouts and features of the Scholarly theme.
+This example demonstrates the full set of 26 layouts and features of the Scholarly theme.
 
-24 SPECIALIZED LAYOUTS:
-- Structure Layouts (7): cover, default, intro, section, center, auto-center, end
+26 SPECIALIZED LAYOUTS:
+- Structure Layouts (9): cover, default, intro, section, center, auto-center, auto-size, toc, end
 - Content Layouts (6): two-cols, image-left, image-right, bullets, figure, split-image
 - Emphasis Layouts (4): quote, fact, statement, focus
 - Academic Layouts (7): compare, methodology, results, timeline, agenda, acknowledgments, references
@@ -372,6 +374,12 @@ $$a^2 + b^2 = c^2$$
 
 </Theorem>
 
+:::theorem{type="theorem" title="Theorem Name"}
+For a right triangle with legs \(a\) and \(b\), and hypotenuse \(c\), we have:
+
+$$a^2 + b^2 = c^2$$
+:::
+
 <Theorem type="lemma">
 
 All continuous functions on a closed interval are uniformly continuous.
@@ -500,7 +508,7 @@ layout: section
 
 # Part 4: Customization Features
 
-## Font sizing, auto-centering, and academic citations
+## Font sizing, auto-centering, fit-to-page sizing, and academic citations
 
 ---
 fontsize:
@@ -581,6 +589,55 @@ title: Dense Content Test
 The font size should automatically decrease to fit all this content while keeping it centered.
 
 ---
+layout: auto-size
+title: Auto Size Layout
+subtitle: Default flow with Beamer-style page fitting
+autoSizePadding: normal
+---
+
+<!--
+LAYOUT: auto-size
+PURPOSE: Keep the default reading flow while fitting the main matter to the available area
+-->
+
+## Auto-Sized Main Matter
+
+This layout keeps the familiar default layout structure, but it scales the main matter to fit the available width and height before overflow occurs.
+
+- Preserves the default header and footer
+- Keeps content top-aligned instead of vertically centered
+- Scales sparse slides up and dense slides down
+- Supports `minFontSize` and `maxFontSize` in frontmatter when you need tighter control
+
+This is useful for theorem-heavy or table-heavy slides that should behave more like a LaTeX Beamer frame.
+
+---
+layout: auto-size
+title: Auto Size Controls
+subtitle: Growth, alignment, and padding presets
+autoSizeGrow: false
+autoSizeAlign: center
+autoSizePadding: compact
+minFontSize: 16
+---
+
+<!--
+LAYOUT: auto-size
+PURPOSE: Show the configuration entry points for fit growth, vertical alignment, and inner padding
+-->
+
+## Configurable Auto-Sizing
+
+This variant keeps the same layout, but changes how aggressively the content area is used.
+
+- `autoSizeGrow: false` keeps the base size and only shrinks when needed
+- `autoSizeAlign: center` vertically centers the main matter in the available area
+- `autoSizePadding: compact` reduces inner whitespace to maximize usable space
+- `minFontSize` still defines the floor when content gets dense
+
+Use this when you want Beamer-like fitting, but with tighter control over visual rhythm.
+
+---
 layout: default
 title: Citations
 subtitle: Academic Reference Support
@@ -591,7 +648,7 @@ FEATURE: Academic citations using BibTeX
 - Configure in frontmatter: bibFile, bibStyle
 - @citekey for parenthetical citations (Author, Year)
 - !@citekey for narrative citations: Author (Year)
-- [[bibliography]] marker generates reference list
+- layout: references auto-generates the reference list
 -->
 
 ## Citation Examples
@@ -603,6 +660,87 @@ Deep learning has revolutionized many fields @lecun2015deep.
 Multiple works have contributed to this area @smith2023deep @wang2022attention.
 
 For a comprehensive introduction, see @bishop2006pattern.
+
+In interactive view, click any citation above to jump to its matching bibliography entry on the references slide.
+
+---
+layout: default
+title: Internal Anchor Navigation
+subtitle: Cross-Slide href Demo
+---
+
+<!--
+FEATURE: Internal anchor navigation
+- Click any in-text citation to jump to the matching bibliography entry
+- Use plain href="#target-id" links for arbitrary cross-slide navigation
+- Use the floating "Back to source" button after jumping
+-->
+
+## Jump Examples
+
+Try a bibliography jump here as well: @lecun2015deep.
+
+Try a custom cross-slide anchor: [Jump to the appendix-style target](#anchor-demo-proof).
+
+After the jump, use the floating `Back to source` button to return here.
+
+---
+layout: default
+title: Footnotes
+subtitle: Standard Markdown Notes
+---
+
+<!--
+FEATURE: Standard Markdown footnotes
+- Use [^key] inline and [^key]: below
+- Desktop hover previews the footnote content
+- Click the marker to pin the popover
+- Set footnoteDisplay: hover-only | notes-only | both to control the rendered mode
+-->
+
+## Footnote Examples
+
+Our compact variant remains stable across five random seeds[^stability] and reduces inference cost by 38%[^cost].
+
+The release package also includes prompts, configs, and evaluation scripts for reproducibility[^repro].
+
+[^stability]: Across five random seeds, validation accuracy varied by less than 0.3 percentage points.
+[^cost]: Measured on a single RTX 4090 with mixed precision enabled.
+[^repro]: In Slidev's interactive view, hover over a footnote marker to preview the note, or click the marker to pin the popover.
+
+---
+layout: default
+title: Footnotes
+subtitle: Hover Preview Only
+footnoteDisplay: hover-only
+---
+
+<!--
+FEATURE: Hide the bottom footnote block and keep only inline preview
+-->
+
+## Hover-Only Footnotes
+
+This slide hides the footnote block at the bottom while keeping the inline preview on footnote markers[^hover-only].
+
+[^hover-only]: Use `footnoteDisplay: hover-only` in frontmatter when you want a cleaner slide with preview-only notes.
+
+---
+layout: default
+title: Footnotes
+subtitle: Static Notes Only
+footnoteDisplay: notes-only
+---
+
+<!--
+FEATURE: Keep visible footnotes and disable inline preview / pinning
+-->
+
+## Notes-Only Footnotes
+
+This slide keeps classic footnotes at the bottom[^notes-only] and disables hover or click popovers on the inline markers.
+
+[^notes-only]: Use `footnoteDisplay: notes-only` when you want explicit notes on the slide and no floating preview UI.
 
 ---
 layout: references
@@ -628,7 +766,23 @@ page: 2
 title: "References (continued)"
 -->
 
-[[bibliography]]
+---
+layout: default
+title: Internal Anchor Target
+subtitle: Generic href="#..." Destination
+---
+
+<!--
+FEATURE: Generic internal anchor target
+- Declare a target with heading syntax ## Title {#id}
+- Or place a standalone target using ::anchor{#id}
+-->
+
+## Appendix-Style Target {#anchor-demo-proof}
+
+This slide is a generic destination for internal `href="#..."` navigation.
+
+Jump here from the earlier link, then use `Back to source` to return to the previous slide position.
 
 ---
 layout: section

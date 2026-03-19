@@ -30,7 +30,7 @@ footerMiddle: 2025 年会议名称
 
 - 居中的大标题
 - 带有单位和邮箱的作者信息
-- 带有作者、会议和页码的页脚
+- 带有作者、会议、页码和放映态导航按钮的页脚
 
 ---
 
@@ -58,7 +58,7 @@ subtitle: 可选的副标题
 
 - 可选的带有标题和副标题的页眉
 - 中间的内容
-- 底部的页脚
+- 底部带页码和放映态导航按钮的页脚
 
 ---
 
@@ -140,6 +140,37 @@ sectionMode: dark  # 覆盖全局设置
 
 ---
 
+## toc - 目录（Table of Contents）
+
+**用于：** 目录/大纲页（自动从 `layout: section` 的章节页生成）
+
+![目录布局示例](/images/layouts/toc.png)
+
+```markdown
+---
+layout: toc
+title: 目录            # 设为 false 可隐藏
+showNumbers: true      # 可选，默认：true
+highlightCurrent: true # 可选，默认：true
+---
+```
+
+**显示内容：**
+
+- 标题（默认会根据 `lang` 显示 `Outline` 或 `目录`）
+- 自动汇总所有 `layout: section` 的章节页（可点击跳转）
+
+**属性：**
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `title` | `string \| false` | `目录` | 标题文本，设为 `false` 可隐藏 |
+| `showNumbers` | `boolean` | `true` | 是否显示序号圆点 |
+| `highlightCurrent` | `boolean` | `true` | 是否高亮当前章节 |
+| `sections` | `string[]` | - | 手动指定章节标题（覆盖自动提取） |
+
+---
+
 ## center - 居中内容
 
 **用于：** 简短信息或关键要点
@@ -186,6 +217,43 @@ subtitle: 副标题
 - 根据内容长度自动调整字体大小
 - 内容垂直居中
 - 在居中块内保持文本左对齐
+
+---
+
+## auto-size - 页面自适应的默认布局
+
+**用于：** 希望保留默认布局阅读流，同时让页面行为更接近 LaTeX Beamer frame 的内容页
+
+```markdown
+---
+layout: auto-size
+title: 标题
+subtitle: 副标题
+autoSizeGrow: true
+autoSizeAlign: top
+autoSizePadding: normal
+minFontSize: 14
+maxFontSize: 30
+---
+
+## 自动适应页面的正文
+
+这个布局会保留 default 的阅读流，
+同时自动调整 main matter 的字号以适应页面。
+```
+
+**显示内容：**
+
+- 保留默认布局的 header 和 footer
+- 根据可用宽高自动调整 main matter
+- 正文保持自上而下展开，不做垂直居中
+- 支持使用 `minFontSize` 和 `maxFontSize` frontmatter 约束字号范围
+
+**配置入口：**
+
+- `autoSizeGrow: true | false` - 稀疏内容是否允许放大，或只在需要时缩小
+- `autoSizeAlign: top | center` - main matter 是贴顶部展示，还是在可用区域内垂直居中
+- `autoSizePadding: compact | normal` - 切换更紧凑或更常规的正文内边距
 
 ---
 

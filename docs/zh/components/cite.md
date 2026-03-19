@@ -15,6 +15,7 @@ title: 引用
 theme: scholarly
 bibFile: references.bib  # BibTeX 文件路径（默认：references.bib）
 bibStyle: apa            # 引用样式
+bibShowNum: false        # 参考文献是否显示数字标记（如 [1]）
 ---
 ```
 
@@ -55,19 +56,78 @@ bibStyle: apa            # 引用样式
 最近的进展 @smith2023deep @wang2022attention 表明...
 ```
 
+## Markdown 注脚
+
+标准 Markdown 注脚开箱即用，不需要额外的主题语法：
+
+```markdown
+我们的紧凑模型在五个随机种子下依然稳定[^1]。
+
+[^1]: 验证集准确率波动小于 0.3 个百分点。
+```
+
+在 Slidev 的交互视图中，主题会自动为注脚应用学术化样式：
+
+- 桌面端悬停注脚标记即可预览内容
+- 点击标记可固定浮窗
+- 按 `Esc` 或点击外部即可关闭
+
+你也可以先在首页 headmatter 中设置全局默认值：
+
+```yaml
+---
+footnoteDisplay: hover-only
+---
+```
+
+再通过单页 frontmatter 按页覆盖：
+
+```markdown
+---
+footnoteDisplay: notes-only
+---
+```
+
+- `footnoteDisplay: both` 同时保留底部注脚和行内 hover / click 预览
+- `footnoteDisplay: hover-only` 隐藏底部注脚，只保留行内预览
+- `footnoteDisplay: notes-only` 保留底部注脚，并关闭 hover / click 浮窗
+
+优先级顺序：
+
+- 单页 `footnoteDisplay`
+- 首页 headmatter `footnoteDisplay`
+- 兼容旧配置 `themeConfig.footnoteDisplay`
+- 默认值 `both`
+
+打印或导出时，注脚会回退为幻灯片底部的普通注脚列表。
+
 ## 参考文献
 
-添加带有 `[[bibliography]]` 标记的参考文献幻灯片：
+添加一个参考文献页：
 
 ```markdown
 ---
 layout: references
 ---
-
-[[bibliography]]
 ```
 
 参考文献会自动从幻灯片中使用的所有引用生成。
+
+如果这一页的正文为空，或者只包含标题 / 注释，主题会自动插入 bibliography。
+
+如果你想精确控制 bibliography 在该页中的插入位置，可以显式写 `[[bibliography]]`。
+
+正常使用这个主题时，不需要额外维护项目级 `vite.config.ts`；Scholarly 会从主题包内部自动注册 citation 相关 hook。
+
+## 内部锚点跳转
+
+在 Slidev 的交互式浏览视图中，Scholarly 会把内部 `href="#..."` 链接升级成支持跨页的跳转：
+
+- 文中的 BibTeX citation 可以直接跳到对应的参考文献条目，即使参考文献列表在另一页
+- 普通内部链接如 `[跳转](#appendix-proof)` 也可以跨页工作，只要目标位置使用了 `## 标题 {#appendix-proof}`、`::anchor{#appendix-proof}`，或者显式声明了 `id="appendix-proof"`
+- 跳转后会出现一个浮动的 `Back to source` 按钮，用来回到之前的 citation 或链接位置
+
+这个能力主要用于现场演示和浏览器中的交互式查看；打印和导出结果仍然保持静态内容。
 
 ## 分页
 
@@ -80,16 +140,12 @@ perPage: 5
 page: 1
 ---
 
-[[bibliography]]
-
 ---
 layout: references
 perPage: 5
 page: 2
 title: "参考文献（续）"
 ---
-
-[[bibliography]]
 ```
 
 ## BibTeX 文件示例
@@ -114,12 +170,38 @@ title: "参考文献（续）"
 }
 ```
 
-## 传统 Cite 组件
+## Cite 组件（手动）
 
-`<Cite>` 组件仍然可用于手动引用：
+`<Cite>` 组件是一个轻量的手动引用/注记组件（非 BibTeX）。BibTeX 引用请优先使用 `@citekey` / `!@citekey`。
+
+### 作者-年份标记（传统写法）
 
 ```markdown
 <Cite author="张三等" year="2024" />
 ```
 
 渲染为：(张三等, 2024)
+
+也可以附带引用上下文：
+
+```markdown
+<Cite author="张三等" year="2024">
+引用上下文
+</Cite>
+```
+
+### 数字标记
+
+```markdown
+<Cite :inline="true">
+引用上下文
+</Cite>
+```
+
+也可以固定 `id`：
+
+```markdown
+<Cite :inline="false" :id="1">
+参考条目
+</Cite>
+```

@@ -4,48 +4,107 @@ title: 快速开始
 
 # 快速开始
 
-## 第一步：安装 Slidev
+## 前置要求
 
-首先, 确保已安装 [Node.js](https://nodejs.org/)（从 nodejs.org 下载）. 然后打开终端（Windows 上是命令提示符, Mac/Linux 上是终端）并运行：
+确保你已安装 [Node.js](https://nodejs.org/)。
+
+## 第一步：使用 CLI 创建演示项目（推荐）
 
 ```bash
-npm install -g @slidev/cli
+# 一次性使用（不需要全局安装）
+npx -y --package slidev-theme-scholarly sch init my-talk
+
+# 备选短命令
+npx -y --package slidev-theme-scholarly sts init my-talk
 ```
 
-> **这是做什么的？** 这会在你的电脑上安装 Slidev, 使你可以在任何地方使用它.
-
-### 第二步：创建你的第一个演示文稿
+可用模板：
 
 ```bash
-# 为演示文稿创建一个新文件夹
-mkdir my-talk
+npx -y --package slidev-theme-scholarly sch template list
+```
+
+指定模板：
+
+```bash
+npx -y --package slidev-theme-scholarly sch init my-talk --template academic
+```
+
+常用 CLI 命令：
+
+```bash
+# 帮助
+npx sch help
+npx sch help theme
+
+# 查看主题专属资源
+npx sch theme list
+npx sch layout list
+npx sch component list
+npx sch snippet list
+
+# 应用 Scholarly 主题预设到 frontmatter
+npx sch theme apply cambridge-green --font elegant --file slides.md
+npx sch theme preset apply cambridge --file slides.md
+
+# 插入 Scholarly 学术片段
+npx sch snippet append theorem --file slides.md
+npx sch snippet append methodology --file slides.md
+
+# 追加整套学术演示骨架
+npx sch workflow list
+npx sch workflow apply paper --file slides.md
+
+# 环境检查（包含 Scholarly 检查）
+npx sch doctor
+```
+
+## 第二步：安装依赖并启动
+
+```bash
 cd my-talk
-
-# 创建幻灯片文件
-echo "---
-theme: scholarly
----
-
-# 我的第一个学术报告
-
-你的名字
-
----
-
-# 引言
-
-- 要点 1
-- 要点 2
-- 要点 3
-" > slides.md
+pnpm install
+pnpm run dev
 ```
 
-### 第三步：预览你的演示文稿
+浏览器会自动打开，并支持实时预览。
+
+## 第三步：编辑 `slides.md`
+
+初始化后的项目已经包含可直接使用的 `slides.md`。
+
+## 手动方式（如果你已有 Slidev 项目）
+
+安装主题：
 
 ```bash
-slidev slides.md
+npm i -D slidev-theme-scholarly
 ```
 
-浏览器会自动打开并显示你的演示文稿！按右箭头键在幻灯片之间切换.
+在 frontmatter 中设置：
 
-> **提示：** 保持终端运行. 你对 `slides.md` 所做的任何更改都会立即显示在浏览器中！
+```markdown
+---
+theme: scholarly
+bibFile: references.bib
+bibStyle: apa
+---
+```
+
+然后运行：
+
+```bash
+npx slidev
+```
+
+Scholarly 会从主题包内部自动注册 citation 相关 hook，正常使用时不需要项目级 `vite.config.ts`。
+
+参考文献页可以直接这样写：
+
+```markdown
+---
+layout: references
+---
+```
+
+只有在你想自定义 bibliography 在该页中的插入位置时，才需要显式写 `[[bibliography]]`。

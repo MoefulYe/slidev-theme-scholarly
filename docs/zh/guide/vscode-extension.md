@@ -8,12 +8,14 @@ title: VS Code 插件
 
 ## 功能特点
 
-- 🎯 **侧边栏面板** - 快速访问布局、组件、模板、主题和参考文献
+- 🎯 **侧边栏面板** - 快速访问布局、组件、模板、主题、参考文献和 CLI 操作
 - ✨ **代码片段** - 输入 `ss-` 或 `scholarly-` 触发布局和组件的代码片段
+- ⚡ **智能补全** - 对 `layout:`、`themeConfig`、组件（`<...>`）和指令（`:::`）提供上下文候选
 - 📝 **一键插入/应用** - 点击面板中的项目即可插入内容或更新 frontmatter
 - 🚀 **新建演示** - 创建带有预配置模板的新演示文稿
 - 🎨 **主题预设** - 在 Themes 面板中一键应用 `themeConfig.colorTheme` / `themeConfig.fontTheme`
-- 📚 **BibTeX 参考文献** - 引用补全、悬浮预览，以及 References 面板浏览/插入 cite key
+- 📚 **参考文献与锚点** - BibTeX 引用补全/悬浮预览，加上内部锚点补全与统一的 References 面板
+- 🧪 **Dev Mode** - 内置性能诊断，提供耗时日志与慢操作标记
 
 ## 安装方法
 
@@ -39,19 +41,54 @@ scholarly-cite # 插入引用
 
 按 `Tab` 键在插入的代码片段中的占位符之间移动。
 
+### 输入时智能候选
+
+插件还提供了基于上下文的补全建议：
+
+- `layout:` -> 布局名称候选（`cover`、`section`、`results` 等）
+- `colorTheme:` / `fontTheme:` / `colorMode:` -> 主题配置值候选
+- `<` -> Scholarly 组件候选（`Theorem`、`Block`、`Columns` 等）
+- `:::` -> Markdown 语法糖指令候选（`theorem`、`block`、`keywords` 等）
+- `](#` / `href="#` / `to="#` -> 当前文档中可用的内部锚点 id
+- `ss-` / `scholarly-` -> 内置 snippet 候选
+
+如果没有自动弹出建议，可按 `Ctrl+Space`（macOS 也可使用 `Cmd+Space`，若未被系统占用）手动触发。
+
+### 用于性能测试的 Dev Mode
+
+当你需要分析插件性能时，可开启 dev mode：
+
+- 命令面板：`Slidev Scholarly: Toggle Dev Mode`
+- 设置项：
+  - `slidevScholarly.devMode.enabled`
+  - `slidevScholarly.devMode.slowThresholdMs`（默认 `25`）
+
+开启后：
+
+- 状态栏会显示 `Scholarly Dev`
+- `Slidev Scholarly` 输出通道会打印性能耗时日志
+- 超过阈值的操作会标记为 `SLOW`
+
+如果你在本地开发插件，可使用 `vscode-extension/.vscode/launch.json` 中的 `Run Extension (Dev Mode)` 调试配置。
+
 ### 使用侧边栏
 
-1. 点击侧边栏（左侧）中的 **Slidev Scholarly** 图标
-2. 浏览五个部分：
+1. 打开右侧的 **Secondary Side Bar**，然后选择 **Slidev Scholarly**
+2. 浏览六个部分：
    - **Layouts（布局）** - 按类别组织的幻灯片布局：
-     - *结构布局* - cover、default、intro、section、center、auto-center、end
+     - *结构布局* - cover、default、intro、section、center、auto-center、auto-size、toc、end
      - *内容布局* - two-cols、image-left/right、bullets、figure、split-image
      - *强调布局* - quote、fact、statement、focus
      - *学术布局* - compare、methodology、results、timeline、agenda、acknowledgments、references
    - **Components（组件）** - 内置 Vue 组件
    - **Templates（模板）** - 预制的演示文稿模板
    - **Themes（主题）** - 应用主题预设（会更新 frontmatter）
-   - **References（参考文献）** - 浏览 BibTeX 条目并插入 cite key
+   - **References（参考文献）** - 同时浏览 BibTeX 条目和内部锚点，并插入 cite key 或 `#anchor-id`
+   - **CLI** - 在侧边栏直接运行 Scholarly CLI：
+     - *Create* - 新建演示与模板列表
+     - *Theme* - 应用/查看主题，应用预设组合，查看布局/组件清单
+     - *Snippets* - 追加/查看/列出片段，追加 workflow
+     - *Tools* - 环境检查与帮助
 3. 点击任意项目（或有 `+` 的地方点击 `+`）即可插入/应用
 
 ### 创建新演示文稿
@@ -67,6 +104,8 @@ scholarly-cite # 插入引用
 
 布局按四个类别组织。你可以使用类别前缀（`ss-structure-*`、`ss-content-*`、`ss-emphasis-*`、`ss-academic-*`）或简短的 `ss-*` 前缀。
 
+补全列表中会以 `ss-*` 作为规范前缀显示。旧的 `scholarly-*` 别名仍然通过扩展的智能补全保留兼容。
+
 #### 结构布局
 
 | 前缀 | 描述 |
@@ -77,7 +116,11 @@ scholarly-cite # 插入引用
 | `ss-section` | 章节分隔符（支持 `sectionMode: dark/light`） |
 | `ss-center` | 居中内容 |
 | `ss-auto-center` | 自动调整的居中内容 |
+| `ss-auto-size` | 带 `autoSizeGrow`、`autoSizeAlign`、`autoSizePadding` 控制项的页面自适应布局 |
+| `ss-toc` | 按 section 分组的自动目录页 |
 | `ss-end` | 致谢/结束幻灯片 |
+
+说明：如果在 frontmatter 里启用 `themeConfig.outlineToc: true`，放映页脚中的 TOC 也会使用同样的 section 分组；桌面端放映视图下，悬停或聚焦条目时还会显示对应页面预览。
 
 #### 内容布局
 
@@ -135,10 +178,9 @@ scholarly-cite # 插入引用
 
 | 前缀 | 描述 |
 |------|------|
+| `ss-theme-classic` | Classic Blue + Classic 字体 |
 | `ss-theme-oxford` | Oxford 酒红 + Traditional 字体 |
 | `ss-theme-cambridge` | Cambridge 绿 + Elegant 字体 |
-| `ss-theme-yale` | Yale 蓝 + Classic 字体 |
-| `ss-theme-princeton` | Princeton 橙 + Modern 字体 |
 | `ss-theme-modern` | 单色 + Sans-default 字体 |
 
 ### 实用片段
@@ -187,10 +229,10 @@ scholarly-cite # 插入引用
 2. 检查你是否正在编辑 `.md` 文件
 3. 尝试按 `Ctrl+Space` 手动触发建议
 
-### 侧边栏图标缺失
+### Slidev Scholarly 视图未显示在右侧
 
-1. 右键点击侧边栏
-2. 确保 "Slidev Scholarly" 已勾选
+1. 运行 `View: Toggle Secondary Side Bar`
+2. 如果它仍然不在右侧，运行 `View: Reset View Locations`
 
 ## 反馈
 

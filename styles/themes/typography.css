@@ -9,6 +9,7 @@
 :root {
   --scholarly-font-serif: "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
   --scholarly-font-sans: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --scholarly-font-body: var(--scholarly-font-serif);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -17,6 +18,7 @@
 [data-font-theme="modern"] {
   --scholarly-font-serif: "Georgia", "Cambria", "Times New Roman", serif;
   --scholarly-font-sans: "Source Sans Pro", "Segoe UI", "Roboto", system-ui, sans-serif;
+  --scholarly-font-body: var(--scholarly-font-sans);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -25,6 +27,7 @@
 [data-font-theme="traditional"] {
   --scholarly-font-serif: "Garamond", "Baskerville", "Times New Roman", serif;
   --scholarly-font-sans: "Gill Sans", "Optima", "Helvetica", system-ui, sans-serif;
+  --scholarly-font-body: var(--scholarly-font-serif);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -33,6 +36,7 @@
 [data-font-theme="contemporary"] {
   --scholarly-font-serif: "Charter", "Georgia", "Cambria", serif;
   --scholarly-font-sans: "Inter", "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+  --scholarly-font-body: var(--scholarly-font-sans);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -41,6 +45,7 @@
 [data-font-theme="humanist"] {
   --scholarly-font-serif: "Crimson Text", "Libre Baskerville", "Georgia", serif;
   --scholarly-font-sans: "Open Sans", "Noto Sans", "Arial", system-ui, sans-serif;
+  --scholarly-font-body: var(--scholarly-font-sans);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -49,6 +54,7 @@
 [data-font-theme="technical"] {
   --scholarly-font-serif: "Computer Modern", "Latin Modern", "Times New Roman", serif;
   --scholarly-font-sans: "IBM Plex Sans", "Roboto", "Arial", system-ui, sans-serif;
+  --scholarly-font-body: var(--scholarly-font-sans);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -57,6 +63,7 @@
 [data-font-theme="elegant"] {
   --scholarly-font-serif: "Cormorant Garamond", "EB Garamond", "Garamond", serif;
   --scholarly-font-sans: "Montserrat", "Lato", "Helvetica", system-ui, sans-serif;
+  --scholarly-font-body: var(--scholarly-font-serif);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -65,4 +72,5 @@
 [data-font-theme="sans-default"] {
   --scholarly-font-serif: "Georgia", "Cambria", "Times New Roman", serif;
   --scholarly-font-sans: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+  --scholarly-font-body: var(--scholarly-font-sans);
 }

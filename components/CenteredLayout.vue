@@ -73,7 +73,7 @@ const computedStyles = useFontSizeStyles(contentFontSize)
 <style scoped>
 .content-wrapper-centered {
   padding-top: v-bind(paddingTop);
-  padding-bottom: 35px; /* Space for fixed footer */
+  padding-bottom: calc(var(--scholarly-footer-height) + 0.5rem); /* Space for fixed footer */
   padding-left: 2rem;
   padding-right: 2rem;
 }

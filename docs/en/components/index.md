@@ -17,6 +17,7 @@ This theme provides several components for academic presentations.
 | [Columns](./columns) | Multi-column layouts |
 | [Highlight](./highlight) | Text highlighting |
 | [Cite](./cite) | Academic citations |
+| [ThemePreview](./theme-preview) | Preview a color theme inside a block |
 
 ## Quick Example
 

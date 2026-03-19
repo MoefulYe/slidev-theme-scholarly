@@ -20,9 +20,26 @@
 
   /* Semantic layout tokens */
   --scholarly-header-height: 50px;
-  --scholarly-footer-height: 28px;
+  --scholarly-footer-height: 36px;
+  --scholarly-outline-width: 17rem;
   --scholarly-accent-color: var(--slidev-theme-primary);
   --scholarly-border-radius: 0.5rem;
+
+  /* Heading scale */
+  --scholarly-h1-hero-scale: 3.25rem;
+  --scholarly-h2-hero-scale: 1.9rem;
+  --scholarly-h1-display-scale: 2.65rem;
+  --scholarly-h2-display-scale: 1.72rem;
+  --scholarly-h3-display-scale: 1.3rem;
+  --scholarly-h1-section-scale: 2.55rem;
+  --scholarly-h2-section-scale: 1.62rem;
+  --scholarly-h3-section-scale: 1.26rem;
+  --scholarly-h1-content-scale: 2.15rem;
+  --scholarly-h2-content-scale: 1.48rem;
+  --scholarly-h3-content-scale: 1.18rem;
+  --scholarly-h1-fact-scale: 3.7rem;
+  --scholarly-h2-fact-scale: 2.4rem;
+  --scholarly-h3-fact-scale: 1.75rem;
 
   /* Smart spacing variables - auto-adjust based on content */
   --scholarly-list-spacing: 0.5em;
@@ -35,7 +52,7 @@
 
 .slidev-layout {
   font-size: var(--scholarly-font-size, 1rem);
-  font-family: var(--scholarly-font-serif);
+  font-family: var(--scholarly-font-body);
   color: var(--scholarly-text-primary);
   background-color: var(--scholarly-bg-warm);
 }
@@ -161,10 +178,191 @@
 .slidev-layout .footnote,
 .slidev-layout .footnotes,
 .slidev-layout blockquote cite,
-.slidev-layout .citation,
-.slidev-layout sup {
+.slidev-layout .citation {
   font-size: 0.85em;
   color: #6b7280;
+}
+
+.slidev-layout sup.footnote-ref {
+  vertical-align: super;
+  font-size: 0.68em;
+  line-height: 0;
+  margin-left: 0.08em;
+}
+
+.slidev-layout .footnote-ref a {
+  color: var(--slidev-theme-primary, #1e3a5f);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.slidev-layout .footnotes-sep {
+  width: 32%;
+  margin: 1rem 0 0.45rem;
+  border: 0;
+  border-top: 1px solid rgba(30, 58, 95, 0.22);
+}
+
+.slidev-layout .footnotes {
+  margin-top: 0;
+  padding-top: 0;
+  font-family: var(--scholarly-font-serif);
+  font-size: 0.72em;
+  line-height: 1.35;
+  color: rgba(45, 55, 72, 0.82);
+}
+
+:root[data-scholarly-footnote-display="hover-only"] .slidev-layout .footnotes-sep,
+:root[data-scholarly-footnote-display="hover-only"] .slidev-layout .footnotes {
+  display: none;
+}
+
+/* Let footnotes sit near the bottom of the content area on short slides. */
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout.default .content-wrapper[data-scholarly-has-footnotes="true"],
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout.intro .intro-content[data-scholarly-has-footnotes="true"],
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout.bullets .bullets-container[data-scholarly-has-footnotes="true"],
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .content-wrapper-centered[data-scholarly-has-footnotes="true"] {
+  padding-bottom: calc(var(--scholarly-footer-height) + 0.1rem) !important;
+}
+
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .content-inner[data-scholarly-has-footnotes="true"],
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .bullets-content[data-scholarly-has-footnotes="true"],
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .prose[data-scholarly-has-footnotes="true"] {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .content-inner[data-scholarly-has-footnotes="true"] > .footnotes-sep,
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .bullets-content[data-scholarly-has-footnotes="true"] > .footnotes-sep,
+:root:not([data-scholarly-footnote-display="hover-only"]) .slidev-layout .prose[data-scholarly-has-footnotes="true"] > .footnotes-sep {
+  margin-top: auto;
+}
+
+.slidev-layout .footnotes ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.slidev-layout .footnotes li {
+  margin: 0.18rem 0;
+  padding-left: 0.2rem;
+}
+
+.slidev-layout .footnotes p {
+  display: inline;
+  margin: 0;
+}
+
+.slidev-layout .footnote-backref {
+  margin-left: 0.35rem;
+  color: rgba(30, 58, 95, 0.62);
+  text-decoration: none;
+}
+
+.slidev-layout .footnote-ref a[data-scholarly-footnote-active="true"] {
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+.slidev-layout .footnote-ref a[data-scholarly-footnote-pinned="true"] {
+  color: color-mix(in srgb, var(--slidev-theme-primary, #1e3a5f) 92%, black 8%);
+}
+
+.scholarly-footnote-popover {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 80;
+  width: min(30rem, calc(100vw - 2rem));
+  max-height: min(18rem, calc(100vh - 3rem));
+  overflow: auto;
+  padding: 0.9rem 1rem 1rem;
+  border: 1px solid rgba(30, 58, 95, 0.14);
+  border-radius: 0.85rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.97));
+  box-shadow:
+    0 18px 44px rgba(15, 23, 42, 0.16),
+    0 4px 14px rgba(15, 23, 42, 0.08);
+  color: rgba(30, 41, 59, 0.92);
+  font-family: var(--scholarly-font-serif);
+  font-size: 0.78rem;
+  line-height: 1.48;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px) scale(0.985);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
+  backdrop-filter: blur(12px);
+}
+
+.scholarly-footnote-popover.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.scholarly-footnote-popover[data-pinned="true"] {
+  box-shadow:
+    0 22px 52px rgba(15, 23, 42, 0.22),
+    0 4px 14px rgba(15, 23, 42, 0.1);
+}
+
+.scholarly-footnote-popover__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  margin-bottom: 0.55rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: rgba(30, 58, 95, 0.08);
+  color: var(--slidev-theme-primary, #1e3a5f);
+  font-family: var(--scholarly-font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.scholarly-footnote-popover__content {
+  color: inherit;
+}
+
+.scholarly-footnote-popover__content>:first-child {
+  margin-top: 0;
+}
+
+.scholarly-footnote-popover__content>:last-child {
+  margin-bottom: 0;
+}
+
+.scholarly-footnote-popover__content p {
+  margin: 0.1rem 0 0.45rem;
+}
+
+.scholarly-footnote-popover__content a:not(.footnote-backref) {
+  color: var(--slidev-theme-primary, #1e3a5f);
+  text-decoration-color: rgba(30, 58, 95, 0.32);
+}
+
+.scholarly-footnote-popover__content code {
+  font-size: 0.92em;
+}
+
+.scholarly-footnote-popover__content ol,
+.scholarly-footnote-popover__content ul {
+  margin: 0.3rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.scholarly-footnote-popover__content li + li {
+  margin-top: 0.18rem;
 }
 
 .slidev-layout blockquote {
@@ -180,6 +378,64 @@
   margin-top: 0.5rem;
   font-style: normal;
   font-size: 0.85em;
+}
+
+:root.dark .slidev-layout .footnote-ref a {
+  color: rgba(191, 219, 254, 0.92);
+}
+
+:root.dark .slidev-layout .footnotes-sep {
+  border-top-color: rgba(148, 163, 184, 0.35);
+}
+
+:root.dark .slidev-layout .footnotes {
+  color: rgba(226, 232, 240, 0.78);
+}
+
+:root.dark .slidev-layout .footnote-backref {
+  color: rgba(191, 219, 254, 0.68);
+}
+
+:root.dark .slidev-layout .footnote-ref a[data-scholarly-footnote-pinned="true"] {
+  color: rgba(219, 234, 254, 0.96);
+}
+
+:root.dark .scholarly-footnote-popover {
+  border-color: rgba(148, 163, 184, 0.22);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.9));
+  box-shadow:
+    0 20px 48px rgba(2, 6, 23, 0.5),
+    0 4px 16px rgba(2, 6, 23, 0.3);
+  color: rgba(226, 232, 240, 0.88);
+}
+
+:root.dark .scholarly-footnote-popover[data-pinned="true"] {
+  box-shadow:
+    0 24px 56px rgba(2, 6, 23, 0.58),
+    0 4px 18px rgba(2, 6, 23, 0.32);
+}
+
+:root.dark .scholarly-footnote-popover__label {
+  background: rgba(191, 219, 254, 0.12);
+  color: rgba(219, 234, 254, 0.94);
+}
+
+:root.dark .scholarly-footnote-popover__content a:not(.footnote-backref) {
+  color: rgba(191, 219, 254, 0.94);
+  text-decoration-color: rgba(191, 219, 254, 0.34);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scholarly-footnote-popover {
+    transition: none;
+  }
+}
+
+@media print {
+  .scholarly-footnote-popover {
+    display: none !important;
+  }
 }
 
 footer {
@@ -250,31 +506,284 @@ footer {
 
 .beamer-footer {
   @apply w-full;
-  height: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  height: var(--scholarly-footer-height);
+  border-top: 1px solid color-mix(in srgb, var(--scholarly-chrome-fg) 10%, transparent);
 }
 
-.beamer-footer span {
-  @apply px-4 inline-block;
-  padding-top: 0.375rem;
-  padding-bottom: 0.375rem;
-  line-height: 1em;
-  font-size: 1em;
+.beamer-footer>* {
+  @apply px-4 inline-flex items-center;
+  min-width: 0;
+  min-height: 100%;
+  line-height: 1;
+  font-family: var(--scholarly-font-body);
+  font-size: 0.9em;
 }
 
 .beamer-footer-left {
   background: var(--scholarly-footer-left-bg, var(--slidev-theme-primary, #1e3a5f));
   color: var(--scholarly-chrome-fg);
+  justify-content: flex-start;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .beamer-footer-center {
   background: var(--scholarly-footer-center-bg, var(--slidev-theme-primary, #1e3a5f));
-  color: var(--scholarly-chrome-fg);
-  @apply flex-1 text-center;
+  color: color-mix(in srgb, var(--scholarly-chrome-fg) 92%, transparent);
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-inline: 1.4rem;
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: 0.006em;
 }
 
 .beamer-footer-right {
   background: var(--scholarly-footer-right-bg, var(--slidev-theme-primary, #1e3a5f));
   color: var(--scholarly-chrome-fg);
+  justify-content: flex-end;
+  gap: 0.16rem;
+  font-family: inherit;
+}
+
+.beamer-footer-toolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.12rem;
+  padding: 0.14rem;
+  color: var(--scholarly-toolbar-fg);
+  border: 1px solid var(--scholarly-toolbar-border);
+  border-radius: 0.42rem;
+  background: var(--scholarly-toolbar-surface);
+  box-shadow:
+    0 8px 18px color-mix(in srgb, var(--slidev-theme-primary, #1e3a5f) 22%, transparent),
+    0 2px 8px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 color-mix(in srgb, var(--scholarly-chrome-fg) 8%, transparent);
+  overflow: hidden;
+}
+
+.beamer-footer-toolbar:empty {
+  display: none;
+}
+
+.beamer-footer-page {
+  display: inline-grid;
+  align-items: center;
+  grid-template-columns: var(--scholarly-page-slot-width, 2ch) auto var(--scholarly-page-slot-width, 2ch);
+  column-gap: 0.1rem;
+  justify-items: center;
+  height: 1.18rem;
+  padding: 0 0.38rem 0 0.3rem;
+  border: 1px solid color-mix(in srgb, var(--scholarly-chrome-fg) 10%, transparent);
+  border-radius: 0.24rem;
+  background: var(--scholarly-toolbar-chip, color-mix(in srgb, var(--scholarly-chrome-fg) 4%, transparent));
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--scholarly-chrome-fg) 6%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--slidev-theme-primary-light, var(--slidev-theme-primary, #1e3a5f)) 10%, transparent);
+}
+
+.beamer-footer-toolbar .beamer-footer-page {
+  height: 100%;
+  padding: 0 0.3rem 0 0.2rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.beamer-footer-page.is-plain {
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.012em;
+  box-shadow: none;
+}
+
+.beamer-footer-page-slot {
+  min-width: var(--scholarly-page-slot-width, 2ch);
+  display: inline-block;
+}
+
+.beamer-footer-page-current {
+  text-align: right;
+}
+
+.beamer-footer-page-total {
+  text-align: left;
+}
+
+.beamer-footer-page-separator {
+  line-height: 1;
+  opacity: 0.76;
+}
+
+.beamer-footer-toolbar .beamer-footer-page-current {
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.beamer-footer-toolbar .beamer-footer-page-total,
+.beamer-footer-toolbar .beamer-footer-page-separator {
+  font-size: 0.58rem;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.beamer-footer-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.02rem;
+  padding-right: 0.18rem;
+  margin-right: 0.02rem;
+  position: relative;
+}
+
+.beamer-footer-nav::after,
+.footer-toc-control::after {
+  content: "";
+  position: absolute;
+  top: 0.18rem;
+  bottom: 0.18rem;
+  right: 0;
+  width: 1px;
+  background: var(--scholarly-toolbar-divider);
+  opacity: 0.9;
+}
+
+.beamer-nav-button {
+  min-width: 1.3rem;
+  height: 1.3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  border: 1px solid transparent;
+  border-radius: 0.28rem;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  line-height: 1;
+  opacity: 0.75;
+  transition: background-color 180ms ease, border-color 180ms ease, opacity 140ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.beamer-nav-button:hover:not(:disabled),
+.beamer-nav-button:focus-visible {
+  opacity: 1;
+  background: var(--scholarly-toolbar-hover);
+  border-color: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+.beamer-nav-button.is-active {
+  opacity: 1;
+  background: var(--scholarly-toolbar-hover);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.beamer-nav-button:active:not(:disabled) {
+  transform: translateY(0.5px);
+}
+
+.beamer-nav-button:focus-visible {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--scholarly-accent, #b8860b) 16%, transparent);
+}
+
+.beamer-nav-button:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.beamer-nav-button-toc {
+  min-width: 1.3rem;
+}
+
+.beamer-nav-icon,
+.beamer-nav-toc-icon {
+  width: 0.64rem;
+  height: 0.64rem;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.45;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 900px) {
+  .beamer-footer {
+    grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
+  }
+
+  .beamer-footer-right {
+    gap: 0.16rem;
+  }
+
+  .beamer-footer-toolbar {
+    padding: 0.1rem;
+  }
+
+  .beamer-nav-button,
+  .beamer-footer-page {
+    height: 1.16rem;
+  }
+
+  .beamer-nav-button {
+    min-width: 1.16rem;
+  }
+
+  .beamer-footer-page {
+    padding: 0 0.28rem 0 0.22rem;
+    font-size: 0.54rem;
+  }
+
+  .beamer-footer-toolbar .beamer-footer-page {
+    height: 100%;
+  }
+
+  .beamer-footer-page.is-plain {
+    padding: 0;
+    font-size: 0.6rem;
+  }
+
+  .beamer-nav-button-toc {
+    min-width: 1.16rem;
+  }
+
+  .beamer-nav-icon,
+  .beamer-nav-toc-icon {
+    width: 0.56rem;
+    height: 0.56rem;
+  }
+}
+
+@media print {
+
+  .beamer-footer-toolbar,
+  .beamer-footer-nav {
+    display: none !important;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -324,26 +833,26 @@ footer {
 .slidev-layout.cover h1 {
   @apply text-center;
   font-family: var(--scholarly-font-sans);
-  font-size: var(--scholarly-h1-size, 3rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-display-scale));
   line-height: 1.333;
   color: var(--slidev-theme-primary);
 }
 
 .slidev-layout.cover h1+p {
   @apply -mt-1 opacity-50 mb-4 text-center;
-  font-family: var(--scholarly-font-serif);
+  font-family: var(--scholarly-font-body);
   font-style: italic;
 }
 
 .slidev-layout.cover h2 {
   @apply text-center;
   font-family: var(--scholarly-font-sans);
-  font-size: var(--scholarly-h2-size, 2rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-display-scale));
   color: #4a5568;
 }
 
 .slidev-layout.cover h3 {
-  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-display-scale));
   font-weight: 600;
 }
 
@@ -387,7 +896,7 @@ footer {
 }
 
 .slidev-layout.intro h1 {
-  font-size: var(--scholarly-h1-size, 3.75rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-hero-scale));
   line-height: 1.25;
 }
 
@@ -396,11 +905,11 @@ footer {
 }
 
 .slidev-layout.intro h2 {
-  font-size: var(--scholarly-h2-size, 2rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-hero-scale));
 }
 
 .slidev-layout.intro h3 {
-  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-display-scale));
   font-weight: 600;
 }
 
@@ -415,7 +924,7 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.default h1 {
-  font-size: var(--scholarly-h1-size, 2.75rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-content-scale));
   font-family: var(--scholarly-font-sans);
   color: var(--slidev-theme-primary);
   border-bottom: 1px solid #e2e8f0;
@@ -426,7 +935,7 @@ footer {
 }
 
 .slidev-layout.default h2 {
-  font-size: var(--scholarly-h2-size, 2rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-content-scale));
   font-family: var(--scholarly-font-sans);
   color: var(--scholarly-text-primary);
   line-height: 1.3;
@@ -435,7 +944,7 @@ footer {
 }
 
 .slidev-layout.default h3 {
-  font-size: var(--scholarly-h3-size, 1.6rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-content-scale));
   font-family: var(--scholarly-font-sans);
   line-height: 1.35;
   font-weight: 600;
@@ -453,19 +962,19 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.center h1 {
-  font-size: var(--scholarly-h1-size, 2.5rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-content-scale));
   font-weight: 700;
   margin-bottom: 1.25rem;
 }
 
 .slidev-layout.center h2 {
-  font-size: var(--scholarly-h2-size, 2rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-content-scale));
   font-weight: 600;
   margin-bottom: 0.875rem;
 }
 
 .slidev-layout.center h3 {
-  font-size: var(--scholarly-h3-size, 1.6rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-content-scale));
   font-weight: 600;
   margin-bottom: 0.625rem;
 }
@@ -485,7 +994,7 @@ footer {
 }
 
 .slidev-layout.section h1 {
-  font-size: var(--scholarly-h1-size, 3rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-section-scale));
   font-family: var(--scholarly-font-sans);
   font-weight: 700;
   margin-bottom: 1.5rem;
@@ -495,14 +1004,14 @@ footer {
 }
 
 .slidev-layout.section h2 {
-  font-size: var(--scholarly-h2-size, 1.75rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-section-scale));
   font-weight: 600;
   margin-bottom: 1rem;
   color: var(--scholarly-section-fg-muted);
 }
 
 .slidev-layout.section h3 {
-  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-section-scale));
   font-weight: 600;
   margin-bottom: 0.75rem;
   color: var(--scholarly-section-fg-muted);
@@ -520,16 +1029,16 @@ footer {
 
 .slidev-layout.fact h1 {
   @apply font-bold;
-  font-size: var(--scholarly-h1-size, 4.5rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-fact-scale));
 }
 
 .slidev-layout.fact h2 {
-  font-size: var(--scholarly-h2-size, 3rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-fact-scale));
   font-weight: 700;
 }
 
 .slidev-layout.fact h3 {
-  font-size: var(--scholarly-h3-size, 2.25rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-fact-scale));
   font-weight: 600;
 }
 
@@ -545,16 +1054,16 @@ footer {
 
 .slidev-layout.statement h1 {
   @apply font-light;
-  font-size: var(--scholarly-h1-size, 2.25rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-content-scale));
 }
 
 .slidev-layout.statement h2 {
-  font-size: var(--scholarly-h2-size, 1.75rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-content-scale));
   font-weight: 400;
 }
 
 .slidev-layout.statement h3 {
-  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-content-scale));
   font-weight: 400;
 }
 
@@ -564,7 +1073,7 @@ footer {
 
 .slidev-layout.quote .quote-content {
   padding-top: 60px;
-  padding-bottom: 35px;
+  padding-bottom: calc(var(--scholarly-footer-height) + 0.5rem);
   padding-left: 4rem;
   padding-right: 4rem;
   max-width: 56rem;
@@ -595,19 +1104,19 @@ footer {
 }
 
 .slidev-layout.quote h1 {
-  font-size: var(--scholarly-h1-size, 2.5rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-content-scale));
   font-weight: 700;
   margin-bottom: 2em;
 }
 
 .slidev-layout.quote h2 {
-  font-size: var(--scholarly-h2-size, 1.75rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-content-scale));
   font-weight: 600;
   margin-bottom: 1.5em;
 }
 
 .slidev-layout.quote h3 {
-  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-content-scale));
   font-weight: 600;
   margin-bottom: 1em;
 }
@@ -623,21 +1132,21 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.two-cols h1 {
-  font-size: var(--scholarly-h1-size, 2.5rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-content-scale));
   line-height: 1.2;
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .slidev-layout.two-cols h2 {
-  font-size: var(--scholarly-h2-size, 1.85rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-content-scale));
   line-height: 1.3;
   font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
 .slidev-layout.two-cols h3 {
-  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-content-scale));
   line-height: 1.35;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -654,21 +1163,21 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.image-left h1 {
-  font-size: var(--scholarly-h1-size, 2.5rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-content-scale));
   line-height: 1.2;
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .slidev-layout.image-left h2 {
-  font-size: var(--scholarly-h2-size, 1.85rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-content-scale));
   line-height: 1.3;
   font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
 .slidev-layout.image-left h3 {
-  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-content-scale));
   line-height: 1.35;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -685,21 +1194,21 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .slidev-layout.image-right h1 {
-  font-size: var(--scholarly-h1-size, 2.5rem);
+  font-size: var(--scholarly-h1-size, var(--scholarly-h1-content-scale));
   line-height: 1.2;
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .slidev-layout.image-right h2 {
-  font-size: var(--scholarly-h2-size, 1.85rem);
+  font-size: var(--scholarly-h2-size, var(--scholarly-h2-content-scale));
   line-height: 1.3;
   font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
 .slidev-layout.image-right h3 {
-  font-size: var(--scholarly-h3-size, 1.5rem);
+  font-size: var(--scholarly-h3-size, var(--scholarly-h3-content-scale));
   line-height: 1.35;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -798,4 +1307,89 @@ footer {
 .citation-error {
   color: #dc2626;
   font-weight: 600;
+}
+
+/* Internal anchor navigation */
+.scholarly-anchor-marker {
+  inline-size: 0;
+  block-size: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+[data-scholarly-anchor-target] {
+  scroll-margin: 1.5rem;
+  outline: 2px solid color-mix(in srgb, var(--slidev-theme-primary, #1e3a5f) 70%, white 30%);
+  outline-offset: 0.18rem;
+  border-radius: 0.35rem;
+  background: linear-gradient(135deg, rgba(30, 58, 95, 0.12) 0%, rgba(30, 58, 95, 0.04) 100%);
+  box-shadow: 0 0 0 0.35rem rgba(30, 58, 95, 0.08);
+  animation: scholarly-anchor-pulse 1.2s ease-out;
+}
+
+.slidev-layout :is(h1, h2, h3, h4, h5, h6)[data-scholarly-anchor-target] {
+  width: fit-content;
+  max-width: 100%;
+  padding-inline: 0.2em;
+}
+
+.scholarly-anchor-return {
+  position: fixed;
+  left: 0.75rem;
+  top: 0.75rem;
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.85rem;
+  max-width: min(18rem, calc(100vw - 1.5rem));
+  border: 1px solid rgba(30, 58, 95, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--slidev-theme-primary, #1e3a5f);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
+  backdrop-filter: blur(10px);
+  font-family: var(--scholarly-font-sans);
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  visibility: hidden;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.scholarly-anchor-return:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.2);
+}
+
+.scholarly-anchor-return:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--slidev-theme-primary, #1e3a5f) 78%, white 22%);
+  outline-offset: 3px;
+}
+
+:root[data-color-mode="dark"] .scholarly-anchor-return,
+html.dark .scholarly-anchor-return {
+  border-color: rgba(148, 163, 184, 0.28);
+  background: rgba(15, 23, 42, 0.9);
+  color: rgba(241, 245, 249, 0.96);
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.42);
+}
+
+:root[data-color-mode="dark"] [data-scholarly-anchor-target],
+html.dark [data-scholarly-anchor-target] {
+  background: linear-gradient(135deg, rgba(125, 211, 252, 0.14) 0%, rgba(30, 41, 59, 0.08) 100%);
+  box-shadow: 0 0 0 0.35rem rgba(125, 211, 252, 0.1);
+}
+
+@keyframes scholarly-anchor-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(30, 58, 95, 0.22);
+  }
+  100% {
+    box-shadow: 0 0 0 0.5rem rgba(30, 58, 95, 0);
+  }
 }

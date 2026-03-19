@@ -14,7 +14,8 @@ const layoutsEntry = path.join(root, 'scripts', 'generate-layout-screenshots.md'
 const tempOutDir = path.join(root, 'scripts', 'layout-screenshots')
 const docsOutDir = path.join(root, 'docs', 'public', 'images', 'layouts')
 
-// Layout mapping: slide number -> layout name
+// Layout mapping: slide number -> layout name.
+// Keep this aligned with generate-layout-screenshots.md: one slide per exported preview target.
 const LAYOUTS = {
   1: 'cover',
   2: 'default',
@@ -22,24 +23,26 @@ const LAYOUTS = {
   4: 'section',
   5: 'center',
   6: 'auto-center',
-  7: 'end',
-  8: 'two-cols',
-  9: 'image-left',
-  10: 'image-right',
-  11: 'bullets',
-  12: 'figure',
-  13: 'split-image',
-  14: 'quote',
-  15: 'fact',
-  16: 'statement',
-  17: 'focus',
-  18: 'compare',
-  19: 'methodology',
-  20: 'results',
-  21: 'timeline',
-  22: 'agenda',
-  23: 'acknowledgments',
-  24: 'references'
+  7: 'auto-size',
+  8: 'toc',
+  9: 'end',
+  10: 'two-cols',
+  11: 'image-left',
+  12: 'image-right',
+  13: 'bullets',
+  14: 'figure',
+  15: 'split-image',
+  16: 'quote',
+  17: 'fact',
+  18: 'statement',
+  19: 'focus',
+  20: 'compare',
+  21: 'methodology',
+  22: 'results',
+  23: 'timeline',
+  24: 'agenda',
+  25: 'acknowledgments',
+  26: 'references'
 }
 
 console.log('🎨 Generating layout screenshots...')
@@ -67,7 +70,8 @@ if (result.status !== 0) {
   process.exit(result.status ?? 1)
 }
 
-// Create docs output directory
+// Recreate the output directory so stale screenshots cannot survive a partial export.
+await rm(docsOutDir, { recursive: true, force: true })
 await mkdir(docsOutDir, { recursive: true })
 
 // Check if export directory exists and create if needed

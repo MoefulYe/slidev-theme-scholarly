@@ -159,7 +159,7 @@ icon: "→"
 ```markdown
 ---
 layout: figure
-src: ./images/architecture.png
+image: ./images/architecture.png
 caption: Overview of our proposed system architecture.
 label: "Figure 1:"
 title: System Architecture
@@ -169,8 +169,10 @@ height: 60%
 Additional description below the figure.
 ```
 
+Use `image` instead of `src` in Slidev frontmatter. `src` is reserved by Slidev for external slide sources and can cause the figure slide to disappear from builds and exports.
+
 **Props:**
-- `src`: Image URL or path
+- `image`: Image URL or path
 - `caption`: Figure caption
 - `label`: Label prefix (e.g., "Figure 1:")
 - `title`: Slide title

@@ -5,6 +5,8 @@ lang: en
 themeConfig:
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 bibFile: ./references.bib
 bibStyle: apa
 authors:
@@ -164,7 +166,7 @@ PURPOSE: Show step-by-step process with active step highlighted
 
 ---
 layout: figure
-src: https://cover.sli.dev
+image: https://cover.sli.dev
 caption: Overview of our proposed architecture showing the main components and data flow.
 label: "Figure 1:"
 title: System Architecture
@@ -174,7 +176,7 @@ title: System Architecture
 SLIDE: Figure
 LAYOUT: figure
 PURPOSE: Display image with caption and label
-OPTIONS: src, caption, label, fit
+OPTIONS: image, caption, label, fit
 -->
 
 The model consists of three main modules working together.
@@ -399,10 +401,8 @@ layout: references
 SLIDE: References
 LAYOUT: references
 PURPOSE: Auto-generated bibliography from BibTeX citations
-MARKER: [[bibliography]] generates the reference list
+AUTO: empty or heading-only references slides inject the bibliography automatically
 -->
-
-[[bibliography]]
 
 ---
 layout: section

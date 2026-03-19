@@ -49,12 +49,12 @@ title: 语法糖
 ### Highlight（高亮）
 
 ```markdown
-:::highlight{color="yellow"}
+:::highlight{type="warning"}
 需要高亮的文本
 :::
 ```
 
-**颜色：** `yellow`、`green`、`blue`、`pink`、`purple`
+**类型：** `primary`、`success`、`warning`、`danger`、`info`（传统别名：`color="yellow|green|blue|pink|purple"`）
 
 ### Cite（引用）
 
@@ -73,7 +73,7 @@ title: 语法糖
 ### Keywords（关键词）
 
 ```markdown
-:::keywords{:items='["关键词 1", "关键词 2"]' color="blue"}:::
+:::keywords{:keywords='["关键词 1", "关键词 2"]' color="blue"}:::
 ```
 
 ### Columns（多列）
@@ -81,7 +81,7 @@ title: 语法糖
 使用 `+++` 分隔列：
 
 ```markdown
-:::columns{cols="2" gap="2rem"}
+:::columns{columns="2" gap="2rem"}
 第一列内容
 +++
 第二列内容
@@ -106,7 +106,7 @@ title: 研究方法
 对于任意 $\epsilon > 0$，算法在 $O(1/\epsilon^2)$ 步内收敛。
 :::
 
-:::columns{cols="2"}
+:::columns{columns="2"}
 ### 优势
 - 快速收敛
 - 低内存使用
@@ -116,12 +116,12 @@ title: 研究方法
 - 自然语言处理
 :::
 
-:::keywords{:items='["深度学习", "优化", "收敛性"]' color="blue"}:::
+:::keywords{:keywords='["深度学习", "优化", "收敛性"]' color="blue"}:::
 ```
 
 ## 注意事项
 
-- 语法糖在构建时由预解析器处理
+- 语法糖在构建时由主题的 Markdown transformers 处理
 - 支持原始组件的所有属性
 - 对于复杂属性（数组、对象），使用 Vue 绑定语法 `:prop`
 - 修改后需要重启 Slidev 才能生效

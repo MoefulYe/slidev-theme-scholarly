@@ -1,6 +1,6 @@
 <template>
   <div :class="['theorem-box', `theorem-${type}`, { 'theorem-compact': compact }]">
-    <div class="theorem-header">
+    <div v-if="showHeader" class="theorem-header">
       <span class="theorem-type">{{ typeLabel }}</span>
       <span v-if="displayNumber" class="theorem-number">{{ displayNumber }}</span>
       <span v-if="title" class="theorem-title">{{ titleWrapper.left }}{{ title }}{{ titleWrapper.right }}</span>
@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
-import { prepareTheoremCountersForRoute, ensureTheoremCounters } from '../utils/theorem'
+import { getOccurrenceIndex, lookupTheoremNumber } from '../utils/theorem'
 import type { TheoremType } from '../utils/theorem'
 
 interface Props {
@@ -24,16 +24,19 @@ interface Props {
   autoNumber?: boolean
   /** Compact mode with less padding */
   compact?: boolean
+  /** Hide the theorem header and render only the content box */
+  showHeader?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'theorem',
   autoNumber: true,
-  compact: false
+  compact: false,
+  showHeader: true,
 })
 
 // Get slide context for language config
-const { $slidev } = useSlideContext()
+const { $page, $slidev } = useSlideContext()
 
 // Type labels in different languages
 const typeLabels: Record<string, Record<string, string>> = {
@@ -94,22 +97,17 @@ const typeLabel = computed(() => {
   return labels[props.type] || labels['theorem']
 })
 
-// Assign a number to this theorem instance
-let assignedNumber = 0
-if (typeof window !== 'undefined' && props.autoNumber && props.number === undefined) {
-  // proof, note types typically don't need numbering
-  const noNumberTypes = ['proof', 'note']
-  if (!noNumberTypes.includes(props.type)) {
-    const routePath = $slidev?.nav?.currentSlideRoute?.path
-    prepareTheoremCountersForRoute(routePath ?? '')
-    const counters = ensureTheoremCounters()
-    const typeKey = props.type as TheoremType
-    if (counters && counters[typeKey] !== undefined) {
-      counters[typeKey]++
-      assignedNumber = counters[typeKey]
-    }
-  }
-}
+const typeKey = props.type as TheoremType
+const noNumberTypes: TheoremType[] = ['proof', 'note']
+const slideNoForTheorem = Number($page?.value ?? 1) || 1
+const occurrenceIndex = typeof window !== 'undefined'
+  && props.autoNumber
+  && props.number === undefined
+  && !noNumberTypes.includes(typeKey)
+  ? getOccurrenceIndex(slideNoForTheorem, typeKey)
+  : -1
+
+const allSlides = computed(() => (($slidev?.nav as any)?.slides || []))
 
 // Calculate display number with format
 const displayNumber = computed(() => {
@@ -119,8 +117,10 @@ const displayNumber = computed(() => {
   }
   
   // If autoNumber is enabled, use assigned number
-  if (props.autoNumber && assignedNumber > 0) {
-    return formatNumber(assignedNumber.toString())
+  if (props.autoNumber && occurrenceIndex >= 0) {
+    const assignedNumber = lookupTheoremNumber(allSlides.value, slideNoForTheorem, typeKey, occurrenceIndex)
+    if (assignedNumber > 0)
+      return formatNumber(assignedNumber.toString())
   }
   
   return ''

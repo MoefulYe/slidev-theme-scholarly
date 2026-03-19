@@ -34,7 +34,7 @@ Different layouts for different needs:
 - **Basic**: cover, default, intro, section, center
 - **Content**: quote, fact, statement, two-cols
 - **Image**: image-left, image-right
-- **Advanced (v2.0)**: focus, compare, bullets, figure, references, end, auto-center
+- **Advanced (v2.0)**: focus, compare, bullets, figure, references, end, auto-center, auto-size
 
 ## 📊 Academic Styling (v0.1.2)
 
@@ -51,6 +51,8 @@ Automatic bibliography generation from BibTeX files:
 
 - Use `@citekey` for parenthetical citations
 - Use `!@citekey` for narrative citations
+- Use standard Markdown footnotes with academic styling
+- Hover footnote markers on desktop to preview notes, or click to pin them
 - Supports APA, Harvard, Vancouver, IEEE, MLA, Chicago styles
 - Auto-generates bibliography from all cited references
 - No additional configuration required!
@@ -79,7 +81,7 @@ Content here
 Mathematical content
 :::
 
-:::columns{cols="2"}
+:::columns{columns="2"}
 Left column
 +++
 Right column
@@ -99,4 +101,3 @@ Supports English and Chinese (中文) for mathematical content.
 | `fact` layout | New `purple` color variant |
 | Booktabs tables | Academic three-line tables |
 | Code blocks | Enhanced styling |
-

@@ -21,7 +21,24 @@ jobs:
         run: |
           set -euo pipefail
 
-          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+
+          # Only handle theme tags like:
+          #   v1.2.3
+          #   v1.2.3-beta.1
+          #
+          # This workflow may also be triggered by other tag namespaces
+          # (e.g. VS Code extension tags) that start with "v" but are not
+          # theme releases.
+          if [[ ! "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            echo "Skipping: not a theme release tag ($TAG_NAME)"
+            echo "version=" >> "$GITHUB_OUTPUT"
+            echo "is_stable=false" >> "$GITHUB_OUTPUT"
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          TAG_VERSION="${TAG_NAME#v}"
           PKG_VERSION="$(node -p "require('./package.json').version")"
 
           echo "Tag version:     $TAG_VERSION"
@@ -49,9 +66,45 @@ jobs:
             exit 1
           fi
 
+  validate:
+    name: Validate theme release
+    needs: check
+    if: needs.check.outputs.version != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      CI: true
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build English example deck
+        run: pnpm exec slidev build examples/example.md --out "${RUNNER_TEMP}/slidev-release-example-en" --without-notes
+
+      - name: Build Academic example deck
+        run: pnpm exec slidev build examples/example-academic.md --out "${RUNNER_TEMP}/slidev-release-example-academic" --without-notes
+
+      - name: Build Chinese example deck
+        run: pnpm exec slidev build examples/example-zh.md --out "${RUNNER_TEMP}/slidev-release-example-zh" --without-notes
+
   release:
     name: Release (stable)
-    needs: check
+    needs: [check, validate]
     if: needs.check.outputs.is_stable == 'true'
     runs-on: ubuntu-latest
     permissions:
@@ -67,12 +120,6 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
 
       - name: Extract release notes
         run: |
@@ -103,11 +150,12 @@ jobs:
       - name: Publish to NPM
         run: npm publish --access public
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
 
   prerelease:
     name: Pre-release
-    needs: check
+    needs: [check, validate]
     if: needs.check.outputs.is_prerelease == 'true'
     runs-on: ubuntu-latest
     permissions:
@@ -123,12 +171,6 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
 
       - name: Extract release notes
         run: |
@@ -159,4 +201,5 @@ jobs:
       - name: Publish to NPM (dist-tag next)
         run: npm publish --access public --tag next
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true

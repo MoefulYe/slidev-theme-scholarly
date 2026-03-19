@@ -21,6 +21,7 @@ const COMPONENT_ID_TO_FILE: Record<string, string> = {
   'Lemma': 'definition',
   'Proof': 'theorem',
   'Corollary': 'theorem',
+  'Claim': 'theorem',
   'Example': 'theorem',
   'Note': 'theorem',
   'Highlight (Vue)': 'highlight',
@@ -33,7 +34,7 @@ const COMPONENT_ID_TO_FILE: Record<string, string> = {
   'Columns (Syntax Sugar)': 'columns',
   'Keywords': 'keywords',
   'Keywords (Syntax Sugar)': 'keywords',
-  'ThemePreview': 'block'
+  'ThemePreview': 'theme-preview'
 };
 
 export function getComponentPreviewFile(componentLabel: string): string | undefined {

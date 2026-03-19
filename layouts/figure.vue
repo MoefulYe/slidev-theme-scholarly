@@ -4,7 +4,7 @@
     <div class="flex-grow figure-container" :class="{ 'has-header': headerTitle || headerSubtitle }">
       <div class="figure-image">
         <slot name="figure">
-          <img v-if="src" :src="src" :alt="caption || 'Figure'" :style="imageStyle">
+          <img v-if="imageSrc" :src="imageSrc" :alt="caption || 'Figure'" :style="imageStyle">
         </slot>
       </div>
       <div class="figure-caption" v-if="caption || $slots.caption">
@@ -26,7 +26,9 @@ import ScholarlyFooter from '../components/ScholarlyFooter.vue'
 import { useFontSizeStyles } from '../utils/useFontSizeStyles'
 
 const props = defineProps<{
-  /** Image source URL */
+  /** Figure image URL. Prefer `image` in Slidev frontmatter because `src` is reserved by Slidev. */
+  image?: string
+  /** Legacy alias for the figure image URL. Avoid using `src` in Slidev frontmatter. */
   src?: string
   /** Figure caption */
   caption?: string
@@ -46,6 +48,7 @@ const computedStyles = useFontSizeStyles()
 
 const headerTitle = computed(() => props.title)
 const headerSubtitle = computed(() => props.subtitle)
+const imageSrc = computed(() => props.image || props.src)
 
 const imageStyle = computed(() => ({
   maxHeight: props.height || '55vh',
@@ -59,7 +62,7 @@ const imageStyle = computed(() => ({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem 2rem 35px;
+  padding: 1rem 2rem calc(var(--scholarly-footer-height) + 0.5rem);
   text-align: center;
 }
 

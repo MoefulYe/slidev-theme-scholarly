@@ -66,6 +66,33 @@ authors:
 - Middle: Empty (or your custom text)
 - Right: Page numbers (automatic)
 
+### Theme Configuration
+
+Use `themeConfig` for theme-level behavior:
+
+```yaml
+themeConfig:
+  beamerNav: false  # hide footer navigation buttons
+  outlineToc: true
+  outlineTocOpen: false
+```
+
+| Option | What it controls | Default |
+|--------|------------------|---------|
+| `themeConfig.beamerNav` | Show beamer-style footer navigation buttons in live play mode | `true` |
+| `themeConfig.outlineToc` | Show a compact TOC button in the footer that opens an outline panel | `false` |
+| `themeConfig.outlineTocOpen` | Start with the outline panel expanded | `false` |
+
+Notes:
+
+- The buttons appear only in the live slide player.
+- They are automatically hidden in overview, embedded, and print/export views.
+- The TOC panel is grouped by `layout: section` and lists jump targets inside each section.
+- In desktop play mode, if the device supports hover and the viewport is wide enough, hovering or keyboard-focusing a TOC item shows a slide preview card to the left of the panel.
+- When the TOC opens, it previews the current slide by default. If the current slide is hidden with `hideInToc: true`, it falls back to the first visible TOC item.
+- Slides with `hideInToc: true` are hidden automatically.
+- The legacy `outlineSidebar` / `outlineSidebarOpen` keys still work, but `outlineToc` / `outlineTocOpen` are the preferred names now.
+
 ### Theorem Number Format
 
 Customize how theorem numbers appear:
@@ -210,12 +237,46 @@ fontsize:
   h3: 32          # number (treated as pixels)
 ```
 
-**Notes:**
+**Font size notes:**
 
 - All font size options are optional - you can set any combination
 - Per-slide settings override global settings
 - If not specified, the theme uses default font sizes optimized for each layout
 - Font sizes are applied using CSS variables for maximum compatibility
+
+### Footnote Display Configuration
+
+You can set a global footnote display mode in the headmatter, and override it for individual slides when needed.
+
+**Global footnote display (applies to all slides by default):**
+
+```yaml
+---
+theme: scholarly
+footnoteDisplay: hover-only
+---
+```
+
+**Per-slide footnote display override:**
+
+```markdown
+---
+footnoteDisplay: notes-only
+---
+```
+
+Priority order:
+
+- Per-slide `footnoteDisplay`
+- Global headmatter `footnoteDisplay`
+- Legacy `themeConfig.footnoteDisplay`
+- Default `both`
+
+Available values:
+
+- `both`: keep the bottom footnotes and the inline hover/click preview
+- `hover-only`: hide the bottom footnotes and keep only the inline preview
+- `notes-only`: keep the bottom footnotes and disable the hover/click popover
 
 ## Per-Slide Settings
 

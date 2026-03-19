@@ -51,4 +51,4 @@ Or using the syntax sugar:
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `steps` | `Array<{title: string, description?: string}>` | `[]` | Array of step objects |
-| `activeStep` | `number` | `-1` | Index of the active step (0-based), -1 for none |
+| `activeStep` | `number` | - | Active step (1-based). Omit for none |

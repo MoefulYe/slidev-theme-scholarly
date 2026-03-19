@@ -8,6 +8,8 @@ themeConfig:
   fontTheme: traditional
   colorMode: light
   sectionMode: light
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Prof. W.X. Green
     institution: VWX Literary Institute

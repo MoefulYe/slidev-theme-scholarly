@@ -30,7 +30,7 @@ Subtitle or description
 
 - Large title in the center
 - Author(s) with institution and email
-- Footer with author, conference, and page number
+- Footer with author, conference, page number, and live beamer-style navigation buttons
 
 ---
 
@@ -58,7 +58,7 @@ You can add text, images, code, math formulas, etc.
 
 - Optional header with title and subtitle
 - Your content in the middle
-- Footer at the bottom
+- Footer at the bottom with page number and live beamer-style navigation buttons
 
 ---
 
@@ -140,6 +140,37 @@ sectionMode: dark  # Override global setting for this slide
 
 ---
 
+## toc - Table of Contents
+
+**Use for:** Outline/agenda slide (auto-generated from your `layout: section` slides)
+
+![TOC Layout Example](/images/layouts/toc.png)
+
+```markdown
+---
+layout: toc
+title: Outline        # set to false to hide
+showNumbers: true     # optional, default: true
+highlightCurrent: true # optional, default: true
+---
+```
+
+**What it shows:**
+
+- A title (defaults to `Outline` or `目录` based on `lang`)
+- A list of all `layout: section` slides (click to navigate)
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string \| false` | `Outline` | Title text, set to `false` to hide |
+| `showNumbers` | `boolean` | `true` | Show numbered badges |
+| `highlightCurrent` | `boolean` | `true` | Highlight the current section |
+| `sections` | `string[]` | - | Manually specify section titles (overrides auto-extraction) |
+
+---
+
 ## center - Centered Content
 
 **Use for:** Short messages or key points
@@ -186,6 +217,43 @@ This layout automatically adjusts font size to fit content.
 - Automatically adjusts font size based on content length
 - Centers content vertically
 - Keeps text left-aligned within the centered block
+
+---
+
+## auto-size - Fit-to-Page Default Layout
+
+**Use for:** Default-style slides that should behave more like a LaTeX Beamer frame
+
+```markdown
+---
+layout: auto-size
+title: Title
+subtitle: Subtitle
+autoSizeGrow: true
+autoSizeAlign: top
+autoSizePadding: normal
+minFontSize: 14
+maxFontSize: 30
+---
+
+## Auto-Sized Main Matter
+
+This layout keeps the default reading flow,
+but it adjusts the main matter font size to fit the page.
+```
+
+**What it shows:**
+
+- Keeps the default header and footer structure
+- Fits the main matter to the available width and height
+- Keeps content top-aligned instead of vertically centered
+- Supports `minFontSize` and `maxFontSize` frontmatter overrides
+
+**Configuration entry points:**
+
+- `autoSizeGrow: true | false` - allow sparse slides to grow above their base size, or only shrink when needed
+- `autoSizeAlign: top | center` - keep the main matter pinned to the top or vertically centered inside the available area
+- `autoSizePadding: compact | normal` - switch between tighter and roomier inner spacing for the main matter box
 
 ---
 

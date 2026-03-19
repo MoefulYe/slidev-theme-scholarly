@@ -4,7 +4,7 @@ title: Highlight
 
 # Highlight Component
 
-The `Highlight` component provides inline text highlighting with various colors.
+The `Highlight` component provides inline text highlighting.
 
 ## Basic Usage
 
@@ -15,35 +15,52 @@ This is <Highlight>important text</Highlight> in your slide.
 Or using the syntax sugar:
 
 ```markdown
-:::highlight{color="yellow"}
+:::highlight{type="warning"}
 Important text to highlight
 :::
 ```
 
 ## Examples
 
-### Different Colors
+### Different Types
 
 ```markdown
-<Highlight color="yellow">Yellow highlight</Highlight>
+<Highlight type="primary">Primary highlight</Highlight>
 
-<Highlight color="green">Green highlight</Highlight>
+<Highlight type="success">Success highlight</Highlight>
 
-<Highlight color="blue">Blue highlight</Highlight>
+<Highlight type="warning">Warning highlight</Highlight>
 
-<Highlight color="pink">Pink highlight</Highlight>
+<Highlight type="danger">Danger highlight</Highlight>
+
+<Highlight type="info">Info highlight</Highlight>
 ```
 
 ### In Context
 
 ```markdown
-Our method achieves <Highlight color="green">94.7% accuracy</Highlight>, 
-which is <Highlight color="yellow">significantly better</Highlight> than 
+Our method achieves <Highlight type="success">94.7% accuracy</Highlight>, 
+which is <Highlight type="warning">significantly better</Highlight> than 
 the baseline.
+```
+
+### Legacy `color` Alias
+
+`color` is supported for backwards compatibility and maps to `type`:
+
+- `yellow` -> `warning`
+- `green` -> `success`
+- `blue` -> `info`
+- `pink` -> `danger`
+- `purple` -> `primary`
+
+```markdown
+<Highlight color="yellow">Yellow highlight</Highlight>
 ```
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `color` | `string` | `'yellow'` | Highlight color: `yellow`, `green`, `blue`, `pink`, `purple` |
+| `type` | `string` | `'primary'` | Highlight type: `primary`, `success`, `warning`, `danger`, `info` |
+| `color` | `string` | - | Legacy alias of `type`: `yellow`, `green`, `blue`, `pink`, `purple` |

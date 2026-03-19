@@ -8,6 +8,8 @@ themeConfig:
   fontTheme: traditional
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Prof. C.D. Johnson
     institution: ABC Research University

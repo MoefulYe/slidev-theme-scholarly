@@ -50,7 +50,7 @@ const computedStyles = useFontSizeStyles()
   display: flex;
   align-items: stretch;
   gap: 0;
-  padding: 1rem 2rem 35px;
+  padding: 1rem 2rem calc(var(--scholarly-footer-height) + 0.5rem);
 }
 
 .compare-container.has-header {

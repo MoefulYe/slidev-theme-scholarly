@@ -1,5 +1,6 @@
 import { defineAppSetup } from '@slidev/types'
 import { configs } from '@slidev/client'
+import { slides } from '#slidev/slides'
 import { watch } from 'vue'
 import type { RouteLocationNormalized } from 'vue-router'
 import Theorem from '../components/Theorem.vue'
@@ -10,7 +11,12 @@ import Cite from '../components/Cite.vue'
 import Steps from '../components/Steps.vue'
 import Keywords from '../components/Keywords.vue'
 import ThemePreview from '../components/ThemePreview.vue'
-import { resetTheoremCounters, invalidateTheoremCounterBases } from '../utils/theorem'
+import {
+  initializeInternalAnchorNavigation,
+  rebuildInternalAnchorTargets,
+  resolvePendingInternalAnchorNavigation,
+} from '../utils/internalAnchorNavigation'
+import { invalidateTheoremNumberMap, resetOccurrenceTracker } from '../utils/theorem'
 
 const DEFAULT_FONT_SIZE = '1rem'
 type FontsizeConfig =
@@ -39,6 +45,18 @@ type ThemeConfig = {
   colorTheme?: string
   fontTheme?: string
   colorMode?: 'light' | 'dark'
+  beamerNav?: boolean
+  outlineSidebar?: boolean
+  outlineSidebarOpen?: boolean
+  outlineToc?: boolean
+  outlineTocOpen?: boolean
+  footnoteDisplay?: 'both' | 'hover-only' | 'notes-only'
+}
+
+type SlideFrontmatter = {
+  fontsize?: FontsizeConfig
+  footnoteDisplay?: ThemeConfig['footnoteDisplay']
+  routeAlias?: string
 }
 
 const normalizeFontSize = (value: unknown): string | null => {
@@ -176,6 +194,566 @@ const syncColorModeWithDark = () => {
 // Watch for Slidev's dark mode toggle (class changes on html element)
 let darkModeObserver: MutationObserver | null = null
 
+const FOOTNOTE_TRIGGER_SELECTOR = '.slidev-layout sup.footnote-ref a[href^="#fn"]'
+const FOOTNOTE_SCOPE_SELECTOR = '.slidev-layout'
+const FOOTNOTE_LAYOUT_CONTENT_SELECTOR = '.content-inner, .bullets-content, .prose, .references-content'
+const FOOTNOTE_LAYOUT_WRAPPER_SELECTOR = '.content-wrapper, .intro-content, .bullets-container, .content-wrapper-centered'
+const FOOTNOTE_ACTIVE_ATTR = 'data-scholarly-footnote-active'
+const FOOTNOTE_PINNED_ATTR = 'data-scholarly-footnote-pinned'
+const FOOTNOTE_DISPLAY_ATTR = 'data-scholarly-footnote-display'
+const FOOTNOTE_LAYOUT_ATTR = 'data-scholarly-has-footnotes'
+const FOOTNOTE_HIDE_DELAY = 120
+type FootnoteDisplayMode = 'both' | 'hover-only' | 'notes-only'
+
+type FootnotePopoverState = {
+  initialized: boolean
+  popover: HTMLDivElement | null
+  label: HTMLDivElement | null
+  content: HTMLDivElement | null
+  activeAnchor: HTMLAnchorElement | null
+  pinnedAnchor: HTMLAnchorElement | null
+  hideTimer: number | null
+}
+
+type FootnotePopoverWindow = Window & typeof globalThis & {
+  __scholarlyFootnotePopoverCleanup?: () => void
+  __scholarlyFootnoteLayoutCleanup?: () => void
+}
+
+const footnotePopoverState: FootnotePopoverState = {
+  initialized: false,
+  popover: null,
+  label: null,
+  content: null,
+  activeAnchor: null,
+  pinnedAnchor: null,
+  hideTimer: null,
+}
+
+let footnoteLayoutObserver: MutationObserver | null = null
+let footnoteLayoutSyncRaf: number | null = null
+
+const normalizeFootnoteDisplay = (value: unknown): FootnoteDisplayMode => {
+  if (typeof value !== 'string')
+    return 'both'
+
+  const normalized = value.trim().toLowerCase()
+  if (normalized === 'hover-only' || normalized === 'hover')
+    return 'hover-only'
+  if (normalized === 'notes-only' || normalized === 'footnotes-only' || normalized === 'static')
+    return 'notes-only'
+  return 'both'
+}
+
+const getFootnoteDisplayMode = (): FootnoteDisplayMode => {
+  if (typeof document === 'undefined')
+    return 'both'
+
+  return normalizeFootnoteDisplay(document.documentElement.getAttribute(FOOTNOTE_DISPLAY_ATTR))
+}
+
+const escapeIdSelector = (value: string): string => {
+  if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function')
+    return CSS.escape(value)
+
+  return value.replace(/[^a-zA-Z0-9_-]/g, '\\$&')
+}
+
+const getEventElement = (target: EventTarget | null): Element | null => {
+  if (target instanceof Element)
+    return target
+
+  if (target instanceof Node)
+    return target.parentElement
+
+  return null
+}
+
+const getFootnoteAnchor = (target: EventTarget | null): HTMLAnchorElement | null => {
+  const element = getEventElement(target)
+  if (!element)
+    return null
+
+  return element.closest(FOOTNOTE_TRIGGER_SELECTOR) as HTMLAnchorElement | null
+}
+
+const clearFootnoteHideTimer = () => {
+  if (footnotePopoverState.hideTimer !== null) {
+    window.clearTimeout(footnotePopoverState.hideTimer)
+    footnotePopoverState.hideTimer = null
+  }
+}
+
+const setFootnoteAnchorState = (
+  anchor: HTMLAnchorElement | null,
+  isActive: boolean,
+  isPinned = false,
+) => {
+  if (!anchor)
+    return
+
+  anchor.setAttribute('aria-haspopup', 'dialog')
+  anchor.setAttribute('aria-expanded', isActive ? 'true' : 'false')
+
+  if (isActive)
+    anchor.setAttribute(FOOTNOTE_ACTIVE_ATTR, 'true')
+  else
+    anchor.removeAttribute(FOOTNOTE_ACTIVE_ATTR)
+
+  if (isPinned)
+    anchor.setAttribute(FOOTNOTE_PINNED_ATTR, 'true')
+  else
+    anchor.removeAttribute(FOOTNOTE_PINNED_ATTR)
+}
+
+const enhanceFootnoteTriggers = () => {
+  if (typeof document === 'undefined')
+    return
+
+  const interactive = getFootnoteDisplayMode() !== 'notes-only'
+  document.querySelectorAll<HTMLAnchorElement>(FOOTNOTE_TRIGGER_SELECTOR).forEach((anchor) => {
+    if (interactive) {
+      anchor.setAttribute('aria-haspopup', 'dialog')
+      if (!anchor.hasAttribute('aria-expanded'))
+        anchor.setAttribute('aria-expanded', 'false')
+      anchor.dataset.scholarlyFootnoteTrigger = 'true'
+    } else {
+      anchor.removeAttribute('aria-haspopup')
+      anchor.removeAttribute('aria-expanded')
+      anchor.removeAttribute(FOOTNOTE_ACTIVE_ATTR)
+      anchor.removeAttribute(FOOTNOTE_PINNED_ATTR)
+      delete anchor.dataset.scholarlyFootnoteTrigger
+    }
+  })
+}
+
+const setFootnoteLayoutState = (element: Element, enabled: boolean) => {
+  const hasState = element.getAttribute(FOOTNOTE_LAYOUT_ATTR) === 'true'
+  if (enabled === hasState)
+    return
+
+  if (enabled)
+    element.setAttribute(FOOTNOTE_LAYOUT_ATTR, 'true')
+  else
+    element.removeAttribute(FOOTNOTE_LAYOUT_ATTR)
+}
+
+const hasDirectFootnotes = (element: Element) => {
+  return Array.from(element.children).some((child) => child.classList.contains('footnotes'))
+}
+
+const syncFootnoteLayoutState = () => {
+  if (typeof document === 'undefined')
+    return
+
+  document.querySelectorAll<HTMLElement>(FOOTNOTE_SCOPE_SELECTOR).forEach((root) => {
+    root.querySelectorAll<HTMLElement>(FOOTNOTE_LAYOUT_CONTENT_SELECTOR).forEach((container) => {
+      setFootnoteLayoutState(container, hasDirectFootnotes(container))
+    })
+
+    root.querySelectorAll<HTMLElement>(FOOTNOTE_LAYOUT_WRAPPER_SELECTOR).forEach((wrapper) => {
+      const hasFootnotes = Array.from(
+        wrapper.querySelectorAll<HTMLElement>(FOOTNOTE_LAYOUT_CONTENT_SELECTOR),
+      ).some(container => container.getAttribute(FOOTNOTE_LAYOUT_ATTR) === 'true')
+      setFootnoteLayoutState(wrapper, hasFootnotes)
+    })
+  })
+}
+
+const cancelFootnoteLayoutSync = () => {
+  if (footnoteLayoutSyncRaf !== null) {
+    window.cancelAnimationFrame(footnoteLayoutSyncRaf)
+    footnoteLayoutSyncRaf = null
+  }
+}
+
+const scheduleFootnoteLayoutSync = () => {
+  if (typeof window === 'undefined' || footnoteLayoutSyncRaf !== null)
+    return
+
+  footnoteLayoutSyncRaf = window.requestAnimationFrame(() => {
+    footnoteLayoutSyncRaf = null
+    syncFootnoteLayoutState()
+  })
+}
+
+const observeFootnoteLayout = () => {
+  if (typeof window === 'undefined')
+    return
+
+  const globalWindow = window as FootnotePopoverWindow
+  globalWindow.__scholarlyFootnoteLayoutCleanup?.()
+
+  const scope = document.querySelector<HTMLElement>(FOOTNOTE_SCOPE_SELECTOR) ?? document.body
+
+  if (typeof MutationObserver !== 'undefined') {
+    footnoteLayoutObserver = new MutationObserver((mutations) => {
+      if (!mutations.some(mutation => mutation.type === 'childList' || mutation.type === 'characterData'))
+        return
+
+      scheduleFootnoteLayoutSync()
+    })
+
+    footnoteLayoutObserver.observe(scope, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    })
+  }
+
+  globalWindow.__scholarlyFootnoteLayoutCleanup = () => {
+    cancelFootnoteLayoutSync()
+    footnoteLayoutObserver?.disconnect()
+    footnoteLayoutObserver = null
+    document.querySelectorAll<HTMLElement>(`[${FOOTNOTE_LAYOUT_ATTR}]`).forEach((element) => {
+      element.removeAttribute(FOOTNOTE_LAYOUT_ATTR)
+    })
+  }
+
+  scheduleFootnoteLayoutSync()
+}
+
+const getFootnoteItemForAnchor = (anchor: HTMLAnchorElement): HTMLElement | null => {
+  const href = anchor.getAttribute('href')
+  if (!href?.startsWith('#'))
+    return null
+
+  const id = decodeURIComponent(href.slice(1))
+  if (!id)
+    return null
+
+  const scope = anchor.closest(FOOTNOTE_SCOPE_SELECTOR)
+  const scopedMatch = scope?.querySelector<HTMLElement>(`#${escapeIdSelector(id)}`)
+  if (scopedMatch)
+    return scopedMatch
+
+  return document.getElementById(id)
+}
+
+const extractFootnotePreview = (item: HTMLElement): DocumentFragment => {
+  const clone = item.cloneNode(true) as HTMLElement
+
+  clone.removeAttribute('id')
+  clone.querySelectorAll('[id]').forEach((node) => node.removeAttribute('id'))
+  clone.querySelectorAll('.footnote-backref, [data-footnote-backref], a[href^="#fnref"]').forEach((node) => node.remove())
+
+  const fragment = document.createDocumentFragment()
+  while (clone.firstChild)
+    fragment.appendChild(clone.firstChild)
+
+  return fragment
+}
+
+const ensureFootnotePopover = (): HTMLDivElement | null => {
+  if (typeof document === 'undefined')
+    return null
+
+  if (footnotePopoverState.popover && footnotePopoverState.label && footnotePopoverState.content)
+    return footnotePopoverState.popover
+
+  const popover = document.createElement('div')
+  popover.className = 'scholarly-footnote-popover'
+  popover.setAttribute('role', 'note')
+  popover.setAttribute('aria-hidden', 'true')
+
+  const label = document.createElement('div')
+  label.className = 'scholarly-footnote-popover__label'
+
+  const content = document.createElement('div')
+  content.className = 'scholarly-footnote-popover__content'
+
+  popover.append(label, content)
+
+  popover.addEventListener('pointerenter', () => clearFootnoteHideTimer())
+  popover.addEventListener('pointerleave', () => {
+    if (!footnotePopoverState.pinnedAnchor)
+      scheduleFootnoteHide()
+  })
+
+  document.body.appendChild(popover)
+
+  footnotePopoverState.popover = popover
+  footnotePopoverState.label = label
+  footnotePopoverState.content = content
+
+  return popover
+}
+
+const positionFootnotePopover = (anchor: HTMLAnchorElement, popover: HTMLDivElement) => {
+  const anchorRect = anchor.getBoundingClientRect()
+  const viewportPadding = 16
+  const gap = 12
+
+  popover.style.left = `${viewportPadding}px`
+  popover.style.top = `${viewportPadding}px`
+
+  const popoverRect = popover.getBoundingClientRect()
+  const fitsBelow = anchorRect.bottom + gap + popoverRect.height <= window.innerHeight - viewportPadding
+  const fitsAbove = anchorRect.top - gap - popoverRect.height >= viewportPadding
+  const placeAbove = !fitsBelow && fitsAbove
+
+  let top = placeAbove
+    ? anchorRect.top - popoverRect.height - gap
+    : anchorRect.bottom + gap
+
+  if (top < viewportPadding)
+    top = viewportPadding
+  if (top + popoverRect.height > window.innerHeight - viewportPadding)
+    top = Math.max(viewportPadding, window.innerHeight - popoverRect.height - viewportPadding)
+
+  let left = anchorRect.left + (anchorRect.width / 2) - (popoverRect.width / 2)
+  if (left < viewportPadding)
+    left = viewportPadding
+  if (left + popoverRect.width > window.innerWidth - viewportPadding)
+    left = Math.max(viewportPadding, window.innerWidth - popoverRect.width - viewportPadding)
+
+  popover.dataset.placement = placeAbove ? 'top' : 'bottom'
+  popover.style.left = `${Math.round(left)}px`
+  popover.style.top = `${Math.round(top)}px`
+}
+
+const syncFootnotePopoverPosition = () => {
+  const { activeAnchor, popover } = footnotePopoverState
+  if (!activeAnchor || !popover || popover.getAttribute('aria-hidden') === 'true')
+    return
+
+  if (!document.contains(activeAnchor)) {
+    hideFootnotePopover()
+    return
+  }
+
+  positionFootnotePopover(activeAnchor, popover)
+}
+
+const hideFootnotePopover = () => {
+  clearFootnoteHideTimer()
+
+  if (footnotePopoverState.activeAnchor)
+    setFootnoteAnchorState(footnotePopoverState.activeAnchor, false, false)
+
+  if (footnotePopoverState.pinnedAnchor && footnotePopoverState.pinnedAnchor !== footnotePopoverState.activeAnchor)
+    setFootnoteAnchorState(footnotePopoverState.pinnedAnchor, false, false)
+
+  footnotePopoverState.activeAnchor = null
+  footnotePopoverState.pinnedAnchor = null
+
+  if (!footnotePopoverState.popover)
+    return
+
+  footnotePopoverState.popover.classList.remove('is-visible')
+  footnotePopoverState.popover.dataset.pinned = 'false'
+  footnotePopoverState.popover.setAttribute('aria-hidden', 'true')
+}
+
+const scheduleFootnoteHide = () => {
+  clearFootnoteHideTimer()
+
+  if (footnotePopoverState.pinnedAnchor)
+    return
+
+  footnotePopoverState.hideTimer = window.setTimeout(() => {
+    hideFootnotePopover()
+  }, FOOTNOTE_HIDE_DELAY)
+}
+
+const showFootnotePopover = (anchor: HTMLAnchorElement, pinned = false): boolean => {
+  const item = getFootnoteItemForAnchor(anchor)
+  const popover = ensureFootnotePopover()
+  const label = footnotePopoverState.label
+  const content = footnotePopoverState.content
+
+  if (!item || !popover || !label || !content)
+    return false
+
+  const fragment = extractFootnotePreview(item)
+  if (!fragment.hasChildNodes())
+    return false
+
+  clearFootnoteHideTimer()
+
+  if (footnotePopoverState.activeAnchor && footnotePopoverState.activeAnchor !== anchor)
+    setFootnoteAnchorState(footnotePopoverState.activeAnchor, false, false)
+
+  if (footnotePopoverState.pinnedAnchor && footnotePopoverState.pinnedAnchor !== anchor)
+    setFootnoteAnchorState(footnotePopoverState.pinnedAnchor, false, false)
+
+  footnotePopoverState.activeAnchor = anchor
+  footnotePopoverState.pinnedAnchor = pinned ? anchor : null
+
+  label.textContent = anchor.textContent?.trim() ?? ''
+  label.hidden = !label.textContent
+
+  content.replaceChildren(fragment)
+
+  popover.dataset.pinned = pinned ? 'true' : 'false'
+  popover.setAttribute('aria-hidden', 'false')
+  popover.classList.add('is-visible')
+
+  setFootnoteAnchorState(anchor, true, pinned)
+  positionFootnotePopover(anchor, popover)
+
+  window.requestAnimationFrame(() => {
+    if (footnotePopoverState.activeAnchor === anchor)
+      syncFootnotePopoverPosition()
+  })
+
+  return true
+}
+
+const initializeFootnotePopovers = () => {
+  if (typeof window === 'undefined' || footnotePopoverState.initialized)
+    return
+
+  const globalWindow = window as FootnotePopoverWindow
+  globalWindow.__scholarlyFootnotePopoverCleanup?.()
+
+  const handlePointerOver = (event: PointerEvent) => {
+    if (event.pointerType && event.pointerType !== 'mouse')
+      return
+
+    if (getFootnoteDisplayMode() === 'notes-only')
+      return
+
+    if (footnotePopoverState.pinnedAnchor)
+      return
+
+    const anchor = getFootnoteAnchor(event.target)
+    if (!anchor)
+      return
+
+    showFootnotePopover(anchor, false)
+  }
+
+  const handlePointerOut = (event: PointerEvent) => {
+    if (event.pointerType && event.pointerType !== 'mouse')
+      return
+
+    if (getFootnoteDisplayMode() === 'notes-only')
+      return
+
+    if (footnotePopoverState.pinnedAnchor)
+      return
+
+    const anchor = getFootnoteAnchor(event.target)
+    if (!anchor)
+      return
+
+    const relatedTarget = event.relatedTarget
+    if (relatedTarget instanceof Node) {
+      if (anchor.contains(relatedTarget))
+        return
+
+      if (footnotePopoverState.popover?.contains(relatedTarget))
+        return
+    }
+
+    scheduleFootnoteHide()
+  }
+
+  const handleFocusIn = (event: FocusEvent) => {
+    if (getFootnoteDisplayMode() === 'notes-only')
+      return
+
+    if (footnotePopoverState.pinnedAnchor)
+      return
+
+    const anchor = getFootnoteAnchor(event.target)
+    if (!anchor)
+      return
+
+    showFootnotePopover(anchor, false)
+  }
+
+  const handleFocusOut = (event: FocusEvent) => {
+    if (getFootnoteDisplayMode() === 'notes-only')
+      return
+
+    if (footnotePopoverState.pinnedAnchor)
+      return
+
+    const anchor = getFootnoteAnchor(event.target)
+    if (!anchor)
+      return
+
+    const relatedTarget = event.relatedTarget
+    if (relatedTarget instanceof Node && footnotePopoverState.popover?.contains(relatedTarget))
+      return
+
+    scheduleFootnoteHide()
+  }
+
+  const handleClick = (event: MouseEvent) => {
+    const anchor = getFootnoteAnchor(event.target)
+    if (anchor) {
+      const footnoteDisplay = getFootnoteDisplayMode()
+      if (footnoteDisplay === 'notes-only')
+        return
+
+      event.preventDefault()
+      clearFootnoteHideTimer()
+
+      if (footnoteDisplay === 'hover-only') {
+        showFootnotePopover(anchor, false)
+      } else if (footnotePopoverState.pinnedAnchor === anchor) {
+        hideFootnotePopover()
+      } else {
+        showFootnotePopover(anchor, true)
+      }
+      return
+    }
+
+    const element = getEventElement(event.target)
+    if (element && footnotePopoverState.popover?.contains(element))
+      return
+
+    hideFootnotePopover()
+  }
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (getFootnoteDisplayMode() === 'notes-only')
+      return
+
+    if (event.key === 'Escape')
+      hideFootnotePopover()
+  }
+
+  const handleViewportChange = () => {
+    syncFootnotePopoverPosition()
+  }
+
+  document.addEventListener('pointerover', handlePointerOver)
+  document.addEventListener('pointerout', handlePointerOut)
+  document.addEventListener('focusin', handleFocusIn)
+  document.addEventListener('focusout', handleFocusOut)
+  document.addEventListener('click', handleClick)
+  document.addEventListener('keydown', handleKeyDown)
+  document.addEventListener('scroll', handleViewportChange, true)
+  window.addEventListener('resize', handleViewportChange)
+
+  const cleanup = () => {
+    document.removeEventListener('pointerover', handlePointerOver)
+    document.removeEventListener('pointerout', handlePointerOut)
+    document.removeEventListener('focusin', handleFocusIn)
+    document.removeEventListener('focusout', handleFocusOut)
+    document.removeEventListener('click', handleClick)
+    document.removeEventListener('keydown', handleKeyDown)
+    document.removeEventListener('scroll', handleViewportChange, true)
+    window.removeEventListener('resize', handleViewportChange)
+
+    hideFootnotePopover()
+    footnotePopoverState.popover?.remove()
+    footnotePopoverState.popover = null
+    footnotePopoverState.label = null
+    footnotePopoverState.content = null
+    footnotePopoverState.initialized = false
+  }
+
+  globalWindow.__scholarlyFootnotePopoverCleanup = cleanup
+  footnotePopoverState.initialized = true
+
+  enhanceFootnoteTriggers()
+}
+
 const setupDarkModeSync = (config: ThemeConfig | null | undefined) => {
   if (typeof window === 'undefined') return
 
@@ -221,6 +799,10 @@ export default defineAppSetup(({ app, router }) => {
     return (configs as any)?.fontsize as FontsizeConfig | undefined
   }
 
+  const getGlobalFootnoteDisplay = (): ThemeConfig['footnoteDisplay'] | undefined => {
+    return (configs as any)?.footnoteDisplay as ThemeConfig['footnoteDisplay'] | undefined
+  }
+
   const getThemeColorConfig = (): ThemeColorConfig | undefined => {
     return (configs as any)?.themeColors as ThemeColorConfig | undefined
   }
@@ -229,31 +811,90 @@ export default defineAppSetup(({ app, router }) => {
     return (configs as any)?.themeConfig as ThemeConfig | undefined
   }
 
-  const updateFontSize = (route: RouteLocationNormalized | undefined) => {
-    const frontmatter = route?.meta?.slide?.frontmatter ?? {}
-    applyFontSizes(frontmatter?.fontsize as FontsizeConfig | undefined, getGlobalFontConfig())
-    if (typeof window !== 'undefined') {
-      invalidateTheoremCounterBases(route?.path)
+  const getSlideFrontmatter = (route?: RouteLocationNormalized): SlideFrontmatter => {
+    const frontmatterFromRoute = route?.meta?.slide?.frontmatter as SlideFrontmatter | undefined
+    if (frontmatterFromRoute)
+      return frontmatterFromRoute
+
+    const routeNo = Array.isArray(route?.params?.no)
+      ? route?.params?.no[0]
+      : route?.params?.no
+
+    if (typeof routeNo === 'string' && routeNo) {
+      const matchedSlide = slides.value.find((slide) => {
+        const slideRouteAlias = slide?.meta?.slide?.frontmatter?.routeAlias
+        return String(slide?.no) === routeNo || slideRouteAlias === routeNo
+      })
+      const frontmatterFromSlides = matchedSlide?.meta?.slide?.frontmatter as SlideFrontmatter | undefined
+      if (frontmatterFromSlides)
+        return frontmatterFromSlides
     }
+
+    return slides.value[0]?.meta?.slide?.frontmatter as SlideFrontmatter ?? {}
+  }
+
+  const updateFontSize = (route: RouteLocationNormalized | undefined) => {
+    const frontmatter = getSlideFrontmatter(route)
+    applyFontSizes(frontmatter?.fontsize as FontsizeConfig | undefined, getGlobalFontConfig())
+  }
+
+  const applyFootnoteDisplay = (route: RouteLocationNormalized | undefined) => {
+    if (typeof document === 'undefined')
+      return
+
+    const frontmatter = getSlideFrontmatter(route)
+    const mode = normalizeFootnoteDisplay(
+      frontmatter?.footnoteDisplay
+        ?? getGlobalFootnoteDisplay()
+        ?? getThemeConfig()?.footnoteDisplay,
+    )
+    document.documentElement.setAttribute(FOOTNOTE_DISPLAY_ATTR, mode)
+    hideFootnotePopover()
+    enhanceFootnoteTriggers()
   }
 
   // Apply font size for the initial route
   updateFontSize(router.currentRoute.value)
+  applyFootnoteDisplay(router.currentRoute.value)
 
   // Apply theme colors and theme presets
   applyThemeColors(getThemeColorConfig())
   applyThemePresets(getThemeConfig())
   setupDarkModeSync(getThemeConfig())
+  initializeFootnotePopovers()
+  initializeInternalAnchorNavigation(router)
+  observeFootnoteLayout()
+
+  if (typeof window !== 'undefined') {
+    window.requestAnimationFrame(() => {
+      enhanceFootnoteTriggers()
+      scheduleFootnoteLayoutSync()
+      rebuildInternalAnchorTargets()
+      void resolvePendingInternalAnchorNavigation(router.currentRoute.value)
+    })
+  }
 
   watch(
-    () => router.currentRoute.value?.meta?.slide?.frontmatter?.fontsize,
+    () => getSlideFrontmatter(router.currentRoute.value)?.fontsize,
     () => updateFontSize(router.currentRoute.value),
+    { deep: true }
+  )
+
+  watch(
+    () => getSlideFrontmatter(router.currentRoute.value)?.footnoteDisplay,
+    () => applyFootnoteDisplay(router.currentRoute.value),
     { deep: true }
   )
 
   watch(
     () => (configs as any)?.fontsize as FontsizeConfig | undefined,
     () => updateFontSize(router.currentRoute.value),
+    { deep: true }
+  )
+
+  watch(
+    () => (configs as any)?.footnoteDisplay as ThemeConfig['footnoteDisplay'] | undefined,
+    () => applyFootnoteDisplay(router.currentRoute.value),
     { deep: true }
   )
 
@@ -268,15 +909,35 @@ export default defineAppSetup(({ app, router }) => {
     (newConfig) => {
       applyThemePresets(newConfig)
       setupDarkModeSync(newConfig)
+      applyFootnoteDisplay(router.currentRoute.value)
     },
     { deep: true, immediate: true }
   )
 
-  // Reset theorem counters and update font sizing when navigating
+  watch(
+    () => slides.value.map(slide => slide.meta.slide.revision).join('|'),
+    () => rebuildInternalAnchorTargets(),
+  )
+
+  // Reset theorem numbering state and update font sizing when navigating
   router.afterEach((to) => {
     updateFontSize(to)
+    applyFootnoteDisplay(to)
+    observeFootnoteLayout()
+    rebuildInternalAnchorTargets()
+    resetOccurrenceTracker()
+    hideFootnotePopover()
+
+    if (typeof window !== 'undefined') {
+      window.requestAnimationFrame(() => {
+        enhanceFootnoteTriggers()
+        scheduleFootnoteLayoutSync()
+        void resolvePendingInternalAnchorNavigation(to)
+      })
+    }
+
     if (to.path === '/1' || to.path === '/') {
-      resetTheoremCounters()
+      invalidateTheoremNumberMap()
     }
   })
 })

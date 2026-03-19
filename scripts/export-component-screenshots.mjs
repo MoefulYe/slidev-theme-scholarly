@@ -14,7 +14,8 @@ const componentsEntry = path.join(root, 'scripts', 'generate-component-screensho
 const tempOutDir = path.join(root, 'scripts', 'component-screenshots')
 const docsOutDir = path.join(root, 'docs', 'public', 'images', 'components')
 
-// Component mapping: slide number -> component name
+// Component mapping: slide number -> component name.
+// Keep this aligned with generate-component-screenshots.md: one slide per exported preview target.
 const COMPONENTS = {
   1: 'block',
   2: 'theorem',
@@ -23,7 +24,8 @@ const COMPONENTS = {
   5: 'steps',
   6: 'columns',
   7: 'keywords',
-  8: 'cite'
+  8: 'cite',
+  9: 'theme-preview'
 }
 
 console.log('🎨 Generating component screenshots...')

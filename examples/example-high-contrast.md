@@ -8,6 +8,8 @@ themeConfig:
   fontTheme: technical
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Dr. U.V. White
     institution: STU Accessibility Lab

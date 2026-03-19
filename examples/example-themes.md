@@ -9,6 +9,8 @@ themeConfig:
   fontTheme: classic
   colorMode: dark
   sectionMode: dark
+  outlineToc: true
+  outlineTocOpen: false
 authors:
   - name: Theme Designer
     institution: Slidev Theme Scholarly

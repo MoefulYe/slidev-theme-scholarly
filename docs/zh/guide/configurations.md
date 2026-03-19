@@ -66,6 +66,33 @@ authors:
 - 中间：空（或你的自定义文本）
 - 右侧：页码（自动）
 
+### 主题配置
+
+可以通过 `themeConfig` 控制主题级行为：
+
+```yaml
+themeConfig:
+  beamerNav: false  # 隐藏页脚导航按钮
+  outlineToc: true
+  outlineTocOpen: false
+```
+
+| 选项 | 控制内容 | 默认值 |
+|------|---------|--------|
+| `themeConfig.beamerNav` | 在放映视图中显示 beamer 风格页脚导航按钮 | `true` |
+| `themeConfig.outlineToc` | 在页脚显示一个紧凑 TOC 按钮，点击后唤起目录面板 | `false` |
+| `themeConfig.outlineTocOpen` | 初始加载时默认展开目录面板 | `false` |
+
+说明：
+
+- 这些按钮只会出现在实际放映视图中。
+- 在概览、嵌入和打印/导出视图中会自动隐藏。
+- TOC 面板会按 `layout: section` 分组，并列出组内可跳转页面。
+- 在桌面端放映视图中，如果设备支持 hover 且视口足够宽，悬停或键盘聚焦 TOC 条目时会在面板左侧显示对应页面预览。
+- TOC 打开时会默认预览当前页；如果当前页被 `hideInToc: true` 隐藏，则自动回退到第一个可见目录项。
+- 单页设置 `hideInToc: true` 时会自动隐藏该页。
+- `outlineSidebar` / `outlineSidebarOpen` 旧配置仍然兼容，但新配置建议使用 `outlineToc` / `outlineTocOpen`。
+
 ### 定理编号格式
 
 自定义定理编号的显示方式：
@@ -210,12 +237,46 @@ fontsize:
   h3: 32          # 数字（视为像素）
 ```
 
-**注意事项：**
+**字体大小注意事项：**
 
 - 所有字体大小选项都是可选的 - 你可以设置任意组合
 - 单页设置会覆盖全局设置
 - 如果未指定, 主题使用为每种布局优化的默认字体大小
 - 字体大小使用 CSS 变量应用, 以实现最大兼容性
+
+### 注脚显示模式配置
+
+你可以在首页 headmatter 中设置全局注脚显示模式，并在单页 frontmatter 中按需覆盖。
+
+**全局注脚显示模式（默认应用到所有页面）：**
+
+```yaml
+---
+theme: scholarly
+footnoteDisplay: hover-only
+---
+```
+
+**单页注脚显示模式覆盖：**
+
+```markdown
+---
+footnoteDisplay: notes-only
+---
+```
+
+优先级顺序：
+
+- 单页 `footnoteDisplay`
+- 首页 headmatter `footnoteDisplay`
+- 兼容旧配置 `themeConfig.footnoteDisplay`
+- 默认值 `both`
+
+可用取值：
+
+- `both`：同时保留底部注脚和行内 hover / click 预览
+- `hover-only`：隐藏底部注脚，只保留行内预览
+- `notes-only`：保留底部注脚，并关闭 hover / click 浮窗
 
 ## 单页设置
 
