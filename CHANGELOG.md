@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2026-04-20
+
+### Fixed
+
+- **TOC layout**: Resolved an issue where the `toc` layout could fail to render if the presentation had no section titles, by adding a fallback mechanism that generates section entries based on slide frontmatter or content structure
+
 ## [1.3.1] - 2026-03-17
 
 This stable release rolls up all changes shipped after `v1.0.3`, including the `v1.1.x`, `v1.2.x`, and `v1.3.0-beta.1` prerelease series.
