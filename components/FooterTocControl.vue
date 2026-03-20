@@ -228,15 +228,28 @@ const labels = computed(() => {
   }
 })
 
+const getSlideMeta = (slide: any) => {
+  return slide?.meta?.slide || slide?.slide || {}
+}
+
+const getSlideFrontmatter = (slide: any) => {
+  return getSlideMeta(slide)?.frontmatter || slide?.frontmatter || {}
+}
+
+const getSlideRawContent = (slide: any) => {
+  return getSlideMeta(slide)?.content || slide?.content || ''
+}
+
 const getSlideTitle = (slide: any, fallback: string) => {
-  const title = slide?.meta?.slide?.title
-    || slide?.meta?.slide?.frontmatter?.title
-    || slide?.frontmatter?.title
+  const frontmatter = getSlideFrontmatter(slide)
+  const title = getSlideMeta(slide)?.title
+    || slide?.title
+    || frontmatter.title
 
   if (typeof title === 'string' && title.trim())
     return title.trim()
 
-  const rawContent = slide?.meta?.slide?.content || slide?.content || ''
+  const rawContent = getSlideRawContent(slide)
   const h1Match = rawContent.match(/^#\s+(.+)$/m)
   if (h1Match?.[1]?.trim())
     return h1Match[1].trim()
@@ -263,7 +276,7 @@ const sectionGroups = computed<TocSectionGroup[]>(() => {
 
   for (let i = 0; i < allSlides.value.length; i++) {
     const slide = allSlides.value[i]
-    const frontmatter = slide?.meta?.slide?.frontmatter || slide?.frontmatter || {}
+    const frontmatter = getSlideFrontmatter(slide)
     const layout = frontmatter.layout || (i === 0 ? 'cover' : 'default')
     const hideInToc = Boolean(frontmatter.hideInToc)
     const slideNo = i + 1

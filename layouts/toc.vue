@@ -103,6 +103,33 @@ const allSlides = computed(() => {
 // Current slide number
 const currentPage = computed(() => $slidev.nav.currentPage)
 
+const getSlideMeta = (slide: any) => {
+  return slide?.meta?.slide || slide?.slide || {}
+}
+
+const getSlideFrontmatter = (slide: any) => {
+  return getSlideMeta(slide)?.frontmatter || slide?.frontmatter || {}
+}
+
+const getSlideRawContent = (slide: any) => {
+  return getSlideMeta(slide)?.content || slide?.content || ''
+}
+
+const getSlideTitle = (slide: any, fallback: string) => {
+  const frontmatter = getSlideFrontmatter(slide)
+  const title = getSlideMeta(slide)?.title || slide?.title || frontmatter.title
+
+  if (typeof title === 'string' && title.trim())
+    return title.trim()
+
+  const rawContent = getSlideRawContent(slide)
+  const h1Match = rawContent.match(/^#\s+(.+)$/m)
+  if (h1Match?.[1]?.trim())
+    return h1Match[1].trim()
+
+  return fallback
+}
+
 // Extract sections from slides with layout: section
 const tocSections = computed<TocSection[]>(() => {
   if (props.sections && props.sections.length > 0) {
@@ -118,13 +145,12 @@ const tocSections = computed<TocSection[]>(() => {
 
   for (let i = 0; i < slides.length; i++) {
     const slide = slides[i]
-    const frontmatter = slide?.meta?.slide?.frontmatter || slide?.frontmatter || {}
+    const frontmatter = getSlideFrontmatter(slide)
     const layout = frontmatter.layout || (i === 0 ? 'cover' : 'default')
 
     if (layout === 'section') {
-      const rawContent = slide?.meta?.slide?.content || slide?.content || ''
-      const h1Match = rawContent.match(/^#\s+(.+)$/m)
-      const title = h1Match ? h1Match[1].trim() : frontmatter.title || `Section ${sections.length + 1}`
+      const rawContent = getSlideRawContent(slide)
+      const title = getSlideTitle(slide, `Section ${sections.length + 1}`)
       const subtitleMatch = rawContent.match(/^#\s+.+\n+(?:##\s+)?(.+)$/m)
       const subtitle = subtitleMatch ? subtitleMatch[1].trim() : frontmatter.subtitle
 

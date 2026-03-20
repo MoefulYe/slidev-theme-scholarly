@@ -116,8 +116,8 @@ const vitePressOptions = {
 }
 
 const commonSidebarOptions = {
-  // `vitepress build` runs from the `docs` package, so the sidebar root is the current directory.
-  documentRootPath: '.',
+  // vitepress-sidebar expects a path relative to `process.cwd()`
+  documentRootPath: 'docs',
   useTitleFromFrontmatter: true,
   frontmatterTitleFieldName: 'title',
   collapsed: true,
